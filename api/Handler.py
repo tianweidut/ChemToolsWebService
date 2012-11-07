@@ -65,6 +65,7 @@ class TestHandler(BaseHandler):
             ret = response.SerializeToString()
             
             return base64.b64encode(ret)
+            #return base64.b64encode("Test")
             
         except Exception,err:
             import pdb;

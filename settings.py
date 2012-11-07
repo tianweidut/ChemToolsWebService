@@ -1,5 +1,8 @@
 # Django settings for Rest project.
 
+import os
+SETTINGS_ROOT = os.path.dirname(__file__)
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -116,6 +119,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'api',
+    
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -150,3 +154,5 @@ LOGGING = {
         },
     }
 }
+
+
