@@ -61,7 +61,6 @@
   </head>
 
   <body>
-  <div class="container-narrow">
   	  <div class="masthead">
         <ul class="nav nav-pills pull-right">
           <li class="active"><a href="/features">Features</a></li>
@@ -70,9 +69,8 @@
         </ul>
         <h3 class="muted">Chemistry Tools</h3>
       </div> 
-   
     {% block content %} {% endblock %}
-	</div>>
+	
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->

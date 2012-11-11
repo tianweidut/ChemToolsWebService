@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<div class="wrap">
+<div class="container">
 	<form class="form-signin" method="post" action="{% url auth_login %}">
 		<h2 class="form-signin-heading">Please sign in</h2>			
 		{% include '_form.html' %}			

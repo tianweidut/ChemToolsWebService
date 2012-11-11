@@ -43,18 +43,7 @@ class RegistrationForm(forms.Form):
         except User.DoesNotExist:
             return self.cleaned_data['username']
         raise forms.ValidationError(_(u'This username is already taken. Please choose another.'))
-    
-    def clear_machinecode(self):
-        """
-        Validate that the username is alphanumeric and is not already in use.
-        """
-        try:
-            machine = User.objects.get(machinecode__iexact=self.cleaned_data['machinecode'])
-        except User.DoesNotExist:
-            return self.cleaned_data['machinecode']
-        raise forms.ValidationError(_(u'This machinecode is already taken. Please be honst or change it.'))
-            
-    
+        
     def clean(self):
         """
          Verifiy that the values entered into the two password fields match
@@ -72,7 +61,8 @@ class RegistrationForm(forms.Form):
         new_user = RegistrationProfile.objects.create_inactive_user(request, 
                                                                     username = self.cleaned_data['username'],
                                                                     password = self.cleaned_data['password1'],
-                                                                    email = self.cleaned_data['email'], 
+                                                                    email = self.cleaned_data['email'],
+                                                                    machinecode = self.cleaned_data['machinecode'], 
                                                                     profile_callback = profile_callback)
         
         return new_user
