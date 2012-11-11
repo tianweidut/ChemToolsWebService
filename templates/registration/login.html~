@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block left %} {% endblock %}
+
+{% block content %}
+
+<div class="wrap">
+	<form class="form-signin" method="post" action="{% url auth_login %}">
+		<h2 class="form-signin-heading">Please sign in</h2>			
+		{% include '_form.html' %}			
+		<button class="btn btn-large btn-primary" type="submit">Sign in</button>	
+		<!--input type="submit" value="{% trans 'Log in' %}" /-->
+		<input type="hidden" name="next" value="{{ next }}" />	
+		{% csrf_token %}
+	</form>	
+	<p>{% trans "Forgot password" %}? <a href="{% url auth_password_reset %}">{% trans "Reset it" %}</a>!</p>
+	<p>{% trans "Not member" %}? <a href="{% url registration_register %}">{% trans "Register" %}</a>!</p>
+</div>
+
+{% endblock %}

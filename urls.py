@@ -1,18 +1,24 @@
 from django.conf.urls import patterns, include, url
+from django.views.generic.simple import direct_to_template
 
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+import settings
+
+
+from django.contrib import admin
+admin.autodiscover()
+
+handler500 = 'djangotoolbox.errorviews.server_error'
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'Rest.views.home', name='home'),
-    # url(r'^Rest/', include('Rest.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
+    url(r'^$',direct_to_template, {'template':'index.html'},"home"),
+    url(r'^admin/', include(admin.site.urls)),
     url(r'^api/',include('api.urls')),
+    url(r'^accounts/',include('registration.urls')),
+    url(r'^download/$',direct_to_template,{'template':'introduction/download.html'}),
+    url(r'^features/$',direct_to_template,{'template':'introduction/features.html'}),
+    #url(r'^media/(?P<path>.*)$','django.views.static.serve',{'document_root',settings.MEDIA_ROOT}),
+
+
 )
+
+
