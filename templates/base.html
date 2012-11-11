@@ -64,9 +64,24 @@
   <div class="container-narrow">
   	  <div class="masthead">
         <ul class="nav nav-pills pull-right">
-          <li class="active"><a href="/features">Features</a></li>
+          <li class="active"><a href="/">Home</a></li>
+          <li><a href="/features">Features</a></li>
           <li><a href="/download">Download</a></li>
-          <li><a href="/accounts/login">Login</a></li>
+          {% if request.user.is_authenticated %}
+          <li class="dropdown" id="account_menu">
+          	<a class="dropdown-toggle" data-toggle="dropdown" href="#account_menu">
+          	{{request.user.username}}
+          	<b class="caret"></b>
+          	</a>
+          	 <ul class="dropdown-menu">
+          	 	<li><a href="/">New Task</a></li>
+          	 	<li><a href="/">Settings</a></li>
+          	 	<li><a href="/accounts/logout">Logout</a></li>
+          	 </ul>
+          </li>
+          {% else %}
+            <li><a href="/accounts/login">Login</a></li>
+          {% endif %}
         </ul>
         <h3 class="muted">Chemistry Tools</h3>
       </div> 

@@ -122,6 +122,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
     'django.core.context_processors.static',
+    'django.core.context_processors.request',
+    'django.core.context_processors.csrf',
     'django.contrib.auth.context_processors.auth',
     'django.contrib.messages.context_processors.messages',
 )
@@ -190,6 +192,13 @@ EMAIL_USE_TLS = False
 DEFAULT_FROM_EMAIL = 'liutianweidlut@gmail.com'
 SERVER_EMAIL = 'liutianweidlut@gmail.com'
 
-
+#########################
+# File Transfer settings
+PREPARE_UPLOAD_BACKEND = 'filetransfers.backends.delegate.prepare_upload'
+#PRIVATE_PREPARE_UPLOAD_BACKEND = 'djangoappengine.storage.prepare_upload'
+#PUBLIC_PREPARE_UPLOAD_BACKEND = 'djangoappengine.storage.prepare_upload'
+#SERVE_FILE_BACKEND = 'djangoappengine.storage.serve_file'
+PUBLIC_DOWNLOAD_URL_BACKEND = 'filetransfers.backends.base_url.public_download_url'
+PUBLIC_DOWNLOADS_URL_BASE = '/data/'
 
 
