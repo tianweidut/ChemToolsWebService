@@ -1,0 +1,6 @@
+[submodule "deps/common"]
+	path = deps/common
+	url = https://github.com/umitproject/umit-common.git
+[submodule "deps/icm-common"]
+	path = deps/icm-common
+	url = https://github.com/umitproject/openmonitor-common.git
