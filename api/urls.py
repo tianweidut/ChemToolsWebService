@@ -14,13 +14,16 @@ class CsrfExemptResource(Resource):
         super( CsrfExemptResource, self ).__init__( handler, authentication )
         self.csrf_exempt = getattr( self.handler, 'csrf_exempt', True )
 
-task_resource = CsrfExemptResource(TaskHandler)
-test_resource = CsrfExemptResource(TestHandler)
-data_resource = CsrfExemptResource(DataHandler)
+ACTIVE_HANDLERS = (
+          TaskHandler,
+          DataHandler,
+          SmileSearchHandler,
+          CasSearchHandler,
+          FileUploadCalculateSearchHandler,
+          LoginHandler,
+          LogoutHandler,
+                   )
 
 urlpatterns = patterns('',
-   url(r'^tasks/(?P<id>\d+)$', task_resource),
-   url(r'^tasks$', task_resource),
-   url(r'^test$', test_resource),
-   url(r'^data$', data_resource)
-)
+        *[url(r'^%s/?$' %  Handler.url,CsrfExemptResource(Handler))\
+          for Handler in ACTIVE_HANDLERS])

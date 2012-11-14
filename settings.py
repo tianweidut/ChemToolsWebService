@@ -141,6 +141,7 @@ INSTALLED_APPS = (
     'api',
     'registration',
     'users',
+    'calcore',
 )
 
 # A sample logging configuration. The only tangible logging

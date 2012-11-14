@@ -1,0 +1,14 @@
+eclipse.preferences.version=1
+encoding//calcore/admin.py=UTF-8
+encoding//calcore/config/settings.py=UTF-8
+encoding//calcore/controllers/CmdChoice.py=UTF-8
+encoding//calcore/controllers/Dragon.py=UTF-8
+encoding//calcore/controllers/DragonExecute.py=UTF-8
+encoding//calcore/controllers/Gaussian.py=UTF-8
+encoding//calcore/controllers/GaussianExecute.py=UTF-8
+encoding//calcore/controllers/MolToGjfAndMop.py=UTF-8
+encoding//calcore/controllers/Mopac.py=UTF-8
+encoding//calcore/controllers/MopacExecute.py=UTF-8
+encoding//calcore/controllers/PathInit.py=UTF-8
+encoding//calcore/controllers/SendMail.py=UTF-8
+encoding//calcore/controllers/XmlCreate.py=UTF-8
