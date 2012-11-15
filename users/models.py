@@ -10,8 +10,15 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 
 class UserProfile(models.Model):
+    """
+    User Profile Extend
+    The Administrator can modified them in admin.page
+    """
     user = models.OneToOneField(User)
-    machinecode = models.CharField(max_length = 60)
+    machinecode = models.CharField(max_length = 100)
+    workunit = models.CharField(max_length = 2000,blank=True)
+    address  = models.CharField(max_length = 2000,blank=True)
+    telephone = models.CharField(max_length = 100, blank=True)
     
     def __unicode__(self):
         return '%s' %(self.user)

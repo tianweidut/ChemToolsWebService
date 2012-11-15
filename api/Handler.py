@@ -10,6 +10,7 @@ import time
 import base64
 import hashlib
 import uuid
+import os
 
 from piston.handler import BaseHandler
 from api.models import Task
@@ -21,6 +22,9 @@ from django.contrib.auth import authenticate
 
 from deps.common.chem.proto import messages_pb2
 from calcore.controllers import InputProcessing 
+
+from django.utils.log import getLogger
+logger = getLogger('django')
 
 class TaskHandler(BaseHandler):
     """
@@ -38,6 +42,34 @@ class DataHandler(BaseHandler):
 
     def read(self, request, username=None, data=None):
         return { 'user': 'tianwei', 'data_length': len('tesa') }
+
+class FileUploadTestHandler(BaseHandler):
+    """
+    only for file upload test
+    """
+    methods_allowed = ('POST',)
+    url = 'testfile/'
+    
+    def create(self,request):
+        """
+        """
+        try:            
+            uploadFileObj = request.FILES 
+            file_obj = InputProcessing.FilesCalculate()
+            
+            #TODO: whether the agentID is right 
+            if uploadFileObj is not None:
+                #Process upload file
+                fileName = receiveFile(uploadFileObj)
+                
+                isSuccessful, result, reason, status \
+                         = file_obj.fileQuery(
+                                           fullfilename = fileName,                               
+                                                )
+        except Exception,err:
+            import pdb;
+            print pdb.traceback
+            logger.error("Smile Search Error %s "%err)
  
 class SmileSearchHandler(BaseHandler):
     allow_method = ('POST')
@@ -78,8 +110,7 @@ class SmileSearchHandler(BaseHandler):
         except Exception,err:
             import pdb;
             print pdb.traceback
-            logging.error("Smile Search Error %s "%err)
-  
+            logger.error("Smile Search Error %s "%err)
             
 class CasSearchHandler(BaseHandler):
     allow_method = ('POST')
@@ -119,8 +150,7 @@ class CasSearchHandler(BaseHandler):
         except Exception,err:
             import pdb;
             print pdb.traceback
-            logging.error("Cas Search Error %s "%err)           
-
+            logger.error("Cas Search Error %s "%err)           
 
 class FileUploadCalculateSearchHandler(BaseHandler):
     allow_method = ('POST')
@@ -134,6 +164,8 @@ class FileUploadCalculateSearchHandler(BaseHandler):
         """
         try:
             msg = request.POST.get('msg', None)
+            uploadFileObj = request.FILES 
+
             
             file_recv = self.request_message()
             file_resp = self.response_message()
@@ -143,10 +175,13 @@ class FileUploadCalculateSearchHandler(BaseHandler):
             file_obj = InputProcessing.FilesCalculate()
             
             #TODO: whether the agentID is right 
-            if file_recv.agentID is not None and cmp(file_recv.agentID,"FFFFFFFF") != 0:
+            if file_recv.agentID is not None and cmp(file_recv.agentID,"FFFFFFFF") != 0 and uploadFileObj is not None:
+                #Process upload file
+                fileName = self.receiveFile(uploadFileObj)
+
                 file_resp.isSuccessful, file_resp.result, file_resp.reason, file_resp.status \
                          = file_obj.fileQuery(
-                                           fullfilename = file_recv.fileName,                               
+                                           fullfilename = fileName,                               
                                                 )
             else:
                 file_resp.isSuccessful = False
@@ -161,8 +196,8 @@ class FileUploadCalculateSearchHandler(BaseHandler):
         except Exception,err:
             import pdb;
             print pdb.traceback
-            logging.error("File Search Error %s "%err)  
-            
+            logger.error("File Search Error %s "%err)  
+      
    
 class LoginHandler(BaseHandler):
     allow_method = ('POST')
@@ -207,7 +242,7 @@ class LoginHandler(BaseHandler):
         except Exception,err:
             import pdb;
             print pdb.traceback
-            logging.error("Login from Client Error %s "%err)
+            logger.error("Login from Client Error %s "%err)
     
     
 class LogoutHandler(BaseHandler):
@@ -230,9 +265,29 @@ class LogoutHandler(BaseHandler):
         except Exception,err:
             import pdb;
             print pdb.traceback
-            logging.error("Client Logout Error %s "%err)    
+            logger.error("Client Logout Error %s "%err)    
        
-
+def receiveFile(uploadFileObj):
+        """
+        upload File objects generate
+        """
+        try:
+            for key,fileop in uploadFileObj.items():
+                path = os.path.join(settings.TMP_FILE_PATH ,fileop.name)
+                dest = open(path.encode('utf-8'), 'wb+')
+                if fileop.multiple_chunks:
+                    for c in fileop.chunks():
+                        dest.write(c)
+                else:
+                    dest.write(fileop.read())
+                dest.close()
+                
+            return path
+                        
+        except Exception,err:
+            import pdb;
+            print pdb.traceback
+            logger.error("Smile Search Error %s "%err)
             
             
             

@@ -22,6 +22,7 @@ ACTIVE_HANDLERS = (
           FileUploadCalculateSearchHandler,
           LoginHandler,
           LogoutHandler,
+          FileUploadTestHandler,
                    )
 
 urlpatterns = patterns('',
