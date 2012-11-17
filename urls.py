@@ -13,11 +13,13 @@ urlpatterns = patterns('',
     url(r'^$',direct_to_template, {'template':'index.html'},"home"),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/',include('api.urls')),
+    
     url(r'^accounts/',include('registration.urls')),
     url(r'^download/$',direct_to_template,{'template':'introduction/download.html'}),
     url(r'^features/$',direct_to_template,{'template':'introduction/features.html'}),
-    #url(r'^media/(?P<path>.*)$','django.views.static.serve',{'document_root',settings.MEDIA_ROOT}),
 
+    url(r'^forum/',include('lbforum.urls')),
+    url(r'^attachments/', include('attachments.urls')),
 
 )
 
