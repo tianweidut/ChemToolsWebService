@@ -16,6 +16,7 @@ class UserProfile(models.Model):
     """
     user = models.OneToOneField(User)
     machinecode = models.CharField(max_length = 100)
+    agentID = models.CharField(max_length = 40,default = '0000-0000-0000-0000')         #When the userProfile is created,agentId will be created automatically.
     workunit = models.CharField(max_length = 2000,blank=True)
     address  = models.CharField(max_length = 2000,blank=True)
     telephone = models.CharField(max_length = 100, blank=True)

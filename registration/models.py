@@ -8,6 +8,7 @@ Created on 2012-11-10
 import datetime
 import random
 import re,sha
+import uuid
 
 from django.conf import settings
 from django.template.loader import render_to_string
@@ -61,8 +62,8 @@ class RegistrationManager(models.Manager):
         new_user.is_active = False
         new_user.save()
         new_user.get_profile().machinecode = machinecode
+        new_user.get_profile().agentID = str(uuid.uuid4())  # create uuid for every user profile
         new_user.get_profile().save()
-        
         
         
         registration_profile = self.create_profile(new_user)

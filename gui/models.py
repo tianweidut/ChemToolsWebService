@@ -16,10 +16,20 @@ class ActiveKeyInfo(models.Model):
     keyValue    = models.CharField(max_length = 40,unique=True)
     totalCount  = models.IntegerField()
     leftCount   = models.IntegerField()
+    isAlreadLocated = models.BooleanField(default=True)  
     
     def __unicode__(self):
-        return self.keyid
+        return self.keyID
+
+class LanguageEnum(models.Model):
+    """
+    Language Enum for Chemistry 
+    """    
+    languageStr = models.CharField(max_length = 50)
     
+    def __unicode__(self):
+        return self.languageStr    
+
 class ActiveHistory(models.Model):
     """
     Active history (for calculate)
@@ -32,7 +42,7 @@ class ActiveHistory(models.Model):
     activekey   = models.ForeignKey(ActiveKeyInfo)
     
     def __unicode__(self):
-        return self.user
+        return '%s'%(self.user.name)
     
 class ModelInfo(models.Model):
     """
@@ -49,6 +59,9 @@ class CompoundInfo(models.Model):
     """
     smilesInfo = models.CharField(max_length = 200,primary_key=True)
     casInfo    = models.CharField(max_length = 100)
+    
+    def __unicode__(self):
+        return '%s %s' % (self.smilesInfo, self.casIn)    
 
 class CompoundName(models.Model):
     """
@@ -56,10 +69,15 @@ class CompoundName(models.Model):
     """
     simlesInfo = models.ForeignKey(CompoundInfo)
     nameStr = models.CharField(max_length = 500)
+    languageID = models.ForeignKey(LanguageEnum)
+    isDefault = models.BooleanField()
+    
+    def __unicode__(self):
+        return '%s' %(self.nameStr)
     
 class CalculateHistory(models.Model):
     """
-    Calculte history
+    Calculate history
     """   
     user        = models.ForeignKey(UserProfile)
     calculateStartTime = models.DateTimeField()
@@ -68,7 +86,10 @@ class CalculateHistory(models.Model):
     result      = models.TextField(blank=True)
     isFinished  = models.BooleanField(blank=True)
     modelInfo   = models.ForeignKey(ModelInfo)
-    smilesInfo  = models.ForeignKey(CompoundInfo)
+    smilesInfo  = models.ForeignKey(CompoundInfo)       #Maybe wrong
+    
+    def __unicode__(self):
+        return '%s' %(self.user.username)    
     
 
     
