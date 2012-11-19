@@ -23,6 +23,10 @@ ACTIVE_HANDLERS = (
           LoginHandler,
           LogoutHandler,
           FileUploadTestHandler,
+          GetAllCalculateHandler,
+          RegisterHandler,
+          CheckUsernameHandler,
+          GetLicenseInfoHandler,
                    )
 
 urlpatterns = patterns('',

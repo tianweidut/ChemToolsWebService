@@ -16,6 +16,7 @@ RegisterClass =(
                 CompoundName,
                 CalculateHistory,
                 LanguageEnum,
+
                 )
 
 for item in RegisterClass:

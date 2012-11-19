@@ -65,7 +65,6 @@ class RegistrationManager(models.Manager):
         new_user.get_profile().agentID = str(uuid.uuid4())  # create uuid for every user profile
         new_user.get_profile().save()
         
-        
         registration_profile = self.create_profile(new_user)
         
         if profile_callback is not None:
