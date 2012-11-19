@@ -6,6 +6,8 @@ Created on 2012-11-17
 '''
 import base64
 from backend.logging import logger
+from users.models import UserProfile
+from django.contrib.auth.models import User
 
 class message_handler(object):
     """
@@ -28,9 +30,21 @@ class message_handler(object):
             #TODO : We can add RSA algorigthm in recv
             msg_recv.ParseFromString(base64.b64decode(msg))  
             
-            #agentID authentic 
-            if msg_recv.agentID is not None and cmp(msg_recv.agentID,"FFFF-FFFF") != 0:
-                authentication_pass = True
+            #catch agentID
+            has_obj = True
+            try:
+                msg_recv.agentID
+            except:
+                has_obj = False
+            
+            #agentID authentication 
+            if has_obj and msg_recv.agentID is not None and cmp(msg_recv.agentID,"FFFF-FFFF") != 0:
+                try:
+                    agent = UserProfile.objects.get(agentID = msg_recv.agentID)
+                    authentication_pass = True
+                except UserProfile.DoesNotExist:
+                    authentication_pass = False
+                logger.info("Cannot find this agendID")
             else:
                 authentication_pass = False
             
@@ -42,6 +56,6 @@ class message_handler(object):
                               *args, **kwargs)
             
             #TODO: We can add RSA algorigthm in resp
-            return base64.b64encode(response) 
+            return base64.b64encode(response.SerializeToString()) 
         return  wrappered_method   
             

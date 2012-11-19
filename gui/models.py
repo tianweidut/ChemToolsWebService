@@ -12,14 +12,13 @@ class ActiveKeyInfo(models.Model):
     """
     Active Key base table
     """
-    keyID       = models.IntegerField(primary_key=True)
     keyValue    = models.CharField(max_length = 40,unique=True)
     totalCount  = models.IntegerField()
     leftCount   = models.IntegerField()
     isAlreadLocated = models.BooleanField(default=True)  
     
     def __unicode__(self):
-        return self.keyID
+        return self.keyValue
 
 class LanguageEnum(models.Model):
     """
@@ -27,8 +26,14 @@ class LanguageEnum(models.Model):
     """    
     languageStr = models.CharField(max_length = 50)
     
+    #Pre-loading data
+    #TODO : Default create 
+    
     def __unicode__(self):
         return self.languageStr    
+
+Chinese_Name_Label = "Chinese"
+English_Name_Label = "English"
 
 class ActiveHistory(models.Model):
     """
@@ -37,12 +42,12 @@ class ActiveHistory(models.Model):
     user        = models.ForeignKey(UserProfile)
     activeIP    = models.URLField()
     activeTime  = models.DateTimeField()
-    antActiveIP = models.URLField()
-    antActiveTime = models.DateTimeField()
+    antActiveIP = models.URLField(blank=True,null=True)
+    antActiveTime = models.DateTimeField(blank=True,null=True)
     activekey   = models.ForeignKey(ActiveKeyInfo)
     
     def __unicode__(self):
-        return '%s'%(self.user.name)
+        return '%s'%(self.user)
     
 class ModelInfo(models.Model):
     """
@@ -61,7 +66,7 @@ class CompoundInfo(models.Model):
     casInfo    = models.CharField(max_length = 100)
     
     def __unicode__(self):
-        return '%s %s' % (self.smilesInfo, self.casIn)    
+        return '%s %s' % (self.smilesInfo, self.casInfo)    
 
 class CompoundName(models.Model):
     """
@@ -81,7 +86,7 @@ class CalculateHistory(models.Model):
     """   
     user        = models.ForeignKey(UserProfile)
     calculateStartTime = models.DateTimeField()
-    calculateEndTime   = models.DateTimeField(blank=True)
+    calculateEndTime   = models.DateTimeField(blank=True,null=True)
     paramInfo   = models.TextField(blank=True)
     result      = models.TextField(blank=True)
     isFinished  = models.BooleanField(blank=True)
@@ -89,7 +94,7 @@ class CalculateHistory(models.Model):
     smilesInfo  = models.ForeignKey(CompoundInfo)       #Maybe wrong
     
     def __unicode__(self):
-        return '%s' %(self.user.username)    
+        return '%s' %(self.user)    
     
 
     
