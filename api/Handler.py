@@ -18,14 +18,15 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.contrib.auth import authenticate
 
-from deps.common.chem.proto import messages_pb2
+#from deps.common.chem.proto import messages_pb2
+from deps.common.chem.json import message_json as messages_pb2
 from calcore.controllers import InputProcessing 
 
 from api.decorators import message_handler
 
 from backend.logging import logger
 from backend.fileoperator import receiveFile
-from api.decorators import message_handler
+from api.decorators import message_handler,message_handler_json
 
 from gui.models import *
 from users.models import UserProfile
@@ -83,7 +84,7 @@ class SmileSearchHandler(BaseHandler):
     request_message = messages_pb2.SmileCodeSearch
     response_message = messages_pb2.SmileCodeSearchResponse 
     
-    @message_handler(request_message,response_message)
+    @message_handler_json(request_message,response_message)
     def create(self,request,msg_recv,msg_resp,authentication_pass):
         """
         """
@@ -114,7 +115,7 @@ class CasSearchHandler(BaseHandler):
     request_message = messages_pb2.CasCodeSearch
     response_message = messages_pb2.CasCodeSearchResponse 
     
-    @message_handler(request_message,response_message)
+    @message_handler_json(request_message,response_message)
     def create(self,request,msg_recv,msg_resp,authentication_pass):
         """
         """
@@ -144,7 +145,7 @@ class FileUploadCalculateSearchHandler(BaseHandler):
     request_message = messages_pb2.FileUploadCalculate
     response_message = messages_pb2.FileUploadCalculateResponse 
     
-    @message_handler(request_message,response_message)
+    @message_handler_json(request_message,response_message)
     def create(self,request,msg_recv,msg_resp,authentication_pass):
         """
         """
@@ -157,7 +158,7 @@ class FileUploadCalculateSearchHandler(BaseHandler):
                 #Process upload file
                 fileName = receiveFile(uploadFileObj)
 
-                msg_resp.isSuccessful, msg_resp.result, msg_resp.reason, msg_resp.status \
+                msg_resp.isSuccessful, msg_resp.result, msg_resp.reason \
                          = file_obj.fileQuery(
                                            fullfilename = fileName,                               
                                                 )
@@ -165,7 +166,6 @@ class FileUploadCalculateSearchHandler(BaseHandler):
                 msg_resp.isSuccessful = False
                 msg_resp.result = "None"
                 msg_resp.reason = "Wrong Agent ID"
-                msg_resp.status = "Failed"
                 
             return msg_resp
             
@@ -174,7 +174,6 @@ class FileUploadCalculateSearchHandler(BaseHandler):
             print pdb.traceback
             logger.error("File Search Error %s "%err)  
       
-   
 class LoginHandler(BaseHandler):
     allow_method = ('POST',)
     url = 'login/'
@@ -182,37 +181,31 @@ class LoginHandler(BaseHandler):
     request_message = messages_pb2.Login
     response_message = messages_pb2.LoginResponse
     
-    def create(self,request):
+    @message_handler_json(request_message,response_message)
+    def create(self,request,msg_recv,msg_resp,authentication_pass):
         """
         """
         try:
-            #receive message
-            msg = request.POST.get('msg', None)
-            
-            login_msg = self.request_message()
-            response = self.response_message()
-            login_msg.ParseFromString(base64.b64decode(msg))
-            
             #process
             user = authenticate(
-                                username=login_msg.username, 
-                                password=login_msg.password
+                                username=msg_recv.username, 
+                                password=msg_recv.password
                                 )
             
             if user is  None:
                 #Login baned
-                response.agentID = DEFAULT_ERROR_ID
-                response.isSucceddful = False
-                response.reason = "Wrong username or password"
+                logger.debug("----------Failed------------%s,%s"%(msg_recv.username,msg_recv.password))
+                msg_resp.agentID = DEFAULT_ERROR_ID
+                msg_resp.isSucceddful = False
+                msg_resp.reason = "Wrong username or password"
             else:
                 #Login ok
-                response.agentID = user.get_profile().agentID
-                response.isSucceddful = True
-                response.reason = "Login Successful"
+                logger.debug("----------Successful------------%s,%s"%(msg_recv.username,msg_recv.password))
+                msg_resp.agentID = user.get_profile().agentID
+                msg_resp.isSucceddful = True
+                msg_resp.reason = "Login Successful"
 
-            ret = response.SerializeToString()
-            
-            return base64.b64encode(ret)
+            return msg_resp
             
         except Exception,err:
             import pdb;
@@ -226,7 +219,7 @@ class LogoutHandler(BaseHandler):
     request_message = messages_pb2.Logout
     response_message = messages_pb2.LogoutResponse 
     
-    @message_handler(request_message,response_message)
+    @message_handler_json(request_message,response_message)
     def create(self,request,msg_recv,msg_resp,authentication_pass):
         """
         """
@@ -250,22 +243,22 @@ class GetLicenseInfoHandler(BaseHandler):
     request_message = messages_pb2.GetLicenseInfo
     response_message = messages_pb2.GetLicenseInfoResponse
     
-    @message_handler(request_message,response_message)
-    def create(self,request,msg_recv,msg_resp):
+    @message_handler_json(request_message,response_message)
+    def create(self,request,msg_recv,msg_resp,authentication_pass):
         """
         The function will judge the license.
         """
         try:
             #receive message
             try:
-                activeInfo = ActiveKeyInfo.objects.get(keyValue=ActiveKeyInfo)
-                msg_resp.IsValidated = True
-                msg_resp.TotalCount = activeInfo.totalCount
-                msg_resp.LeftCount = activeInfo.leftCount
+                activeInfo = ActiveKeyInfo.objects.get(keyValue=msg_recv.licenseStr)
+                msg_resp.isValidated = True
+                msg_resp.totalCount = activeInfo.totalCount
+                msg_resp.leftCount = activeInfo.leftCount
             except ActiveKeyInfo.DoesNotExist:
-                msg_resp.IsValidated = False
-                msg_resp.TotalCount = 0
-                msg_resp.LeftCount = 0
+                msg_resp.isValidated = False
+                msg_resp.totalCount = 0
+                msg_resp.leftCount = 0
                 
             return msg_resp
             
@@ -281,8 +274,8 @@ class CheckUsernameHandler(BaseHandler):
     request_message = messages_pb2.CheckUsername
     response_message = messages_pb2.CheckUsernameResponse
     
-    @message_handler(request_message,response_message)
-    def create(self,request,msg_recv,msg_resp):
+    @message_handler_json(request_message,response_message)
+    def create(self,request,msg_recv,msg_resp,authentication_pass):
         """
         The function will judge the license.
         """
@@ -292,19 +285,19 @@ class CheckUsernameHandler(BaseHandler):
             email_unique = True
             
             try:
-                user = UserProfile.objects.get(username=msg_recv.Username)
-                if user.email != msg_recv.Email:
+                user = UserProfile.objects.get(user__username=msg_recv.username)
+                if user.user.email != msg_recv.email:
                     email_unique = False
             except UserProfile.DoesNotExist:
                 username_unique = False
                 try:
-                    user = UserProfile.objects.get(email=msg_recv.Email)
+                    user = UserProfile.objects.get(user__email=msg_recv.email)
                     email_unique = False
                 except UserProfile.DoesNotExist:
                     pass
                     
-            msg_resp.IsValidatedUserName = username_unique
-            msg_resp.IsValidatedEmail = email_unique
+            msg_resp.isValidatedUserName = username_unique
+            msg_resp.isValidatedEmail = email_unique
             
             return msg_resp
                         
@@ -320,37 +313,38 @@ class RegisterHandler(BaseHandler):
     request_message = messages_pb2.Regist
     response_message = messages_pb2.RegistResponse
     
-    @message_handler(request_message,response_message)
-    def create(self,request,msg_recv,msg_resp):
+    @message_handler_json(request_message,response_message)
+    def create(self,request,msg_recv,msg_resp,authentication_pass):
         """
         The function will judge the license.
         """
         try:
             try:
-                licenseobj = ActiveKeyInfo.objects.get(keyValue= msg_recv.LicenseStr)
+                licenseobj = ActiveKeyInfo.objects.get(keyValue= msg_recv.licenseStr)
                 try:
                     from django.contrib.auth.models import User
-                    new_user = User.objects.create_user(username=msg_recv.Username,
-                                                         email =msg_recv.Email, 
-                                                         password =msg_recv.Password)
+                    new_user = User.objects.create_user(username=msg_recv.username,
+                                                         email =msg_recv.email, 
+                                                         password =msg_recv.password)
                     new_user.is_active = True
                     new_user.save()
-                    new_user.get_profile().machinecode = msg_recv.MachineCode
+                    new_user.get_profile().address = msg_recv.address
+                    new_user.get_profile().machinecode = msg_recv.machineCode
                     new_user.get_profile().agentID = str(uuid.uuid4())  # create uuid for every user profile
-                    new_user.get_profile().workunit = msg_recv.WorkUnit
-                    new_user.get_profile().address = msg_recv.Address
-                    new_user.get_profile().telephone = msg_recv.Tel
+                    new_user.get_profile().workunit = msg_recv.workUnit
+                    new_user.get_profile().telephone = msg_recv.tel
                     new_user.get_profile().save()
                     
                     msg_resp.agentID =  new_user.get_profile().agentID 
                     msg_resp.isSuccessful = True
                     msg_resp.reason = "Successful"
+                    
+                    #TODO Active in ActiveHistory!!!
                 except Exception,err:
                     msg_resp.agentID = DEFAULT_ERROR_ID
-                    msg_resp.isSuccessful = False
-                    msg_resp.reason = "Wrong UserName or Email!!!"
+                    msg_resp.isSucceddful = False
+                    msg_resp.reason = "Wrong UserName or Email!!! %s" % str(err)
             except ActiveKeyInfo.DoesNotExist:
-                
                 msg_resp.agentID = DEFAULT_ERROR_ID
                 msg_resp.isSuccessful = False
                 msg_resp.reason = "Wrong License!!!"
@@ -369,19 +363,21 @@ class GetAllCalculateHandler(BaseHandler):
     request_message = messages_pb2.GetAllCalculate
     response_message = messages_pb2.GetAllCalulateResponse
 
-    
-    @message_handler(request_message,response_message)
-    def create(self,request,msg_recv,msg_resp,authentication_pass):
+    @message_handler_json(request_message,response_message)
+    def create(self,request,msg_recv,msg_resp,authentication_pass=True):
         """
         The function will get the history of calculate.
         """
         try:
             if authentication_pass:
+                logger.debug("---------Successful-----------")
                 msg_resp =  self.find(msg_recv.agentID,msg_resp)
                 msg_resp.isSuccessful = True
+                self.testPrint(msg_resp)
             else:
+                logger.debug("---------Failed-----------")
                 msg_resp.isSuccessful = False
-                msg_resp.Count = 0
+                msg_resp.count = 0
             
             return msg_resp
         except Exception,err:
@@ -389,31 +385,49 @@ class GetAllCalculateHandler(BaseHandler):
             print pdb.traceback
             logger.error(" Get Calculate Info Error %s "%err)    
     
+    def testPrint(self,response):
+        """
+        Only for test 
+        """
+        logger.debug("---------------GetAllCalculateHandler start--------------")
+        for msg_resp in response.history:
+            logger.debug("CalStarttime: %s CalEndtime: %s" %(msg_resp.calStarttime,msg_resp.calEndtime))
+            logger.debug("isFinished: %s" % str(msg_resp.isFinished))
+            logger.debug("Param %s, Result :%s" %(msg_resp.param, msg_resp.result))
+            logger.debug("Smiles %s ,CAS %s " %(msg_resp.smiles,msg_resp.cas))
+            logger.debug("Chinese: %s, English %s" %(msg_resp.chName,msg_resp.enName))
+        logger.debug("---------------GetAllCalculateHandler end--------------")
+    
     def find(self,agentID,msg_resp):
         """
         Find and return Calculated Info [repeated]
         """
         #Get Entity by agentID
+        import time
         resultSets = CalculateHistory.objects.filter(user__agentID = agentID)
+        msg_resp.count = len(resultSets) 
+        msg_resp.history = [None] * msg_resp.count      
+        cnt = 0
         for result in resultSets:
-            calculateInfo = msg_resp.History.add()
-            calculateInfo.CalStarttime = str(result.calculateStartTime)
-            calculateInfo.CalEndtime = str(result.calculateEndTime)
-            calculateInfo.IsFinished = result.isFinished
-            calculateInfo.Param = result.paramInfo
-            calculateInfo.Result = result.result
+            msg_resp.history[cnt] = messages_pb2.CalculateInfo()
+            msg_resp.history[cnt].calStarttime = str(result.calculateStartTime)
+            msg_resp.history[cnt].calEndtime = str(result.calculateEndTime)#.strftime('%Y-%m-%d %X')
+            msg_resp.history[cnt].isFinished = result.isFinished
+            msg_resp.history[cnt].param = result.paramInfo
+            msg_resp.history[cnt].result = result.result
             
-            calculateInfo.Smiles = result.smilesInfo.smilesInfo
-            calculateInfo.CAS = result.smilesInfo.casInfo
+            msg_resp.history[cnt].smiles = result.smilesInfo.smilesInfo
+            msg_resp.history[cnt].cas = result.smilesInfo.casInfo
+            
             
             nameSets = CompoundName.objects.filter(simlesInfo=result.smilesInfo.pk,isDefault=True)
             for nameSet in nameSets:
                 if nameSet.languageID.languageStr == Chinese_Name_Label:
-                    calculateInfo.ChName = nameSet.nameStr
+                    msg_resp.history[cnt].chName = nameSet.nameStr 
                 elif nameSet.languageID.languageStr == English_Name_Label:
-                    calculateInfo.EnName = nameSet.nameStr
-
-        msg_resp.Count = len(resultSets)      
+                    msg_resp.history[cnt].enName = nameSet.nameStr
+            
+            cnt = cnt +1 
         
         return msg_resp
     

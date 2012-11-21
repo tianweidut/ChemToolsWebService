@@ -305,7 +305,6 @@ CTX_CONFIG = {
         'CHANGE_PSWD_URL': CHANGE_PSWD_URL,
         }
 
-
 BBCODE_AUTO_URLS = True
 #HTML safe filter
 HTML_SAFE_TAGS = ['embed']
