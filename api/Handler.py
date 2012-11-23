@@ -280,24 +280,15 @@ class CheckUsernameHandler(BaseHandler):
         The function will judge the license.
         """
         try:
-            #receive message
+            #receive message        
             username_unique = True
-            email_unique = True
             
             try:
                 user = UserProfile.objects.get(user__username=msg_recv.username)
-                if user.user.email != msg_recv.email:
-                    email_unique = False
             except UserProfile.DoesNotExist:
                 username_unique = False
-                try:
-                    user = UserProfile.objects.get(user__email=msg_recv.email)
-                    email_unique = False
-                except UserProfile.DoesNotExist:
-                    pass
                     
             msg_resp.isValidatedUserName = username_unique
-            msg_resp.isValidatedEmail = email_unique
             
             return msg_resp
                         
@@ -305,6 +296,37 @@ class CheckUsernameHandler(BaseHandler):
             import pdb;
             print pdb.traceback
             logger.error(" Username or Email check Error %s "%err)
+
+class CheckEmailHandler(BaseHandler): 
+    allow_method = ('POST',)
+    url = 'checkemail/'
+    
+    request_message = messages_pb2.CheckEmail
+    response_message = messages_pb2.CheckEmailResponse
+    
+    @message_handler_json(request_message,response_message)
+    def create(self,request,msg_recv,msg_resp,authentication_pass):
+        """
+        The function will judge the license.
+        """
+        try:
+            #receive message
+            email_unique = True
+            
+            try:
+                user = UserProfile.objects.get(user__email=msg_recv.email)
+            except UserProfile.DoesNotExist:
+                email_unique = False
+                    
+            msg_resp.isValidatedEmail = email_unique
+            
+            return msg_resp
+                        
+        except Exception,err:
+            import pdb;
+            print pdb.traceback
+            logger.error("Email check Error %s "%err)
+
 
 class RegisterHandler(BaseHandler):
     allow_method = ('POST',)

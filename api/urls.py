@@ -26,6 +26,7 @@ ACTIVE_HANDLERS = (
           GetAllCalculateHandler,
           RegisterHandler,
           CheckUsernameHandler,
+          CheckEmailHandler,
           GetLicenseInfoHandler,
                    )
 
