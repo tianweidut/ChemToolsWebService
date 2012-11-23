@@ -1,5 +1,6 @@
 *.py[co]
 *~
+*.txt.swp
 # Packages
 *.egg
 *.egg-info
