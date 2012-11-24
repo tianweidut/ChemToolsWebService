@@ -28,6 +28,7 @@ ACTIVE_HANDLERS = (
           CheckUsernameHandler,
           CheckEmailHandler,
           GetLicenseInfoHandler,
+          GetChemistryInfoHandler,
                    )
 
 urlpatterns = patterns('',

@@ -196,13 +196,13 @@ class LoginHandler(BaseHandler):
                 #Login baned
                 logger.debug("----------Failed------------%s,%s"%(msg_recv.username,msg_recv.password))
                 msg_resp.agentID = DEFAULT_ERROR_ID
-                msg_resp.isSucceddful = False
+                msg_resp.isSuccessful = False
                 msg_resp.reason = "Wrong username or password"
             else:
                 #Login ok
                 logger.debug("----------Successful------------%s,%s"%(msg_recv.username,msg_recv.password))
                 msg_resp.agentID = user.get_profile().agentID
-                msg_resp.isSucceddful = True
+                msg_resp.isSuccessful = True
                 msg_resp.reason = "Login Successful"
 
             return msg_resp
