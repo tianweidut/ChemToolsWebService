@@ -236,6 +236,7 @@ class LogoutHandler(BaseHandler):
             print pdb.traceback
             logger.error("Client Logout Error %s "%err)    
        
+       
 class GetLicenseInfoHandler(BaseHandler): 
     allow_method = ('POST',)
     url = 'getlicenseinfo/'
@@ -326,7 +327,6 @@ class CheckEmailHandler(BaseHandler):
             import pdb;
             print pdb.traceback
             logger.error("Email check Error %s "%err)
-
 
 class RegisterHandler(BaseHandler):
     allow_method = ('POST',)
@@ -453,11 +453,45 @@ class GetAllCalculateHandler(BaseHandler):
         
         return msg_resp
     
-    
-    
-    
-    
-    
+class GetChemistryInfoHandler(BaseHandler):  
+    allow_method = ('POST',)
+    url = 'getchemistryinfo/'
+
+    request_message = messages_pb2.GetChemistryInfo
+    response_message = messages_pb2.GetChemistryInfoResponse
+
+    @message_handler_json(request_message,response_message)
+    def create(self,request,msg_recv,msg_resp,authentication_pass=True):
+        """
+        The function will get the name of Chemistry.
+        """        
+        try:
+            chemInfo = CompoundInfo.objects.get(smilesInfo=msg_recv.smiles)
+            msg_resp = self.GetChemistryInfoDetails(chemInfo,msg_resp)
+            msg_resp = msg_recv.smiles
+        except CompoundInfo.DoesNotExist:
+            msg_resp.smiles = msg_recv.smiles
+            msg_resp.cas = None
+            msg_resp.names = None
+            
+    def GetChemistryInfoDetails(self,chemInfo,msg_resp):
+        """
+        """
+        msg_resp.cas = chemInfo.casInfo
+        msg_resp.names = []
+        for result in [item for item in CompoundName.objects.filter(simlesInfo = chemInfo)] :
+            obj = CompoundName()
+            obj.simlesInfo = result.simlesInfo
+            obj.nameStr = result.nameStr
+            obj.languageID = result.languageID
+            obj.isDefault = result.isDefault
+            
+            msg_resp.names.append(obj)
+            
+            
+            
+        
+            
     
     
     
