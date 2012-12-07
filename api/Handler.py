@@ -466,27 +466,41 @@ class GetChemistryInfoHandler(BaseHandler):
         The function will get the name of Chemistry.
         """        
         try:
+            logger.debug("------------%s----------------"%(msg_recv.smiles))
             chemInfo = CompoundInfo.objects.get(smilesInfo=msg_recv.smiles)
-            msg_resp = self.GetChemistryInfoDetails(chemInfo,msg_resp)
-            msg_resp = msg_recv.smiles
+            msg_resp = self.GetChemistryInfoDetails(chemInfo,msg_resp,msg_recv.smiles)
+            msg_resp.smiles = msg_recv.smiles
         except CompoundInfo.DoesNotExist:
             msg_resp.smiles = msg_recv.smiles
             msg_resp.cas = None
             msg_resp.names = None
-            
-    def GetChemistryInfoDetails(self,chemInfo,msg_resp):
+        
+        return msg_resp
+    
+    def GetChemistryInfoDetails(self,chemInfo,msg_resp,simles):
         """
         """
         msg_resp.cas = chemInfo.casInfo
         msg_resp.names = []
+        
         for result in [item for item in CompoundName.objects.filter(simlesInfo = chemInfo)] :
-            obj = CompoundName()
-            obj.simlesInfo = result.simlesInfo
+            obj = messages_pb2.GetChemInfoName()
+            obj.simlesInfo = simles
             obj.nameStr = result.nameStr
-            obj.languageID = result.languageID
+            obj.languageID = result.languageID.pk
             obj.isDefault = result.isDefault
-            
+                        
             msg_resp.names.append(obj)
+        
+        logger.debug("----------------------test--------------------")
+        for i in  msg_resp.names:
+            logger.debug(i.simlesInfo)
+            logger.debug(i.nameStr)
+            logger.debug(i.languageID)
+            logger.debug(i.isDefault)
+        logger.debug("----------------------end--------------------")
+        
+        return msg_resp
             
             
             

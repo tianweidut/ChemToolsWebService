@@ -66,7 +66,7 @@ class CompoundInfo(models.Model):
     casInfo    = models.CharField(max_length = 100)
     
     def __unicode__(self):
-        return '%s %s' % (self.smilesInfo, self.casInfo)    
+        return '%s' % (self.smilesInfo)    
 
 class CompoundName(models.Model):
     """

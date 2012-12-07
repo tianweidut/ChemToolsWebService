@@ -17,7 +17,8 @@ urlpatterns = patterns('',
     url(r'^accounts/',include('registration.urls')),
     url(r'^download/$',direct_to_template,{'template':'introduction/download.html'}),
     url(r'^features/$',direct_to_template,{'template':'introduction/features.html'}),
-
+    
+    url(r'^info/$' ,direct_to_template, {'template': 'userinfo/userinfo.html'}),
     url(r'^forum/',include('lbforum.urls')),
     url(r'^attachments/', include('attachments.urls')),
 

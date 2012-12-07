@@ -1,0 +1,36 @@
+      {% block messages %}
+        {% if messages %}
+          {% for message in messages %}
+              <div class='row-fluid'>
+              {% ifequal message.level 40 %}
+                <div class="alert alert-error">
+                  <a class="close" data-dismiss="alert">×</a>
+                  <h4 class="alert-heading">Opps!</h4>
+                  {{ message }}
+                </div>
+              {% endifequal %}
+              {% ifequal message.level 20 %}
+                <div class="alert alert-info">
+                  <a class="close" data-dismiss="alert">×</a>
+                  <h4 class="alert-heading">Info!</h4>
+                  {{ message }}
+                </div>
+              {% endifequal %}
+              {% ifequal message.level 25 %}
+                <div class="alert alert-success">
+                  <a class="close" data-dismiss="alert">×</a>
+                  <h4 class="alert-heading">Ok!</h4>
+                  {{ message }}
+                </div>
+              {% endifequal %}
+              {% ifequal message.level 30 %}
+                <div class="alert alert-warning">
+                  <a class="close" data-dismiss="alert">×</a>
+                  <h4 class="alert-heading">Warning!</h4>
+                  {{ message }}
+                </div>
+              {% endifequal %}
+              </div>
+          {% endfor %}
+        {% endif %}
+      {% endblock %}
