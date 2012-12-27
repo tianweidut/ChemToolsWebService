@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base/base.html" %}
 {% load i18n %}
 
 {% block left %} {% endblock %}
@@ -9,7 +9,7 @@
 <div class="container-narrow">
 	<form class="form-signin" method="post" action="{% url registration_register %}">
 		<h2>Register new account</h2>			
-		{% include '_form.html' %}			
+		{% include 'base/_form.html' %}			
 		<button class="btn btn-large btn-primary" type="submit">Submit</button>	
 		{% csrf_token %}
 	</form>	

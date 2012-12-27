@@ -1,0 +1,42 @@
+<!-- template footer.html -->
+<div id="ground">
+    <div class="content-wrapper">
+            <div class="copyright">
+                <a href="{{ settings.LICENSE_URL }}">
+                        <img
+                            class="license-logo"
+                            src = "{{ STATIC_URL }}{{ settings.LICENSE_LOGO_URL }}"
+                            title="{{ settings.LICENSE_ACRONYM }}"
+                            alt="{{ settings.LICENSE_ACRONYM }}"
+                        />
+                </a>
+                {{settings.APP_COPYRIGHT}} 
+                Content on this site is licensed under <a href="{{settings.LICENSE_URL}}">{{settings.LICENSE_TITLE}}</a>
+            </div>
+        <div class="footer-links" >
+            <a href="{% url about %}">about</a><span class="link-separator"> |</span>
+            <a href="{% url faq %}">faq</a><span class="link-separator"> |</span>
+            <a href="{% url help %}" title="help">help</a>
+            <span class="link-separator"> |</span>
+            <a href="{% url privacy %}">privacy policy</a><span class="link-separator"> |</span>
+            {% spaceless %}
+            <a href=
+                        {% if settings.FEEDBACK_SITE_URL %}
+                            "{{settings.FEEDBACK_SITE_URL}}"
+                            target="_blank">
+                        {% else %}
+                            "{% url feedback %}?next={{request.path}}">
+                        {% endif %}
+                        give feedback
+                    </a>
+            {% endspaceless %}
+        </div>
+        <div class="powered-link">
+            <a href="http://www.dlut.edu.cn" target="_blank">
+                Powered by Chemistry Tools version 0.1
+            </a>
+        </div>
+        <div class="clean"></div>
+    </div>
+</div>
+<!-- end template footer.html -->

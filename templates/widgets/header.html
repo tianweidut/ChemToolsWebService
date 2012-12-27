@@ -1,0 +1,14 @@
+<!-- template header.html -->
+<div 
+    id="header"
+    class="{% if settings.SHOW_LOGO %}with-logo{% else %}without-logo{% endif %}"
+>
+    <div class="content-wrapper">
+            {% include "widgets/logo.html" %}
+        <div id="metaNav">
+            {% include "widgets/meta_nav.html" %}
+        </div>
+        <div class="clean"></div>
+    </div>
+</div>
+<!-- end template header.html -->

@@ -1,4 +1,5 @@
-{% extends "base.html" %}
+
+{% extends "base/base.html" %}
 {% load i18n %}
 
 {% block left %} {% endblock %}
@@ -8,7 +9,7 @@
 <div class="container-narrow">
 	<form class="form-signin" method="post" action="{% url auth_login %}">
 		<h2 class="form-signin-heading">Please sign in</h2>			
-		{% include '_form.html' %}			
+		{% include 'base/_form.html' %}			
 		<button class="btn btn-large btn-primary" type="submit">Sign in</button>	
 		<!--input type="submit" value="{% trans 'Log in' %}" /-->
 		<input type="hidden" name="next" value="{{ next }}" />	

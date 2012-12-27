@@ -1,6 +1,7 @@
 *.py[co]
 *~
 *.swp
+build/*
 
 # Packages
 *.egg

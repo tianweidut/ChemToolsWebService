@@ -1,0 +1,14 @@
+
+{% if request.user.is_authenticated %}
+	{# We should use user panel to replace: History, Task, Logout, PIC, Search  #}
+	<ul class="nav nav-pills pull-right">
+		<li><a href="{{ request.user.get_absolute_url }}">{{ request.user.username|escape }}</a></li>
+		<li><a href="{% url auth_logout %}">logout</a></li>
+	</ul>
+{% else %}
+	{# Login or Register #}
+	<ul class="nav nav-pills pull-right">
+		<li class="active"><a href="{% url auth_login %}">Sign in</a></li>
+	</ul>
+{% endif %}
+

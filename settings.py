@@ -1,7 +1,10 @@
 # Django settings for Rest project.
 
 import os
+import sys
+import logging
 from os.path import join
+
 SETTINGS_ROOT = os.path.dirname(__file__)
 
 DEBUG = True
@@ -94,14 +97,13 @@ SECRET_KEY = '((8!_-pdeoo5ewkh#hm2(f^0y=ncx2)$^=#t+a$k2^&amp;7dqunc='
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     
@@ -128,11 +130,13 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.media',
     'django.core.context_processors.static',
     'django.core.context_processors.request',
-    'django.core.context_processors.csrf',
+    'context.application_settings',
     'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.csrf',
     'django.contrib.messages.context_processors.messages',
     
     "djangohelper.context_processors.ctx_config",
+
 )
 
 INSTALLED_APPS = (
@@ -151,6 +155,7 @@ INSTALLED_APPS = (
     'calcore',
     #Add-on
     'debug_toolbar',
+    'tinymce',
     #LBForum
     'pagination',
     'south',
@@ -189,6 +194,13 @@ LOGGING = {
         },
     }
 }
+
+LOG_FILENAME = 'askbot.log'
+
+logging.basicConfig( filename=os.path.join(os.path.dirname(__file__), 'log', LOG_FILENAME),
+                   level=logging.CRITICAL,
+                   format='%(pathname)s TIME: %(asctime)s MSG:%(filename)s:%(funcName)s:%(lineno)d %(message)s',
+                   )
 
 #Add support  to user profile
 AUTH_PROFILE_MODULE = 'users.UserProfile'
@@ -306,6 +318,7 @@ CTX_CONFIG = {
         }
 
 BBCODE_AUTO_URLS = True
+
 #HTML safe filter
 HTML_SAFE_TAGS = ['embed']
 HTML_SAFE_ATTRS = ['allowscriptaccess', 'allowfullscreen', 'wmode']
@@ -334,4 +347,80 @@ acceptable_attributes = ['abbr', 'accept', 'accept-charset', 'accesskey',
   'usemap', 'valign', 'value', 'vspace', 'width', 'style']
 """
 
+"""
+Base Skin Settings
+"""
+USE_LOCAL_FONTS = True
 
+"""
+FILE Upload
+"""
+FILE_UPLOAD_TEMP_DIR  = os.path.join(os.path.dirname(__file__),"tmp").replace("\\",'/')
+FILE_UPLOAD_HANDLERS = (
+            'django.core.files.uploadhandler.MemoryFileUploadHandler',
+            'django.core.files.uploadhandler.TemporaryFileUploadHandler',
+                )
+
+ASKBOT_ALLOWED_UPLOAD_FILE_TYPES = ('.jpg', '.jpeg', '.gif', '.bmp', '.png','.tiff')
+ASKBOT_MAX_UPLOAD_FILE_SIZE = 1024 * 1024 #result in bytes
+DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+"""
+TINY MCE Editor
+"""
+TINYMCE_COMPRESSOR = True
+TINYMCE_SPELLCHECKER = False
+TINYMCE_JS_ROOT = os.path.join(MEDIA_ROOT, 'js/tinymce/')
+
+TINYMCE_URL = MEDIA_URL + 'js/tinymce/'
+TINYMCE_DEFAULT_CONFIG = {
+            'plugins': 'askbot_imageuploader,askbot_attachment',
+            'convert_urls': False,
+            'theme': 'advanced',
+            'force_br_newlines': True,
+            'force_p_newlines': False,
+            'forced_root_block': '',
+            'mode': 'textareas',
+            'oninit': "function(){ tinyMCE.activeEditor.setContent(askbot['data']['editorContent'] || ''); }",
+            'theme_advanced_toolbar_location': 'top',
+            'theme_advanced_toolbar_align': 'left',
+            'theme_advanced_buttons1': 'bold,italic,underline,|,bullist,numlist,|,undo,redo,|,link,unlink,askbot_imageuploader,askbot_attachment',
+            'theme_advanced_buttons2': '',
+            'theme_advanced_buttons3': '',
+            'theme_advanced_path': False,
+            'theme_advanced_resizing': True,
+            'theme_advanced_resize_horizontal': False,
+            'theme_advanced_statusbar_location': 'bottom',
+            'height': '250'
+}
+
+"""
+Other settings from askbot
+"""
+MAX_COMMENT_LENGTH  = 300
+EDITOR_TYPE = "tinymce"
+
+MAX_TAG_LENGTH = 20
+MIN_TITLE_LENGTH = 10
+TAGS_ARE_REQUIRED = False
+ENABLE_TAG_MODERATION = False
+MAX_TAGS_PER_POST = 5
+
+SHOW_LOGO = True
+
+USE_LICENSE = True
+LICENSE_USE_URL = True
+LICENSE_USE_LOGO = True
+LICENSE_ACRONYM = 'cc-by-sa'
+LICENSE_TITLE = 'Creative Commons Attribution Share Alike 3.0'
+LICENSE_URL = 'http://creativecommons.org/licenses/by-sa/3.0/legalcode'
+LICENSE_LOGO_URL = 'images/cc-by-sa.png'
+
+APP_COPYRIGHT = 'Copyright Chemistry Tools, 2012-2013.'
+
+LOGOUT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+
+SITE_LOGO_URL = "images/logo.gif"
+
+APP_TITLE = "Chemistry Tools"

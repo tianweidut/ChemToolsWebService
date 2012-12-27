@@ -1,0 +1,4 @@
+this is very slightly forked version of django-livesettings
+for use in the askbot forum project
+
+will attempt to re-merge into the original django-livesettings
