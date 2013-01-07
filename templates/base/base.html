@@ -14,25 +14,14 @@
     <!-- CSS Config. -->
     {% block before_css %}{% endblock  %}
     {% include "meta/html_head_stylesheets.html" %}
+
+    <!-- JavaScript Config. -->
     {% block forestyle %}{% endblock %}
     {% include "meta/html_head_javascript.html" %}
     {% block forejs %}{% endblock %}
   </head>
 
-    <body class="{% block body_class %}{% endblock %}
-          {% if user_messages %} 
-                user-messages
-          {% endif %}
-          {% if page_class %} 
-                {{page_class}}
-          {% endif %}
-          {% if request.user.is_anonymous %} 
-              anon
-          {% endif %} 
-              lang-{{settings.LANGUAGE_CODE}}">
-
-        {# Header Section #}
-        {% include "widgets/header.html" %} {# Logo, user tool navigation and meta navitation #}
+    <body >
 
         {# Main-Content Section #}
         <div class="content-wrapper">
@@ -43,5 +32,6 @@
         {% include "widgets/footer.html" %}
         {% include "meta/bottom_scripts.html" %}
         {% block endjs %}{% endblock %}    
-</body>
+	</body>
+
 </html>
