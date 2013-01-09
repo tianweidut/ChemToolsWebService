@@ -8,8 +8,6 @@ body {
   color: #5a5a5a;
 }
 
-
-
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */
 
@@ -236,4 +234,40 @@ body {
     line-height: 1.5;
   }
 
+}
+
+/*home page signup */
+.home-signup{
+	float: right;
+	width: 400px;
+	margin-left: 60px;
+	font-size: 16 px;
+	padding: 9px;
+	line-height: 1.4;
+	border-radius: 5px;
+}
+.home-signup-dd{
+	display: block;
+	width: 100%
+}
+
+.big-form{
+	margin-bottom: 10px;
+}
+
+p.note{
+	margin-top: 7px;
+	font-size: 11px;
+	color: #999;
+}
+
+input.signup{
+	height: 30px;
+	width: 300px;
+}
+
+button.signup{
+	height: 60px;
+	width: 314px;
+	bottom: 5px;
 }
