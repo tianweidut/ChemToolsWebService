@@ -2,6 +2,11 @@
 *~
 *.swp
 build/*
+log/*
+
+.settings/*
+.pydevproject
+.project 
 
 # Packages
 *.egg
