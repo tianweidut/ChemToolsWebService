@@ -9,8 +9,6 @@
             <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
               <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
             </a>
             <a class="brand" href="/">Chemistry Calculate</a>
             <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
@@ -22,7 +20,20 @@
                 <li><a href="/forum">Forum</a></li>
               </ul>
       		  <ul class="nav pull-right">
-      		  	<li ><a href="/accounts/login">Sign in</a></li>
+      		  	{% if request.user.is_authenticated %}
+      		  		<li class="nav-li"><a href="/" ><i class="icon-user icon-white"> </i></a></li>
+      		  		<li class="nav-li-username"><a href="/">{{ request.user.username }}</a></li>
+      		  		<li class="nav-li"><a href="/newtask" id="newtask"><i class="icon-plus-sign icon-white"> </i></a></li>
+      		  		<li class="nav-li"><a href="/history" id="history"><i class="i icon-th-list icon-white"> </i></a></li>
+      		  		<li class="nav-li"><a href="/search" id="search"><i class="icon-search icon-white"> </i></a></li>
+      		  		<li class="nav-li"><a href="/accounts/logout"><i class="icon-share icon-white"> </i></a></li>
+      		  	{% else %}
+      		  		{% if request.path != "/" %}
+      		  		<li ><a href="/accounts/register">Join us</a></li>
+      		  		{% endif %}
+      		  		<li ><a href="/accounts/login">Sign in</a></li>
+      		  	{% endif %}
+      		  	
       		  </ul>
             </div><!--/.nav-collapse -->
           </div><!-- /.navbar-inner -->
