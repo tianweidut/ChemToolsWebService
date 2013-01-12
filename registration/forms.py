@@ -17,22 +17,37 @@ class RegistrationForm(forms.Form):
     """
     Form for registering a new user account.
     """
-    username = forms.RegexField(regex = r'^\w+$',
-                                max_length = 30,
-                                widget=forms.TextInput(attrs = attrs_dict),
-                                label = _(u'username'))
-    email = forms.EmailField(widget = forms.TextInput(attrs=dict(attrs_dict,maxlength=75)),
-                             label=_(u'email address'))
-    password1 = forms.CharField(widget = forms.PasswordInput(attrs=attrs_dict,render_value = False),
-                                label=_(u'password'))
-    password2 = forms.CharField(widget = forms.PasswordInput(attrs=attrs_dict,render_value = False),
-                                label=_(u'password (again)'))
+    username = forms.RegexField(regex=r'^\w+$',
+                                max_length=30,
+                                label=_(u'username'),
+                                widget=forms.TextInput(
+                                    attrs={'placeholder':_(u'username'),
+                                        "class":"required"}))
+
+    email = forms.EmailField(label=_(u'email address'),
+                             widget=forms.TextInput(
+                                 attrs={'placeholder':_(u'email address'),
+                                        "class":"required"}))
+
+    password1 = forms.CharField(label=_(u'password'),
+                                widget=forms.PasswordInput(
+                                    attrs={'placeholder':_(u'password'),
+                                        "class":"required"},
+                                    render_value=False))
+
+    password2 = forms.CharField(label=_(u'password (again)'),
+                                widget=forms.PasswordInput(
+                                    attrs={'placeholder':_(u'password(again)'),
+                                        "class":"required"},
+                                    render_value=False))
     
-    machinecode = forms.RegexField(regex = r'^\w+$',
-                                max_length = 60,
-                                widget=forms.TextInput(attrs = attrs_dict),
-                                label = _(u'machine code'))
-    
+    machinecode = forms.RegexField(regex=r'^\w+$',
+                                max_length=60,
+                                label=_(u'machine code'),
+                                widget=forms.TextInput(
+                                    attrs={'placeholder':_(u'machinecode'),
+                                        "class":"required"}))
+
     def clear_username(self):
         """
         Validate that the username is alphanumeric and is not already
