@@ -6,12 +6,11 @@
 
 <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/accounts_form.css" >
 
-<div class="container">
+<div class="container form-container">
 	<form class="form-signin" method="post" action="{% url auth_login %}">
 		<h2 class="form-signin-heading">Please sign in</h2>			
 		{% include 'base/_form.html' %}			
 		<button class="btn btn-large btn-primary" type="submit">Sign in</button>	
-		<!--input type="submit" value="{% trans 'Log in' %}" /-->
 		<input type="hidden" name="next" value="{{ next }}" />	
 		{% csrf_token %}
 	<br>
