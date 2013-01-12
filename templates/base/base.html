@@ -24,10 +24,8 @@
     <body >
 
         {# Main-Content Section #}
-        <div class="content-wrapper">
-            {% block content %}{% endblock %}
-        </div>
-        
+        {% block content %}{% endblock %}
+
         {# Footer Section #}
         {% include "widgets/footer.html" %}
         {% include "meta/bottom_scripts.html" %}
