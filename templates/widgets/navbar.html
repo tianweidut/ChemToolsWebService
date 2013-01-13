@@ -19,7 +19,7 @@
                 <li><a href="/download">Download</a></li>
                 <li><a href="/forum">Forum</a></li>
               </ul>
-      		  <ul class="nav pull-right">
+      		  <ul class="nav pull-right  ">
       		  	{% if request.user.is_authenticated %}
       		  		<li class="nav-li"><a href="/" ><i class="icon-user icon-white"> </i></a></li>
       		  		<li class="nav-li-username"><a href="/">{{ request.user.username }}</a></li>
@@ -31,7 +31,7 @@
       		  			data-original-title = "Tasks history">
       		  				<i class="i icon-th-list icon-white"> </i></a></li>
       		  		<li class="nav-li"><a href="/search" id="search" rel="tooltip" data-placement="bottom" 
-      		  			data-original-title = "new calculate task">
+      		  			data-original-title = "search you want">
       		  			<i class="icon-search icon-white"> </i></a></li>
       		  		<li class="nav-li"><a href="/accounts/logout" rel="tooltip" data-placement="bottom" 
       		  			data-original-title = "Logout">

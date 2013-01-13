@@ -23,7 +23,7 @@ urlpatterns = patterns('',
         name='index'
     ),
     url(
-        r'^admin/', 
+        r'^admin/',
         include(admin.site.urls),
         name="admin"
     ),
@@ -31,7 +31,7 @@ urlpatterns = patterns('',
         r'^api/',
         include('api.urls'),
         name="api"
-    ), 
+    ),
     url(
         r'^accounts/',
         include('registration.urls'),
@@ -39,18 +39,38 @@ urlpatterns = patterns('',
     ),
     url(
         r'^download/$',
-        direct_to_template,{'template': 'introduction/download.html'},
+        direct_to_template, {'template': 'introduction/download.html'},
         name="download"
     ),
     url(
         r'^features/$',
-        direct_to_template,{'template':'introduction/features.html'},
+        direct_to_template, {'template': 'introduction/features.html'},
         name="features"
     ),
     url(
-        r'^info/$' ,
-        direct_to_template, {'template': 'userinfo/userinfo.html'},
+        r'^info/$',
+        direct_to_template, {'template': 'features/userinfo.html'},
         name="info"
+    ),
+    url(
+        r'^bootcamp/$',
+        direct_to_template, {'template': 'features/bootcamp.html'},
+        name="info"
+    ),
+    url(
+        r'^newtask/$',
+        direct_to_template, {'template': 'features/newtask.html'},
+        name="newtask"
+    ),
+    url(
+        r'^history/$',
+        direct_to_template, {'template': 'features/history.html'},
+        name="history"
+    ),
+    url(
+        r'^search/$',
+        direct_to_template, {'template': 'features/search.html'},
+        name="search"
     ),
     url(
         r'^forum/',
