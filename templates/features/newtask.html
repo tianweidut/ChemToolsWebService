@@ -1,38 +1,11 @@
-{% extends "base/base.html" %}
-{% block content %}
-	<div class="1">
-		<a href="images/" ><img src="alert1.png" height="210" width="210" ></a>
-		<h1>
-			<span itemprop="name">{{request.user.username}}	</span>
-			<em itemprop="additionName">{{request.user.username}}</em>
-		</h1>
-		<div class="details">
-			<dl>
-				<dt><span class="mini-icon mini-icon-team" ></span></dt>
-				<dd itemgroup="worksFor">{{team}}</dd>
-			</dl>
-			<dl>
-				<dt><span class="mini-icon mini-icon-location"></span></dt>
-				<dd itemgroup="homeLocation">{{location}}</dd>
-			</dl>
-			<dl>
-				<dt><span class="mini-icon mini-icon-unread-note"></span></dt>
-				<dd>
-					<a class="email js-obfuscate-email" href="mailto:{{email}}" >{{email}}</a>
-				</dd>
-			</dl>
-			<dl>
-				<dt><span class="mini-icon mini-icon-link"></span></dt>
-				<dd itemprop="url"><a href="{{link}}" class="url" rel="nofollow me" >{{link}}</dd>
-			</dl>
-			<dl>
-				<dt><span class="mini-icon mini-icon-time"></span></dt>
-				<dd>
-					<span class="join-label">Joined on</span>
-					<span class="join-date">{{joinDate}}</span>
-				</dd>
-			</dl>
-		</div>
-{{request.user.username}}
-	</div>
+<!-- new-task page -->
+{% extends "base/_content.html" %}
+
+{% block calculate-content%}
+	<!--bootcamp notification-->
+	{% include "widgets/bootcamp_notification.html" %}
+	<!--Step1: input cas , mol-->
+	<!--Step2: model choice-->
+	<!--Step3: userinfomation -->
+	<!--Step4: results-->
 {% endblock %}
