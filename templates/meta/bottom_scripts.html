@@ -2,6 +2,7 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script type='text/javascript' src="{{STATIC_URL}}bootstrap/assets/js/jquery.js"></script>
+<script type='text/javascript' src="{{STATIC_URL}}bootstrap/assets/js/bootstrap.js"></script>
 <script type='text/javascript' src="{{STATIC_URL}}bootstrap/assets/js/bootstrap-transition.js"></script>
 <script type='text/javascript' src="{{STATIC_URL}}bootstrap/assets/js/bootstrap-alert.js"></script>
 <script type='text/javascript' src="{{STATIC_URL}}bootstrap/assets/js/bootstrap-modal.js"></script>
@@ -15,6 +16,10 @@
 <script type='text/javascript' src="{{STATIC_URL}}bootstrap/assets/js/bootstrap-carousel.js"></script>
 <script type='text/javascript' src="{{STATIC_URL}}bootstrap/assets/js/bootstrap-typeahead.js"></script>
 
-<script type='text/javascript' src="{{STATIC_URL}}js/jquery-1.8.3.min.js"></script>
 
+<script type='text/javascript'>
+     $(document).ready(function() {
 
+     	$("[rel=tooltip]").tooltip();
+   });
+</script>

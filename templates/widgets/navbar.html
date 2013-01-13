@@ -23,10 +23,19 @@
       		  	{% if request.user.is_authenticated %}
       		  		<li class="nav-li"><a href="/" ><i class="icon-user icon-white"> </i></a></li>
       		  		<li class="nav-li-username"><a href="/">{{ request.user.username }}</a></li>
-      		  		<li class="nav-li"><a href="/newtask" id="newtask"><i class="icon-plus-sign icon-white"> </i></a></li>
-      		  		<li class="nav-li"><a href="/history" id="history"><i class="i icon-th-list icon-white"> </i></a></li>
-      		  		<li class="nav-li"><a href="/search" id="search"><i class="icon-search icon-white"> </i></a></li>
-      		  		<li class="nav-li"><a href="/accounts/logout"><i class="icon-share icon-white"> </i></a></li>
+      		  		<li class="nav-li">
+      		  		<a href="/newtask" id="newtask" rel="tooltip" data-placement="bottom" 
+      		  			data-original-title = "new calculate task">
+      		  				<i class="icon-plus-sign icon-white"> </i></a></li>
+      		  		<li class="nav-li"><a href="/history" id="history" rel="tooltip" data-placement="bottom" 
+      		  			data-original-title = "Tasks history">
+      		  				<i class="i icon-th-list icon-white"> </i></a></li>
+      		  		<li class="nav-li"><a href="/search" id="search" rel="tooltip" data-placement="bottom" 
+      		  			data-original-title = "new calculate task">
+      		  			<i class="icon-search icon-white"> </i></a></li>
+      		  		<li class="nav-li"><a href="/accounts/logout" rel="tooltip" data-placement="bottom" 
+      		  			data-original-title = "Logout">
+      		  			<i class="icon-share icon-white"> </i></a></li>
       		  	{% else %}
       		  		{% if request.path != "/" %}
       		  		<li ><a href="/accounts/register">Join us</a></li>
@@ -41,5 +50,7 @@
 
       </div> <!-- /.container -->
     </div><!-- /.navbar-wrapper -->
+    
+
 
 
