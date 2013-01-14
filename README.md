@@ -7,10 +7,12 @@
 
 # Requirements:
  * web tools:
-  * sudo pip install python-django    # Django
+  * sudo pip install python-django    # Django 1.4 >
   * sudo pip install lbforum          # Lbforum(论坛)
   * sudo pip install django-debug-toolbar   # debug tools
-  * sudo apt-get install python-piston -y   # Piston, a RESTFul API 
+  * hg clone https://bitbucket.org/jespern/django-piston   # Piston, a RESTFul API 
+     * sudo python django-piston/setup.py build
+     * sudo python django-piston/setup.py install
  
  * Mysql:
   * create database Chemistry CHARACTER SET utf8;
