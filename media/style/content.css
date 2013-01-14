@@ -47,10 +47,15 @@ a.user-info-label{
 	display:block;
 	height: 215px;
 }
+.bootcamp-block-backgroundimage1{
+  background-image:url(../images/Redocn_1.jpg);
+  background-color:#fafafa;
+}
 
 .bootcamp-block-image{
-	height: 65%;
-	width: 139px;
+	/*height: 65%;
+	width: 139px;*/
+  height: 133px;
 	margin-left:auto; 
 	margin-right:auto; 
 	
