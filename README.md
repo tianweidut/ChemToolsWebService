@@ -13,6 +13,7 @@
   * hg clone https://bitbucket.org/jespern/django-piston   # Piston, a RESTFul API 
      * sudo python django-piston/setup.py build
      * sudo python django-piston/setup.py install
+  * sudo pip install django-tinymce
  
  * Mysql:
   * create database Chemistry CHARACTER SET utf8;
