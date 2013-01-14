@@ -7,7 +7,7 @@
 
 # Requirements:
  * web tools:
-  * sudo pip install python-django    # Django 1.4 >
+  * sudo pip install python-django    # Django > 1.4, maybe you should download it by yourself.
   * sudo pip install lbforum          # Lbforum(论坛)
   * sudo pip install django-debug-toolbar   # debug tools
   * hg clone https://bitbucket.org/jespern/django-piston   # Piston, a RESTFul API 
