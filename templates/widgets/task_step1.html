@@ -1,4 +1,64 @@
-<!--  calculate task step1 -->
-<div class="container" >
-	step1
-</div>
+<!--  calculate task step1: input your calculated information -->
+<div class="calculate-steps" >
+	<div class="page-header">
+		<h2>STEP1: Basic Infomation Input</h2> 
+	</div>
+	<div class="tabbable">
+		<ul class="nav nav-tabs tab-fix">
+			<li class="active"> <a href="#info-input-tab1" data-toggle="tab">Basic Info</a></li>
+			<li > <a href="#info-input-tab2" data-toggle="tab">Draw Graph</a></li>
+			<li > <a href="#info-input-tab3" data-toggle="tab">Files</a></li>
+		</ul>
+		<div class="tab-content">
+			<div class="tab-pane active" id="info-input-tab1">
+				<!--input cas, chinese name, english name, smiles-->
+				<br/>
+				<form class="form-search">
+					<div class="input-append">
+						<input type="text" class="span4 search-query" placeholder="cas,name,smiles...">
+						<button type="submit" class="btn" rel="tooltip" data-placement="right" 
+      		  			data-original-title = "varify your input, like name,
+      		  			cas, smile and chinese">Search & Varify</button>
+					</div>
+				</form>
+				<br/>
+				<!-- tips for search -->
+				<div class="alert alert-success" id="search-tips" >
+					<button type="button" class="close" data-dismiss="alert">x</button>
+					<h4><strong>Search tips!</strong></h4>
+					<br/>
+					<ul>
+						<li>Name: Lipitor, Ibuprofen </li>
+						<li>CAS Num: 15687-27-1</li>
+						<li>SMILES: S=C=NC</li>
+						<li>Chinese name: 苯</li>
+					</ul>
+				</div>
+				<br/>
+				<!-- varify results -->
+				<div class="accordion" id="accordion2">
+					<div class="accordion-group">
+						<div class="accordion-heading">
+							<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+										successful!
+							</a>	
+						</div>
+							<div id="collapseOne" class="accordion-body collapse">
+								<div class="accordion-inner">
+									{% include "widgets/search_result.html" %}
+								</div>
+							</div>
+					</div>
+						
+				</div>
+			</div>
+			<div class="tab-pane " id="info-input-tab2">
+				<!--draw chemistry structure -->
+				<p> Draw Graph </p>
+			</div>
+			<div class="tab-pane " id="info-input-tab3">
+				<p> Files </p>
+			</div>		
+		</div>
+	</div>
+</div>                             
