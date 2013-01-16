@@ -1,6 +1,6 @@
 {% extends "base/base.html" %}
 {% block content %}
-	<div class="1">
+	<!--<div class="1">
 		<a href="images/" ><img src="alert1.png" height="210" width="210" ></a>
 		<h1>
 			<span itemprop="name">{{request.user.username}}	</span>
@@ -34,5 +34,11 @@
 			</dl>
 		</div>
 {{request.user.username}}
+	</div>-->
+	<div class="basic-info">
+		{% include "userinfo/basicinfo.html" %}
+	</div>
+	<div class="statistics-info">
+		{% include "userinfo/statisticsinfo.html" %}
 	</div>
 {% endblock %}
