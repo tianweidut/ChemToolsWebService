@@ -1,0 +1,105 @@
+diff --cc templates/widgets/bootcamp_notification.html
+index 315705c,f20245d..0000000
+--- a/templates/widgets/bootcamp_notification.html
++++ b/templates/widgets/bootcamp_notification.html
+@@@ -9,63 -8,52 +9,90 @@@
+  	<!--body-->
+  	<div class="row-fluid show-grid">
+  		<div class="span3 bootcamp-block">
+++<<<<<<< HEAD
+ +			<a class="" href="" target="_blank">
+ +				<div class="bootcamp-center">
+ +					<img src="{{STATIC_URL}}images/cat1.png" 
+ +						class="bootcamp-block-image" />
+ +				</div>
+ +				<div class=" bootcamp-block-text">
+ +					<h5>step1</h5>
+ +					<p>details</p>
+ +				</div>
+ +				<span>
+ +					<img src="" class="img-rounded"/>
+ +				</span>
+ +			</a>
+ +		</div>
+ +		<div class="span3 bootcamp-block">
+ +			<a class="" href="" target="_blank">
+ +				<div class="bootcamp-center">
+ +					<img src="{{STATIC_URL}}images/cat2.png" 
+ +						class="bootcamp-block-image" />
+++=======
++ 			<a href="/bootcamp/#step1" target="_blank">
++ 				<div class="image first-step-image"></div>
++ 				<div class="bootcamp-block-text">
++ 					<div>
++ 						<h2>step1</h2>
++ 						<p>details</p>
++ 					</div>
++ 					<span class="step-number one"></span>
+  				</div>
+- 				<div class=" bootcamp-block-text">
+- 					<h5>step1</h5>
+- 					<p>details</p>
++ 				
++ 			</a>
++ 		</div>
++ 		<div class="span3 bootcamp-block">
++ 			<a href="/bootcamp/#step1" target="_blank">
++ 				<div class="image second-step-image"></div>
++ 				<div class="bootcamp-block-text">
++ 					<div>
++ 						<h2>step1</h2>
++ 						<p>details</p>
++ 					</div>
++ 					<span class="step-number two"></span>
+++>>>>>>> cc934584869aeda577ca63fb77b3e3e0f03137cc
+  				</div>
+  			</a>
+  		</div>
+  		<div class="span3 bootcamp-block">
+++<<<<<<< HEAD
+ +			<a class="" href="" target="_blank">
+ +				<div class="bootcamp-center">
+ +					<img src="{{STATIC_URL}}images/cat3.png" 
+ +						class="bootcamp-block-image" />
+ +				</div>
+++=======
++ 			<a href="/bootcamp/#step1" target="_blank">
++ 				<div class="image third-step-image"></div>
+++>>>>>>> cc934584869aeda577ca63fb77b3e3e0f03137cc
+  				<div class=" bootcamp-block-text">
+- 					<h5>step1</h5>
+- 					<p>details</p>
++ 					<div>
++ 						<h2>step1</h2>
++ 						<p>details</p>
++ 					</div>
++ 					<span class="step-number three"></span>
+  				</div>
+  			</a>
+  		</div>
+      <div class="span3 bootcamp-block">
+++<<<<<<< HEAD
+ +		<a class="" href="" target="_blank">
+ +				<div class="bootcamp-center">
+ +					<img src="{{STATIC_URL}}images/cat4.png" 
+ +						class="bootcamp-block-image" />
+ +				</div>
+++=======
++ 			<a href="/bootcamp/#step1" target="_blank">
++ 				<div class="image fourth-step-image"></div>
+++>>>>>>> cc934584869aeda577ca63fb77b3e3e0f03137cc
+  				<div class=" bootcamp-block-text">
+- 					<h5>step1</h5>
+- 					<p>details</p>
++ 					<div>
++ 						<h2>step1</h2>
++ 						<p>details</p>
++ 					</div>
++ 					<span class="step-number four"></span>
+  				</div>
+- 				<span>
+- 					<img src="" class="img-rounded"/>
+- 				</span>
+  			</a>
+  		</div>
+  	</div>

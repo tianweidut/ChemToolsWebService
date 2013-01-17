@@ -6,8 +6,8 @@
 	{% include "widgets/bootcamp_notification.html" %}
 	<!--use Carousel to show calculate steps-->
 	<br/>
-	<div id="bootcamp-carousel" class="carousel slide">
-		<div class="carousel-inner">
+	<div class="carousel slide">
+		<div class="carousel-inner bootcamp-carousel">
 			<div class="active item" id="carousel-step1">
 				<!--Step1: input cas , mol-->
 				{% include "widgets/task_step1.html" %}
@@ -28,8 +28,5 @@
 		<a class="left carousel-control" href="/#bootcamp-carousel" data-slide="prev">‹</a>
         <a class="right carousel-control" href="/#bootcamp-carousel" data-slide="next">›</a>
 	</div>
-	
-	
-	
 	
 {% endblock %}
