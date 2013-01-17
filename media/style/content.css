@@ -161,7 +161,7 @@ a.user-info-label{
 }
 
 
-div.calculate-steps{
+div .calculate-steps{
 	text-align:center;
 	margin-left: 30px;
 	margin-right: 30px;
@@ -181,23 +181,23 @@ div.calculate-steps{
 	display:inline-block;
 	text-align:left;
 }
-
-#structure-pic{
-	width:auto;
-	height:140px;
-	margin-left: 0px;
-	margin-right: 0px;
-}
-
-.bootcamp-carousel{
-	height:800px;
-}
-
 .search-result{
 	margin-left:60px;
 	margin-right: 60px;
 	text-align:left;
 }
+
+.carousel .search-result img
+{
+	position: relative;
+	width:auto;
+  	height: auto;
+}
+.bootcamp-carousel{
+	height:800px;
+}
+
+
 
 
 
