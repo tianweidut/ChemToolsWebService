@@ -183,9 +183,10 @@ div.calculate-steps{
 }
 
 #structure-pic{
-	display:inline-block;
-	width:140px;
+	width:auto;
 	height:140px;
+	margin-left: 0px;
+	margin-right: 0px;
 }
 
 .bootcamp-carousel{
@@ -195,6 +196,7 @@ div.calculate-steps{
 .search-result{
 	margin-left:60px;
 	margin-right: 60px;
+	text-align:left;
 }
 
 
