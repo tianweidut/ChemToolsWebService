@@ -1,0 +1,25 @@
+/*
+  ChemWriter Override Stylesheet: Customize to suit. These selectors will not change in
+                                  subsequent releases.
+*/
+
+.chemwriter .editor {
+  width: 780px; height: 400px;
+  position: relative;
+  background-color: #aaaaaa;
+  font-family: Verdana, Arial, sans-serif;
+  cursor: default;
+  border: 3px solid #aaaaaa;
+  border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius:5px;
+}
+.chemwriter .painter {
+  width: 200px; height: 200px;
+  position: relative;
+  border: 1px solid #aaaaaa;
+  border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
+}
+
+div.draw-container{
+	width: auto; 
+	margin: 0 auto 1em auto; 
+}

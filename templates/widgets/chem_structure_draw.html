@@ -1,2 +1,43 @@
 <!-- chemistry structure draw, use chemwrite lib -->
-<p> Draw Chem Structure </p>
+<h3> Edit Molecule </h3>
+<!--Import the custom chemwrite -->
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}chemwriter/chemwriter.css" >
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}chemwriter/chemwriter-custom.css" >
+<script src="{{ STATIC_URL }}chemwriter/chemwriter.js"></script>
+
+<div class="container-fluid "> 
+	<div class="row-fluid">
+		<div class="span9">
+			<!--structure draw-->
+			<div class="container draw-container">
+			    <div id="editor"></div>
+				
+				<script>
+			        var editor = chemwriter.loadEditor('editor', {
+			          enableClipboard: true,
+			          appletPath:      "{{ STATIC_URL }}chemwriter/chemwriter-util.jar"
+			        });
+			      </script>
+			</div>
+		</div>
+		<div class="span3">
+			<!--Structure Search Options-->
+		</div>
+	</div>	
+</div>
+
+<!--Search Result-->
+<div class="accordion" id="accordion2">
+	<div class="accordion-group">
+		<div class="accordion-heading">
+			<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOneDraw">
+						successful!
+			</a>	
+		</div>
+		<div id="collapseOneDraw" class="accordion-body collapse">
+				<div class="accordion-inner">
+					{% include "widgets/search_result.html" %}
+				</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,213 @@
+/*
+  ChemWriter Base Stylesheet: Do not alter - edit chemwriter-override.css instead.
+                              Some selectors may change in future releases.
+*/
+
+.chemwriter svg path {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.chemwriter * :focus {
+  outline: 0;
+}
+.chemwriter .editor {
+  width: 600px; height: 400px;
+  position: relative;
+  background-color: #aaaaaa;
+  font-family: Verdana, Arial, sans-serif;
+  cursor: default;
+  border: 3px solid #aaaaaa;
+  border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius:5px;
+}
+.chemwriter .editor .move-cursor {
+  cursor: move;
+}
+.chemwriter .editor .translucent {
+  display: block;
+  background: #000000;
+  opacity: .8; filter:Alpha(Opacity=80);
+}
+.chemwriter .editor .invisible {
+  display: none;
+}
+.chemwriter .editor .transparent {
+  display: block;
+}
+.chemwriter .editor .glass-pane {
+  position: absolute;
+  left: 0; top: 0; 
+  border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px;
+}
+.chemwriter .editor .palette {
+  float: left; width: 72px;
+}
+.chemwriter .editor .canvas-assembly {
+  float: right;
+}
+.chemwriter .editor .info-box {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  background: black; 
+  color: white;
+  text-align: left;
+  font-size: 12px;
+  padding: 2px;
+  opacity: .8; filter:Alpha(Opacity=80);
+}
+.chemwriter .editor .button {
+  display: inline-block;
+  border: 2px solid #999999;
+  margin: 2px; 
+  border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
+}
+.chemwriter .editor .button-hover {
+  background-color: #dddddd;
+}
+.chemwriter .editor .button-active {
+  background-color: #aaaaaa;
+}
+.chemwriter .editor .button-open {
+  background-color: #dddddd;
+}
+.chemwriter .editor .button .icon {
+  width: 25px; height: 25px;
+  cursor: default;
+  margin: 1px;
+}
+.chemwriter .editor .dock {
+  cursor: default;
+  background-color: #aaaaaa;
+  text-align: left;
+  border-left: 1px solid #cccccc;
+  padding-left: 2px;
+  padding-top: 2px;
+}
+.chemwriter .editor .canvas {
+  position: relative;
+  background: white;
+}
+.chemwriter .editor .flyout {
+  position: absolute;
+}
+.chemwriter .editor .subpalette {
+  margin-left: 2px;
+  max-width: 212px;
+  background-color: #aaaaaa;
+  border-top: 1.5px solid #eeeeee;
+  border-left: 1.5px solid #eeeeee;
+  border-bottom: 1.5px solid #888888;
+  border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
+}
+.chemwriter .editor input.element-select {
+  width: 32px; height: 22px;
+  font-size: 14px;
+  text-align: center;
+  border: 2px solid #999999;
+  font-weight: bold;
+  margin: 6px 3px 0 2px;
+  border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
+}
+.chemwriter .editor .dialog {
+  width: 90%; height: 90%;
+  position: absolute;
+  left: 5%; top: 5%;
+}
+.chemwriter .editor .dialog .program-name {
+  color: white;
+  font-size: 34px;
+  text-align: center;
+  margin-bottom: 1em;
+}
+.chemwriter .editor .dialog .version {
+  color: white;
+  font-size: 14px;
+  text-align: center;
+}
+.chemwriter .editor .dialog .credits {
+  color: white;
+  font-size: 10px;
+  text-align: center;
+  margin-top: 3em;
+  margin-bottom: 0.3em;
+}
+.chemwriter .editor .dialog .copyright {
+  color: white;
+  font-size: 10px;
+  text-align: center;
+  margin-bottom: 3em;
+}
+.chemwriter .editor .dialog .learnmore {
+  color: white;
+  font-size: 14px;
+  text-align: center;
+}
+.chemwriter .editor .dialog  a {
+  color: white;
+}
+.chemwriter .editor .dialog .error-cause {
+  text-align: center;
+  color: white;
+  font-size: 16px;
+  margin-bottom: 1em;
+}
+.chemwriter .editor .dialog .message {
+  text-align: center;
+  padding: 0 3em 0 3em;
+  color: white;
+  font-size: 16px;
+  margin-bottom: 1em;
+  margin-top: 4em;
+}
+.chemwriter .editor .dialog .title {
+  color: white;
+  font-size: 16px;
+  margin-bottom: 1em;
+}
+.chemwriter .editor .dialog .content-panel {
+  height: 100%;
+  position: relative;
+}
+.chemwriter .editor .dialog .content {
+  height: 100%;
+}
+.chemwriter .editor .dialog .trace {
+  width: 100%; height: 200px;
+  background-color: black;
+  color: #00ff00; 
+  border: 1px solid #bbbbbb;
+  font-family: monospace;
+  text-align: left;
+  overflow: scroll;
+  font-size: 12px;
+  border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
+}
+.chemwriter .editor .dialog .trace .error-line {
+  background: #ff0000;
+  color: #ffffff;
+}
+.chemwriter .editor .dialog .button-panel {
+  width: 100%;
+  position: absolute;
+  text-align: center;
+  bottom: 0;
+  padding-bottom: 5%;
+}
+.chemwriter .editor .dialog .button-group {
+  text-align: center;
+}
+.chemwriter .editor textarea {
+  width: 100%; height: 200px;
+  background: black;
+  color: #00ff00;
+  font-family: monospace;
+  border: 1px solid #bbbbbb;
+  font-size: 12px;
+  border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
+}
+.chemwriter .painter {
+  width: 200px; height: 140px;
+  position: relative;
+  border: 1px solid #aaaaaa;
+  border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
+}

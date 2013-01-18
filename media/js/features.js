@@ -12,3 +12,8 @@ $(document).ready(function(){
 $(document).ready(function(){
   $('#myCarousel').carousel();
 });
+
+// carousel
+$(document).ready(function(){
+  $('#carousel-bootcamp').carousel();
+});
