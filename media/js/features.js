@@ -15,5 +15,5 @@ $(document).ready(function(){
 
 // carousel
 $(document).ready(function(){
-  $('#carousel-bootcamp').carousel();
+  //$('#carousel-bootcamp').carousel();
 });

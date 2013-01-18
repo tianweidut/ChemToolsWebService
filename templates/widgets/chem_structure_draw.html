@@ -7,7 +7,7 @@
 
 <div class="container-fluid "> 
 	<div class="row-fluid">
-		<div class="span9">
+		<div class="span8">
 			<!--structure draw-->
 			<div class="container draw-container">
 			    <div id="editor"></div>
@@ -20,8 +20,70 @@
 			      </script>
 			</div>
 		</div>
-		<div class="span3">
+		<div class="span4">
 			<!--Structure Search Options-->
+			<div class="page-header">
+				<h3>Search Options</h3>
+			</div>
+			<form class="tabbable tabs-left">
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a href="#options-1" data-toggle="tab">Exact</a>
+					</li>
+					<li>
+						<a href="#options-2" data-toggle="tab">Substructure</a>
+					</li>
+					<li>
+						<a href="#options-3" data-toggle="tab">Similarity</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="options-1">
+						<!-- Exact -->
+						<label class="radio">
+							<input type="radio" name="optionsRadios" id="exactMatch" value="exactMatchOpts" >
+							Exact Match
+						</label>
+						<label class="radio">
+							<input type="radio" name="optionsRadios" id="exactAllIsomers" value="exactAllIsomersOpts" >
+							All Isomers
+						</label>
+						
+						<label class="radio">
+							<input type="radio" name="optionsRadios" id="exactSameExH" value="exactSameExHOpts" >
+							Same Skeleton(Excluding H)
+						</label>
+						<label class="radio">
+							<input type="radio" name="optionsRadios" id="exactSameInH" value="exactSameInHOpts" >
+							Same Skeleton(Including H)
+						</label>	
+						<label class="radio">
+							<input type="radio" name="optionsRadios" id="exactAllMatch" value="exactAllMatchOpts" >
+							All Tautomers
+						</label>
+					</div>
+					<div class="tab-pane " id="options-2">
+						<!-- Substructure -->
+						<label class="radio">
+							<input type="radio" name="optionsRadios" id="substructure" value="substructureOpts" >
+							Substructure
+						</label>
+						<label class="checkbox">
+							<input type="checkbox"  id="SubStructure" value="exactAllMatchOpts" >
+							All Tautomers
+						</label>
+					</div>
+					<div class="tab-pane " id="options-3">
+						<!--Similarity-->
+						<label class="radio"></label>
+						<label class="radio">
+							<input type="radio" name="optionsRadios" id="similaritySearch" value="similaritySearchOpts" >
+							Similarity Search
+						</label>
+					</div>
+				</div>
+			</form>
+			
 		</div>
 	</div>	
 </div>
