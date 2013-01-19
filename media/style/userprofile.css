@@ -1,0 +1,14 @@
+.profile{
+	}
+.profile-username{
+	display: block;
+	height: 30px;
+	width: 100px;
+	margin-bottom: 20px;
+	height: 40px;
+	padding-left: 19px;
+	background-color:#2C2C2C;
+	margin-top:100px;
+	margin-left: 20px;
+	min-height: 200px;
+	}

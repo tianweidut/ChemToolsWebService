@@ -1,0 +1,23 @@
+<!--features for userprofile-->
+
+{% extends "base/base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+<!-- index style -->
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/index.css" >
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/content.css" >
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/accounts_form.css" >
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/userprofile.css" >
+<div class="container form-container ">
+	<!-- basic user information -->
+	<div class="profile-username">
+		{% block basicuserprofile_content %}{% endblock %}
+	</div>
+	<div>
+		{% block userstatisticsinfo_content %}{% endblock %}
+	</div>
+</div>
+
+{% endblock %}
