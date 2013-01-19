@@ -1,5 +1,9 @@
-{% extends "base/base.html" %}
-{% block content %}
+{% extends "base/userinfo_content.html" %}
+{% block userinfo_content %}
+
+{% endblock %}
+	
+
 	<!--<div class="1">
 		<a href="images/" ><img src="alert1.png" height="210" width="210" ></a>
 		<h1>
@@ -35,10 +39,3 @@
 		</div>
 {{request.user.username}}
 	</div>-->
-	<div class="basic-info">
-		{% include "userinfo/basicinfo.html" %}
-	</div>
-	<div class="statistics-info">
-		{% include "userinfo/statisticsinfo.html" %}
-	</div>
-{% endblock %}
