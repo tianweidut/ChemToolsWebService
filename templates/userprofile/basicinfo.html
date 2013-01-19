@@ -1,7 +1,24 @@
 {% extends "features/userprofile.html" %}
 {% block basicuserprofile_content %}
+<a href="#" class="profile-username-text">root</a>
 
-	<a href="#">root</a>
-
+<div>
+<!-- #profile-header-->
+	<!-- #profile-utility-->
+	<div id="profile-utility left" class="">
+		<a class="left " href="#" >
+			<img class="profile-image" src="{{ STATIC_URL }}images/browser-icon-chrome.png" alt="hello!" >
+		</a>
+		<div id="utility-links" class="left">
+			<div><a href="#" >Message</a></div>
+			<div><a href="#" >Share</a></div>
+			<a href="#" class="btn"><i class="icon-filter"></i>Follow</a>
+		</div>
+	</div>
+	<!-- #profile-info-->
+	<div id="profile-info" class=""></div>
+	<!-- #user-stats-->
+	<div id="user-stats" class=""></div>
+</div>
 {% endblock %}
 
