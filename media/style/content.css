@@ -201,6 +201,7 @@ div .calculate-steps{
 p#opeartions-button{
 	margin-top: 30px;
 	float:right;
+	margin-right:10px;
 }
 
 a.carousel-arrow-black{
@@ -208,7 +209,9 @@ a.carousel-arrow-black{
 	color: black;
 }
 
-
+div.left-content{
+	text-align:left;
+}
 
 
 
