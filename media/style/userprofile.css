@@ -30,19 +30,106 @@
 .left{
 	float:left;
 }
-#profile-utility{
+.profile-header{
+	padding: 19px 20px 30px;
+	background: white;
+	position: relative;
+}
+.profile-utility{
 	width: 289px;
 	border-right: 1px solid #E5E5E5;
 	border-color: #E5E5E5;
 	margin-right: 29px;
 	position: relative;
 	height: 138px;
+	zoom:1;
+	clear:both;
 }
-#profile-utility .profile-image-wrap {
+.profile-utility .profile-image-wrap {
 	width: 138px;
 	height: 138px;
 }
-#utility-links{
+.utility-links{
 	width: 136px;
 	font-size: 11px;
+}
+.profile-info{
+	height: 138px;
+	width: 624px;
+	position: relative;
+}
+.profile-info .title-location{
+	margin: -4px 10px 4px 0;
+	height: 22px;
+}
+.text-ellipsis{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.profile-info .occupation {
+	margin-right: 10px;
+	padding-right: 10px;
+}
+.profile-info .location-website-fields {
+	line-height: 20px;
+}
+.profile-info .location-website-fields .location {
+	margin: 5px 0 -2px -4px;
+	top: 5px;
+}
+.profile-info .location-website-fields .be-font-inline {
+	cursor: default;
+	font-family: 'Behance';
+	font-size: 26px;
+	font-weight: normal;
+	text-transform: none;
+	text-rendering: optimizeLegibility;
+	position: relative;
+	display: inline-block;
+	line-height: 0;
+	height: 15px;
+	color: #999;
+}
+.profile-info .location-link {
+	color: #494949;
+}
+.profile-info .location-website-fields .fields {
+	margin-top: 3px;
+}
+.small-text {
+	font: normal normal normal 11px/14px Arial, 'Helvetica Neue', Helvetica, sans-serif;
+}
+.profile-info .field {
+	color: #4C4C4C;
+}
+.social-icons {
+	position: absolute;
+	bottom: 0;
+}
+.user-stats {
+	width: 187px;
+	margin-top: -2px;
+}
+.user-stats .user-stat {
+	line-height: 27px;
+	border-bottom: 1px solid #E5E5E5;
+}
+user-stats .be-font-inline {
+	color: #999;
+	cursor: default;
+	font-family: 'Behance';
+	font-size: 26px;
+	font-weight: normal;
+	text-transform: none;
+	text-rendering: optimizeLegibility;
+	margin-right: 5px;
+	position: relative;
+	top: 4px;
+	display: inline-block;
+	line-height: 0;
+	height: 15px;
+}
+user-stats .user-stat a .right{
+	float:right;
 }

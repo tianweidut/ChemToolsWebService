@@ -1,24 +1,67 @@
 {% extends "features/userprofile.html" %}
 {% block basicuserprofile_content %}
-<a href="#" class="profile-username-text">root</a>
+<div class="profile-username">
+	<a href="#" class="profile-username-text">root</a>
+</div>
 
-<div>
+
+<div class="profile-header">
 <!-- #profile-header-->
 	<!-- #profile-utility-->
-	<div id="profile-utility left" class="">
+	<div class="profile-utility left" >
 		<a class="left " href="#" >
 			<img class="profile-image" src="{{ STATIC_URL }}images/browser-icon-chrome.png" alt="hello!" >
 		</a>
-		<div id="utility-links" class="left">
+		<div class="utility-links left">
 			<div><a href="#" >Message</a></div>
 			<div><a href="#" >Share</a></div>
-			<a href="#" class="btn"><i class="icon-filter"></i>Follow</a>
+			<button class="btn btn-primary"><i class="icon-filter"></i>Follow</button>			
 		</div>
 	</div>
 	<!-- #profile-info-->
-	<div id="profile-info" class=""></div>
+	<div class="profile-info left">
+		<div class="title-location text-ellipsis">
+			<h2 class="occupation">STUDENT</h2>
+		</div>
+		<ul class="location-website-fields">
+			<li>
+				<span class="location be font-inline">J</span>
+				<a class="location-link" href="#" >Dalian,China</a>
+			</li>
+			<li class="fields">
+			<span class="small-text">FOCUS:</span>
+			<a class="field" href="#" >Web Design</a>
+			<span class="">,</span>
+			<a class="field" href="#" >Web Development</a>
+			</li>
+		</ul>
+		<div id="social-icons"></div>
+	</div>
 	<!-- #user-stats-->
-	<div id="user-stats" class=""></div>
+	<div class="user-stats left">
+		<ul>
+			<li class="user-stat">
+				<span class="be-font-inline">G</span>
+				"Project Views"
+				<a href="#" class="blue right bold">0</a>
+			</li>
+			<li class="user-stat">
+				<span class="be-font-inline">G</span>
+				"Project Views"
+				<a href="#" class="blue right bold">0</a>
+			</li>
+			<li class="user-stat">
+				<span class="be-font-inline">G</span>
+				"Project Views"
+				<a href="#" class="blue right bold">0</a>
+			</li>
+			<li class="user-stat">
+				<span class="be-font-inline">G</span>
+				"Project Views"
+				<a href="#" class="blue right bold">0</a>
+			</li>
+		</ul>
+	</div>
 </div>
 {% endblock %}
 
