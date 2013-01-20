@@ -130,6 +130,6 @@ user-stats .be-font-inline {
 	line-height: 0;
 	height: 15px;
 }
-user-stats .user-stat a .right{
+.right{
 	float:right;
 }
