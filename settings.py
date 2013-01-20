@@ -134,7 +134,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.csrf',
     'django.contrib.messages.context_processors.messages',
-    
+
     "djangohelper.context_processors.ctx_config",
 
 )
@@ -153,6 +153,7 @@ INSTALLED_APPS = (
     'registration',
     'users',
     'calcore',
+    'fileupload',
     #Add-on
     'debug_toolbar',
     'tinymce',
@@ -195,12 +196,14 @@ LOGGING = {
     }
 }
 
+LOG_PATH = os.path.join(os.path.dirname(__file__), "log")
+
 LOG_FILENAME = 'askbot.log'
 
-logging.basicConfig( filename=os.path.join(os.path.dirname(__file__), 'log', LOG_FILENAME),
-                   level=logging.CRITICAL,
-                   format='%(pathname)s TIME: %(asctime)s MSG:%(filename)s:%(funcName)s:%(lineno)d %(message)s',
-                   )
+logging.basicConfig(filename=os.path.join(os.path.dirname(__file__), 'log', LOG_FILENAME),
+                    level=logging.CRITICAL,
+                    format='%(pathname)s TIME: %(asctime)s MSG:%(filename)s:%(funcName)s:%(lineno)d %(message)s',
+                    )
 
 #Add support  to user profile
 AUTH_PROFILE_MODULE = 'users.UserProfile'
