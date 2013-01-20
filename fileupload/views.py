@@ -6,7 +6,8 @@ Created on 2013-01-20
 '''
 
 from django.views.generic import CreateView, DeleteView
-from django.http import HttpResponse, HttpResponseRedict
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.utils import simplejson
 from django.core.urlresolvers import reverse
 from django.conf import settings
@@ -23,13 +24,14 @@ def response_minetype(request):
 
 class PictureCreateView(CreateView):
     model = Picture
-
+    template_name = "features/bootcamp.html"
+    
     def form_valid(self, form):
         self.object = form.save()
         f = self.request.FILES.get("file")
         data = [{'name':f.name,
-                 'url':settings.LOG_PATH + "molfiles/" + f.name.replace(" ", "_"),
-                 'thumbnail_url':settings.LOG_PATH + "molfiles/" + f.name.replace(" ", "_"),
+                 'url':settings.MEDIA_URL + "pictures/" + f.name.replace(" ", "_"),
+                 'thumbnail_url':settings.MEDIA_URL + "pictures/" + f.name.replace(" ", "_"),
                  'delete_url':reverse("upload-delete", args=[self.object.id]),
                  "delete_type": "DELETE"}]
 
@@ -41,6 +43,7 @@ class PictureCreateView(CreateView):
 
 class PictureDeleteView(DeleteView):
     model = Picture
+    template_name = "features/bootcamp.html"
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()

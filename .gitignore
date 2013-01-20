@@ -3,6 +3,7 @@
 *.swp
 build/*
 log/*
+media/pictures/*
 
 .settings/*
 .pydevproject
