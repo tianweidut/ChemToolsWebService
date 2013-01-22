@@ -13,8 +13,8 @@
 <div class="container form-container ">
 	<!-- basic user information -->
 	<div class="profile">
-		<div class="profile-username">
-			{% block basicuserprofile_content %}{% endblock %}
+		<div class="">
+			{% include "userprofile/basicinfo.html" %}
 		</div>
 		<div>
 			{% block userstatisticsinfo_content %}{% endblock %}
