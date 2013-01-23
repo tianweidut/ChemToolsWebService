@@ -1,11 +1,10 @@
 {% extends "features/userprofile.html" %}
 {% block userstatisticsinfo_content %}
-<div class="profile-bottom ui-corner-bottom">
 	<div class="user-information below-header-shadow col">
 		<div class="grid-9">
 			<div class='user-info-block'>
 				<div class="user-info-header">
-					<span><span class="be-font-inline">F</span>Projects I Appreciated</span>
+					<span><i class="icon-thumbs-up"></i> Projects I Appreciated</span>
 				</div>
 				<div class="user-info-content">
  					<a href='http://www.behance.net/weixindlut/appreciations' class='see-all small-text left'>View Appreciations &rarr;</a>
@@ -13,10 +12,10 @@
 			</div>
 			<div class='user-info-block'>
 				<div class="user-info-header">
-					<span><span class="be-font-inline">E</span>Profile URLs</span>
+					<span><img src="{{STATIC_URL}}images/link.png"> Profile URLs</span>
 				</div>
 				<div class="user-info-content">
-					<ul>
+					<ul class="unstyled">
 						<li class="profile-list-item"><a href="http://be.net/weixindlut">http://be.net/weixindlut</a></li>
 						<li class="profile-list-item"><a href="http://www.behance.net/weixindlut.xml">RSS Feed</a></li>
 					</ul>
@@ -26,35 +25,34 @@
 	</div>
 	<div class="user-gallery col below-header-shadow">
 		<div class="grid-22">
-          <div class="galleries-header cfix">
+          <div class="galleries-header">
       		<div class="galleries-header-left">          
         			<div class="navmenui-auxiliary">
         				<div class="navmenui-auxiliary-content">
-        					<div class="cfix">
-        						<ul class="left nav-items cfix">
-        							<li class="nav-item  cfix first">
+        					<div class="">
+        						<ul class="left nav nav-tabs">
+        							<li class="active">
         								<a class="nav-link" href="/weixindlut">
         									<div class="nav-text">Projects</div>
         								</a>
         							</li>
-        							<li class="nav-item  cfix">
+        							<li>
         								<a class="nav-link" href="http://www.behance.net/weixindlut/wip">
         									<div class="nav-text">Work in Progress</div>
         								</a>
         							</li>
         						</ul>
-        						<ul class="right"></ul>
         					</div>
         				</div>
         			</div>      
       		</div>
-      		<div class="galleries-header-right"></div> <!-- .galleries-header-right -->
+      		
     		</div> <!-- .galleries-header -->    
     		<div class="grid projects-container">
 				<div class="">
         			<div class="site-message ui-corner large">
-  						<div class="site-message-wrap cfix">
-    						<div class="cfix">
+  						<div class="site-message-wrap">
+    						<div class="">
     							<h4 class="site-message-header">wei xin hasn't uploaded any projects.</h4>
     							<div class="site-message-message">
     								Please check back soon. Until then, you can see more people in 
@@ -71,5 +69,4 @@
   		</div>
 	</div>
 	
-</div>
 {% endblock %}
