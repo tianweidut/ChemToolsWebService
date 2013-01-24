@@ -13,10 +13,13 @@
 <div class="container form-container ">
 	<!-- basic user information -->
 	<div class="profile">
-		<div class="">
+		<div class="profile-username">
+			<a href="#" class="profile-username-text">root</a>
+		</div>
+		<div class="profile-header">
 			{% include "userprofile/basicinfo.html" %}
 		</div>
-		<div>
+		<div class="profile-bottom ui-corner-bottom">
 			{% block userstatisticsinfo_content %}{% endblock %}
 		</div>
 	</div>
