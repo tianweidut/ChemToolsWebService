@@ -176,12 +176,20 @@ div .calculate-steps{
     font-weight: bold;
 }
 
-#search-tips{
+div#search-tips{
 	float:center;
 	width: 45%;
 	display:inline-block;
 	text-align:left;
 }
+
+#filesupload-tips{
+	float:left;
+	width: 75%;
+	display:inline-block;
+	text-align:left;
+}
+
 .search-result{
 	margin-left:60px;
 	margin-right: 60px;
@@ -219,7 +227,15 @@ div.left-content{
 
 }
 
+div#info-input-tab3{
+	margin-left: 30px;
+	margin-right: 30px;
+}
 
+div#info-input-tab1{
+	margin-left: 30px;
+	margin-right: 30px;
+}
 
 
 
