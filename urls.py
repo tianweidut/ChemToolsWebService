@@ -138,3 +138,9 @@ urlpatterns += patterns('',
         name="questions"
     ),
 )
+
+from fileupload.views import PictureCreateView,PictureDeleteView
+
+urlpatterns += patterns('',
+        url(r'^new/$', PictureCreateView.as_view(), {}, 'upload-new'),
+        url(r'^delete/(?P<pk>\d+)$', PictureDeleteView.as_view(), {}, 'upload-delete'),)
