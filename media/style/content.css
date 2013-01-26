@@ -237,8 +237,19 @@ div#info-input-tab1{
 	margin-right: 30px;
 }
 
+div#models-choice-accordions{
+	margin-left: 50px;
+	margin-right: 50px;
+	text-align:left;
+}
 
-
+div.step-content {
+			border: 1px solid #D4D4D4;
+			border-top: 0;
+			border-radius: 0 0 4px 4px;
+			padding: 10px;
+			margin-bottom: 10px;
+		}
 
 
 
