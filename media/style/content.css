@@ -251,6 +251,11 @@ div.step-content {
 			margin-bottom: 10px;
 		}
 
+div.div-center{
+	float:center;
+	text-align:center;
+}
+
 
 
 
