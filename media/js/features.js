@@ -45,3 +45,8 @@ $(document).ready(function () {
 		console.log(item.step);
 	});
 });
+
+//button toggle for model choices
+$(document).ready(function(){ 
+  $('[rel=button-switch]').btn_toggle();
+});
