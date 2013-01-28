@@ -261,7 +261,14 @@ div.models-choice-div{
 	margin-bottom: 20;
 }
 
+.right-float{
+	float:right;
+}
 
+.center-float{
+	float:center;
+	text-align: center;
+}
 
 
 

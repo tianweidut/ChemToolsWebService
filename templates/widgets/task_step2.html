@@ -6,18 +6,71 @@
 	
 	<!--choice models with collapse plugin-->
 	<div class="accordion" id="models-choice-accordions">
-		
+
 		<!--model 1-->
 		<div class="models-choice-div">
 			<!--title-->
 			<div class="btn-group" href="#collapse1">
-					<a class="user-info accordion-toggle" data-toggle="collapse" data-parent="#models-choice-accordions" href="#collapse1">KOA</a>
-					<a class="label label-important user-info-label" href="#collapse1">Environment behavior</a>
+				<a class="user-info accordion-toggle" data-toggle="collapse" data-parent="#models-choice-accordions" href="#collapse1">KOA</a>
+				<a class="label label-important user-info-label" href="#collapse1">Environment behavior</a>
 			</div>
 			<!--Content-->
 			<div id="collapse1" class="accordion-body collapse in">
 				<div class="accordion-inner">
-					Anim pariatur cliche...
+					<div class="container-fluid">
+						<div class="row-fluid">
+							<!--Introductions-->
+							<div class="span6">
+								<div class="page-header">
+									<h4>Abstract</h4>
+								</div>
+								<blockquote>
+									Dragon 6 has been reconceived with the aim of proposing an even more powerful application for descriptor calculation and analysis. Dragon 6 has been designed to work both for Windows and Linux, as graphical and command-line interface. The changes between Dragon 5.5 and Dragon 6.0 are listed in the on-line help. The Graphical User Interface has been completely renewed to improve and facilitate selection and calculation of molecular descriptors. Moreover, new tools for the screening analysis of calculated descriptors have been added.
+								</blockquote>
+							</div>
+							<!--Choice and input args-->
+							<div class="span6">
+								<!--switch button-->
+								<div class="center-float">
+									<a class="btn btn-large btn-block btn-primary " rel="button-switch" switch_text="undo this model">Choice This Model!</a>
+								</div>
+								<br/>
+								<!--Input arguments-->
+								<fieldset>
+									<legend>Template Arguments</legend>
+									<div class="input-prepend input-append">
+										<select class="span4">
+											<option>Centigrade(C)</option>
+											<option>Fahrenheit(F)</option>
+										</select>							
+										<input class="span6" id="temp1" type="text" placeholder="template(T or C)">
+										<select class="span2">
+											<option>.1</option>
+											<option>.01</option>
+											<option>.001</option>
+											<option>.0001</option>
+											<option>.00001</option>
+										</select>
+									</div>
+								</fieldset>
+								<br/>
+								<fieldset>
+									<legend>Humidity Arguments</legend>
+									<div class="input-prepend input-append">						
+										<input class="span6" id="humi1" type="text" placeholder="humidity(percentage)">
+										<span class="add-on">%</span>
+									</div>
+								</fieldset>
+								<fieldset>
+									<legend>Other Arguments</legend>
+									<div class="input-prepend input-append">						
+										<input class="span6" id="other1" type="text" placeholder="other">
+										<span class="add-on">**</span>
+									</div>
+								</fieldset>
+							</div>	
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -102,7 +155,7 @@
 				<a class="label label-info user-info-label" href="#collapse6">Health toxicology</a>
 			</div>
 			<!--Content-->
-			<div id="collapse6" class="accordion-body collapse in">
+			<div id="collapse6" class="accordion-body collapse">
 				<div class="accordion-inner">
 					Anim pariatur cliche...
 				</div>
@@ -120,7 +173,7 @@
 				<a class="label label-info user-info-label" href="#collapse7">Health toxicology</a>
 			</div>
 			<!--Content-->
-			<div id="collapse7" class="accordion-body collapse in">
+			<div id="collapse7" class="accordion-body collapse">
 				<div class="accordion-inner">
 					Anim pariatur cliche...
 				</div>

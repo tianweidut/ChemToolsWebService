@@ -2,9 +2,15 @@
 
 {% block content %}
 
-<div class="jumbotron">
+<!--div class="jumbotron">
         <h1>Comming Soon!</h1>
         <p class="lead">Let's we enjoy chemistry tool. It is powsed by Chemistry Group!</p>
-</div>
+</div-->
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/index.css" >
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/content.css" >
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/accounts_form.css" >
 
+<div class="container">
+{%include "widgets/task_step2.html"%}
+</div>
 {% endblock %}
