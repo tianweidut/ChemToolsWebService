@@ -1,0 +1,39 @@
+{% extends "userprofile/statisticsinfo.html" %}
+{% block nav_chart %}
+<div class="galleries-header">
+      		<div class="galleries-header-left">          
+        			<div class="navmenui-auxiliary">
+        				<div class="navmenui-auxiliary-content">
+        					<div class="">
+        						<ul class="left nav nav-tabs">
+        							<li>
+    									<a class="nav-link" href="/info/projects">
+       										<div class="nav-text">Projects</div>
+    									</a>
+									</li>
+									<li class="active">
+    									<a class="nav-link" href="/info/work_in_progress">
+       									<div class="nav-text">Work in Progress</div>
+    									</a>
+									</li>
+        							
+        						</ul>
+        					</div>
+        				</div>
+        			</div>      
+      		</div>
+      		
+    		</div> <!-- .galleries-header -->    
+    		<div class="grid projects-container">
+				<div class="">
+        			<div class="site-message ui-corner large row">
+        				<div id="piechart" style="height:300px;width:600px; " class="span5"></div>
+        				<div class="span1" style="height:300px;width:100px; ">
+        					<div style="height:100px;width:100px;" ></div>
+        					<button class="btn btn-primary button-reset">reset</button>
+        				</div>   				      				
+					</div> <!-- .site_message -->
+      		</div>
+			</div><!-- #projects-container -->
+
+{% endblock %}

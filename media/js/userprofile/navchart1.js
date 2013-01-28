@@ -11,11 +11,8 @@ $(document).ready(function(){
     ["3/10/2008",437.92], ["2/25/2008",471.18], ["2/11/2008",529.64], ["1/28/2008",515.9], ["1/14/2008",600.25], 
     ["12/31/2007",657], ["12/17/2007",696.69], ["12/3/2007",714.87], ["11/19/2007",676.7], ["11/5/2007",663.97], 
     ["10/22/2007",674.6], ["10/8/2007",637.39], ["9/24/2007",567.27], ["9/10/2007",528.75], ["8/27/2007",515.25]];
-  	data = [
-    ['Heavy Industry', 12],['Retail', 9], ['Light Industry', 14], 
-    ['Out of home', 16],['Commuting', 7], ['Orientation', 9]
-  ];
-  plot1 = $.jqplot('chartdiv', [goog], { 
+
+  var plot1 = $.jqplot('chartdiv', [goog], { 
       title: 'Google, Inc.', 
       series: [{ 
           label: 'Google, Inc.', 
@@ -36,27 +33,6 @@ $(document).ready(function(){
       } 
   });
  
-
-//chart2
-
-  var plot2 = jQuery.jqplot ('chartpie', [data], 
-    {
-      seriesDefaults: {
-        renderer: jQuery.jqplot.PieRenderer, 
-        rendererOptions: {
-          // Turn off filling of slices.
-          fill: false,
-          showDataLabels: true, 
-          // Add a margin to seperate the slices.
-          sliceMargin: 4, 
-          // stroke the slices with a little thicker line.
-          lineWidth: 5
-        }
-      }, 
-      legend: { show:true, location: 'e' }
-    }
-  );
   $('.button-reset').click(function() { plot1.resetZoom() });
 });
 //chart two
-

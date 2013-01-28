@@ -49,7 +49,17 @@ urlpatterns = patterns('',
     ),
     url(
         r'^info/$',
-        direct_to_template, {'template': 'userprofile/statisticsinfo.html'},
+        direct_to_template, {'template': 'userprofile/navchart1.html'},
+        name="info"
+    ),
+    url(
+        r'^info/projects/$',
+        direct_to_template, {'template': 'userprofile/navchart1.html'},
+        name="info"
+    ),
+    url(
+        r'^info/work_in_progress/$',
+        direct_to_template, {'template': 'userprofile/navchart2.html'},
         name="info"
     ),
     url(
