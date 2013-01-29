@@ -16,7 +16,7 @@ $(document).ready(function(){
 	var data = [['Heavy Industry', 12],['Retail', 9], ['Light Industry', 14], 
     ['Out of home', 16],['Commuting', 7], ['Orientation', 9]];
 	
-	$("#tabs").tabs();
+	$("#staticstabs").tabs();
 	
 	  var plot11 = $.jqplot('chart1', [goog], { 
 	      title: 'Google, Inc.', 
@@ -56,7 +56,7 @@ $(document).ready(function(){
 	    }
 	  );
 
-    $('#tabs').bind('tabsshow', function(event, ui) {
+    $('#staticstabs').bind('tabsshow', function(event, ui) {
           
           if (ui.index === 0 ) {
             plot11.replot();
