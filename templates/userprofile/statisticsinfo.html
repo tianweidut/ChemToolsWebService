@@ -1,32 +1,4 @@
 {% extends "features/userprofile.html" %}
 {% block userstatisticsinfo_content %}
-	<div class="user-information below-header-shadow col">
-		<div class="grid-9">
-			<div class='user-info-block'>
-				<div class="user-info-header">
-					<span><i class="icon-thumbs-up"></i> Projects I Appreciated</span>
-				</div>
-				<div class="user-info-content">
- 					<a href='http://www.behance.net/weixindlut/appreciations' class='see-all small-text left'>View Appreciations &rarr;</a>
-				</div>
-			</div>
-			<div class='user-info-block'>
-				<div class="user-info-header">
-					<span><img src="{{STATIC_URL}}images/link.png"> Profile URLs</span>
-				</div>
-				<div class="user-info-content">
-					<ul class="unstyled">
-						<li class="profile-list-item"><a href="http://be.net/weixindlut">http://be.net/weixindlut</a></li>
-						<li class="profile-list-item"><a href="http://www.behance.net/weixindlut.xml">RSS Feed</a></li>
-					</ul>
-				</div>
-			</div> 
-		</div> <!-- .grid-9 -->
-	</div>
-	<div class="user-gallery below-header-shadow col">
-		<div class="grid-22">
-			{% block nav_chart %}{% endblock %}         
-  		</div>
-	</div>
 	
 {% endblock %}

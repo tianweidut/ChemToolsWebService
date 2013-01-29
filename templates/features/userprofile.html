@@ -21,7 +21,13 @@
 			{% include "userprofile/basicinfo.html" %}
 		</div>
 		<div class="profile-bottom ui-corner-bottom">
-			{% block userstatisticsinfo_content %}{% endblock %}
+			<!--grid layout-->
+			<div class="span4">
+			{% include "userprofile/user_leftbar.html"%}
+			</div>
+			<div class="span8">
+			{% include "userprofile/user_rightbar.html"%}
+			</div>
 		</div>
 	</div>
 	

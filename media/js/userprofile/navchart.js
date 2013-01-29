@@ -16,9 +16,9 @@ $(document).ready(function(){
 	var data = [['Heavy Industry', 12],['Retail', 9], ['Light Industry', 14], 
     ['Out of home', 16],['Commuting', 7], ['Orientation', 9]];
 	
-	$("#piechart_tabs").tabs();
+	$("#tabs").tabs();
 	
-	  var plot1 = $.jqplot('piechart1', [goog], { 
+	  var plot11 = $.jqplot('chart1', [goog], { 
 	      title: 'Google, Inc.', 
 	      series: [{ 
 	          label: 'Google, Inc.', 
@@ -41,7 +41,7 @@ $(document).ready(function(){
   	$('.button-reset').click(function() { plot1.resetZoom() });
 
 
-	var plot2 = $.jqplot('piechart2', [data], 
+	var plot22 = $.jqplot('chart2', [data], 
 	    { 
 	      seriesDefaults: {
 	        // Make this a pie chart.
@@ -56,15 +56,13 @@ $(document).ready(function(){
 	    }
 	  );
 
-    $('#piechart_tabs').bind('tabsshow', function(event, ui) {
+    $('#tabs').bind('tabsshow', function(event, ui) {
           
           if (ui.index === 0 ) {
-          	alert("0");
-            plot1.replot();
+            plot11.replot();
           }
           else if (ui.index === 1 ) {
-            alert("1");
-            plot2.replot();
+            plot22.replot();
           }
           else{
           	alert("wrong");

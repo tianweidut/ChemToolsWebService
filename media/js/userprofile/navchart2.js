@@ -1,10 +1,11 @@
+
 $(document).ready(
 	function(){
   var data = [
     ['Heavy Industry', 12],['Retail', 9], ['Light Industry', 14], 
     ['Out of home', 16],['Commuting', 7], ['Orientation', 9]
   ];
-  var plot2 = $.jqplot ('piechart', [data], 
+  var plot2 = $.jqplot('piechart', [data], 
     { 
       seriesDefaults: {
         // Make this a pie chart.
