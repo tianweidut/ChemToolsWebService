@@ -234,10 +234,14 @@ a {
   color: #0088cc;
   text-decoration: none;
 }
-
-a:hover {
+/*change by weixin*/
+/*a:hover {
   color: #005580;
   text-decoration: underline;
+}*/
+a:hover{
+  color: white;
+  text-decoration: none;
 }
 
 .img-rounded {
