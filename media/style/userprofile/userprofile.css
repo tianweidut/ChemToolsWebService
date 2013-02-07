@@ -27,6 +27,12 @@
 	text-decoration: none;
 	cursor: pointer;
 }
+.profile-username-text-edit{
+	line-height: 40px;
+	color: white;
+	text-decoration: none;
+	cursor: pointer;
+}
 .profile-image{
 	width: 138px;
 	height: 138px;
