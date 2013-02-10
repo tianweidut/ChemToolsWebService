@@ -27,8 +27,9 @@ $(document).ready(function () {
 		if(data.step===3 && data.direction==='next') {
 			// return e.preventDefault();
 		}
-	});
-	$('#MyWizard').on('changed', function(e, data) {
+  });
+
+  $('#MyWizard').on('changed', function(e, data) {
 		console.log('changed');
 	});
 	$('#MyWizard').on('finished', function(e, data) {
