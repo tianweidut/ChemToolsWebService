@@ -10,8 +10,21 @@ $.fn.btn_toggle = function(){
 
   $(this).click(
     function(){
-      $(this).text($(this).attr("switch_text"));
-      alert($(this).attr("switch_text"));
+      
+      var label = "#" + $(this).attr("control_id");
+
+      if($(label).attr("visible")=="false")
+        {
+          $(this).text("undo this choice");
+          $(label).attr("visible","true"); 
+          $(label).show();
+        }
+      else
+        {
+          $(this).text("please choice");
+          $(label).attr("visible","false"); 
+          $(label).hide();
+        }
   });
 
 };

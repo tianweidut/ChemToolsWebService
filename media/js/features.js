@@ -50,3 +50,8 @@ $(document).ready(function () {
 $(document).ready(function(){ 
   $('[rel=button-switch]').btn_toggle();
 });
+
+//choice label 
+$(document).ready(function(){
+  $('[rel=label-choice]').hide();
+});
