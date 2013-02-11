@@ -284,5 +284,9 @@ div.response-label{
   text-align:left;
 }
 
+label.filetype{
+  font-size: 20px;
+  font-weight:bold;
+}
 
 
