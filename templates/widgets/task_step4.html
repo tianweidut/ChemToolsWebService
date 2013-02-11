@@ -1,4 +1,98 @@
 <!--  calculate task step4 -->
-<div class="container" >
-	step4
+<div class="calculate-steps" >
+  <div class="page-header">
+    <h2>STEP4: Confirm Your Commits</h2>
+  </div>
+  
+  <!--step1 content:basic information-->
+  <div class="container-fluid search-result">
+    <div class="row-fluid">
+      <div class="span4">
+        <fieldset>
+          <legend>Structure</legend>
+          <img id="mol-image" src="{{STATIC_URL}}images/examples/structure.png">
+        </fieldset>
+        <br/>
+        <fieldset>
+          <legend>Search Options</legend>
+          <div class="alert-success" id="search-option-label">Exact search</div> 
+        </fieldset>
+      </div>
+
+      <div class="span8">
+        <fieldset>
+          <legend>Names</legend>
+          <div class="alert-info" id="search-name-label">S=C=NC</div> 
+        </fieldset>
+        <br/>
+        <fieldset>
+          <legend>Mol Files</legend>
+          <table class="table">
+            <thead>
+              <tr>
+                <td>Type</td>
+                <td>Path</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="success">
+                <td>mol</td>
+                <td>home/tianwei/path</td>
+              </tr>
+              <tr class="error">
+                <td>sdf</td>
+                <td>home/tianwei/path</td>
+              </tr>
+            </tbody>
+          </table>
+        </fieldset>
+        </br>
+      </div>
+    </div>
+  </div>
+
+  <!--step2 content:model choice-->
+  <div class="container-fluid search-result">
+  <fieldset>
+    <legend>Model Choice</legend>
+    <table class="table">
+      <thead>
+        <tr><td>Models</td><td>Arguments</td></tr>
+      </thead>
+      <tbody>
+        <tr class="success"><td>KOA</td><td>Temperature:45; Humidity:80%</td></tr>
+        <tr class="error"><td>KOF</td><td>Temperature:45; Humidity:80%</td></tr>
+        <tr class="info"><td>PPK</td><td>Temperature:45; Humidity:80%</td></tr>
+      </tbody>
+    </table>
+  </fieldset>  
+  </div>
+
+  <!--step3 content:notes-->
+  <div class="container-fluid search-result">
+  <fieldset>
+    <legend>Response File Type</legend>
+    <div class="alert-success" id="file-option-label">PDF, CSV, TXT</div> 
+    </table>
+  </fieldset>  
+  </div>
+  
+  <br/>
+  <div class="container-fluid search-result">
+  <fieldset>
+    <legend>Notes</legend>
+    <blockquote id="commit-note-id">teastast test</blockquote>
+    </table>
+  </fieldset>  
+  </div>
+
+  <br/>
+  <!--Operations Button-->
+  <div class="container-fluid search-result">
+	  <p id="opeartions-button">
+		  <button class="btn  btn-large btn-warning" id="commit-clear">Clear</button>
+		  <button class="btn  btn-large btn-primary" id="commit-saved">Commit</button>
+	  </p>
+  </div>
+  
 </div>
