@@ -16,6 +16,7 @@ $.fn.btn_toggle = function(){
       if($(label).attr("visible")=="false")
         {
           $(this).text("undo this choice");
+          $(this).toggleClass("btn-danger");
           $(label).attr("visible","true"); 
           $(label).show();
         }
@@ -23,6 +24,7 @@ $.fn.btn_toggle = function(){
         {
           $(this).text("please choice");
           $(label).attr("visible","false"); 
+          $(this).toggleClass("btn-danger");
           $(label).hide();
         }
   });
