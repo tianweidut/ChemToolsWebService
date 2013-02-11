@@ -270,6 +270,19 @@ div.models-choice-div{
 	text-align: center;
 }
 
+div.response-label{
+  font-size:25px;
+  font-weight:bold;
+  width:auto;
+  height:35px;
+  line-height:35px;
+  text-align:center;
+  margin-top:10px;
+}
+
+.left-txt{
+  text-align:left;
+}
 
 
 
