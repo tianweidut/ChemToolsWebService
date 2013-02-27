@@ -47,19 +47,40 @@ $(document).ready(function () {
 	});
 });
 
-//button toggle for model choices
+
 $(document).ready(function(){ 
+  //button toggle for model choices
   $('[rel=button-switch]').btn_toggle();
-});
-
-//choice label 
-$(document).ready(function(){
+  
+  //choice label 
   $('[rel=label-choice]').hide();
-});
-
-//date picker
-$(document).ready(function(){
-	$('.datepicker').datepicker({
+  
+  //date picker
+  $('.datepicker').datepicker({
 		format: 'yyyy-mm-dd'
 	});
+	
+  //search options
+  var search_panel = "#search-options-panel";
+  $(search_panel).hide();
+  $('#option-search').click(
+  	function(){
+  		if($(search_panel).attr('visible')=='false')
+  		{
+  			$(search_panel).show();
+  			$(search_panel).attr('visible','true');
+  		}
+  		else
+  		{
+  			$(search_panel).hide();
+  			$(search_panel).attr('visible','false');
+  		}
+  });
 });
+
+
+
+
+
+
+//seach 
