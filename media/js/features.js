@@ -56,3 +56,10 @@ $(document).ready(function(){
 $(document).ready(function(){
   $('[rel=label-choice]').hide();
 });
+
+//date picker
+$(document).ready(function(){
+	$('.datepicker').datepicker({
+		format: 'yyyy-mm-dd'
+	});
+});
