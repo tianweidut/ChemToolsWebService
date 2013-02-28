@@ -321,3 +321,14 @@ ul.model-label > span{
 	margin-left: 8px;
 }
 
+div.task-progress-bar{
+	margin-left: 56px;
+	margin-top: 10px;
+	margin-right: 5px;
+}
+
+p.progress-value{
+	margin-top: 10px;
+	margin-left: 5px;
+	font-weight: bold;
+}
