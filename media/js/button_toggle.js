@@ -13,7 +13,7 @@ $.fn.btn_toggle = function(){
       
       var label = "#" + $(this).attr("control_id");
 
-      if($(label).attr("visible")=="false")
+      if($(label).attr("visible")==="false")
         {
           $(this).text("undo this choice");
           $(this).toggleClass("btn-danger");

@@ -332,3 +332,7 @@ p.progress-value{
 	margin-left: 5px;
 	font-weight: bold;
 }
+
+div.container-center{
+	text-align: center;
+}

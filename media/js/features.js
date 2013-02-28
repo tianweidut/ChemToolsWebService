@@ -64,23 +64,18 @@ $(document).ready(function(){
   var search_panel = "#search-options-panel";
   $(search_panel).hide();
   $('#option-search').click(
-  	function(){
-  		if($(search_panel).attr('visible')=='false')
-  		{
-  			$(search_panel).show();
-  			$(search_panel).attr('visible','true');
-  		}
-  		else
-  		{
-  			$(search_panel).hide();
-  			$(search_panel).attr('visible','false');
-  		}
+    function(){
+    if($(search_panel).attr('visible')==='false')
+      {
+        $(search_panel).show();
+        $(search_panel).attr('visible','true');
+      }
+      else
+      {
+        $(search_panel).hide();
+        $(search_panel).attr('visible','false');
+      }
   });
 });
-
-
-
-
-
 
 //seach 
