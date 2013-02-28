@@ -91,15 +91,15 @@ urlpatterns = patterns('',
 )
 
 
-urlpatterns += patterns('', 
+urlpatterns += patterns('',
     url(
         r'^tags/$',
-        direct_to_template, {'template':'home/index.html'},
+        direct_to_template, {'template': 'home/index.html'},
         name="tags"
     ),
     url(
         r'^site_settings/$',
-        direct_to_template, {'template':'home/index.html'},
+        direct_to_template, {'template': 'home/index.html'},
         name="site_settings"
     ),
     url(
@@ -146,7 +146,7 @@ urlpatterns += patterns('',
 
 )
 
-from fileupload.views import PictureCreateView,PictureDeleteView
+from fileupload.views import PictureCreateView, PictureDeleteView
 
 urlpatterns += patterns('',
         url(r'^new/$', PictureCreateView.as_view(), {}, 'upload-new'),
