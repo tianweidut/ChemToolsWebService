@@ -294,3 +294,30 @@ label.model-choice{
    font-size: 20px;
    font-weight:bold;
 }
+
+ul.tasklist{
+	display:block;
+	list-style-type: disc;
+	list-style:none;
+}
+
+p.task-introduction{
+	font-size: 14px;
+	margin-left: 56px;
+}
+
+p.task-date{
+	font-size: 11px;
+	margin-left: 56px;
+	color: #999999;
+}
+
+ul.model-label{
+	margin-left: 56px;
+	list-style-type: disc;
+	list-style:none;
+}
+ul.model-label > span{
+	margin-left: 8px;
+}
+

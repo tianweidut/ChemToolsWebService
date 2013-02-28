@@ -73,12 +73,17 @@ urlpatterns = patterns('',
         name="search"
     ),
     url(
+        r'^details/$',
+        direct_to_template, {'template': 'features/details.html'},
+        name="details"
+    ),
+    url(
         r'^forum/',
         include('lbforum.urls'),
         name="forum"
     ),
     url(
-        r'^attachments/', 
+        r'^attachments/',
         include('attachments.urls'),
         name="attachments"
     ),
@@ -137,6 +142,8 @@ urlpatterns += patterns('',
         direct_to_template, {'template': 'home/index.html'},
         name="questions"
     ),
+
+
 )
 
 from fileupload.views import PictureCreateView,PictureDeleteView
