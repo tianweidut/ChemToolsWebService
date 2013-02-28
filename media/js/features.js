@@ -76,6 +76,41 @@ $(document).ready(function(){
         $(search_panel).attr('visible','false');
       }
   });
+  
+  //task details filter label
+  $('ul li a.filter').click(
+    function(){
+      $("ul li a.filter").parent().removeClass('active');
+      $(this).parent().attr('class','active');
+      
+      var success_queue = 'ul.tasklist > li.queue-success';
+      var failed_queue = 'ul.tasklist > li.queue-failed';
+      var inprogress_queue = 'ul.tasklist > li.queue-inprogress';
+      switch($(this).attr('rel'))
+      {
+        case 'all':
+          $(success_queue).show();
+          $(failed_queue).show();
+          $(inprogress_queue).show();
+          break;
+        case 'success':
+          $(success_queue).show();
+          $(failed_queue).hide();
+          $(inprogress_queue).hide();
+          break;
+        case 'failed':
+          $(success_queue).hide();
+          $(failed_queue).show();
+          $(inprogress_queue).hide();
+          break;
+        case 'inprogress':
+          $(success_queue).hide();
+          $(failed_queue).hide();
+          $(inprogress_queue).show();
+          break;
+        default:
+          break;
+      }
+  });
+  
 });
-
-//seach 
