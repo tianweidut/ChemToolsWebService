@@ -78,6 +78,11 @@ urlpatterns = patterns('',
         name="details"
     ),
     url(
+        r'^edit/$',
+        direct_to_template, {'template': 'features/edit.html'},
+        name="edit"
+    ),
+    url(
         r'^forum/',
         include('lbforum.urls'),
         name="forum"
