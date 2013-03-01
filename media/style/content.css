@@ -352,3 +352,7 @@ div.modal-fixed-another{
 label.settings-label{
 	font-weight:bold;
 }
+
+#result_tabs{
+  margin-left: 80px;
+}
