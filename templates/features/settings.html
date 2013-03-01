@@ -15,26 +15,26 @@
     <div class="span3 bs-docs-sidebar">
       <!--left navigation-->
       <ul class="nav nav-pills nav-stacked nav-list bs-docs-sidenav affix-top">
-        <li class="active">
-          <a href="/settings/profile">
+        <li class="{% block active_profile_content %}  {% endblock %}">
+          <a href="/settings/profile" class="setting-bar">
             <i class="icon-chevron-right pull-right"></i>
             Profile
           </a>
           </li>
-          <li >
-          <a href="/settings/admin">
-            <i class="icon-chevron-right pull-right"></i>
-            Account Settings
-          </a>
-        </li>
-        <li>
-          <a href="/settings/billing">
+          <li class="{% block active_admin_content %}  {% endblock %}">
+          	<a href="/settings/admin" class="setting-bar">
+            	<i class="icon-chevron-right pull-right"></i>
+            	Account Settings
+          	</a>
+          </li>
+        <li class="{% block active_billing_content %}  {% endblock %}">
+          <a href="/settings/billing" class="setting-bar">
             <i class="icon-chevron-right pull-right"></i>
             Billing
           </a>
         </li>
-        <li>
-          <a href="/settings/payments">
+        <li class="{% block active_payments_content %}  {% endblock %}">
+          <a href="/settings/payments" class="setting-bar">
             <i class="icon-chevron-right pull-right"></i>
             Payment History
           </a>
