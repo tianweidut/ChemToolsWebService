@@ -1,5 +1,24 @@
 {% extends "base/_content.html" %}
 
 {% block calculate-content%}
-	<p>details</p>
+  <div class="tabbable">
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a class="details_tabs" href="#submit_tabs" data-toggle="tab">Submit Original</a>
+        </li>
+      <li >
+        <a class="details_tabs" href="#result_tabs" data-toggle="tab">Calculated Results</a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id ="submit_tabs">
+        <!--Original submit content-->
+        {% include "widgets/commit_content.html" %} 
+        </div>
+      <div class="tab-pane " id ="result_tabs">
+        <!--results-->
+        test2
+      </div>
+    </div>
+  </div>
 {% endblock %}
