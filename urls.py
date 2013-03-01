@@ -78,9 +78,24 @@ urlpatterns = patterns('',
         name="details"
     ),
     url(
-        r'^edit/$',
-        direct_to_template, {'template': 'features/edit.html'},
-        name="edit"
+        r'^settings/profile/$',
+        direct_to_template, {'template': 'widgets/settings/profile.html'},
+        name="profile"
+    ),
+    url(
+        r'^settings/admin/$',
+        direct_to_template, {'template': 'widgets/settings/admin.html'},
+        name="admin"
+    ),
+    url(
+        r'^settings/billing/$',
+        direct_to_template, {'template': 'widgets/settings/billing.html'},
+        name="billing"
+    ),
+    url(
+        r'^settings/payments/$',
+        direct_to_template, {'template': 'widgets/settings/payments.html'},
+        name="payments"
     ),
     url(
         r'^forum/',

@@ -2,27 +2,13 @@
 
 {% block content %}
 
-<div class="jumbotron">
-        <h1>Super awesome Chemistry Tools!</h1>
-        <p class="lead">Let's we enjoy chemistry tool. It is powsed by Chemistry Group!</p>
+<!-- index style -->
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/index.css" >
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/content.css" >
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/accounts_form.css" >
+
+<div class="container form-container ">
+  <h3>This is about page, .... *_* </h3>
 </div>
 
-<link class="include" type="text/css" href="{{STATIC_URL}}jquery-ui/css/smoothness/jquery-ui.min.css" rel="Stylesheet" /> 
-
-<div class="container">
-<div id="tabs" class="tabbable">
-	<ul class="nav nav-tabs tab-fix">
-      <li><a href="#tabs-1" data-toggle="tab">Tab 1</a></li>
-      <li><a href="#tabs-2" data-toggle="tab">Tab 2</a></li>
-    </ul>
-    <div class="tab-content">
-	    <div id="tabs-1" class="tab-pane active">
-	    	<div id="chart1" data-height="260px" data-width="480px" style="margin-top:20px; margin-left:20px;"></div>
-	    </div>
-	    <div id="tabs-2" class="tab-pane">
-	    	<div id="chart2" data-height="260px" data-width="480px" style="margin-top:20px; margin-left:20px;"></div>
-	    </div>
-    </div>
-</div>
-</div>
 {% endblock %}

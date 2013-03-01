@@ -3,7 +3,8 @@
 {% extends "base/base.html" %}
 {% load i18n %}
 
-{% block content%}
+{% block content %}
+
 <!-- index style -->
 <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/index.css" >
 <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/content.css" >
@@ -11,7 +12,7 @@
 
 <div class="container form-container ">
   <div class = "row"> 
-    <div class="span4 bs-docs-sidebar">
+    <div class="span3 bs-docs-sidebar">
       <!--left navigation-->
       <ul class="nav nav-list bs-docs-sidenav affix-top">
         <li class="active">
@@ -26,26 +27,25 @@
             Account Settings
           </a>
         </li>
-        <li class="active">
+        <li>
           <a href="/settings/billing">
             <i class="icon-chevron-right"></i>
             Billing
           </a>
         </li>
-        <li class="active">
+        <li>
           <a href="/settings/payments">
             <i class="icon-chevron-right"></i>
             Payment History
           </a>
         </li>
-      </ul> 
-
-      <!--right panel -->
-      <div class="span8">
-        {% block seettings_content%}
-        {% endblock %}
-      </div>
+      </ul>   
     </div>
+      <!--right panel-->
+      <div class="span8">
+        {% block settings_content %}
+        {% endblock %}
+      </div> 
   </div>
 </div>
 
