@@ -2,5 +2,58 @@
 {% extends "features/settings.html" %}
 
 {% block settings_content %}
-  <p>test</p>
+	<div class="modal modal-fixed">
+		<div class="modal-header">
+			<h3><b>Billing</b></h3>
+		</div>
+		<div class="modal-body">
+			 <table class="table ">
+			 	<thread>
+			 		<tr>
+			 			<th>Plan</th>
+			 			<th>Price</th>
+			 			<th>Respostories</th>
+			 			<th>Saved Time</th>
+			 			<th>Postion</th>
+			 		</tr>
+			 	</thread>
+			 	<tbody>
+			 		<tr>
+			 			<th>VIP</th>
+			 			<th>$50/month</th>
+			 			<th>100W</th>
+			 			<th>20 year</th>
+			 			<th>You are HERE!</th>
+			 		</tr>
+			 		<tr>
+			 			<th>Large</th>
+			 			<th>$22/month</th>
+			 			<th>1W</th>
+			 			<th>5 year</th>
+			 		</tr>
+			 		<tr>
+			 			<th>Medium</th>
+			 			<th>$12/month</th>
+			 			<th>1000</th>
+			 			<th>1 year</th>
+			 		</tr>
+			 		<tr>
+			 			<th>Small</th>
+			 			<th>$7/month</th>
+			 			<th>100</th>
+			 			<th>6 month</th>
+			 		</tr>
+			 		<tr>
+			 			<th>Free</th>
+			 			<th>$0/month</th>
+			 			<th>20</th>
+			 			<th>2 weak</th>
+			 		</tr>
+			 	</tbody>
+			 </table>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn btn-primary">Upgrade</a>
+		</div>
+	</div>
 {% endblock %}

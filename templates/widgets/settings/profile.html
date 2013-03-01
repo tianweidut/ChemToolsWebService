@@ -1,5 +1,45 @@
 {% extends "features/settings.html" %}
 
 {% block settings_content %}
-  <p>test</p>
+	<div class="modal modal-fixed">
+		<div class="modal-header">
+			<h3><b>User Profile</b></h3>
+		</div>
+		<div class="modal-body">
+			 <label class="settings-label">Name</label>
+    		 <input class="input-xlarge" type="text" id="username">
+    		 <br/>
+    		 <label class="settings-label">Email</label>
+    		 <input class="input-xlarge" type="text" id="email">
+    		 <br/>
+    		 <label class="settings-label">URL</label>
+    		 <input class="input-xlarge" type="text" id="url">
+    		 <br/>
+    		 <label class="settings-label">Company</label>
+    		 <input class="input-xlarge" type="text" id="company">
+    		 <br/>
+    		 <label class="settings-label">Location</label>
+    		 <input class="input-xlarge" type="text" id="location">
+    		 <br/>
+    		 <label class="settings-label">URL</label>
+    		 <input class="input-xlarge" type="text" id="url">
+    		 <br/>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn btn-primary">Save changes</a>
+		</div>
+	</div>
+	<div class="modal modal-fixed modal-fixed-another">
+		<div class="modal-header">
+			<h3><b>Machine Information</b></h3>
+		</div>
+		<div class="modal-body">
+			 <label class="settings-label">Machine Code</label>
+    		 <input class="input-xlarge" type="text" id="machinecode">
+    		 <br/>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn btn-primary">Save changes</a>
+		</div>
+	</div>
 {% endblock %}

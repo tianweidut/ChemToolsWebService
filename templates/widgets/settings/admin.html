@@ -2,5 +2,23 @@
 {% extends "features/settings.html" %}
 
 {% block settings_content %}
-  <p>test</p>
+	<div class="modal modal-fixed">
+		<div class="modal-header">
+			<h3><b>Change Password</b></h3>
+		</div>
+		<div class="modal-body">
+			 <label class="settings-label">Old Password</label>
+    		 <input class="input-xlarge" type="password" id="old-password" autocomplete="disabled">
+    		 <br/>
+    		 <label class="settings-label">New Password</label>
+    		 <input class="input-xlarge" type="password" id="new-password" autocomplete="disabled">
+    		 <br/>
+    		 <label class="settings-label">Confirm New Password</label>
+    		 <input class="input-xlarge" type="password" id="new-password2" autocomplete="disabled">
+			 <br/>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn btn-primary">Update Password</a>
+		</div>
+	</div>
 {% endblock %}

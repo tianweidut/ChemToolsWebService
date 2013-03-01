@@ -336,3 +336,19 @@ p.progress-value{
 div.container-center{
 	text-align: center;
 }
+
+div.modal-fixed{
+	margin-left : 10px;
+	top:0%;
+	left:0%;
+	position: relative;
+	z-index: 0;
+}
+
+div.modal-fixed-another{
+	margin-top:75px;
+}
+
+label.settings-label{
+	font-weight:bold;
+}
