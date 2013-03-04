@@ -1,7 +1,7 @@
 <!-- Basic Info search input -->
 <!--input cas, chinese name, english name, smiles-->
 <br/>
-<form class="form-search form-search-modified" method="post">
+<form class="form-search form-search-modified" method="post" action=".">
 	{% csrf_token %}
 	<div class="input-append">
 		{{ basic_form.info }}

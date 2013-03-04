@@ -11,6 +11,8 @@ from django.views.generic.simple import direct_to_template
 from django.contrib import admin
 
 from gui import views as gui_views
+from users import views as users_views
+
 
 admin.autodiscover()
 
@@ -38,7 +40,7 @@ urlpatterns = patterns('',
         name="accounts"
     ),
     url(
-        r'^download/$',
+        '^download/$',
         direct_to_template, {'template': 'introduction/download.html'},
         name="download"
     ),
@@ -79,23 +81,23 @@ urlpatterns = patterns('',
     ),
     url(
         r'^settings/profile/$',
-        direct_to_template, {'template': 'widgets/settings/profile.html'},
-        name="profile"
+        #direct_to_template, {'template': 'widgets/settings/profile.html'},
+        users_views.profile
     ),
     url(
         r'^settings/admin/$',
-        direct_to_template, {'template': 'widgets/settings/admin.html'},
-        name="admin"
+        #direct_to_template, {'template': 'widgets/settings/admin.html'},
+        users_views.admin_account
     ),
     url(
         r'^settings/billing/$',
-        direct_to_template, {'template': 'widgets/settings/billing.html'},
-        name="billing"
+        #direct_to_template, {'template': 'widgets/settings/billing.html'},
+        users_views.billing
     ),
     url(
         r'^settings/payments/$',
-        direct_to_template, {'template': 'widgets/settings/payments.html'},
-        name="payments"
+        #direct_to_template, {'template': 'widgets/settings/payments.html'},
+        users_views.payments
     ),
     url(
         r'^forum/',

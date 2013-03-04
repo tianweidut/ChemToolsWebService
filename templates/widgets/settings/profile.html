@@ -9,41 +9,49 @@ active
 		<div class="modal-header">
 			<h3><b>User Profile</b></h3>
 		</div>
-		<div class="modal-body">
+    <form method="post" action=".">
+      {% csrf_token %}
+		  <div class="modal-body">
 			 <label class="settings-label">Name</label>
-    		 <input class="input-xlarge" type="text" id="username">
+          {{ form.name }} 
+          <span class="form-error help-inline">{{form.name.errors}}</span>
     		 <br/>
     		 <label class="settings-label">Email</label>
-    		 <input class="input-xlarge" type="text" id="email">
+         {{ form.email }}
+          <span class="form-error help-inline">{{form.email.errors}}</span>
     		 <br/>
-    		 <label class="settings-label">URL</label>
-    		 <input class="input-xlarge" type="text" id="url">
+    		 <label class="settings-label">Telephone</label>
+         {{ form.telephone }}
+          <span class="form-error help-inline">{{form.telephone.errors}}</span>
     		 <br/>
     		 <label class="settings-label">Company</label>
-    		 <input class="input-xlarge" type="text" id="company">
+         {{ form.company }}
+          <span class="form-error help-inline">{{form.company.errors}}</span>
     		 <br/>
     		 <label class="settings-label">Location</label>
-    		 <input class="input-xlarge" type="text" id="location">
+         {{ form.location }}
+          <span class="form-error help-inline">{{form.location.errors}}</span>
     		 <br/>
-    		 <label class="settings-label">URL</label>
-    		 <input class="input-xlarge" type="text" id="url">
-    		 <br/>
-		</div>
-		<div class="modal-footer">
-			<a href="#" class="btn btn-primary">Save changes</a>
-		</div>
+		  </div>
+
 	</div>
 	<div class="modal modal-fixed modal-fixed-another">
 		<div class="modal-header">
 			<h3><b>Machine Information</b></h3>
 		</div>
-		<div class="modal-body">
-			 <label class="settings-label">Machine Code</label>
-    		 <input class="input-xlarge" type="text" id="machinecode">
+		  <div class="modal-body">
+			   <label class="settings-label">Machine Code</label>
+         {{ form.machinecode }}
+          <span class="form-error help-inline">{{form.machinecode.errors}}</span>
     		 <br/>
-		</div>
-		<div class="modal-footer">
-			<a href="#" class="btn btn-primary">Save changes</a>
-		</div>
+			   <label class="settings-label">Agent ID</label>
+         {{ form.agentid }}
+          <span class="form-error help-inline">{{form.agentid.errors}}</span>
+    		 <br/>
+      </div>
+      <div class="modal-footer">
+			  <button type="submit" class="btn btn-primary">Save changes</button>
+		  </div>
+    </form>
 	</div>
 {% endblock %}

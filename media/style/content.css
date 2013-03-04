@@ -356,3 +356,7 @@ label.settings-label{
 #result_tabs{
   margin-left: 80px;
 }
+
+span.form-error{
+  color:red;
+}
