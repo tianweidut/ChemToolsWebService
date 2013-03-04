@@ -8,9 +8,9 @@
 
 from django.conf.urls import patterns, include, url
 from django.views.generic.simple import direct_to_template
-
-
 from django.contrib import admin
+
+from gui import views as gui_views
 
 admin.autodiscover()
 
@@ -59,8 +59,8 @@ urlpatterns = patterns('',
     ),
     url(
         r'^newtask/$',
-        direct_to_template, {'template': 'features/newtask.html'},
-        name="newtask"
+        #direct_to_template, {'template': 'features/newtask.html'},
+        gui_views.basic_search
     ),
     url(
         r'^history/$',

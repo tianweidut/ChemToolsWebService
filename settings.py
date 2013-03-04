@@ -240,7 +240,7 @@ TMP_FILE_PATH = join(SETTINGS_ROOT,'tmp/')
 
 #Debug 
 INTERNAL_IPS = ('127.0.0.1', '192.168.2.201','192.168.2.7','localhost',
-                '192.168.2.124') 
+                '192.168.2.218') 
 
 DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.version.VersionDebugPanel',
