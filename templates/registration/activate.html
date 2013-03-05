@@ -1,20 +1,22 @@
 {% extends "base/base.html" %}
 {% load i18n %}
 
-{% block left %} {% endblock %}
-
 {% block content %}
 
-{% if account %}
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/accounts_form.css" >
 
-<p>{% trans "Account successfully activated" %}</p>
+<div class="container form-container">
+  {% if account %}
 
-<p><a href="{% url auth_login %}">{% trans "Log in" %}</a></p>
+  <p>{% trans "Account successfully activated" %}</p>
 
-{% else %}
+  <p><a href="{% url auth_login %}">{% trans "Log in" %}</a></p>
 
-<p>{% trans "Account activation failed" %}</p>
+  {% else %}
 
-{% endif %}
+  <p>{% trans "Account activation failed" %}</p>
 
+  {% endif %}
+
+</div>
 {% endblock %}

@@ -7,6 +7,7 @@
 
 <div class="container form-container">
 	<form class="form-signin" method="post" action="{% url registration_register %}">
+    {% csrf_token %}
 		<h2>Register new account</h2>			
 		{% include 'base/_form.html' %}			
 		<button class="btn btn-large btn-primary" type="submit">Submit</button>	
