@@ -4,7 +4,7 @@ Created on 2012-11-10
 
 @author: tianwei
 '''
-
+import uuid
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -19,7 +19,7 @@ class UserProfile(models.Model):
     """
     user = models.OneToOneField(User)
     machinecode = models.CharField(max_length = 100)
-    agentID = models.CharField(max_length = 40,default = DEFAULT_CREATE_ID,unique=True)         #When the userProfile is created,agentId will be created automatically.
+    agentID = models.CharField(max_length = 40,default = uuid.uuid4(),unique=True)         #When the userProfile is created,agentId will be created automatically.
     workunit = models.CharField(max_length = 2000,blank=True)
     address  = models.CharField(max_length = 2000,blank=True)
     telephone = models.CharField(max_length = 100, blank=True)
