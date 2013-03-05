@@ -13,7 +13,6 @@ import os
 import sys
 
 from django.shortcuts import get_object_or_404
-from django.db.models import Count
 from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.conf import settings
@@ -25,7 +24,6 @@ from django.utils import simplejson
 from django.views.decorators import csrf
 from django.contrib.auth.decorators import login_required
 
-from utils.addonsearch.search import search_cheminfo
 from backend.logging import logger
 from users import models
 from users import forms
@@ -44,27 +42,41 @@ def profile(request):
 
     if request.method == "POST":
         form = forms.UserProfileForm(user, request.POST)
-        logger.debug(str(form.is_valid()) + '*' * 20)
         if form.is_valid():
             user.workunit = form.cleaned_data["company"]
             user.telephone = form.cleaned_data["telephone"]
             user.address = form.cleaned_data["location"]
             user.machinecode = form.cleaned_data["machinecode"]
             user.save()
+
             HttpResponseRedirect("/settings/profile")
     else:
         form = forms.UserProfileForm(user)
 
-    data = {
-            "form":form,
-            }
+    data = {"form": form}
     return render(request, "widgets/settings/profile.html", data)
 
 
 @login_required
 @csrf.csrf_protect
 def admin_account(request):
-    data = {}
+    """
+        Set Password
+    """
+    user = get_object_or_404(models.UserProfile,
+                             user__username=request.user.username)
+    if not (request.user == user or request.user.is_superuser):
+        raise Http404
+
+    if request.method == "POST":
+        form = forms.PasswordForm(user, request.POST)
+        if form.is_valid():
+            user.user.set_password(form.cleaned_data["new_password"])
+            user.save()
+    else:
+        form = forms.PasswordForm()
+
+    data = {"form": form}
     return render(request, "widgets/settings/admin.html", data)
 
 
