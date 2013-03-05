@@ -1,6 +1,7 @@
 *.py[co]
 *~
 *.swp
+*.swo
 build/*
 log/*
 media/pictures/*
