@@ -89,9 +89,11 @@ class PasswordForm(forms.Form):
                                    max_length=255,
                                    widget=forms.PasswordInput(attrs={"class": "input-xlarge"}))
     new_password = forms.CharField(required=True,
+                                   min_length=6,
                                    max_length=255,
                                    widget=forms.PasswordInput(attrs={"class": "input-xlarge"}))
     new_password2 = forms.CharField(required=True,
+                                    min_length=6,
                                     max_length=255,
                                     widget=forms.PasswordInput(attrs={"class": "input-xlarge"}))
     user = None
@@ -113,13 +115,15 @@ class PasswordForm(forms.Form):
                             password=password)
 
         if user is None:
-            self._errors["password"] = ErrorList([u'Please input the corrected password!'])
-            del self.cleaned_data["password"]
+            self._errors["old_password"] = ErrorList([u'Please input the corrected password!'])
+            if self.cleaned_data.get("old_password", None) is not None:
+                del self.cleaned_data["old_password"]
 
         # check newpassword twice
         if new_password != new_password2:
             self._errors["new_password2"] = ErrorList([u'The twiced password\
                 cannot match!'])
-            del self.cleaned_data["new_password2"]
+            if self.cleaned_data.get("new_password2", None) is not None:
+                del self.cleaned_data["new_password2"]
 
         return self.cleaned_data

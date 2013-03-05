@@ -65,16 +65,17 @@ def admin_account(request):
     """
     user = get_object_or_404(models.UserProfile,
                              user__username=request.user.username)
-    if not (request.user == user or request.user.is_superuser):
+    if not (request.user == user.user or request.user.is_superuser):
         raise Http404
 
     if request.method == "POST":
         form = forms.PasswordForm(user, request.POST)
         if form.is_valid():
             user.user.set_password(form.cleaned_data["new_password"])
-            user.save()
+            user.user.save()
+            HttpResponseRedirect("/info/")
     else:
-        form = forms.PasswordForm()
+        form = forms.PasswordForm(user)
 
     data = {"form": form}
     return render(request, "widgets/settings/admin.html", data)
