@@ -11,9 +11,11 @@ import re,sha
 import uuid
 
 from django.conf import settings
+from django.shortcuts import render_to_response
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.contrib.sites.models import get_current_site
 from django.db import models
 
@@ -83,9 +85,9 @@ class RegistrationManager(models.Manager):
                                        {'activation_key':registration_profile.activation_key,
                                         'expiration_days':settings.ACCOUNT_ACTIVATION_DAYS,
                                         'site':get_current_site(request)})
-            logger.error(message)            
+            logger.error(message)          
             send_mail(subject,message,settings.DEFAULT_FROM_EMAIL,[new_user.email])
-        
+      
         return new_user
     
     def create_profile(self,user):

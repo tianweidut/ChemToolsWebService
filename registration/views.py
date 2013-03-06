@@ -34,6 +34,7 @@ def active(request, activation_key,
                                },
                               context_instance = context)
     
+
 def register(request, success_url = None,
              form_class = RegistrationFormUniqueEmail, profile_callback=None,
              template_name='registration/registration_form.html',
@@ -63,5 +64,4 @@ def register(request, success_url = None,
     return render_to_response(template_name,
                               {'form':form},
                               context_instance=context)  
-    
-    
+     

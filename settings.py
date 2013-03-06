@@ -11,7 +11,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+     ('939829151', '939829151@qq.com'),
 )
 
 MANAGERS = ADMINS
@@ -210,20 +210,15 @@ AUTH_PROFILE_MODULE = 'users.UserProfile'
 ACCOUNT_ACTIVATION_DAYS = 30
 LOGIN_REDIRECT_URL = '/'
 
-EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
-EMAIL_HOST = 'mail'
-EMAIL_HOST_USER = 'liutianweidlut@gmail.com'
-EMAIL_HOST_PASSWORD = ''
-EMAIL_PORT = 25
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+SERVER_EMAIL = "tianweidut@mail.dlut.edu.cn"
+EMAIL_SUBJECT_PREFIX = '[Chemistry]'
+EMAIL_HOST = 'mail.dlut.edu.cn'
+EMAIL_PORT = '25'
+EMAIL_HOST_USER = 'tianweidut@mail.dlut.edu.cn'
+EMAIL_HOST_PASSWORD = '9683096830'
+DEFAULT_FROM_EMAIL = 'tianweidut@mail.dlut.edu.cn'
 EMAIL_USE_TLS = False
-
-#EMAIL_HOST = 'smtp.gmail.com'
-#EMAIL_PORT = 587
-#EMAIL_HOST_USER = 'gmailusername@gmail.com'
-#EMAIL_HOST_PASSWORD = 'xxxxxxx'
-#EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'liutianweidlut@gmail.com'
-SERVER_EMAIL = 'liutianweidlut@gmail.com'
 
 #########################
 # File Transfer settings

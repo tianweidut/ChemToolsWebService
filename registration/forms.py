@@ -78,7 +78,7 @@ class RegistrationForm(forms.Form):
                                                                     username=self.cleaned_data['username'],
                                                                     password=self.cleaned_data['password1'],
                                                                     email=self.cleaned_data['email'],
-                                                                    machinecode=self.cleaned_data['machinecode'], 
+                                                                    machinecode=self.cleaned_data['machinecode'],
                                                                     profile_callback=profile_callback)
 
         return new_user
