@@ -86,7 +86,11 @@ class RegistrationManager(models.Manager):
                                         'expiration_days':settings.ACCOUNT_ACTIVATION_DAYS,
                                         'site':get_current_site(request)})
             logger.error(message)          
-            send_mail(subject,message,settings.DEFAULT_FROM_EMAIL,[new_user.email])
+            send_mail(subject,
+                      message,
+                      settings.DEFAULT_FROM_EMAIL,
+                      [new_user.email],
+                      fail_sliently=False)
       
         return new_user
     
@@ -143,15 +147,4 @@ class RegistrationProfile(models.Model):
         return self.activation_key == "ALREADY_ACTIVATED" or \
                (self.user.date_joined + expiration_date <= datetime.datetime.now())
                
-    activation_key_expired.boolean = True
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    activation_key_expired.boolean = True 
