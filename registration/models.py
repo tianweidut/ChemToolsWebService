@@ -17,6 +17,8 @@ from django.contrib.auth.models import User
 from django.contrib.sites.models import get_current_site
 from django.db import models
 
+from backend.logging import logger
+
 SHA1_RE = re.compile('^[a-f0-9]{40}$')      #Activation Key
 
 class RegistrationManager(models.Manager):
@@ -49,7 +51,7 @@ class RegistrationManager(models.Manager):
     
     def create_inactive_user(self,request,
                              username,password,email,machinecode,
-                             send_email=False,profile_callback=None):
+                             send_email=True, profile_callback=None):
         """
         Create a new, inactive ``User``, generates a
         ``RegistrationProfile`` and email its activation key to the
@@ -81,7 +83,7 @@ class RegistrationManager(models.Manager):
                                        {'activation_key':registration_profile.activation_key,
                                         'expiration_days':settings.ACCOUNT_ACTIVATION_DAYS,
                                         'site':get_current_site(request)})
-            
+            logger.error(message)            
             send_mail(subject,message,settings.DEFAULT_FROM_EMAIL,[new_user.email])
         
         return new_user
