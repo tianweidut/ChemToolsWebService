@@ -231,6 +231,9 @@ PUBLIC_DOWNLOADS_URL_BASE = '/data/'
 
 TMP_FILE_PATH = join(SETTINGS_ROOT,'tmp/')
 
+# Search Image Path
+SEARCH_IMAGE_PATH = join(TMP_FILE_PATH, 'search-image')
+
 #APPEND_SLASH=False
 
 #Debug 
