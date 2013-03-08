@@ -229,10 +229,11 @@ PREPARE_UPLOAD_BACKEND = 'filetransfers.backends.delegate.prepare_upload'
 PUBLIC_DOWNLOAD_URL_BACKEND = 'filetransfers.backends.base_url.public_download_url'
 PUBLIC_DOWNLOADS_URL_BASE = '/data/'
 
-TMP_FILE_PATH = join(SETTINGS_ROOT,'tmp/')
+TMP_FILE_PATH = join(SETTINGS_ROOT, 'tmp/')
 
 # Search Image Path
-SEARCH_IMAGE_PATH = join(TMP_FILE_PATH, 'search-image')
+SEARCH_IMAGE_PATH_RE = join("tmp", "search-image")
+SEARCH_IMAGE_PATH = join(TMP_FILE_PATH, SEARCH_IMAGE_PATH_RE)
 
 #APPEND_SLASH=False
 
