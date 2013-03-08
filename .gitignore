@@ -4,6 +4,7 @@
 *.swo
 build/*
 log/*
+tmp/*
 media/pictures/*
 
 .settings/*
