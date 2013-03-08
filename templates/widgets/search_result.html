@@ -1,10 +1,12 @@
 <!-- cas,name,chinese name, smiles search results-->
 <div class="container-fluid search-result">
+
+{%if search_result.is_valid %}
 	<div class="row-fluid">
 		<div class="span4">
 				<!--Sidebar content: pic and some introduction-->
 			<h3>Structure</h3>
-			<img src="{{STATIC_URL}}images/examples/structure.png">		
+      <img src="{{search_result.imagepath}}">		
 			<br/>	
 			<br/>			
 			<div class="caption">
@@ -21,13 +23,13 @@
 					<tbody>
 						<tr class="success">
 							<td>1</td>
-							<td>MWt</td>
-							<td>206.281</td>
+							<td>Average mass</td>
+              <td>{{ search_result.averagemass }} Da</td>
 						</tr>
 						<tr class="error">
 							<td>2</td>
-							<td>MF</td>
-							<td>C13H18O2</td>
+							<td>Monoisotopic mass</td>
+              <td>{{ search_result.monoisotopicmass }} Da</td>
 						</tr>
 					</tbody>	
 				</table>
@@ -46,20 +48,20 @@
 					</thead>
 					<tbody>
 						<tr class="success">
-							<td>CAS Number</td>
-							<td>15687-27-1</td>
+							<td>Common Name</td>
+              <td>{{ search_result.commonname }}</td>
 						</tr>
 						<tr class="error">
-							<td>Name</td>
-							<td>XXXX</td>
+							<td>Smiles</td>
+              <td>{{ search_result.smiles}}</td>
 						</tr>
 						<tr class="inverse">
-							<td>Chinese Name</td>
-							<td>苯</td>
+							<td>Std. Inchi</td>
+              <td>{{ search_result.inchi }}</td>
 						</tr>
 						<tr class="info">
-							<td>Smiles</td>
-							<td>S=C=NC</td>
+							<td>Std. InChiKey</td>
+              <td>{{ search_result.inchikey}}</td>
 						</tr>
 						<tr class="warning">
 							<td>Supplier</td>
@@ -78,4 +80,7 @@
 			 </p>
 		</div>
 	</div>
+{% else %}
+  <h3>Sorry, cannot search anything! Please check your input string!</h3>
+{%endif%}
 </div>

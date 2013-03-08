@@ -25,7 +25,7 @@ from django.views.decorators import csrf
 from django.contrib.auth.decorators import login_required
 
 from gui import forms
-from utils.addonsearch.search import search_cheminfo
+from utils.ChemSpiPy.wrapper import search_cheminfo
 from backend.logging import logger
 
 
@@ -47,18 +47,18 @@ def basic_search(request):
             search_result = search_cheminfo(search_text)
             data = {"is_valid": True,
                     "is_searched": True,
-                    "text": search_result,
+                    "search_result": search_result,
                     "basic_form": basic_form}
         else:
             data = {"is_valid": False,
                     "is_searched": True,
-                    "text": "None",
+                    "search_result": "None",
                     "basic_form": basic_form}
         return render(request, "features/newtask.html", data)
     else:
         basic_form = forms.BasicInfoForm()
         data = {"is_valid": True,
                 "is_searched": False,
-                "text": "None",
+                "search_result": "None",
                 "basic_form": basic_form}
         return render(request, "features/newtask.html", data)

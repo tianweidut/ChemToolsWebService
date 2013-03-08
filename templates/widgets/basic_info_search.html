@@ -37,10 +37,14 @@
 		{% if is_valid %}
 		<div id="collapseOne" class="accordion-body collapse">
 				<div class="accordion-inner">
-					{% include "widgets/search_result.html" %}
+		      {% if is_valid %}
+					  {% include "widgets/search_result.html" %}
+          {% else %}
+            <p>Please check your search query!</p>
+          {% endif %}
 				</div>
 		</div>
-		{% endif %}
+    {% endif %}
 	</div>
 </div>
 {% endif %}
