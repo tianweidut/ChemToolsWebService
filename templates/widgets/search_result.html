@@ -6,7 +6,7 @@
 		<div class="span4">
 				<!--Sidebar content: pic and some introduction-->
 			<h3>Structure</h3>
-      <img src="{{search_result.imagepath}}">		
+      <img src="{{ search_result.content.imagepath }}">		
 			<br/>	
 			<br/>			
 			<div class="caption">
@@ -24,12 +24,22 @@
 						<tr class="success">
 							<td>1</td>
 							<td>Average mass</td>
-              <td>{{ search_result.averagemass }} Da</td>
+              <td>{{ search_result.content.averagemass }} Da</td>
 						</tr>
-						<tr class="error">
+						<tr class="success">
 							<td>2</td>
 							<td>Monoisotopic mass</td>
-              <td>{{ search_result.monoisotopicmass }} Da</td>
+              <td>{{ search_result.content.monoisotopicmass }} Da</td>
+						</tr>
+						<tr class="error">
+							<td>3</td>
+							<td>alogp</td>
+              <td>{{ search_result.content.alogp }}</td>
+						</tr>
+						<tr class="error">
+							<td>4</td>
+							<td>xlogp</td>
+              <td>{{ search_result.content.xlogp }}</td>
 						</tr>
 					</tbody>	
 				</table>
@@ -49,27 +59,29 @@
 					<tbody>
 						<tr class="success">
 							<td>Common Name</td>
-              <td>{{ search_result.commonname }}</td>
+              <td>{{ search_result.content.commonname }}</td>
 						</tr>
 						<tr class="error">
 							<td>Smiles</td>
-              <td>{{ search_result.smiles}}</td>
+              <td>{{ search_result.content.smiles}}</td>
 						</tr>
 						<tr class="inverse">
 							<td>Std. Inchi</td>
-              <td>{{ search_result.inchi }}</td>
+              <td>{{ search_result.content.inchi }}</td>
 						</tr>
 						<tr class="info">
 							<td>Std. InChiKey</td>
-              <td>{{ search_result.inchikey}}</td>
+              <td>{{ search_result.content.inchikey}}</td>
 						</tr>
 						<tr class="warning">
-							<td>Supplier</td>
-							<td>AstaTech</td>
+							<td>mf</td>
+              {% autoescape off %}
+              <td>{{ search_result.content.mf}}</td>
+              {% endautoescape %}
 						</tr>
 						<tr class="important">
-							<td>Supplier ID</td>
-							<td>25861</td>
+							<td>molecular weight</td>
+              <td>{{ search_result.content.molecularweight}}</td>
 						</tr>		
 					</tbody>	
 				</table>
