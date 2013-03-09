@@ -40,6 +40,7 @@ def basic_search(request):
         for STEP1 page and Search page
     """
     data = {}
+    search_result = None
     if request.method == "POST":
         basic_form = forms.BasicInfoForm(request.POST)
         if basic_form.is_valid():

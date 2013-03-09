@@ -6,7 +6,7 @@
 		<div class="span4">
 				<!--Sidebar content: pic and some introduction-->
 			<h3>Structure</h3>
-      <img src="{{ search_result.content.imagepath }}">		
+      <img src="{{STATIC_URL}}{{search_result.content.imagepath }}" style="width: 120px; height: 120px;">		
 			<br/>	
 			<br/>			
 			<div class="caption">
@@ -30,16 +30,6 @@
 							<td>2</td>
 							<td>Monoisotopic mass</td>
               <td>{{ search_result.content.monoisotopicmass }} Da</td>
-						</tr>
-						<tr class="error">
-							<td>3</td>
-							<td>alogp</td>
-              <td>{{ search_result.content.alogp }}</td>
-						</tr>
-						<tr class="error">
-							<td>4</td>
-							<td>xlogp</td>
-              <td>{{ search_result.content.xlogp }}</td>
 						</tr>
 					</tbody>	
 				</table>
@@ -83,6 +73,15 @@
 							<td>molecular weight</td>
               <td>{{ search_result.content.molecularweight}}</td>
 						</tr>		
+            <tr class="error">
+							<td>alogp</td>
+              <td>{{ search_result.content.alogp }}</td>
+						</tr>
+						<tr class="error">
+							<td>xlogp</td>
+              <td>{{ search_result.content.xlogp }}</td>
+						</tr>
+
 					</tbody>	
 				</table>
 			 <!--Operations Button-->
