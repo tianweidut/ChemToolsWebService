@@ -11,7 +11,7 @@ import os
 import urllib2
 
 from django.conf import settings
-from utils.ChemSpiPy.chemspipy import find_one
+from utils.ChemSpiderPy.chemspipy import find_one
 
 from backend.logging import logger
 

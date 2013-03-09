@@ -25,7 +25,7 @@ from django.views.decorators import csrf
 from django.contrib.auth.decorators import login_required
 
 from gui import forms
-from utils.ChemSpiPy.wrapper import search_cheminfo
+from utils.ChemSpiderPy.wrapper import search_cheminfo
 from backend.logging import logger
 
 
