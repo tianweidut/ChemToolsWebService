@@ -29,14 +29,14 @@ from utils.ChemSpiderPy.wrapper import search_cheminfo
 from backend.logging import logger
 
 
-def step1_form(request):
+def step1_form(request=None):
     """
         Step1 for module choice,
         basic info input and search
     """
     data = {}
     search_result = None
-    if request.method == "POST":
+    if request is not None:
         basic_form = forms.BasicInfoForm(request.POST)
 
         if basic_form.is_valid():
@@ -62,27 +62,29 @@ def step1_form(request):
         return data
 
 
-def step2_form(request):
+def step2_form(request=None):
     """
         Step2 for module choice,
         choice chemistry models
     """
-    pass
+    return {}
 
 
-def step3_form(request):
+def step3_form(request=None):
     """
         Step3 for module choice,
         response message
     """
     pass
+    return {}
 
-def step4_form(request):
+def step4_form(request=None):
     """
         Step4 for module choice,
         show all submit information, which will contain error message
     """
     pass
+    return {}
 
 
 @login_required
