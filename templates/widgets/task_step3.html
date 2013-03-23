@@ -9,11 +9,17 @@
       <div class="span6">
         <fieldset>
           <legend>Response Method</legend>
-          <div class="alert-success response-label">
-            1. WEB Download
-          </div>
-          <div class="alert-success response-label">
-            2. Email Deliver
+          <div class="row">
+            <div class="span6">
+              <div class="alert-success response-label ">
+                1. WEB Download
+              </div>
+            </div>
+            <div class="span6"> 
+              <div class="alert-success response-label">
+                2. Email Deliver
+              </div>
+            </div>
           </div>
         </fieldset>
         
@@ -30,11 +36,15 @@
             <label class="checkbox left-txt alert-info filetype"><input type="checkbox" id="choice_pdf" value="optionpdf">PDF</label>
           </div>
         </fieldset>
-
+        <fieldset>
+          <legend>Task Name</legend>
+          <input class="span12" id="task_input" type="TEXT" placeholder="unique name for task...">
+        </fieldset>
       </div>
       <div class="span6">
+        <fieldset>
           <legend>Commit Notes</legend>
-          <textarea rows="5" cols="8" id="commit_notes" style="margin: 0px 0px 10px; width: 469px; height: 163px;"></textarea>
+          <textarea rows="5" cols="8" id="commit_notes" style="margin: 0px 0px 10px; width: 469px; height: 247px;"></textarea>
         </fieldset>
       </div>
     </div>

@@ -36,10 +36,10 @@
       </div>
 	</div>
     
-    <!--div class="div-center"> 
-		<input type="button" class="btn btn-large btn-primary" id="btnWizardPrev" value="prev">
-		<input type="button" class="btn btn-large btn-primary" id="btnWizardNext" value="next">
-		<input type="button" class="btn btn-large btn-primary" id="btnWizardStep" value="current step">
-	</div-->
 </div>
+{% endblock %}
+
+{% block endjs%}
+  <!--JS for calculate sumbit content update and Ajax opteration-->
+  <script type='text/javascript' src="{{STATIC_URL}}js/calculate_submit"></script>
 {% endblock %}
