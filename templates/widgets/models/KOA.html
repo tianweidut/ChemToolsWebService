@@ -5,7 +5,7 @@
 			<div class="btn-group" href="#collapse1">
 				<a class="user-info accordion-toggle" data-toggle="collapse" data-parent="#models-choice-accordions" href="#collapse1">KOA</a>
 				<a class="label label-important user-info-label" href="#collapse1">Environment behavior</a>
-				<a class="label label-warning user-info-label" href="#collapse1" id="label_id_1" visible="false" rel="label-choice">choiced!</a>
+				<a class="label label-warning user-info-label" href="#collapse1" id="label_id_koa" visible="false" rel="label-choice">choiced!</a>
 			</div>
 			<!--Content-->
 			<div id="collapse1" class="accordion-body collapse in">
@@ -25,7 +25,7 @@
 							<div class="span6">
 								<!--switch button-->
 								<div class="center-float">
-									<a class="btn btn-large btn-block btn-primary " rel="button-switch" switch_text="undo this model" control_id="label_id_1">Choice This Model!</a>
+									<a class="btn btn-large btn-block btn-primary " id="model_KOA_choice" rel="button-switch" model="koa" switch_text="undo this model" control_id="label_id_koa">Choice This Model!</a>
 								</div>
 								<br/>
 								<!--Input arguments-->
@@ -36,7 +36,7 @@
 											<option>Centigrade(C)</option>
 											<option>Fahrenheit(F)</option>
 										</select>							
-										<input class="span6" id="temp1" type="text" placeholder="temperature(T or C)">
+										<input class="span6"  id="temperature_koa" rel="raw_content"  type="text" placeholder="temperature(T or C)">
 										<select class="span2">
 											<option>.1</option>
 											<option>.01</option>
@@ -50,14 +50,14 @@
 								<fieldset>
 									<legend>Humidity Arguments</legend>
 									<div class="input-prepend input-append">						
-										<input class="span6" id="humi1" type="text" placeholder="humidity(percentage)">
+										<input class="span6" id="humidity_koa" rel="raw_content" type="text" placeholder="humidity(percentage)">
 										<span class="add-on">%</span>
 									</div>
 								</fieldset>
 								<fieldset>
 									<legend>Other Arguments</legend>
 									<div class="input-prepend input-append">						
-										<input class="span6" id="other1" type="text" placeholder="other">
+										<input class="span6"  id="other_koa" rel="raw_content"  type="text" placeholder="other">
 										<span class="add-on">**</span>
 									</div>
 								</fieldset>

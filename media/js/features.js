@@ -49,11 +49,6 @@ $(document).ready(function () {
 
 
 $(document).ready(function(){ 
-  //button toggle for model choices
-  $('[rel=button-switch]').btn_toggle();
-  
-  //choice label 
-  $('[rel=label-choice]').hide();
   
   //date picker
   $('.datepicker').datepicker({
