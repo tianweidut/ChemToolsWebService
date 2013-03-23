@@ -1,5 +1,4 @@
-Django>=1.4
-piston
+Django==1.4.2
 PIL
 lbforum
 django-debug-toolbar

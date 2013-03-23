@@ -63,7 +63,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT =join(SETTINGS_ROOT, 'static/')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -87,7 +87,6 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -134,7 +133,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.csrf',
     'django.contrib.messages.context_processors.messages',
-
     "djangohelper.context_processors.ctx_config",
 
 )
@@ -156,7 +154,6 @@ INSTALLED_APPS = (
     'fileupload',
     #Add-on
     'debug_toolbar',
-    'tinymce',
     #LBForum
     'pagination',
     'south',
@@ -195,15 +192,6 @@ LOGGING = {
         },
     }
 }
-
-LOG_PATH = os.path.join(os.path.dirname(__file__), "log")
-
-LOG_FILENAME = 'askbot.log'
-
-logging.basicConfig(filename=os.path.join(os.path.dirname(__file__), 'log', LOG_FILENAME),
-                    level=logging.CRITICAL,
-                    format='%(pathname)s TIME: %(asctime)s MSG:%(filename)s:%(funcName)s:%(lineno)d %(message)s',
-                    )
 
 #Add support  to user profile
 AUTH_PROFILE_MODULE = 'users.UserProfile'
@@ -326,28 +314,6 @@ HTML_SAFE_TAGS = ['embed']
 HTML_SAFE_ATTRS = ['allowscriptaccess', 'allowfullscreen', 'wmode']
 HTML_UNSAFE_TAGS = []
 HTML_UNSAFE_ATTRS = []
-"""
-#default html safe settings 
-acceptable_elements = ['a', 'abbr', 'acronym', 'address', 'area', 'b', 'big',
-      'blockquote', 'br', 'button', 'caption', 'center', 'cite', 'code', 'col',
-      'colgroup', 'dd', 'del', 'dfn', 'dir', 'div', 'dl', 'dt', 'em',
-      'font', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'i', 'img', 
-      'ins', 'kbd', 'label', 'legend', 'li', 'map', 'menu', 'ol', 
-      'p', 'pre', 'q', 's', 'samp', 'small', 'span', 'strike',
-      'strong', 'sub', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th',
-      'thead', 'tr', 'tt', 'u', 'ul', 'var']
-
-acceptable_attributes = ['abbr', 'accept', 'accept-charset', 'accesskey',
-  'action', 'align', 'alt', 'axis', 'border', 'cellpadding', 'cellspacing',
-  'char', 'charoff', 'charset', 'checked', 'cite', 'clear', 'cols',
-  'colspan', 'color', 'compact', 'coords', 'datetime', 'dir', 
-  'enctype', 'for', 'headers', 'height', 'href', 'hreflang', 'hspace',
-  'id', 'ismap', 'label', 'lang', 'longdesc', 'maxlength', 'method',
-  'multiple', 'name', 'nohref', 'noshade', 'nowrap', 'prompt', 
-  'rel', 'rev', 'rows', 'rowspan', 'rules', 'scope', 'shape', 'size',
-  'span', 'src', 'start', 'summary', 'tabindex', 'target', 'title', 'type',
-  'usemap', 'valign', 'value', 'vspace', 'width', 'style']
-"""
 
 """
 Base Skin Settings
@@ -363,66 +329,11 @@ FILE_UPLOAD_HANDLERS = (
             'django.core.files.uploadhandler.TemporaryFileUploadHandler',
                 )
 
-ASKBOT_ALLOWED_UPLOAD_FILE_TYPES = ('.jpg', '.jpeg', '.gif', '.bmp', '.png','.tiff')
-ASKBOT_MAX_UPLOAD_FILE_SIZE = 1024 * 1024 #result in bytes
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-
-"""
-TINY MCE Editor
-"""
-TINYMCE_COMPRESSOR = True
-TINYMCE_SPELLCHECKER = False
-TINYMCE_JS_ROOT = os.path.join(MEDIA_ROOT, 'js/tinymce/')
-
-TINYMCE_URL = MEDIA_URL + 'js/tinymce/'
-TINYMCE_DEFAULT_CONFIG = {
-            'plugins': 'askbot_imageuploader,askbot_attachment',
-            'convert_urls': False,
-            'theme': 'advanced',
-            'force_br_newlines': True,
-            'force_p_newlines': False,
-            'forced_root_block': '',
-            'mode': 'textareas',
-            'oninit': "function(){ tinyMCE.activeEditor.setContent(askbot['data']['editorContent'] || ''); }",
-            'theme_advanced_toolbar_location': 'top',
-            'theme_advanced_toolbar_align': 'left',
-            'theme_advanced_buttons1': 'bold,italic,underline,|,bullist,numlist,|,undo,redo,|,link,unlink,askbot_imageuploader,askbot_attachment',
-            'theme_advanced_buttons2': '',
-            'theme_advanced_buttons3': '',
-            'theme_advanced_path': False,
-            'theme_advanced_resizing': True,
-            'theme_advanced_resize_horizontal': False,
-            'theme_advanced_statusbar_location': 'bottom',
-            'height': '250'
-}
-
-"""
-Other settings from askbot
-"""
-MAX_COMMENT_LENGTH  = 300
-EDITOR_TYPE = "tinymce"
-
-MAX_TAG_LENGTH = 20
-MIN_TITLE_LENGTH = 10
-TAGS_ARE_REQUIRED = False
-ENABLE_TAG_MODERATION = False
-MAX_TAGS_PER_POST = 5
-
-SHOW_LOGO = True
-
-USE_LICENSE = True
-LICENSE_USE_URL = True
-LICENSE_USE_LOGO = True
-LICENSE_ACRONYM = 'cc-by-sa'
-LICENSE_TITLE = 'Creative Commons Attribution Share Alike 3.0'
-LICENSE_URL = 'http://creativecommons.org/licenses/by-sa/3.0/legalcode'
-LICENSE_LOGO_URL = 'images/cc-by-sa.png'
 
 APP_COPYRIGHT = 'Copyright Chemistry Tools, 2012-2013.'
 
 LOGOUT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
-
-SITE_LOGO_URL = "images/logo.gif"
 
 APP_TITLE = "Chemistry Tools"
