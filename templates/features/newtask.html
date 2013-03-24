@@ -40,6 +40,19 @@
 {% endblock %}
 
 {% block endjs%}
+  <!--external scripts for files upload-->
+  <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/jquery.ui.widget.js"></script>
+  <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/tmpl.min.js"></script>
+  <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/load-image.min.js"></script>
+  <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/canvas-to-blob.min.js"></script>
+  <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/jquery.iframe-transport.js"></script>
+  <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/jquery.fileupload.js"></script>
+  <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/jquery.fileupload-fp.js"></script>
+  <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/jquery.fileupload-ui.js"></script>
+  <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/locale.js"></script>
+  <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/main.js"></script>
+  <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/csrf.js"></script>
+
   <!--JS for calculate sumbit content update and Ajax opteration-->
   <script type='text/javascript' src="{{STATIC_URL}}js/calculate_submit.js"></script>
 {% endblock %}
