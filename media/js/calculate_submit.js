@@ -8,6 +8,7 @@ $(document).ready(function(){
   $('#response_type_copy > p').hide();
   $('[rel="modified_choice"]').hide();
   $('[rel=label-choice]').hide();
+  $("#mol_file_string_copy").hide();
 });
 
 //raw content copy
@@ -72,3 +73,23 @@ $('#basic_search_add').click(function(){
   $(this).toggleClass("btn-primary");
   $(this).toggleClass("btn-danger");
 });
+
+$(document).ready(function(){
+    var editor = chemwriter.loadEditor('editor', {
+			    enableClipboard: true,
+			    appletPath:      "{{ STATIC_URL }}chemwriter/chemwriter-util.jar"
+		});
+    
+    $('#draw_btn').click(function(){
+      var mol_string = editor.getMolfile();
+      
+      $("#mol_string_flag").text("The mol string has already been added!");
+      $("#mol_file_string_copy").attr("loaded","true");
+      $("#mol_file_string_copy").text(mol_string);
+
+      $(this).text("Added!");
+      $(this).addClass("btn-danger");
+    });
+});
+
+
