@@ -57,5 +57,4 @@ $("[rel='button-switch']").click(function(){
       $(show_element).attr("visible", "false");
       $(show_element).hide(); 
     }
-
 });
