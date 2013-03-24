@@ -4,7 +4,7 @@
 */
 
 .chemwriter .editor {
-  width: 700px; height: 400px;
+  width: 900px; height: 400px;
   position: relative;
   background-color: #aaaaaa;
   font-family: Verdana, Arial, sans-serif;
@@ -22,4 +22,6 @@
 div.draw-container{
 	width: auto; 
 	margin: 0 auto 1em auto; 
+  text-align:center;
+  float:center;
 }

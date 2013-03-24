@@ -11,13 +11,15 @@
   outline: 0;
 }
 .chemwriter .editor {
-  width: 600px; height: 400px;
+  width: 800px; height: 400px;
   position: relative;
   background-color: #aaaaaa;
   font-family: Verdana, Arial, sans-serif;
   cursor: default;
   border: 3px solid #aaaaaa;
   border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius:5px;
+  text-align: center;
+  float:center;
 }
 .chemwriter .editor .move-cursor {
   cursor: move;
