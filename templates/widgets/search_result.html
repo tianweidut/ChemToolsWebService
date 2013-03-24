@@ -6,7 +6,7 @@
 		<div class="span4">
 				<!--Sidebar content: pic and some introduction-->
 			<h3>Structure</h3>
-      <img src="{{STATIC_URL}}{{search_result.content.imagepath }}" style="width: 120px; height: 120px;">		
+      <img id="last_picture" src="{{STATIC_URL}}{{search_result.content.imagepath }}" style="width: 120px; height: 120px;">		
 			<br/>	
 			<br/>			
 			<div class="caption">
@@ -53,7 +53,7 @@
 						</tr>
 						<tr class="error">
 							<td>Smiles</td>
-              <td>{{ search_result.content.smiles}}</td>
+              <td id="last_smile">{{ search_result.content.smiles}}</td>
 						</tr>
 						<tr class="inverse">
 							<td>Std. Inchi</td>
@@ -86,8 +86,7 @@
 				</table>
 			 <!--Operations Button-->
 			 <p id="opeartions-button">
-			 	<button class="btn  btn-large btn-warning">Cancel</button>
-			 	<button class="btn  btn-large btn-primary">Saved</button>
+			 	<button class="btn  btn-large btn-primary" id="basic_search_add">Saved</button>
 			 </p>
 		</div>
 	</div>

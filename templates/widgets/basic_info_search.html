@@ -31,11 +31,11 @@
 		<div class="accordion-group">
 			<div class="accordion-heading">
 				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-					{% if is_valid %} successful! {% else %} Failed! {% endif %}
+					{% if is_valid %} Search successful! {% else %} Failed! {% endif %}
 				</a>	
 			</div>
 		{% if is_valid %}
-		<div id="collapseOne" class="accordion-body collapse">
+		<div id="collapseOne" class="accordion-body collapse in">
 				<div class="accordion-inner">
 		      {% if is_valid %}
 					  {% include "widgets/search_result.html" %}

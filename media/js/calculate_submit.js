@@ -20,7 +20,7 @@ $("[rel='raw_content']").change(function(){
 //raw choice copy
 $("[rel='raw_choice']").change(function(){
   var name = $(this).attr("id") + "_selected";
-  if($(this).attr("checked") == "checked")
+  if($(this).attr("checked") === "checked")
     {
       $("#" + name).show();
     }
@@ -57,4 +57,18 @@ $("[rel='button-switch']").click(function(){
       $(show_element).attr("visible", "false");
       $(show_element).hide(); 
     }
+});
+
+$('#basic_search_add').click(function(){
+  var smile_element = $('#last_smile');
+  var pic_element = $('#last_picture');
+  var smile_copy = "#" + smile_element.attr("id") + "_copy";
+  var pic_copy = "#" + pic_element.attr("id") + "_copy";
+
+  $(smile_copy).text(smile_element.text());
+  $(pic_copy).attr("src", pic_element.attr("src"));
+  
+  $(this).text("Added!");
+  $(this).toggleClass("btn-primary");
+  $(this).toggleClass("btn-danger");
 });
