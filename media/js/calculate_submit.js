@@ -52,8 +52,8 @@ $("[rel='button-switch']").click(function(){
     {
       $(this).text("Please choice");
       $(this).toggleClass("btn-danger");
-      $(checked_element).attr("visible", "true");
-      $(checked_element).show();
+      $(checked_element).attr("visible", "false");
+      $(checked_element).hide();
       $(show_element).attr("visible", "false");
       $(show_element).hide(); 
     }

@@ -1,69 +1,23 @@
+{%extends "widgets/models/model_base.html"%}
 
-		<!--model 6-->
-		<div class="models-choice-div">
-			<!--title-->
-			<div class="btn-group" href="#collapse6">
-				<a class="user-info accordion-toggle" data-toggle="collapse" data-parent="#models-choice-accordions" href="#collapse6">PPK</a>
-				<a class="label label-info user-info-label" href="#collapse6">Health toxicology</a>
-				<a class="label label-warning user-info-label" href="#collapse6" id="label_id_6" visible="false" rel="label-choice">choiced!</a>
-			</div>
-			<!--Content-->
-			<div id="collapse6" class="accordion-body collapse ">
-				<div class="accordion-inner">
-					<div class="container-fluid">
-						<div class="row-fluid">
-							<!--Introductions-->
-							<div class="span6">
-								<div class="page-header">
-									<h4>Abstract</h4>
-								</div>
-								<blockquote>
-									Dragon 6 has been reconceived with the aim of proposing an even more powerful application for descriptor calculation and analysis. Dragon 6 has been designed to work both for Windows and Linux, as graphical and command-line interface. The changes between Dragon 5.5 and Dragon 6.0 are listed in the on-line help. The Graphical User Interface has been completely renewed to improve and facilitate selection and calculation of molecular descriptors. Moreover, new tools for the screening analysis of calculated descriptors have been added.
-								</blockquote>
-							</div>
-							<!--Choice and input args-->
-							<div class="span6">
-								<!--switch button-->
-								<div class="center-float">
-									<a class="btn btn-large btn-block btn-primary " rel="button-switch" switch_text="undo this model" control_id="label_id_6">Choice This Model!</a>
-								</div>
-								<br/>
-								<!--Input arguments-->
-								<fieldset>
-									<legend>Temperature Arguments</legend>
-									<div class="input-prepend input-append">
-										<select class="span4">
-											<option>Centigrade(C)</option>
-											<option>Fahrenheit(F)</option>
-										</select>							
-										<input class="span6" id="temp6" type="text" placeholder="temperature(T or C)">
-										<select class="span2">
-											<option>.1</option>
-											<option>.01</option>
-											<option>.001</option>
-											<option>.0001</option>
-											<option>.00001</option>
-										</select>
-									</div>
-								</fieldset>
-								<br/>
-								<fieldset>
-									<legend>Humidity Arguments</legend>
-									<div class="input-prepend input-append">						
-										<input class="span6" id="humi6" type="text" placeholder="humidity(percentage)">
-										<span class="add-on">%</span>
-									</div>
-								</fieldset>
-								<fieldset>
-									<legend>Other Arguments</legend>
-									<div class="input-prepend input-append">						
-										<input class="span6" id="other6" type="text" placeholder="other">
-										<span class="add-on">**</span>
-									</div>
-								</fieldset>
-							</div>	
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+<!--model ppk-->
+{%block collapse_id%}"#collapse_ppk"{%endblock%}
+
+{%block collapse_id_real%}"collapse_ppk"{%endblock%}
+
+{%block model_name_title %}PPK{%endblock%}
+
+{%block model_type%}Environment behavior{%endblock%}
+
+{%block choiced_label%}"label_id_ppk"{%endblock%}
+
+{%block model_introduction%}
+	Dragon 6 has been reconceived with the aim of proposing an even more powerful application for descriptor calculation and analysis. Dragon 6 has been designed to work both for Windows and Linux, as graphical and command-line interface. The changes between Dragon 5.5 and Dragon 6.0 are listed in the on-line help. The Graphical User Interface has been completely renewed to improve and facilitate selection and calculation of molecular descriptors. Moreover, new tools for the screening analysis of calculated descriptors have been added.								
+{%endblock%}
+
+{%block model_choice_id%}"model_ppk_choice"{%endblock%}
+{%block model_name%}"ppk"{%endblock%} 
+{%block control_id%}"label_id_ppk"{%endblock%}
+{%block temperature_model%}"temperature_ppk"{%endblock%}
+{%block humidity_model%}"humidity_ppk"{%endblock%}
+{%block other_model%}"other_ppk"{%endblock%}
