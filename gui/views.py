@@ -62,49 +62,20 @@ def step1_form(request=None):
         return data
 
 
-def step2_form(request=None):
-    """
-        Step2 for module choice,
-        choice chemistry models
-    """
-    return {}
-
-
-def step3_form(request=None):
-    """
-        Step3 for module choice,
-        response message
-    """
-    pass
-    return {}
-
-def step4_form(request=None):
-    """
-        Step4 for module choice,
-        show all submit information, which will contain error message
-    """
-    pass
-    return {}
-
-
 @login_required
-def basic_search(request):
+def multi_inputform(request):
     """
-        basic info search view function
-        for STEP1 page and Search page
+    Multi input form:
+       * basic info search view function
+         for STEP1 page and Search page
+       * multi files upload 
     """
     step1_data = {}
-    step2_data = {}
-    step3_data = {}
 
     if request.method == "POST":
         step1_data = step1_form(request)
-        step2_data = step2_form(request)
-        step3_data = step3_form(request)
     else:
         step1_data = step1_form()
-        step2_data = step2_form()
-        step3_data = step3_form()
 
-    data = dict(step1_data, **dict(step2_data, **step3_data))
+    data = dict(step1_data)
     return render(request, "features/newtask.html", data)

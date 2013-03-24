@@ -3,3 +3,4 @@ PIL
 lbforum
 django-debug-toolbar
 django-tinymce
+pillow

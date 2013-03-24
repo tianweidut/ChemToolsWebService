@@ -61,8 +61,7 @@ urlpatterns = patterns('',
     ),
     url(
         r'^newtask/$',
-        #direct_to_template, {'template': 'features/newtask.html'},
-        gui_views.basic_search
+        gui_views.multi_inputform
     ),
     url(
         r'^history/$',
@@ -81,22 +80,18 @@ urlpatterns = patterns('',
     ),
     url(
         r'^settings/profile/$',
-        #direct_to_template, {'template': 'widgets/settings/profile.html'},
         users_views.profile
     ),
     url(
         r'^settings/admin/$',
-        #direct_to_template, {'template': 'widgets/settings/admin.html'},
         users_views.admin_account
     ),
     url(
         r'^settings/billing/$',
-        #direct_to_template, {'template': 'widgets/settings/billing.html'},
         users_views.billing
     ),
     url(
         r'^settings/payments/$',
-        #direct_to_template, {'template': 'widgets/settings/payments.html'},
         users_views.payments
     ),
     url(
@@ -109,67 +104,4 @@ urlpatterns = patterns('',
         include('attachments.urls'),
         name="attachments"
     ),
-
 )
-
-
-urlpatterns += patterns('',
-    url(
-        r'^tags/$',
-        direct_to_template, {'template': 'home/index.html'},
-        name="tags"
-    ),
-    url(
-        r'^site_settings/$',
-        direct_to_template, {'template': 'home/index.html'},
-        name="site_settings"
-    ),
-    url(
-        r'^widgets/$',
-        direct_to_template, {'template': 'home/index.html'},
-        name="widgets"
-    ),
-    url(
-        r'^about/$',
-        direct_to_template, {'template': 'home/index.html'},
-        name="about"
-    ),
-    url(
-        r'^faq/$',
-        direct_to_template, {'template': 'home/index.html'},
-        name="faq"
-    ),
-    url(
-        r'^help/$',
-        direct_to_template, {'template': 'home/index.html'},
-        name="help"
-    ),
-    url(
-        r'^privacy/$',
-        direct_to_template, {'template': 'home/index.html'},
-        name="privacy"
-    ),
-    url(
-        r'^users/$',
-        direct_to_template, {'template': 'home/index.html'},
-        name="users"
-    ),
-    url(
-        r'^feedback/$',
-        direct_to_template, {'template': 'home/index.html'},
-        name="feedback"
-    ),
-    url(
-        r'^questions/$',
-        direct_to_template, {'template': 'home/index.html'},
-        name="questions"
-    ),
-
-
-)
-
-from fileupload.views import PictureCreateView, PictureDeleteView
-
-urlpatterns += patterns('',
-        url(r'^new/$', PictureCreateView.as_view(), {}, 'upload-new'),
-        url(r'^delete/(?P<pk>\d+)$', PictureDeleteView.as_view(), {}, 'upload-delete'),)

@@ -226,7 +226,7 @@ SEARCH_IMAGE_PATH = join(MEDIA_ROOT, SEARCH_IMAGE_PATH_RE)
 #APPEND_SLASH=False
 
 #Debug 
-INTERNAL_IPS = ('192.168.2.218') 
+INTERNAL_IPS = ('192.168.2.90','127.0.0.1') 
 
 DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.version.VersionDebugPanel',
