@@ -93,6 +93,7 @@ def upload_save_process(request):
 
     obj = ProcessedFile()
     obj.title = name + str(uuid.uuid4()) + "." + filetype
+    wrapper_f.name = obj.title
     obj.file_obj = f
     obj.file_type = filetype if filetype != " " else "unknown"
     obj.save()

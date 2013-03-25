@@ -28,7 +28,7 @@ class Picture(models.Model):
 
 
 class ProcessedFile(models.Model):
-    title = models.CharField(max_length=60, blank=False)
+    title = models.CharField(max_length=60, blank=False, unique=True)
     file_obj = models.FileField(upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
     file_type = models.CharField(max_length=10, blank=False)
 
