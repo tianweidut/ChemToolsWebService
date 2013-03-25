@@ -86,10 +86,29 @@ $(document).ready(function(){
       $("#mol_string_flag").text("The mol string has already been added!");
       $("#mol_file_string_copy").attr("loaded","true");
       $("#mol_file_string_copy").text(mol_string);
-
       $(this).text("Added!");
       $(this).addClass("btn-danger");
     });
 });
 
+$("#upload_update").click(function(){
+  var table_data =new Array();
+  var row = "";
+  $("#files_table tr").each(function(trindex, tritem){
+    $(tritem).find("td").each(function(tdindex, tditem){
+      if($(tditem).attr("class") === "name")
+        {
+          var str = $(tditem).children().text();
+          table_data[trindex] = $(tditem).children().text();
+          //commit 
+          $("#fileupload_copy").empty();
+          row += '<tr><td>'+str+'</td></tr>';
+        }
+    });
+  }); 
+  
+  console.log(row);
+  $("#fileupload_copy").append(row);
+
+});
 

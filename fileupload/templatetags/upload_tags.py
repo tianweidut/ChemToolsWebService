@@ -19,7 +19,7 @@ def upload_js():
                 <div class="progress progress-success progress-striped active"><div class="bar" style="width:0%;"></div></div>
             </td>
             <td class="start">{% if (!o.options.autoUpload) { %}
-                <button class="btn btn-success">
+                <button class="btn btn-success" rel="fileupload_operation">
                     <i class="icon-upload icon-white"></i>
                     <span>{%=locale.fileupload.start%}</span>
                 </button>
@@ -28,7 +28,7 @@ def upload_js():
             <td colspan="2"></td>
         {% } %}
         <td class="cancel">{% if (!i) { %}
-            <button class="btn btn-warning">
+            <button class="btn btn-warning" rel="fileupload_operation">
                 <i class="icon-ban-circle icon-white"></i>
                 <span>{%=locale.fileupload.cancel%}</span>
             </button>
@@ -56,7 +56,7 @@ def upload_js():
             <td colspan="2"></td>
         {% } %}
         <td class="delete">
-            <button class="btn btn-danger" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}">
+            <button class="btn btn-danger" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}" rel="fileupload_operation">
                 <i class="icon-trash icon-white"></i>
                 <span>{%=locale.fileupload.destroy%}</span>
             </button>

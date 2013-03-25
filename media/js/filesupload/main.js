@@ -14,19 +14,17 @@
 
 $(function () {
     'use strict';
+    
+    $('#fileupload').fileupload({
+      dataType: 'json',
+    });
 
-    // Initialize the jQuery File Upload widget:
-    $('#fileupload').fileupload();
-
-    // Enable iframe cross-domain access via redirect option:
-    $('#fileupload').fileupload(
-        'option',
-        'redirect',
-        window.location.href.replace(
-            /\/[^\/]*$/,
-            '/cors/result.html?%s'
-        )
-    );
+    $("#fileupload").fileupload({
+      option:{
+        maxFileSize: 5000000,
+        acceptFileTypes: /(\.|\/)(mol|sdf|png|txt|csv|jpg)$/i,
+      }
+    });
 
     if (window.location.hostname === 'blueimp.github.com') {
         // Demo settings:
