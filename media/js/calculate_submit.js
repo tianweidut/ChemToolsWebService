@@ -119,7 +119,26 @@ $("#upload_update").click(function(){
 
 //Get Elements
 function GetModels(){
-  var dct = "";
+  var dct = new Array();
+  var index = 0;
+  
+  $("#models_choice_copy >tbody >tr").each(function(trindex, tritem){
+    if($(tritem).attr("visible") === "true")
+      {
+        var model = $(tritem).attr("model");
+        var temperature = $("#temperature_" + model + "_copy").text(); 
+        var humidity = $("#humidity_" + model + "_copy").text(); 
+        var other = $("#other_" + model + "_copy").text(); 
+
+        var args = temperature + ";" + humidity + ";" + other;
+        dct[index] = model + ";" + args;
+
+        index ++;
+
+      }
+  });
+  
+  console.log(dct);
 
   return dct;
 }
@@ -127,6 +146,11 @@ function GetModels(){
 function GetUniqueNames(){
   var str = "";
   var i =0 ;
+
+  if(table_data === undefined)
+    {
+      return str;
+    }
 
   for(i=0;i<table_data.length;i++)
   {

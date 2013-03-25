@@ -29,5 +29,6 @@ def calculate_submit(request,
     # Calculated Submit Process
     logger.info(unique_names)
     logger.info(types)
+    logger.info(models)
 
     return simplejson.dumps({'message': 'tianwei hello world!'})
