@@ -112,3 +112,12 @@ $("#upload_update").click(function(){
 
 });
 
+// Ajax for calcualte submit
+$('#commit-saved-btn').click(function(){
+  Dajaxice.gui.calculate_submit(function(d){
+    alert(d.message);
+  },
+  {"data":"test"});
+});
+
+

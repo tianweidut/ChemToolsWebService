@@ -9,12 +9,16 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic.simple import direct_to_template
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+from dajaxice.core import dajaxice_autodiscover, dajaxice_config
 
 from gui import views as gui_views
 from users import views as users_views
 
 
 admin.autodiscover()
+dajaxice_autodiscover()
 
 handler500 = 'djangotoolbox.errorviews.server_error'
 
@@ -104,4 +108,11 @@ urlpatterns = patterns('',
         include('attachments.urls'),
         name="attachments"
     ),
+
+    url(
+        dajaxice_config.dajaxice_url,
+        include('dajaxice.urls')
+    ),
 )
+
+urlpatterns += staticfiles_urlpatterns()
