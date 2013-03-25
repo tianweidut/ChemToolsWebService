@@ -4,3 +4,5 @@ lbforum
 django-debug-toolbar
 django-tinymce
 pillow
+django-dajax
+django-dajaxice
