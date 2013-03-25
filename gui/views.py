@@ -23,10 +23,14 @@ from django.template import RequestContext
 from django.utils import simplejson
 from django.views.decorators import csrf
 from django.contrib.auth.decorators import login_required
+from django.core.files.uploadedfile import UploadedFile
 
 from gui import forms
+from backend.fileoperator import receiveFile
 from utils.ChemSpiderPy.wrapper import search_cheminfo
 from backend.logging import logger
+from fileupload.views import JSONResponse, response_minetype
+from fileupload.models import Image
 
 
 def step1_form(request=None):
@@ -73,7 +77,27 @@ def multi_inputform(request):
     step1_data = {}
 
     if request.method == "POST":
-        step1_data = step1_form(request)
+        file_obj = request.FILES
+        if file_obj is None:
+            step1_data = step1_form(request)
+        else:
+            f = file_obj["file"]
+            saved_file = UploadedFile(file_obj["file"])
+            
+            image = Image()
+            image.title = str(saved_file.name)
+            image.image = f
+            image.save()
+            
+
+            path = settings.MEDIA_URL + "tmp/"
+            upload_data = [{'name':saved_file.name,
+                            'url': path + saved_file.name.replace(" ", "_"),
+                            }]
+            response = JSONResponse(upload_data, {}, response_minetype(request))  
+            response["Content-Dispostion"] = "inline; filename=files.json"
+            
+            return response
     else:
         step1_data = step1_form()
 

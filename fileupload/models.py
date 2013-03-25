@@ -22,3 +22,13 @@ class Picture(models.Model):
     def delete(self, *args, **kwargs):
         self.file.delete(False)
         super(Picture, self).delete(*args, **kwargs)
+
+
+class Image(models.Model):
+    title = models.CharField(max_length=60, blank=True, null=True)
+    image = models.FileField(upload_to="images/")
+    
+    def __unicode__(self):
+        return self.image.name
+
+
