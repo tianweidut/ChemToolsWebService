@@ -11,6 +11,7 @@ import datetime
 import logging
 import os
 import sys
+import uuid
 
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
@@ -30,7 +31,7 @@ from backend.fileoperator import receiveFile
 from utils.ChemSpiderPy.wrapper import search_cheminfo
 from backend.logging import logger
 from fileupload.views import JSONResponse, response_minetype
-from fileupload.models import Image
+from fileupload.models import ProcessedFile
 
 
 def step1_form(request=None):
@@ -66,38 +67,70 @@ def step1_form(request=None):
         return data
 
 
+def split_name(name, sep="."):
+    """
+        split type and name in a filename
+    """
+    name = str(name)
+    if sep in name:
+        f = name.split(sep)[0]
+        t = name.split(sep)[1]
+    else:
+        f = name
+        t = " "
+
+    return (f, t)
+
+
+def upload_save_process(request):
+    """
+        save file into local storage
+    """
+    f = request.FILES["file"]
+    wrapper_f = UploadedFile(f)
+
+    name, filetype = split_name(wrapper_f.name)
+
+    obj = ProcessedFile()
+    obj.title = name + str(uuid.uuid4()) + "." + filetype
+    obj.file_obj = f
+    obj.file_type = filetype if filetype != " " else "unknown"
+    obj.save()
+
+    return wrapper_f
+
+
+def upload_response(request):
+    """
+        use AJAX to process file upload
+    """
+    wrapper_f = upload_save_process(request)
+    path = settings.MEDIA_URL + settings.PROCESS_FILE_PATH
+    data = [{'name': wrapper_f.name,
+             'url': path + wrapper_f.name.replace(" ", "_"),
+             }]
+
+    response = JSONResponse(data, {}, response_minetype(request))
+    response["Content-Dispostion"] = "inline; filename=files.json"
+
+    return response
+
+
 @login_required
 def multi_inputform(request):
     """
     Multi input form:
        * basic info search view function
          for STEP1 page and Search page
-       * multi files upload 
+       * multi files upload
     """
     step1_data = {}
 
     if request.method == "POST":
-        file_obj = request.FILES
-        if file_obj is None:
+        if request.FILES is None:
             step1_data = step1_form(request)
         else:
-            f = file_obj["file"]
-            saved_file = UploadedFile(file_obj["file"])
-            
-            image = Image()
-            image.title = str(saved_file.name)
-            image.image = f
-            image.save()
-            
-
-            path = settings.MEDIA_URL + "tmp/"
-            upload_data = [{'name':saved_file.name,
-                            'url': path + saved_file.name.replace(" ", "_"),
-                            }]
-            response = JSONResponse(upload_data, {}, response_minetype(request))  
-            response["Content-Dispostion"] = "inline; filename=files.json"
-            
-            return response
+            return upload_response(request)
     else:
         step1_data = step1_form()
 

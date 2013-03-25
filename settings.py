@@ -219,6 +219,9 @@ PUBLIC_DOWNLOADS_URL_BASE = '/data/'
 
 TMP_FILE_PATH = join(SETTINGS_ROOT, 'tmp/')
 
+# calculated task original file
+PROCESS_FILE_PATH = join("tmp", "process_file")
+
 # Search Image Path
 SEARCH_IMAGE_PATH_RE = join("tmp", "search-image")
 SEARCH_IMAGE_PATH = join(MEDIA_ROOT, SEARCH_IMAGE_PATH_RE)
@@ -226,7 +229,7 @@ SEARCH_IMAGE_PATH = join(MEDIA_ROOT, SEARCH_IMAGE_PATH_RE)
 #APPEND_SLASH=False
 
 #Debug 
-INTERNAL_IPS = ('192.168.2.90','127.0.0.1') 
+INTERNAL_IPS = ('192.168.2.90', '127.0.0.1')
 
 DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.version.VersionDebugPanel',
@@ -274,11 +277,6 @@ LOGGING = {
         'django.request': {
             'handlers': ['console'],
             'level': 'ERROR',
-            'propagate': False,
-        },
-        'django.db.backends': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
             'propagate': False,
         },
     }

@@ -3,9 +3,12 @@
 Created on 2013-01-20
 
 @author: tianwei
+
+Desc: Process File Model
 '''
 
 from django.db import models
+from django.conf import settings
 
 
 class Picture(models.Model):
@@ -24,11 +27,10 @@ class Picture(models.Model):
         super(Picture, self).delete(*args, **kwargs)
 
 
-class Image(models.Model):
-    title = models.CharField(max_length=60, blank=True, null=True)
-    image = models.FileField(upload_to="images/")
-    
+class ProcessedFile(models.Model):
+    title = models.CharField(max_length=60, blank=False)
+    file_obj = models.FileField(upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
+    file_type = models.CharField(max_length=10, blank=False)
+
     def __unicode__(self):
-        return self.image.name
-
-
+        return self.title
