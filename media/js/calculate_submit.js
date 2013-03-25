@@ -4,6 +4,9 @@
  */
 
 // inital hide
+
+var table_data;
+
 $(document).ready(function(){
   $('#response_type_copy > p').hide();
   $('[rel="modified_choice"]').hide();
@@ -24,10 +27,12 @@ $("[rel='raw_choice']").change(function(){
   if($(this).attr("checked") === "checked")
     {
       $("#" + name).show();
+      $("#" + name).attr("visible", "true");
     }
   else
     {
       $("#" + name).hide();
+      $("#" + name).attr("visible", "false");
     }
 });
 
@@ -92,7 +97,7 @@ $(document).ready(function(){
 });
 
 $("#upload_update").click(function(){
-  var table_data =new Array();
+  table_data =new Array();
   var row = "";
   $("#files_table tr").each(function(trindex, tritem){
     $(tritem).find("td").each(function(tdindex, tditem){
@@ -112,12 +117,69 @@ $("#upload_update").click(function(){
 
 });
 
+//Get Elements
+function GetModels(){
+  var dct = "";
+
+  return dct;
+}
+
+function GetUniqueNames(){
+  var str = "";
+  var i =0 ;
+
+  for(i=0;i<table_data.length;i++)
+  {
+    str += table_data[i] + ";";
+  }
+
+  return str;
+}
+
+function GetResponseTypes(){
+  var str = "";
+  
+  $("#response_type_copy").find("p").each(function(index, item){
+    if($(item).attr("visible") === "true")
+      {
+        str += $(item).text() + ";";
+      }
+  });
+
+  return str;
+}
+
 // Ajax for calcualte submit
 $('#commit-saved-btn').click(function(){
+  // Get calculated submit infomation
+  // Arguments Defination:
+  //   * smile: smile name
+  //   * mol: it is mol string which is from ChemWrite
+  //   * notes: calculated task note
+  //   * name: calculated task name, which will be uniqued in backend
+  //   * unique_names: an array, which are the unique filenames from fileupload
+  //   * types: response file type: pdf, csv, txt
+  //   * models: a JSON dict, which is the model and it arguments 
+  
+  types = GetResponseTypes();
+  unique_names = GetUniqueNames();
+  models = GetModels();
+
+  data = {
+          "smile":$("#last_smile_copy").text(),
+          "mol":$("#mol_file_string_copy").text(),
+          "notes":$("#commit_notes_copy").text(),
+          "name":$("#commit_name_copy").text(),
+          "types":types,
+          "unique_names":unique_names,
+          "models":models,
+  };
+
+  console.log(data);
+
   Dajaxice.gui.calculate_submit(function(d){
     alert(d.message);
-  },
-  {"data":"test"});
+  },data);
 });
 
 

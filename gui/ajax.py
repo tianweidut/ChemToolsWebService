@@ -13,8 +13,21 @@ from dajaxice.decorators import dajaxice_register
 
 from backend.logging import logger
 
+
 @dajaxice_register(method='GET')
 @dajaxice_register(method='POST', name="calculate_submit_post")
-def calculate_submit(request, data):
-    logger.info(data)
-    return simplejson.dumps({'message': 'tianwei hello world!'+data})
+def calculate_submit(request,
+                     smile=None,
+                     mol=None,
+                     notes=None,
+                     name=None,
+                     unique_names=None,
+                     types="pdf;txt;csv",
+                     models=None
+                     ):
+
+    # Calculated Submit Process
+    logger.info(unique_names)
+    logger.info(types)
+
+    return simplejson.dumps({'message': 'tianwei hello world!'})
