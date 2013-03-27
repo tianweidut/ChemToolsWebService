@@ -12,6 +12,7 @@ import simplejson
 from dajaxice.decorators import dajaxice_register
 
 from backend.logging import logger
+from utils.ChemSpiderPy.wrapper import search_cheminfo
 
 
 @dajaxice_register(method='GET')
@@ -32,3 +33,21 @@ def calculate_submit(request,
     logger.info(models)
 
     return simplejson.dumps({'message': 'tianwei hello world!'})
+
+
+@dajaxice_register(method='GET')
+@dajaxice_register(method='POST', name="search_varify_post")
+def search_varify_info(request, query=None):
+    # Calculated Submit Process
+    logger.info(query)
+    data = {}
+
+    if query is not None:
+        search_result = search_cheminfo(query.strip())
+        data = {"is_searched": True,
+                "search_result": search_result}
+    else:
+        data = {"is_searched": False,
+                "search_result": "None"}
+    logger.info(data)
+    return simplejson.dumps(data)

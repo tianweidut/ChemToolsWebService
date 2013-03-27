@@ -125,15 +125,8 @@ def multi_inputform(request):
          for STEP1 page and Search page
        * multi files upload
     """
-    step1_data = {}
-
     if request.method == "POST":
-        if request.FILES is None:
-            step1_data = step1_form(request)
-        else:
+        if request.FILES is not None:
             return upload_response(request)
-    else:
-        step1_data = step1_form()
 
-    data = dict(step1_data)
-    return render(request, "features/newtask.html", data)
+    return render(request, "features/newtask.html")

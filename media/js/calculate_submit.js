@@ -12,6 +12,11 @@ $(document).ready(function(){
   $('[rel="modified_choice"]').hide();
   $('[rel=label-choice]').hide();
   $("#mol_file_string_copy").hide();
+
+  //search results
+  $('#search_result_panel').hide();
+  $('#valid_results').hide();
+  $('#unvalid_results').hide();
 });
 
 //raw content copy
@@ -202,8 +207,54 @@ $('#commit-saved-btn').click(function(){
   console.log(data);
 
   Dajaxice.gui.calculate_submit(function(d){
-    alert(d.message);
+    callback();
   },data);
+
+  function callback(){
+    console.log("success response!");
+  }
 });
 
+$('#search_varify_btn').click(function(){
+  data = {
+          "query":$("#query_input").val(),
+  };
+  
+  console.log(data);
+
+  Dajaxice.gui.search_varify_info(function(d){
+   callback(d); 
+  },data);
+
+  function callback(d){
+    console.log(d);
+    //show the results
+    console.log(d.is_searched);
+    if(d.is_searched === true)
+      {
+        $("#search_result_panel").show();
+        if(d.search_result.is_valid === true)
+          {
+            $('#valid_results').show();
+            $('#unvalid_results').hide();
+            $('#last_picture').attr('src', "/static/" + d.search_result.content.imagepath);
+            $('#xlogp').text(d.search_result.content.xlogp); 
+            $('#alogp').text(d.search_result.content.alogp); 
+            $('#molecular_weight').text(d.search_result.content.molecularweight); 
+            $('#mf').text(d.search_result.content.mf); 
+            $('#std_inchikey').text(d.search_result.content.inchikey); 
+            $('#std_inchi').text(d.search_result.content.inchi); 
+            $('#last_smile').text(d.search_result.content.smiles); 
+            $('#common_name').text(d.search_result.content.commonname); 
+            $('#mono_mass').text(d.search_result.content.monoisotopicmass); 
+            $('#average_mass').text(d.search_result.content.averagemass); 
+          }
+        else
+          {
+            $('#valid_results').hide();
+            $('#unvalid_results').show();
+          }
+      }
+  }
+});
 

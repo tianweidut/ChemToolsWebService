@@ -1,8 +1,7 @@
 <!-- cas,name,chinese name, smiles search results-->
 <div class="container-fluid search-result">
 
-{%if search_result.is_valid %}
-	<div class="row-fluid">
+	<div class="row-fluid" id="valid_results">
 		<div class="span4">
 				<!--Sidebar content: pic and some introduction-->
 			<h3>Structure</h3>
@@ -24,12 +23,12 @@
 						<tr class="success">
 							<td>1</td>
 							<td>Average mass</td>
-              <td>{{ search_result.content.averagemass }} Da</td>
+              <td id="average_mass">{{ search_result.content.averagemass }} Da</td>
 						</tr>
 						<tr class="success">
 							<td>2</td>
 							<td>Monoisotopic mass</td>
-              <td>{{ search_result.content.monoisotopicmass }} Da</td>
+              <td id="mono_mass">{{ search_result.content.monoisotopicmass }} Da</td>
 						</tr>
 					</tbody>	
 				</table>
@@ -49,7 +48,7 @@
 					<tbody>
 						<tr class="success">
 							<td>Common Name</td>
-              <td>{{ search_result.content.commonname }}</td>
+              <td id="common_name">{{ search_result.content.commonname }}</td>
 						</tr>
 						<tr class="error">
 							<td>Smiles</td>
@@ -57,29 +56,29 @@
 						</tr>
 						<tr class="inverse">
 							<td>Std. Inchi</td>
-              <td>{{ search_result.content.inchi }}</td>
+              <td id="std_inchi">{{ search_result.content.inchi }}</td>
 						</tr>
 						<tr class="info">
 							<td>Std. InChiKey</td>
-              <td>{{ search_result.content.inchikey}}</td>
+              <td id="std_inchikey">{{ search_result.content.inchikey}}</td>
 						</tr>
 						<tr class="warning">
 							<td>mf</td>
               {% autoescape off %}
-              <td>{{ search_result.content.mf}}</td>
+              <td id="mf">{{ search_result.content.mf}}</td>
               {% endautoescape %}
 						</tr>
 						<tr class="important">
 							<td>molecular weight</td>
-              <td>{{ search_result.content.molecularweight}}</td>
+              <td id="molecular_weight">{{ search_result.content.molecularweight}}</td>
 						</tr>		
             <tr class="error">
 							<td>alogp</td>
-              <td>{{ search_result.content.alogp }}</td>
+              <td id="alogp">{{ search_result.content.alogp }}</td>
 						</tr>
 						<tr class="error">
 							<td>xlogp</td>
-              <td>{{ search_result.content.xlogp }}</td>
+              <td id="xlogp">{{ search_result.content.xlogp }}</td>
 						</tr>
 
 					</tbody>	
@@ -90,7 +89,5 @@
 			 </p>
 		</div>
 	</div>
-{% else %}
-  <h3>Sorry, cannot search anything! Please check your input string!</h3>
-{%endif%}
+  <h3 id="unvalid_results">Sorry, cannot search anything! Please check your input string!</h3>
 </div>
