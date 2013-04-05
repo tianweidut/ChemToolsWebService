@@ -6,3 +6,6 @@ django-tinymce
 pillow
 django-dajax
 django-dajaxice
+django-celery
+django-kombu
+Celery
