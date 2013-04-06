@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<DRAGON generation_date="2012-07-05 01:09:18.297758" script_version="1" version="6.0.22">
+		<OPTIONS>
+			<Decimal_Separator value="."/>
+			<Missing_String value="NaN"/>
+			<Add2DHydrogens  value="false"/>
+			<LogPathWalk  value="true"/>
+			<LogEdge  value="true"/>
+			<Weights>
+				<weight name="Mass"/>
+				<weight name="VdWVolume"/>
+				<weight name="Electronegativity"/>
+				<weight name="Polarizability"/>
+				<weight name="Ionization"/>
+				<weight name="I-State"/>
+			</Weights>
+			<LogPathWalk  value="true"/>
+			<SaveOnlyData   value="false"/>
+			<SaveLabelsOnSeparateFile   value="false"/>
+			<SaveFormatBlock   value="%b - %n.txt"/>
+			<SaveFormatSubBlock   value="%b-%s - %n - %m.txt"/>
+			<SaveExcludeMisVal    value="false"/>
+			<SaveExcludeAllMisVal    value="false"/>
+			<SaveExcludeNearConst     value="false"/>
+			<SaveExcludeStdDev     value="false"/>
+			<SaveStdDevThreshold     value="0.0001"/>
+			<SaveExcludeCorrelated  value="false"/>
+			<SaveExcludeConst    value="false"/>
+			<SaveExclusionOptionsToVariables  value="false"/>
+			<SaveExcludeMisMolecules  value="false"/>
+			<SaveExcludeRejectedMolecules  value="false"/>
+		</OPTIONS>
+		<DESCRIPTORS>
+			<block SelectAll="true" id="1"/>
+			<block SelectAll="true" id="2"/>
+			<block SelectAll="true" id="3"/>
+			<block SelectAll="true" id="4"/>
+			<block SelectAll="true" id="5"/>
+			<block SelectAll="true" id="6"/>
+			<block SelectAll="true" id="7"/>
+			<block SelectAll="true" id="8"/>
+			<block SelectAll="true" id="9"/>
+			<block SelectAll="true" id="10"/>
+			<block SelectAll="true" id="11"/>
+			<block SelectAll="true" id="12"/>
+			<block SelectAll="true" id="13"/>
+			<block SelectAll="true" id="14"/>
+			<block SelectAll="true" id="15"/>
+			<block SelectAll="true" id="16"/>
+			<block SelectAll="true" id="17"/>
+			<block SelectAll="true" id="18"/>
+			<block SelectAll="true" id="19"/>
+			<block SelectAll="true" id="20"/>
+			<block SelectAll="true" id="21"/>
+			<block SelectAll="true" id="22"/>
+			<block SelectAll="true" id="23"/>
+			<block SelectAll="true" id="24"/>
+			<block SelectAll="true" id="25"/>
+			<block SelectAll="true" id="26"/>
+			<block SelectAll="true" id="27"/>
+			<block SelectAll="true" id="28"/>
+		</DESCRIPTORS>
+		<MOLFILES>
+			<molInput value="file"/>
+			<molFile  value="/home/est863/Desktop/2012-PL-Zhanghongliang/PL model mol files/51-79-6urethane.mol"/>
+		</MOLFILES>
+		<OUTPUT>
+			<SaveStdOut value="false"/>
+			<SaveProject value="false"/>
+			<SaveProjectFile value="[file]"/>
+			<SaveFile  value="true"/>
+			<SaveType   value="singlefile"/>
+			<SaveFilePath value="/home/est863/Desktop/sytmac/result.txt"/>
+			<logMode  value="none"/>
+			<logFile  value="[file]"/>
+		</OUTPUT>
+		<EXTERNAL>
+			<fileName   value="[VALUE]"/>
+			<delimiter  value="[VALUE]"/>
+			<consecutiveDelimiter  value="true"/>
+			<MissingValue  value="[VALUE]"/>
+		</EXTERNAL>
+	</DRAGON>

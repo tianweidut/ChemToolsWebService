@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PATH>
+	<DRAGON>
+		<PATH>/opt/dragon6/dragon6shell -s </PATH>
+	</DRAGON>
+	<MOPAC>
+		<PATH>/opt/mopac/MOPAC2012.exe </PATH>
+	</MOPAC>
+	<GAUSSIAN>
+		<PATH>g09 </PATH>
+	</GAUSSIAN>
+</PATH>
