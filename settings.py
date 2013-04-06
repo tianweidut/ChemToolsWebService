@@ -152,7 +152,6 @@ INSTALLED_APPS = (
     'api',
     'registration',
     'users',
-    'calcore',
     'fileupload',
     #Add-on
     'debug_toolbar',

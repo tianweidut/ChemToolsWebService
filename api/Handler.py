@@ -18,15 +18,14 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.contrib.auth import authenticate
 
-#from deps.common.chem.proto import messages_pb2
 from deps.common.chem.json import message_json as messages_pb2
-from calcore.controllers import InputProcessing 
+from calcore.controllers import InputProcessing
 
 from api.decorators import message_handler
 
 from backend.logging import logger
 from backend.fileoperator import receiveFile
-from api.decorators import message_handler,message_handler_json
+from api.decorators import message_handler, message_handler_json
 
 from gui.models import *
 from users.models import UserProfile
