@@ -11,6 +11,10 @@ media/tmp/*
 .settings/*
 .pydevproject
 .project 
+*.arc
+*.mop
+*.out
+*.drs
 
 # Packages
 *.egg
