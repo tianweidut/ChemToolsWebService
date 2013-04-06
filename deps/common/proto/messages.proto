@@ -1,0 +1,153 @@
+/**
+ * Copyright (C) 2012 Tianwei 
+ *
+ * Author: Chem Team
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+ * USA
+ */
+
+
+package org.chem.proto;
+option java_outer_classname = "MessageProtos";
+
+//package org.umit.icm.proto.java;
+// Webservice Response Messages
+
+message Login {
+	required string username = 1;
+	required string password = 2;
+}
+
+message LoginResponse {
+	required string agentID = 1;
+	required bool 	isSucceddful = 2;
+	optional string reason = 3;
+}
+
+message SmileCodeSearch {
+	required string agentID = 1;
+	required string query   = 2;
+	optional string expectedEnglishName = 3;
+}
+
+message SmileCodeSearchResponse {
+	required bool  isSuccessful = 1;
+	required string result = 2;
+	optional string reason = 3;
+}
+
+message CasCodeSearch {
+	required string agentID = 1;
+	required string query   = 2; 
+}
+
+message CasCodeSearchResponse {
+	required bool  isSuccessful = 1;
+	required string result = 2;
+	optional string reason = 3;
+}
+
+message FileUploadCalculate {
+	required string agentID = 1;
+	required string fileName = 2;
+	enum FileType 
+	{
+		MOL = 0;
+		MOP = 1;
+		GIF = 2;
+	}
+	required FileType fileType = 3 [default = MOL];
+}
+
+message FileUploadCalculateResponse {
+	required bool  isSuccessful = 1;
+	required string result = 2;
+	optional string status = 3;
+	optional string reason = 4;
+}
+
+message Logout {
+	required string agentID = 1;
+	optional string username = 2;
+}
+
+message LogoutResponse {
+	required string status = 1;
+}
+
+//检验license 如果不存在TotalCount和LeftCount都为0
+message GetLicenseInfo{
+	required string LicenseStr=1;
+}
+
+message GetLicenseInfoResponse{
+	required bool IsValidated=1;
+	required int32 TotalCount=2;
+	required int32 LeftCount=3;
+}
+
+//检查用户名是否重复，重复返回true
+message CheckUsername{
+	required string Username=1;
+	required string Email = 2;
+}
+
+message CheckUsernameResponse{
+	required bool IsValidatedUserName=1;
+	required bool IsValidatedEmail = 2;
+}
+
+//注册，需要再次验证LicenseStr和Username,通过则直接login
+message Regist{
+	required string LicenseStr=1;
+	required string Username=2;
+	required string Password=3;
+	required string Email=4;
+	required string Tel=5;
+	required string WorkUnit=6;
+	required string Address=7;
+	required string MachineCode=8;
+}
+
+message RegistResponse{
+	required string agentID = 1;
+	required bool  isSuccessful = 2;
+	optional string reason=3;
+}
+
+//获得所有的计算
+message GetAllCalculate{
+	required string agentID=1;
+}
+
+message CalculateInfo{
+	required string CalStarttime=1;
+	optional string CalEndtime=2;
+	required string Smiles=3;
+	optional string CAS=4;
+	optional string ChName=5;
+	optional string EnName=6;
+	required string Param=7;
+	required string Result=8;
+	required bool IsFinished=9;
+}
+
+message GetAllCalulateResponse{
+	required bool  isSuccessful = 1;
+	required int32 Count=2;
+	repeated CalculateInfo History=3;
+
+}

@@ -1,0 +1,56 @@
+# Messages from AG to SA,DA,MA
+
+# Messages from SA,DA,MA to AG
+CheckAggregator = 2001
+CheckAggregatorResponse = 2002
+RegisterAgent = 2003
+RegisterAgentResponse = 2004
+Login = 2005
+LoginResponse = 2006
+Logout = 2007
+GetPeerList = 2009
+GetPeerListResponse = 2010
+GetSuperPeerList = 2011
+GetSuperPeerListResponse = 2012
+GetEvents = 2013
+GetEventsResponse = 2014
+SendWebsiteReport = 2015
+SendReportResponse = 2016
+SendServiceReport = 2017
+NewVersion = 2019
+NewVersionResponse = 2020
+NewTests = 2021
+NewTestsResponse = 2022
+UpgradeToSuper = 2023
+UpgradeToSuperResponse = 2024
+SendPrivateKey = 2025
+SendPrivateKeyResponse = 2026
+WebsiteSuggestion = 2027
+TestSuggestionResponse = 2028
+ServiceSuggestion = 2029
+WebsiteReport = 2031
+ServiceReport = 2033
+GenerateSecretKey = 2035
+GenerateSecretKeyResponse = 2036
+GetTokenAndAsymmetricKeys = 2037
+GetTokenAndAsymmetricKeysResponse = 2038
+
+# Messages from SA to DA,MA
+
+# Messages from DA,MA to SA
+AgentUpdate = 4001
+AgentUpdateResponse = 4002
+TestModuleUpdate = 4003
+TestModuleUpdateResponse = 4004
+ForwardingMessage = 4005
+ForwardingMessageResponse = 4006
+
+# Messages between DA and MA
+AuthenticatePeer = 5001
+AuthenticatePeerResponse = 5002
+P2PGetSuperPeerList = 5003
+P2PGetSuperPeerListResponse = 5004
+P2PGetPeerList = 5005
+P2PGetPeerListResponse = 5006
+
+
