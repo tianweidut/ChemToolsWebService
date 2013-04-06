@@ -158,6 +158,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'dajaxice',
     'dajax',
+    'djcelery',
     #LBForum
     'pagination',
     'south',
@@ -315,3 +316,23 @@ LOGOUT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
 APP_TITLE = "Chemistry Tools"
+
+#celery task queue
+import djcelery
+djcelery.setup_loader()
+
+BROKER_URL = "localhost"
+BROKER_BACKEND = "redis"
+REDIS_PORT = 6379
+REDIS_HOST = "localhost"
+BROKER_USER = ""
+BROKER_PASSWORD = ""
+REDIS_DB = 0
+REDIS_CONNECT_RETRY = True
+CELERY_SEND_EVENTS=True
+CELERY_RESULT_BACKEND = 'redis'
+CELERY_TASK_RESULT_EXPIRES = 10
+CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
+
+#for development
+CELERY_ALWAYS_EAGER = True

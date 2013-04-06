@@ -9,3 +9,6 @@ django-dajaxice
 django-celery
 django-kombu
 Celery
+redis
+hiredis
+celery-with-redis
