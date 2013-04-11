@@ -42,3 +42,4 @@
 
 # License
  GPLv3, see LICENSE file
+ test
