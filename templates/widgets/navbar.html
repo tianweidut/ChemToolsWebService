@@ -21,8 +21,8 @@
               </ul>
       		  <ul class="nav pull-right  ">
       		  	{% if request.user.is_authenticated %}
-      		  		<li class="nav-li"><a href="/info" ><i class="icon-user icon-white"> </i></a></li>
-      		  		<li class="nav-li-username"><a href="/info">{{ request.user.username }}</a></li>
+      		  		<li class="nav-li"><a href="/settings/profile" ><i class="icon-user icon-white"> </i></a></li>
+      		  		<li class="nav-li-username"><a href="/settings/profile">{{ request.user.username }}</a></li>
       		  		<li class="nav-li">
       		  		<a href="/newtask" id="newtask" rel="tooltip" data-placement="bottom" 
       		  			data-original-title = "new calculate task">

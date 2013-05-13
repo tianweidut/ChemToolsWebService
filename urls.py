@@ -55,11 +55,6 @@ urlpatterns = patterns('',
         name="features"
     ),
     url(
-        r'^info/$',
-        direct_to_template, {'template': 'features/userprofile.html'},
-        name="info"
-    ),
-    url(
         r'^newtask/$',
         gui_views.multi_inputform
     ),
