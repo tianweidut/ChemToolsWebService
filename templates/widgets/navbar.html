@@ -17,16 +17,12 @@
                 <li class="active"><a href="/">Home</a></li>
                 <li><a href="/features">About</a></li>
                 <li><a href="/download">Download</a></li>
-                <li><a href="/forum">Forum</a></li>
+                <li><a href="/">Forum</a></li>
               </ul>
       		  <ul class="nav pull-right  ">
       		  	{% if request.user.is_authenticated %}
       		  		<li class="nav-li"><a href="/info" ><i class="icon-user icon-white"> </i></a></li>
       		  		<li class="nav-li-username"><a href="/info">{{ request.user.username }}</a></li>
-      		  		<li class="nav-li">
-      		  		<a href="/bootcamp" id="bootcamp" rel="tooltip" data-placement="bottom" 
-      		  			data-original-title = "bootcamp for new calculate task">
-      		  				<i class="icon-eye-open icon-white"> </i></a></li>
       		  		<li class="nav-li">
       		  		<a href="/newtask" id="newtask" rel="tooltip" data-placement="bottom" 
       		  			data-original-title = "new calculate task">
@@ -34,9 +30,10 @@
       		  		<li class="nav-li"><a href="/history" id="history" rel="tooltip" data-placement="bottom" 
       		  			data-original-title = "Tasks history">
       		  				<i class="i icon-th-list icon-white"> </i></a></li>
-      		  		<li class="nav-li"><a href="/search" id="search" rel="tooltip" data-placement="bottom" 
-      		  			data-original-title = "search you want">
-      		  			<i class="icon-search icon-white"> </i></a></li>
+      		  		<li class="nav-li">
+      		  		<a href="/" id="bootcamp" rel="tooltip" data-placement="bottom" 
+      		  			data-original-title = "Data statistics for calculate task">
+      		  				<i class="icon-eye-open icon-white"> </i></a></li>
       		  		<li class="nav-li"><a href="/accounts/logout" rel="tooltip" data-placement="bottom" 
       		  			data-original-title = "Logout">
       		  			<i class="icon-share icon-white"> </i></a></li>

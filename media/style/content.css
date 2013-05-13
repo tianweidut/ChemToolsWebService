@@ -210,6 +210,7 @@ p#opeartions-button{
 	margin-top: 30px;
 	float:right;
 	margin-right:10px;
+  width:200px;
 }
 
 a.carousel-arrow-black{
@@ -359,4 +360,11 @@ label.settings-label{
 
 span.form-error{
   color:red;
+}
+
+button.calculated-btn{
+  width: 500px;
+  height: 50px;
+  font-size: 14px;
+	font-weight:bold;
 }

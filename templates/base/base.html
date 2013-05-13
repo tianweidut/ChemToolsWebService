@@ -24,19 +24,16 @@
     {% include "meta/html_head_javascript.html" %}
     {% block forejs %}{% endblock %}
   </head>
-
     <body >
 		{# navigator bar#}
-		
 		{% include "widgets/navbar.html" %}
 		
-        {# Main-Content Section #}
-        {% block content %}{% endblock %}
+    {# Main-Content Section #}
+    {% block content %}{% endblock %}
 
-        {# Footer Section #}
-        {% include "widgets/footer.html" %}
-        {% include "meta/bottom_scripts.html" %}
-        {% block endjs %}{% endblock %}    
+    {# Footer Section #}
+    {% include "widgets/footer.html" %}
+    {% include "meta/bottom_scripts.html" %}
+    {% block endjs %}{% endblock %}    
 	</body>
-
 </html>
