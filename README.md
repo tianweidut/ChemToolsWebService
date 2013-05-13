@@ -22,8 +22,6 @@
  * Mysql:
   * create database Chemistry CHARACTER SET utf8;
   * python manage.py syncdb
-  * python manage.py migrate
-  * python manage.py syncdb
 
  * Calculated software
   * sudo apt-get install python-openbabel -y
