@@ -59,11 +59,6 @@ urlpatterns = patterns('',
         name="info"
     ),
     url(
-        r'^bootcamp/$',
-        direct_to_template, {'template': 'features/bootcamp.html'},
-        name="info"
-    ),
-    url(
         r'^newtask/$',
         gui_views.multi_inputform
     ),
@@ -71,11 +66,6 @@ urlpatterns = patterns('',
         r'^history/$',
         direct_to_template, {'template': 'features/history.html'},
         name="history"
-    ),
-    url(
-        r'^search/$',
-        direct_to_template, {'template': 'features/search.html'},
-        name="search"
     ),
     url(
         r'^details/$',
@@ -105,3 +95,11 @@ urlpatterns = patterns('',
 )
 
 urlpatterns += staticfiles_urlpatterns()
+
+# for develop to serve user-upload content in MEDIA_ROOT
+if settings.DEBUG:
+    urlpatterns += patterns('',
+            url(r'media/(?P<path>.*)$',
+                'django.views.static.serve',
+                {'document_root': settings.MEDIA_ROOT}),
+                )
