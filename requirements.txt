@@ -1,9 +1,7 @@
 Django==1.4.2
 PIL
-lbforum
-django-debug-toolbar
-django-tinymce
 pillow
+djangocms-admin-style
 django-dajax
 django-dajaxice
 django-celery
@@ -12,3 +10,5 @@ Celery
 redis
 hiredis
 celery-with-redis
+django-chartit
+south

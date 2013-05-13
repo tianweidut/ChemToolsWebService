@@ -16,26 +16,15 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'Chemistry',                      # Or path to database file if using sqlite3.
-        'USER': 'root',                      # Not used with sqlite3.
-        'PASSWORD': 'root',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
-
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'Asia/Shanghai'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh_cn'
 
 SITE_ID = 1
 
@@ -52,7 +41,7 @@ USE_TZ = False
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = join(SETTINGS_ROOT,'media/')
+MEDIA_ROOT = join(SETTINGS_ROOT, 'media/')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -106,11 +95,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
-    
-    #LbForum
-    'pagination.middleware.PaginationMiddleware',
-    'onlineuser.middleware.OnlineUserMiddleware',
 )
 
 ROOT_URLCONF = 'urls'
@@ -122,7 +106,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    join(SETTINGS_ROOT,'templates'),
+    join(SETTINGS_ROOT, 'templates'),
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -131,12 +115,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.media',
     'django.core.context_processors.static',
     'django.core.context_processors.request',
-    'context.application_settings',
+#    'context.application_settings',
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.csrf',
     'django.contrib.messages.context_processors.messages',
-    "djangohelper.context_processors.ctx_config",
-
 )
 
 INSTALLED_APPS = (
@@ -146,26 +128,22 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    #Enhanced Admin
+    'djangocms_admin_style',
     'django.contrib.admin',
-    #Project
+
+    #project
     'gui',
     'api',
     'registration',
     'users',
     'fileupload',
+
     #Add-on
-    'debug_toolbar',
     'dajaxice',
     'dajax',
     'djcelery',
-    #LBForum
-    'pagination',
-    'south',
-    'lbforum',
-    'simpleavatar',
-    'djangohelper',
-    'onlineuser',
-    'attachments',
 )
 
 #Add support  to user profile
@@ -186,9 +164,6 @@ EMAIL_USE_TLS = False
 #########################
 # File Transfer settings
 PREPARE_UPLOAD_BACKEND = 'filetransfers.backends.delegate.prepare_upload'
-#PRIVATE_PREPARE_UPLOAD_BACKEND = 'djangoappengine.storage.prepare_upload'
-#PUBLIC_PREPARE_UPLOAD_BACKEND = 'djangoappengine.storage.prepare_upload'
-#SERVE_FILE_BACKEND = 'djangoappengine.storage.serve_file'
 PUBLIC_DOWNLOAD_URL_BACKEND = 'filetransfers.backends.base_url.public_download_url'
 PUBLIC_DOWNLOADS_URL_BASE = '/data/'
 
@@ -200,23 +175,6 @@ PROCESS_FILE_PATH = join("tmp", "process_file")
 # Search Image Path
 SEARCH_IMAGE_PATH_RE = join("tmp", "search-image")
 SEARCH_IMAGE_PATH = join(MEDIA_ROOT, SEARCH_IMAGE_PATH_RE)
-
-#APPEND_SLASH=False
-
-#Debug 
-INTERNAL_IPS = ('192.168.2.90')
-
-DEBUG_TOOLBAR_PANELS = (
-    'debug_toolbar.panels.version.VersionDebugPanel',
-    'debug_toolbar.panels.timer.TimerDebugPanel',
-    'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
-    'debug_toolbar.panels.headers.HeaderDebugPanel',
-    'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
-    'debug_toolbar.panels.template.TemplateDebugPanel',
-    'debug_toolbar.panels.sql.SQLDebugPanel',
-    'debug_toolbar.panels.signals.SignalDebugPanel',
-    'debug_toolbar.panels.logger.LoggingPanel',
-)
 
 LOGGING_OUTPUT_ENABLED = True
 
@@ -234,7 +192,7 @@ LOGGING = {
             'class':'django.utils.log.NullHandler',
         },
         'console':{
-            'level':'DEBUG',
+            'level':'INFO',
             'class':'logging.StreamHandler',
             'formatter': 'verbose'
         },
@@ -259,44 +217,13 @@ LOGGING = {
             'level':'INFO',
             'propagate':True,
         },
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
     }
 }
-
-#LBforum Settings
-AUTO_GENERATE_AVATAR_SIZES = (80, 48, )
-
-ROOT_URL = '/'
-LOGIN_REDIRECT_URL = ROOT_URL
-LOGIN_URL = "%saccounts/login/" % ROOT_URL
-LOGOUT_URL = "%saccounts/logout/" % ROOT_URL
-REGISTER_URL = '%saccounts/register/' % ROOT_URL#registration_register
-CHANGE_PSWD_URL = '%saccounts/password/change/' % ROOT_URL#registration_register
-
-CTX_CONFIG = {
-        'LBFORUM_TITLE': 'Chemistry Tools Forum',
-        'LBFORUM_SUB_TITLE': 'A forum for Chemistry Tools, enjoy...',
-        'FORUM_PAGE_SIZE': 50,
-        'TOPIC_PAGE_SIZE': 20,
-
-        #URLS....
-        'LOGIN_URL': LOGIN_URL,
-        'LOGOUT_URL': LOGOUT_URL,
-        'REGISTER_URL': REGISTER_URL,
-        'CHANGE_PSWD_URL': CHANGE_PSWD_URL,
-        }
-
-BBCODE_AUTO_URLS = True
-
-#HTML safe filter
-HTML_SAFE_TAGS = ['embed']
-HTML_SAFE_ATTRS = ['allowscriptaccess', 'allowfullscreen', 'wmode']
-HTML_UNSAFE_TAGS = []
-HTML_UNSAFE_ATTRS = []
-
-"""
-Base Skin Settings
-"""
-USE_LOCAL_FONTS = True
 
 """
 FILE Upload
@@ -308,13 +235,6 @@ FILE_UPLOAD_HANDLERS = (
                 )
 
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-
-APP_COPYRIGHT = 'Copyright Chemistry Tools, 2012-2013.'
-
-LOGOUT_URL = "/"
-LOGOUT_REDIRECT_URL = "/"
-
-APP_TITLE = "Chemistry Tools"
 
 #celery task queue
 import djcelery

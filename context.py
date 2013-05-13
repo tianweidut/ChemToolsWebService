@@ -7,12 +7,7 @@
 
 from django.conf import settings
 
-all_required = (
-                'APP_COPYRIGHT',
-                'APP_TITLE',
-                'LOGOUT_REDIRECT_URL',
-                'LOGOUT_URL',
-                )
+all_required = ()
 
 def application_settings(request):
     """The context processor function"""
@@ -25,4 +20,3 @@ def application_settings(request):
     }
 
     return context
-

@@ -14,15 +14,15 @@ framework.
 
 """
 import os
+import sys
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Rest.settings")
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
+sys.path.append('/home/hadoop/mysites/')
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'ChemToolService.settings_production'
 # This application object is used by any WSGI server configured to use this
 # file. This includes Django's development server, if the WSGI_APPLICATION
 # setting points here.
-from django.core.wsgi import get_wsgi_application
-application = get_wsgi_application()
-
-# Apply WSGI middleware here.
-# from helloworld.wsgi import HelloWorldApplication
-# application = HelloWorldApplication(application)
+from django.core.handlers.wsgi import WSGIHandler
+application = WSGIHandler()

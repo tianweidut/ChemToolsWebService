@@ -3,7 +3,7 @@
     Email: liutianweidlut@gmail.com
     Description: main settings of Chemistry Tools Site
     Created: 2012-10-22
-    Modified: 2012-12-11
+    Modified: 2013-05-13
 """
 
 from django.conf.urls import patterns, include, url
@@ -98,17 +98,6 @@ urlpatterns = patterns('',
         r'^settings/payments/$',
         users_views.payments
     ),
-    url(
-        r'^forum/',
-        include('lbforum.urls'),
-        name="forum"
-    ),
-    url(
-        r'^attachments/',
-        include('attachments.urls'),
-        name="attachments"
-    ),
-
     url(
         dajaxice_config.dajaxice_url,
         include('dajaxice.urls')
