@@ -17,6 +17,8 @@ $(document).ready(function(){
   $('#search_result_panel').hide();
   $('#valid_results').hide();
   $('#unvalid_results').hide();
+
+  $('#search-loading').hide();
 });
 
 //raw content copy
@@ -221,6 +223,8 @@ $('#search_varify_btn').click(function(){
   };
   
   console.log(data);
+  
+  $('#search-loading').show();
 
   Dajaxice.gui.search_varify_info(function(d){
    callback(d); 
@@ -233,6 +237,7 @@ $('#search_varify_btn').click(function(){
     if(d.is_searched === true)
       {
         $("#search_result_panel").show();
+        $('#search-loading').hide();
         if(d.search_result.is_valid === true)
           {
             $('#valid_results').show();

@@ -22,18 +22,14 @@
 </div>
 <br/>
 
+<center>
+<div id="search-loading">
+  <img src="{{STATIC_URL}}images/loading.gif">
+</div>
+</center>
+
 <!-- varify results -->
 <div class="accordion" id="search_result_panel">
-  <div class="accordion-group">
-    <div class="accordion-heading">
-      <a class="accordion-toggle" data-toggle="collapse" data-parent="#search_result_panel" href="#collapseOne">
-        Search Results!
-				</a>	
-			</div>
-		<div id="collapseOne" class="accordion-body collapse">
-				<div class="accordion-inner">
-					  {% include "widgets/search_result.html" %}
-				</div>
-		</div>
-	</div>
+  <hr/>
+	{% include "widgets/search_result.html" %}
 </div>

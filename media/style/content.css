@@ -368,3 +368,9 @@ button.calculated-btn{
   font-size: 14px;
 	font-weight:bold;
 }
+
+#search-loading{
+  width:60px;
+  height:60px;
+  text-align: center;
+}
