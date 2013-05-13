@@ -56,7 +56,8 @@ urlpatterns = patterns('',
     ),
     url(
         r'^newtask/$',
-        gui_views.multi_inputform
+        gui_views.multi_inputform,
+        name="newtasks"
     ),
     url(
         r'^history/$',

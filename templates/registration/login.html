@@ -7,11 +7,10 @@
 <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/accounts_form.css" >
 
 <div class="container form-container">
-	<form class="form-signin" method="post" action="{% url auth_login %}">
+  <form class="form-signin" method="post" action="{% url auth_login %}?next={%url gui.views.multi_inputform%}">
 		<h2 class="form-signin-heading">Please sign in</h2>			
 		{% include 'base/_form.html' %}			
 		<button class="btn btn-large btn-primary" type="submit">Sign in</button>	
-		<input type="hidden" name="next" value="{{ next }}" />	
 		{% csrf_token %}
 	<br>
 	<br>
