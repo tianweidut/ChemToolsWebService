@@ -21,12 +21,12 @@ server {
 	listen   9000; ## listen for ipv4; this line is default and implied
 	listen   [::]:9000 default ipv6only=on; ## listen for ipv6
 
-    root /home/sie/mysites/provinceManagement;
+    root /home/est863/mysites/ChemToolService;
 
 	# Make site accessible from http://localhost/
-	server_name 192.168.20.100;
+	server_name 202.118.73.59;
     client_max_body_size 50m;
-    client_body_temp_path /home/sie/mysites/tmp;
+    client_body_temp_path /home/est863/mysites/tmp;
 
 	location / {
 		# First attempt to serve request as file, then
@@ -34,8 +34,8 @@ server {
 		# try_files $uri $uri/ /index.html;
 		# Uncomment to enable naxsi on this location
 		# include /etc/nginx/naxsi.rules
-        root /home/sie/mysites/provinceManagement;
-        uwsgi_pass 192.168.20.100:8080;
+        root /home/est863/mysites/ChemToolService;
+        uwsgi_pass 127.0.0.1:8080;
         include uwsgi_params;
         access_log off;
 	}
@@ -48,7 +48,7 @@ server {
 	}
 
     location /static {
-       alias /home/sie/mysites/provinceManagement/static/; 
+       alias /home/est863/mysites/ChemToolService/static/; 
        access_log off;  
     }
 
@@ -58,7 +58,7 @@ server {
     }
 
     location /media {
-        root  /home/sie/mysites/provinceManagement/media/; 
+        root  /home/est863/mysites/ChemToolService/media/; 
         break;
     }
 
