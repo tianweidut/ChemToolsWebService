@@ -9,7 +9,6 @@ import sys
 sys.path.append("/usr/local/lib/")
 
 import openbabel,pybel
-import web
 import threading
 
 from  calcore.controllers.MolToGjfAndMop import *
