@@ -136,6 +136,7 @@ INSTALLED_APPS = (
     #project
     'gui',
     'api',
+    'const',
     'registration',
     'users',
     'fileupload',
