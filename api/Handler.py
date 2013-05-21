@@ -11,7 +11,6 @@ import uuid
 import os
 
 from piston.handler import BaseHandler
-from api.models import Task
 
 from django.test.client import Client
 from django.http import HttpResponse
@@ -27,17 +26,11 @@ from backend.logging import logger
 from backend.fileoperator import receiveFile
 from api.decorators import message_handler, message_handler_json
 
-from gui.models import *
+from users.models import *
 from users.models import UserProfile
 from users.models import DEFAULT_ERROR_ID
 
-class TaskHandler(BaseHandler):
-    """
-    only for test
-    """
-    model = Task
-    url = 'testmodel/'
-    
+
 class DataHandler(BaseHandler):
     """
     only for test
@@ -47,6 +40,7 @@ class DataHandler(BaseHandler):
 
     def read(self, request, username=None, data=None):
         return { 'user': 'tianwei', 'data_length': len('tesa') }
+
 
 class FileUploadTestHandler(BaseHandler):
     """
@@ -136,6 +130,7 @@ class CasSearchHandler(BaseHandler):
             import pdb;
             print pdb.traceback
             logger.error("Cas Search Error %s "%err)           
+
 
 class FileUploadCalculateSearchHandler(BaseHandler):
     allow_method = ('POST',)

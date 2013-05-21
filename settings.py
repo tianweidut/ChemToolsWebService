@@ -136,9 +136,10 @@ INSTALLED_APPS = (
     #project
     'gui',
     'api',
+    'const',
     'registration',
     'users',
-    'fileupload',
+    'calcore',
 
     #Add-on
     'dajaxice',
@@ -147,7 +148,6 @@ INSTALLED_APPS = (
 )
 
 #Add support  to user profile
-AUTH_PROFILE_MODULE = 'users.UserProfile'
 ACCOUNT_ACTIVATION_DAYS = 30
 LOGIN_REDIRECT_URL = '/'
 
