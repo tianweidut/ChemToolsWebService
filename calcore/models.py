@@ -24,7 +24,7 @@ class SuiteTask(models.Model):
     """
     sid = models.CharField(unique=True, blank=False, max_length=50,
                            verbose_name="id", primary_key=True,
-                           default=get_sid())
+                           default=get_sid)
     user = models.ForeignKey(UserProfile, blank=False, verbose_name="user")
     smiles = models.CharField(max_length=2000, blank=True,
                               verbose_name="smiles input")
@@ -55,7 +55,7 @@ class MolFile(models.Model):
     draw chem structure files, smiles convert files
     """
     fid = models.CharField(max_length=50, primary_key=True, blank=False,
-                           default=get_sid())
+                           default=get_sid)
     sid = models.ForeignKey(SuiteTask, blank=False)
     name = models.CharField(max_length=200, blank=False)
     file_obj = models.FileField(upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
@@ -76,7 +76,7 @@ class SingleTask(models.Model):
     """
     sid = models.ForeignKey(SuiteTask, blank=False)
     pid = models.CharField(max_length=50, unique=True, blank=False,
-                           primary_key=True, default=get_sid())
+                           primary_key=True, default=get_sid)
     temperature = models.FloatField(blank=True, default=0.0)
     humidity = models.FloatField(blank=True, default=0.0)
     other = models.FloatField(blank=True, default=0.0)

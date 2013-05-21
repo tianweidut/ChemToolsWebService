@@ -38,7 +38,7 @@ class UserProfile(models.Model):
     The Administrator can modified them in admin.page
     """
     user = models.ForeignKey(User, unique=True)
-    agentID = models.CharField(max_length=40, default=get_sid(), unique=True)
+    agentID = models.CharField(max_length=40, default=get_sid, unique=True)
     workunit = models.CharField(max_length=2000, blank=True)
     address = models.CharField(max_length=2000, blank=True)
     telephone = models.CharField(max_length=100, blank=True)
