@@ -36,6 +36,7 @@ class ModelCategory(models.Model):
     category = models.CharField(max_length=30, blank=False, unique=True,
                                 choices=MODEL_CHOICES,
                                 verbose_name=u"Calculate Model")
+    origin_type = models.ForeignKey(ModelTypeCategory, blank=False)
 
     class Meta:
         verbose_name = "Calculate Model"

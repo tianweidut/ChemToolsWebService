@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+# coding: UTF-8
 '''
 Created on 2012-11-5
 
@@ -6,8 +6,14 @@ Created on 2012-11-5
 '''
 
 from django.contrib import admin
-from models import *
+from calcore.models import *
 
 
-#admin.site.register(CasModel)
-#admin.site.register(SmileModel)
+RegisterClass = (SuiteTask,
+                 SingleTask,
+                 MolFile,
+                 ProcessedFile,
+                 )
+
+for item in RegisterClass:
+    admin.site.register(item)

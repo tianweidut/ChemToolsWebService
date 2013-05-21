@@ -87,3 +87,17 @@ LEVEL3_CHOICES = (
     (LEVEL_4, "Micro Enterprise"),
     (LEVEL_5, "Enterprise"),
 )
+
+ORIGIN_UPLOAD = "upload"
+ORIGIN_SMILE = "smiles"
+ORIGIN_DRAW = "drawing"
+ORIGIN_OTHER = "other"
+ORIGIN_UNDEFINED = "undefined"
+
+MOL_ORIGIN_CHOICES = (
+    (ORIGIN_UPLOAD, "mol upload driectly"),
+    (ORIGIN_SMILE, "smiles search"),
+    (ORIGIN_OTHER, "other"),
+    (ORIGIN_DRAW, "draw"),
+    (ORIGIN_UNDEFINED, "undefined"),
+)
