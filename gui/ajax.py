@@ -12,7 +12,7 @@ import simplejson
 from dajaxice.decorators import dajaxice_register
 
 from backend.logging import logger
-from utils.ChemSpiderPy.wrapper import search_cheminfo
+from backend.ChemSpiderPy.wrapper import search_cheminfo
 
 
 @dajaxice_register(method='GET')

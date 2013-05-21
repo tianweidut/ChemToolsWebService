@@ -15,7 +15,6 @@ class CsrfExemptResource(Resource):
         self.csrf_exempt = getattr( self.handler, 'csrf_exempt', True )
 
 ACTIVE_HANDLERS = (
-          TaskHandler,
           DataHandler,
           SmileSearchHandler,
           CasSearchHandler,

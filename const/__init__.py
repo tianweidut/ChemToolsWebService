@@ -7,6 +7,10 @@ Created on 2013-03-27
 Desc: const defination
 '''
 
+__all__ = ["MOL_ORIGIN_CHOICES", "STATUS_CHOICES",
+           "STATUS_UNDEFINED", "STATUS_FAILED", "STATUS_SUCCESS",
+           "STATUS_WORKING", "ORIGIN_UNDEFINED"]
+
 FILE_CSV = "csv"
 FILE_PDF = "pdf"
 FILE_TXT = "txt"

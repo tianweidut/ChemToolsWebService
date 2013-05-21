@@ -30,6 +30,21 @@ class PresentationCategory(models.Model):
         return self.get_category_display()
 
 
+class ModelTypeCategory(models.Model):
+    """
+    """
+    category = models.CharField(max_length=30, blank=False, unique=True,
+                                choices=MODEL_ORIGIN_CHOICES,
+                                verbose_name=u"Calculate Model Type")
+
+    class Meta:
+        verbose_name = "Calculate Model Type"
+        verbose_name_plural = "Calculate Model Type"
+
+    def __unicode__(self):
+        return self.get_category_display()
+
+
 class ModelCategory(models.Model):
     """
     """
@@ -41,21 +56,6 @@ class ModelCategory(models.Model):
     class Meta:
         verbose_name = "Calculate Model"
         verbose_name_plural = "Calculate Model"
-
-    def __unicode__(self):
-        return self.get_category_display()
-
-
-class ModelTypeCategory(models.Model):
-    """
-    """
-    category = models.CharField(max_length=30, blank=False, unique=True,
-                                choices=MODEL_ORIGIN_CHOICES,
-                                verbose_name=u"Calculate Model Type")
-
-    class Meta:
-        verbose_name = "Calculate Model Type"
-        verbose_name_plural = "Calculate Model Type"
 
     def __unicode__(self):
         return self.get_category_display()

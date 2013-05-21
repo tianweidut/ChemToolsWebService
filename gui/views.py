@@ -28,10 +28,10 @@ from django.core.files.uploadedfile import UploadedFile
 
 from gui import forms
 from backend.fileoperator import receiveFile
-from utils.ChemSpiderPy.wrapper import search_cheminfo
+from backend.ChemSpiderPy.wrapper import search_cheminfo
 from backend.logging import logger
-from fileupload.views import JSONResponse, response_minetype
-from fileupload.models import ProcessedFile
+from backend.utilities import JSONResponse, response_minetype
+from calcore.models import ProcessedFile
 
 
 def step1_form(request=None):

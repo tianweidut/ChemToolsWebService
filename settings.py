@@ -139,7 +139,7 @@ INSTALLED_APPS = (
     'const',
     'registration',
     'users',
-    'fileupload',
+    'calcore',
 
     #Add-on
     'dajaxice',
