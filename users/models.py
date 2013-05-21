@@ -20,11 +20,11 @@ class UserGrade(models.Model):
     """
     User Grade
     """
-    grade = models.ForeignKey(LevelGrageCategory, unique=True,
+    grade = models.ForeignKey(LevelGrageCategory,
                               verbose_name="Level Grade")
-    account = models.ForeignKey(LevelAccountCategory, unique=True,
+    account = models.ForeignKey(LevelAccountCategory, 
                                 verbose_name="Level account")
-    bill = models.ForeignKey(LevelBillCategory, unique=True,
+    bill = models.ForeignKey(LevelBillCategory,
                              verbose_name="Level bill")
     total_num = models.IntegerField(blank=False, verbose_name="total numbers")
 
@@ -37,19 +37,12 @@ class UserProfile(models.Model):
     User Profile Extend
     The Administrator can modified them in admin.page
     """
-    user = models.OneToOneField(User)
+    user = models.ForeignKey(User, unique=True)
     agentID = models.CharField(max_length=40, default=get_sid(), unique=True)
     workunit = models.CharField(max_length=2000, blank=True)
     address = models.CharField(max_length=2000, blank=True)
     telephone = models.CharField(max_length=100, blank=True)
-    user_grade = models.ForeignKey(UserGrade, blank=False)
+    user_grade = models.ForeignKey(UserGrade, default=0)
 
     def __unicode__(self):
         return '%s' % (self.user)
-
-
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        UserProfile.objects.create(user=instance)
-
-post_save.connect(create_user_profile, sender=User)
