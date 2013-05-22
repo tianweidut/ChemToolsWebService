@@ -12,6 +12,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from registration.models import RegistrationProfile
 
+from backend.logging import loginfo
+
+
 attrs_dict = {'class':'required'}
 
 class RegistrationForm(forms.Form):
@@ -42,25 +45,22 @@ class RegistrationForm(forms.Form):
                                         "class":"required"},
                                     render_value=False))
 
-    def clear_username(self):
-        """
-        Validate that the username is alphanumeric and is not already
-        in use.
-        """
-        try:
-            user = User.objects.get(username__iexact=self.cleaned_data['username'])
-        except User.DoesNotExist:
-            return self.cleaned_data['username']
-        raise forms.ValidationError(_(u'This username is already taken. Please choose another.'))
-
     def clean(self):
         """
          Verifiy that the values entered into the two password fields match
         """
         if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
             if self.cleaned_data['password1'] != self.cleaned_data['password2']:
-                raise forms.ValidationError(_(u'You must type the same password each time'))
-        return self.cleaned_data
+                raise forms.ValidationError(_(u'You must type the same password each time!'))
+        try:
+            user = User.objects.get(username=self.cleaned_data['username'])
+            loginfo(p=user, label="user")
+            loginfo(p=self.cleaned_data["username"], label="text")
+        except User.DoesNotExist:
+            return self.cleaned_data
+
+        raise forms.ValidationError(_(u'This username is already taken. Please choose another.'))
+
 
     def save(self, request, profile_callback=None):
         """

@@ -9,4 +9,10 @@ Created on 2012-11-17
 from django.utils.log import getLogger
 
 logger = getLogger('django')
-        
+
+
+def loginfo(p="", label=""):
+    logger.info("***"*10)
+    logger.info(label)
+    logger.info(p)
+    logger.info("---"*10)
