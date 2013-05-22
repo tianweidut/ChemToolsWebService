@@ -48,7 +48,7 @@ def userinfo_context(request):
         finished_num = SuiteTask.objects.filter(user=request.user,
                                                 status__category=STATUS_SUCCESS).count()
         query_num = SuiteTask.objects.filter(user=request.user,
-                                                   status__category=STATUS_WORKING).count()
+                                             status__category=STATUS_WORKING).count()
         context["data_context"] = {}
         context["data_context"]["query_num"] = query_num
         context["data_context"]["remain_num"] = profile.user_grade.total_num - finished_num

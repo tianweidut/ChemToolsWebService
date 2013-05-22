@@ -71,7 +71,6 @@ def split_name(name, sep="."):
     """
         split type and name in a filename
     """
-    name = str(name)
     if sep in name:
         f = name.split(sep)[0]
         t = name.split(sep)[1]
@@ -92,7 +91,7 @@ def upload_save_process(request):
     name, filetype = split_name(wrapper_f.name)
 
     obj = ProcessedFile()
-    obj.title = name + str(uuid.uuid4()) + "." + filetype
+    obj.title = wrapper_f.name
     wrapper_f.name = obj.title
     obj.file_obj = f
     obj.file_type = filetype if filetype != " " else "unknown"
