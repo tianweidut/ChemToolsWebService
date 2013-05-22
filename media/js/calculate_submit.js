@@ -114,7 +114,7 @@ $("#upload_update").click(function(){
           console.log(str);
           var fid = $(tditem).children().attr("fid");
           console.log(fid);
-          table_data[trindex] = str; 
+          table_data[trindex] = fid; 
           //commit 
           $("#fileupload_copy").empty();
           row += '<tr><td fid="'+fid +'">'+str+'</td></tr>';
@@ -183,6 +183,7 @@ function GetResponseTypes(){
   return str;
 }
 
+
 // Ajax for calcualte submit
 $('#commit-saved-btn').click(function(){
   // Get calculated submit infomation
@@ -207,6 +208,7 @@ $('#commit-saved-btn').click(function(){
           "types":types,
           "unique_names":unique_names,
           "models":models,
+          "files":files,
   };
 
   console.log(data);
