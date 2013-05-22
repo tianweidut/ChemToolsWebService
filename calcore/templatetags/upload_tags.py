@@ -9,9 +9,9 @@ def upload_js():
 <script id="template-upload" type="text/x-tmpl">
 {% for (var i=0, file; file=o.files[i]; i++) { %}
     <tr class="template-upload fade">
-        <td class="preview"><span class="fade"></span></td>
         <td class="name"><span>{%=file.name%}</span></td>
-        <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+        <td class="type"><span>{%=file.type%}</span></td>
+        <td class="id"><span>{%=file.id%}</span></td>
         {% if (file.error) { %}
             <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
         {% } else if (o.files.valid && !i) { %}
@@ -43,16 +43,15 @@ def upload_js():
         {% if (file.error) { %}
             <td></td>
             <td class="name"><span>{%=file.name%}</span></td>
-            <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+            <td class="type"><span>{%=file.type%}</span></td>
+            <td class="id"><span>{%=file.id%}</span></td>
             <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
         {% } else { %}
-            <td class="preview">{% if (file.thumbnail_url) { %}
-                <a href="{%=file.url%}" title="{%=file.name%}" rel="gallery" download="{%=file.name%}"><img src="{%=file.thumbnail_url%}"></a>
-            {% } %}</td>
             <td class="name">
-                <a href="{%=file.url%}" title="{%=file.name%}" rel="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}">{%=file.name%}</a>
+                <a href="$" title="{%=file.name%}" rel="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}">{%=file.name%}</a>
             </td>
-            <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+            <td class="type"><span>{%=file.type%}</span></td>
+            <td class="id"><span>{%=file.id%}</span></td>
             <td colspan="2"></td>
         {% } %}
         <td class="delete">
