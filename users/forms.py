@@ -41,10 +41,6 @@ class UserProfileForm(forms.Form):
                                max_length=255,
                                widget=forms.TextInput(attrs={"class": "input-xlarge"}))
 
-    machinecode = forms.CharField(required=False,
-                                  max_length=100,
-                                  widget=forms.TextInput(attrs={"class": "input-xlarge"}))
-
     agentid = forms.CharField(required=False,
                               max_length=100,
                               widget=forms.TextInput(attrs={"disabled": "disabled",
@@ -56,7 +52,6 @@ class UserProfileForm(forms.Form):
         self.fields["company"].initial = user.workunit
         self.fields["location"].initial = user.address
         self.fields["agentid"].initial = user.agentID
-        self.fields["machinecode"].initial = user.machinecode
         self.fields["telephone"].initial = user.telephone
         self.fields["email"].initial = user.user.email
 
@@ -80,6 +75,7 @@ class UserProfileForm(forms.Form):
             return instance.agentid
         else:
             return self.cleaned_data.get("agentid", None)
+
 
 class PasswordForm(forms.Form):
     """
