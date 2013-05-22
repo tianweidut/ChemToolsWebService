@@ -111,10 +111,13 @@ $("#upload_update").click(function(){
       if($(tditem).attr("class") === "name")
         {
           var str = $(tditem).children().text();
-          table_data[trindex] = $(tditem).children().text();
+          console.log(str);
+          var fid = $(tditem).children().attr("fid");
+          console.log(fid);
+          table_data[trindex] = str; 
           //commit 
           $("#fileupload_copy").empty();
-          row += '<tr><td>'+str+'</td></tr>';
+          row += '<tr><td fid="'+fid +'">'+str+'</td></tr>';
         }
     });
   }); 
