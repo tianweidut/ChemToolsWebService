@@ -184,6 +184,13 @@ function GetResponseTypes(){
   return str;
 }
 
+function calculate_callback(data){
+  console.log(data.message);
+  if(data.is_submitted === true)
+    {
+      window.location.href="/history/";
+    }
+}
 
 // Ajax for calcualte submit
 $('#commit-saved-btn').click(function(){
@@ -213,14 +220,9 @@ $('#commit-saved-btn').click(function(){
 
   console.log(data);
 
-  Dajaxice.gui.calculate_submit(function(d){
-    callback();
-  },data);
+  Dajaxice.gui.calculate_submit(calculate_callback ,data);
 
-  function callback(){
-    console.log("success response!");
-    window.location.href="/history/";
-  }
+
 });
 
 $('#search_varify_btn').click(function(){

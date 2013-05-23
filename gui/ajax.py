@@ -35,7 +35,8 @@ def calculate_submit(request,
     logger.info(types)
     logger.info(models)
 
-    return simplejson.dumps({'message': 'tianwei hello world!'})
+    return simplejson.dumps({'message': 'tianwei hello world!',
+                             'is_submitted': True})
 
 
 @dajaxice_register(method='GET')
