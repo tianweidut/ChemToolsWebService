@@ -22,7 +22,7 @@ class UserGrade(models.Model):
     """
     grade = models.ForeignKey(LevelGrageCategory,
                               verbose_name="Level Grade")
-    account = models.ForeignKey(LevelAccountCategory, 
+    account = models.ForeignKey(LevelAccountCategory,
                                 verbose_name="Level account")
     bill = models.ForeignKey(LevelBillCategory,
                              verbose_name="Level bill")
@@ -42,7 +42,7 @@ class UserProfile(models.Model):
     workunit = models.CharField(max_length=2000, blank=True)
     address = models.CharField(max_length=2000, blank=True)
     telephone = models.CharField(max_length=100, blank=True)
-    user_grade = models.ForeignKey(UserGrade, default=0)
+    user_grade = models.ForeignKey(UserGrade)
 
     def __unicode__(self):
         return '%s' % (self.user)

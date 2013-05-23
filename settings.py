@@ -116,6 +116,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'django.core.context_processors.request',
 #    'context.application_settings',
+    'context.userinfo_context',
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.csrf',
     'django.contrib.messages.context_processors.messages',

@@ -46,7 +46,6 @@ def profile(request):
             user.workunit = form.cleaned_data["company"]
             user.telephone = form.cleaned_data["telephone"]
             user.address = form.cleaned_data["location"]
-            user.machinecode = form.cleaned_data["machinecode"]
             user.save()
 
             HttpResponseRedirect("/settings/profile")

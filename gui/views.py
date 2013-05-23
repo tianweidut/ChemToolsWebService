@@ -71,7 +71,6 @@ def split_name(name, sep="."):
     """
         split type and name in a filename
     """
-    name = str(name)
     if sep in name:
         f = name.split(sep)[0]
         t = name.split(sep)[1]
@@ -90,25 +89,25 @@ def upload_save_process(request):
     wrapper_f = UploadedFile(f)
 
     name, filetype = split_name(wrapper_f.name)
+    #TODO: we maybe check file type here!
 
     obj = ProcessedFile()
-    obj.title = name + str(uuid.uuid4()) + "." + filetype
-    wrapper_f.name = obj.title
+    obj.title = name
+    obj.file_type = filetype
     obj.file_obj = f
-    obj.file_type = filetype if filetype != " " else "unknown"
     obj.save()
 
-    return wrapper_f
+    return obj
 
 
 def upload_response(request):
     """
         use AJAX to process file upload
     """
-    wrapper_f = upload_save_process(request)
-    path = settings.MEDIA_URL + settings.PROCESS_FILE_PATH
-    data = [{'name': wrapper_f.name,
-             'url': path + wrapper_f.name.replace(" ", "_"),
+    f = upload_save_process(request)
+    data = [{'name': f.title,
+             'id': f.fid,
+             'type': f.file_type,
              }]
 
     response = JSONResponse(data, {}, response_minetype(request))

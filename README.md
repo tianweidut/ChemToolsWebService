@@ -28,12 +28,6 @@
   * some other software should be installed manually
   * sudo apt-get install ia32-libs -y  #32-bit lib for 64-bit machine
 
- * Install Redis
-  * wget http://redis.googlecode.com/files/redis-2.6.12.tar.gz
-  * tar -zxvf redis-2.6.12.tar.gz
-  * make && make test
-  * sudo make install
-
 
  * python manage.py runserver IP:PORT
  * go web browser, visit: IP:PORT

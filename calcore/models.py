@@ -96,7 +96,10 @@ class ProcessedFile(models.Model):
     """
     Temp File
     """
-    title = models.CharField(max_length=60, blank=False, unique=True)
+    fid = models.CharField(max_length=50, unique=True, blank=False,
+                           primary_key=True, default=get_sid)
+    title = models.CharField(max_length=60, blank=False)
+    file_type = models.CharField(max_length=10, blank=False)
     file_obj = models.FileField(upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
 
     def __unicode__(self):

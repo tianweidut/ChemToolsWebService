@@ -111,10 +111,12 @@ $("#upload_update").click(function(){
       if($(tditem).attr("class") === "name")
         {
           var str = $(tditem).children().text();
-          table_data[trindex] = $(tditem).children().text();
+          var fid = $(tditem).children().attr("fid");
+          table_data[trindex] = fid; 
+          console.log(table_data[trindex]);
           //commit 
           $("#fileupload_copy").empty();
-          row += '<tr><td>'+str+'</td></tr>';
+          row += '<tr><td fid="'+fid +'">'+str+'</td></tr>';
         }
     });
   }); 
@@ -164,6 +166,8 @@ function GetUniqueNames(){
     str += table_data[i] + ";";
   }
 
+  console.log(str);
+
   return str;
 }
 
@@ -179,6 +183,7 @@ function GetResponseTypes(){
 
   return str;
 }
+
 
 // Ajax for calcualte submit
 $('#commit-saved-btn').click(function(){
@@ -214,6 +219,7 @@ $('#commit-saved-btn').click(function(){
 
   function callback(){
     console.log("success response!");
+    window.location.href="/history/";
   }
 });
 

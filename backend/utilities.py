@@ -13,7 +13,7 @@ from django.http import HttpResponse
 
 
 def get_sid():
-    return uuid.uuid4()
+    return str(uuid.uuid4())
 
 
 def response_minetype(request):

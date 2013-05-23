@@ -6,22 +6,35 @@
 	
 	<!--choice models with collapse plugin-->
 	<div class="accordion" id="models-choice-accordions">
-
-		<!--model 1-->
-	    {% include "widgets/models/KOA.html" %}	
-		<!--model 2-->
-	    {% include "widgets/models/KOF.html" %}	
-		<!--model 3-->
-	    {% include "widgets/models/PL.html" %}	
-		<!--model 4-->
-	    {% include "widgets/models/BCF.html" %}	
-		<!--model 5-->
-	    {% include "widgets/models/PKD.html" %}	
-		<!--model 6-->
-	    {% include "widgets/models/PPK.html" %}	
-		<!--model 7-->
-	    {% include "widgets/models/DFS.html" %}	
-	  <!--other conveniented buttons and choices-->
-	
+	<div class="tabbable">
+		<ul class="nav nav-tabs tab-fix">
+			<li > <a href="#model-input-tab1" data-toggle="tab">Environement behavior</a></li>
+			<li class="active"> <a href="#model-input-tab2" data-toggle="tab">Environement toxicology</a></li>
+			<li > <a href="#model-input-tab3" data-toggle="tab">Health toxicology</a></li>
+		</ul>
+		
+		<div class="tab-content">
+			<div class="tab-pane" id="model-input-tab1">
+        <!--model 1-->
+        {% include "widgets/models/KOA.html" %}	
+        <!--model 2-->
+	      {% include "widgets/models/KOF.html" %}	
+		    <!--model 3-->
+	      {% include "widgets/models/PL.html" %}	
+			</div>
+			<div class="tab-pane active" id="model-input-tab2">
+    		<!--model 4-->
+	      {% include "widgets/models/BCF.html" %}	
+		    <!--model 5-->
+	      {% include "widgets/models/PKD.html" %}	
+			</div>
+			<div class="tab-pane " id="model-input-tab3">
+    		<!--model 6-->
+	      {% include "widgets/models/PPK.html" %}	
+		    <!--model 7-->
+	      {% include "widgets/models/DFS.html" %}	
+			</div>		
+		</div>
+	</div>
   </div>
 </div>
