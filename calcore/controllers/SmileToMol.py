@@ -7,9 +7,9 @@ Created on 2012-11-26
 import sys, os, shutil, re
 sys.path.append("/usr/local/lib/")
 import openbabel,pybel
-from config.settings import globalpath
-from controllers.Mopac import Mopac
-from controllers.MolToGjfAndMop import Mol2GjfandMop
+from calcore.config.settings import globalpath
+from calcore.controllers.Mopac import Mopac
+from calcore.controllers.MolToGjfAndMop import Mol2GjfandMop
 class SmileToMol():
     '''
     to transfer from smile numbers to mol file:
@@ -98,7 +98,7 @@ class SmileToMol():
             #3:mop file into formopac folder
             dst = globalpath+'formopac/'+revisedsmi
             if not os.path.exists(dst):
-                os.mkdir(dst)
+                os.makedirs(dst)
             real_dst = os.path.join(dst, revisedsmi+'.mop')
             if os.path.exists(real_dst):
                 os.remove(os.getcwd()+'/'+revisedsmi+'.mop')
@@ -115,7 +115,7 @@ class SmileToMol():
             mol_without_ext = mol.split('.')[0]
             dst = globalpath+'formopac/'+mol_without_ext
             if not os.path.exists(dst):
-                os.mkdir(dst)
+                os.makedirs(dst)
             real_dst = os.path.join(dst, mol_without_ext+'.mop')
             if os.path.exists(real_dst):
                 os.remove(os.getcwd()+'/'+mol_without_ext+'.mop')
@@ -145,7 +145,7 @@ class SmileToMol():
             #delete mol file in current folder and move it to dragon dictionary
             dst = globalpath+'fordragon/'+revisedsmi+'/'
             if not os.path.exists(dst):
-                os.mkdir(dst)
+                os.makedirs(dst)
             if not os.path.exists(dst+revisedsmi+'.mol'):
                 shutil.move(os.getcwd()+'/'+revisedsmi+'.mol',dst)
             mopfile.append(revisedsmi+'.mop')
@@ -155,7 +155,7 @@ class SmileToMol():
             #delete mol file in current folder and move it to dragon dictionary
             dst = globalpath+'fordragon/'+mol_without_ext+'/'
             if not os.path.exists(dst):
-                os.mkdir(dst)
+                os.makedirs(dst)
             if not os.path.exists(dst+mol):
                 shutil.move(os.getcwd()+'/'+mol,dst)
             mopfile.append(mol_without_ext+'.mop')

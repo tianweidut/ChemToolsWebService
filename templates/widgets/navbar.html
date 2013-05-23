@@ -10,14 +10,15 @@
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
               <span class="icon-bar"></span>
             </a>
-            <a class="brand" href="/">Chemistry Calculate</a>
+            <!-- <a class="brand" href="/">Chemistry Calculate</a>-->
+            <a class="brand" href="/" class="self_titlefont">chemical predictive toxicology platform</a>
             <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
             <div class="nav-collapse collapse">
               <ul class="nav">
-                <li class="active"><a href="/">Home</a></li>
-                <li><a href="/features">About</a></li>
-                <li><a href="/download">Download</a></li>
-                <li><a href="/">Forum</a></li>
+                <li class="active"><a href="/" class="self_titlefont">Home</a></li>
+                <li><a href="/features" class="self_titlefont">About</a></li>
+                <li><a href="/download" class="self_titlefont">Download</a></li>
+                <li><a href="/" class="self_titlefont">Forum</a></li>
               </ul>
       		  <ul class="nav pull-right  ">
       		  	{% if request.user.is_authenticated %}
@@ -41,7 +42,8 @@
       		  		{% if request.path != "/" %}
       		  		<li ><a href="/accounts/register">Join us</a></li>
       		  		{% endif %}
-      		  		<li ><a href="/accounts/login">Sign in</a></li>
+      		  		<li ><a href="/accounts/login" class="self_titlefont">Sign in</a></li>
+      		  		<li ><a href="/#signup" class="self_titlefont">Sign up</a></li>
       		  	{% endif %}
       		  	
       		  </ul>

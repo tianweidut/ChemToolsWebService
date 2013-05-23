@@ -13,6 +13,8 @@ media/tmp/*
 .project 
 *.arc
 *.mop
+*.mol
+*.sdf
 *.out
 *.drs
 

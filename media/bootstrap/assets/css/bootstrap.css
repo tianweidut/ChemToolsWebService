@@ -2309,6 +2309,8 @@ table th[class*="span"],
 
 .icon-user {
   background-position: -168px 0;
+  
+  
 }
 
 .icon-film {
@@ -6040,4 +6042,7 @@ a.badge:hover {
 
 .affix {
   position: fixed;
+}
+.self_titlefont{
+font-size:18px;
 }

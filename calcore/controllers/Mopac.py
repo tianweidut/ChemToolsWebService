@@ -1,8 +1,8 @@
 #! /usr/bin/env python
 #coding=utf-8
-from config.settings import  globalpath
+from calcore.config.settings import  globalpath
 import subprocess
-from controllers.PathInit import ParseInitPath
+from calcore.controllers.PathInit import ParseInitPath
 import shutil
 import re
 import time
@@ -143,7 +143,7 @@ class Mopac():
                     List=list(lines[lineNum+k].split())
 
                     self.ParameterList.append(List)
-					k = k+1
+                    k = k+1
                     #######remove '\n' in  ParameterList
         while(1):
             try:
