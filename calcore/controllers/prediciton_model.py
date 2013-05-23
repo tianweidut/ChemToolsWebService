@@ -3,7 +3,7 @@ Created on 2012-12-4
 
 @author: SongYang
 '''
-from controllers.Dragon import Dragon
+from calcore.controllers.Dragon import Dragon
 class PredictionModel_ForParamInDragon(object):
     '''
 this class is used for model computation that parameters needed in Dragon output file

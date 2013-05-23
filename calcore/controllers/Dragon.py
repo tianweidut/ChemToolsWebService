@@ -2,10 +2,10 @@
 # coding: utf-8
 import subprocess
 import re
-from config.settings import  globalpath
-from controllers.PathInit import ParseInitPath
-from controllers.SmileToMol import SmileToMol
-from  controllers.XmlCreate import write_xml
+from calcore.config.settings import  globalpath
+from calcore.controllers.PathInit import ParseInitPath
+from calcore.controllers.SmileToMol import SmileToMol
+from calcore.controllers.XmlCreate import write_xml
 #调用不同的分子计算符软件进行分子描述符计算参数分别为DRAGON,GAUSSIAN,MOPAC
 class Dragon(SmileToMol):
     def __init__(self, smiles_str=None, molfile=None):
