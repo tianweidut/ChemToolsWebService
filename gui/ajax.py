@@ -27,7 +27,6 @@ def calculate_submit(request,
                      models=None
                      ):
 
-    # Calculated Submit Process
     logger.info(unique_names)
     logger.info(smile)
     logger.info(notes)

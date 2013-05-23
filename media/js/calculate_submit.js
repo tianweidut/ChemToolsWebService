@@ -219,6 +219,7 @@ $('#commit-saved-btn').click(function(){
 
   function callback(){
     console.log("success response!");
+    window.location.href="/history/";
   }
 });
 
