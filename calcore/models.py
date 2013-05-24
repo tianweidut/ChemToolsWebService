@@ -47,7 +47,7 @@ class SuiteTask(models.Model):
         verbose_name_plural = "Suite Task"
 
     def __unicode__(self):
-        return self.get_name_display()
+        return self.sid
 
 
 class MolFile(models.Model):
@@ -63,9 +63,7 @@ class MolFile(models.Model):
     upload_time = models.DateTimeField(blank=True, default=lambda:datetime.datetime.now())
     file_size = models.CharField(max_length=50, blank=True, default=None)
     file_type = models.CharField(max_length=10, blank=False)
-    file_source = models.CharField(max_length=30, blank=False, unique=True,
-                                   choices=MOL_ORIGIN_CHOICES,
-                                   default=ORIGIN_UNDEFINED)
+    file_source = models.ForeignKey(FileSourceCategory, blank=False)
 
     def __unicode__(self):
         return self.name

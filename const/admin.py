@@ -16,6 +16,7 @@ RegisterClass = (PresentationCategory,
                  LevelAccountCategory,
                  LevelBillCategory,
                  LevelGrageCategory,
+                 FileSourceCategory,
                  )
 
 for item in RegisterClass:

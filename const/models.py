@@ -9,11 +9,7 @@ Desc: dict table
 
 from django.db import models
 
-from const import FILE_CHOICES
-from const import MODEL_CHOICES, MODEL_ORIGIN_CHOICES
-from const import LEVEL_CHOICES, LEVEL2_CHOICES, LEVEL3_CHOICES
-from const import STATUS_CHOICES
-
+from const import * 
 
 class PresentationCategory(models.Model):
     """
@@ -111,11 +107,26 @@ class LevelBillCategory(models.Model):
     """
     category = models.CharField(max_length=30, blank=False, unique=True,
                                 choices=LEVEL3_CHOICES,
-                                verbose_name=u"Level bill")
+                                verbose_name=u"level bill")
 
-    class Meta:
-        verbose_name = "Level bill"
-        verbose_name_plural = "Levle bill"
+    class meta:
+        verbose_name = "level bill"
+        verbose_name_plural = "levle bill"
+
+    def __unicode__(self):
+        return self.get_category_display()
+
+
+class FileSourceCategory(models.Model):
+    """
+    """
+    category = models.CharField(max_length=30, blank=False, unique=True,
+                                choices=MOL_ORIGIN_CHOICES,
+                                default=ORIGIN_UNDEFINED)
+
+    class meta:
+        verbose_name = "file source"
+        verbose_name_plural = "file source"
 
     def __unicode__(self):
         return self.get_category_display()

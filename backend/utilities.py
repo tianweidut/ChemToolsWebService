@@ -24,7 +24,7 @@ from const import MODEL_BCF, MODEL_PKD, MODEL_DFS
 from const import MODEL_DFS
 from const import ORIGIN_DRAW, ORIGIN_SMILE, ORIGIN_UPLOAD
 from const import ORIGIN_OTHER, ORIGIN_UNDEFINED
-from const.models import StatusCategory
+from const.models import StatusCategory, FileSourceCategory
 from const import STATUS_WORKING
 from users.models import UserProfile
 
@@ -106,7 +106,7 @@ def calculate_tasks(pid_list, smile, mol, models):
     return number
 
 
-def save_record(f, model_name, sid, arguments=None):
+def save_record(f, model_name, sid, source_type, arguments=None):
     """
     Here, we use decoartor design pattern,
     this function is the real function
@@ -123,8 +123,8 @@ def save_record(f, model_name, sid, arguments=None):
     mol_file.file_obj = f
     mol_file.upload_time = datetime.datetime.now()
     mol_file.file_type = "mol"
-    mol_file.size = f.size
-    mol_file.source = ORIGIN_DRAW
+    mol_file.file_size = f.size
+    mol_file.file_source = FileSourceCategory.objects.get(category=source_type)
     mol_file.save()
 
     task.calculate_mol = mol_file
@@ -146,7 +146,6 @@ def get_FileObj_by_smiles(smile):
     mol.write('mol', name_path, overwrite=True)
 
     f = File(open(name_path, "r"))
-    f.close()
 
     return f
 
@@ -160,7 +159,7 @@ def start_files_task(files_list, model_name, sid, arguments=None):
     """
     for fid in files_list:
         record = ProcessedFile.objects.get(fid=fid)
-        save_record(record.file_obj, model_name, sid, arguments)
+        save_record(record.file_obj, model_name, sid, ORIGIN_UPLOAD, arguments)
 
     loginfo(p=model_name, label="finish start smile task")
 
@@ -172,7 +171,8 @@ def start_smile_task(smile, model_name, sid, arguments=None):
     into system-task query
     """
     f = get_FileObj_by_smiles(smile)
-    save_record(f, model_name, sid, arguments)
+    save_record(f, model_name, sid, ORIGIN_SMILE, arguments)
+    f.close()
     loginfo(p=model_name, label="finish start smile task")
 
 
@@ -188,9 +188,10 @@ def start_moldraw_task(moldraw, model_name, sid, arguments=None):
     path = os.path.join(settings.MOL_CONVERT_PATH, name)
     f = File(open(path, "w"))
     f.write(moldraw)
-    f.close()
 
-    save_record(f, model_name, sid, arguments)
+    save_record(f, model_name, sid, ORIGIN_DRAW, arguments)
+
+    f.close()
     loginfo(p=model_name, label="finish start smile task")
 
 
