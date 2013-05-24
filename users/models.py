@@ -8,9 +8,7 @@ import uuid
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
-
 from const.models import *
-from backend.utilities import get_sid
 
 DEFAULT_CREATE_ID = "0000-0000"
 DEFAULT_ERROR_ID = "FFFF-FFFF"
@@ -38,7 +36,7 @@ class UserProfile(models.Model):
     The Administrator can modified them in admin.page
     """
     user = models.ForeignKey(User, unique=True)
-    agentID = models.CharField(max_length=40, default=get_sid, unique=True)
+    agentID = models.CharField(max_length=40, default=lambda:str(uuid.uuid4()), unique=True)
     workunit = models.CharField(max_length=2000, blank=True)
     address = models.CharField(max_length=2000, blank=True)
     telephone = models.CharField(max_length=100, blank=True)

@@ -175,7 +175,10 @@ PROCESS_FILE_PATH = join("tmp", "process_file")
 
 # Search Image Path
 SEARCH_IMAGE_PATH_RE = join("tmp", "search-image")
+MOL_CONVERT_PATH_RE = join("tmp", "molconvert")
 SEARCH_IMAGE_PATH = join(MEDIA_ROOT, SEARCH_IMAGE_PATH_RE)
+MOL_CONVERT_PATH = join(MEDIA_ROOT, MOL_CONVERT_PATH_RE)
+
 
 LOGGING_OUTPUT_ENABLED = True
 

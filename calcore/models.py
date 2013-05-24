@@ -8,14 +8,17 @@ Desc: dict table
 '''
 
 import datetime
+import uuid
 
 from django.db import models
 from django.conf import settings
 
-from backend.utilities import get_sid
 from const.models import *
 from const import *
 from users.models import UserProfile
+
+def get_sid():
+    return str(uuid.uuid4())
 
 
 class SuiteTask(models.Model):
@@ -28,14 +31,12 @@ class SuiteTask(models.Model):
     user = models.ForeignKey(UserProfile, blank=False, verbose_name="user")
     smiles = models.CharField(max_length=2000, blank=True,
                               verbose_name="smiles input")
-    mol_graph = models.CharField(max_length=2000, blank=True,
-                                 verbose_name="mol drawing")
     total_tasks = models.IntegerField(blank=False, verbose_name="total tasks")
     has_finished_tasks = models.IntegerField(blank=False, default=0,
                                              verbose_name="Finished number")
     start_time = models.DateTimeField(blank=False,
                                       default=lambda: datetime.datetime.now())
-    end_time = models.DateTimeField(blank=True)
+    end_time = models.DateTimeField(blank=True, null=True)
     name = models.CharField(max_length=2000, blank=True)
     notes = models.CharField(max_length=5000, blank=True)
     status = models.ForeignKey(StatusCategory, blank=False,

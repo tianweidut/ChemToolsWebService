@@ -31,34 +31,14 @@ def calculate_submit(request,
                      models=None
                      ):
 
-    pid_list = make_uniquenames(unique_names)
-    total_tasks = calculate_tasks(pid_list, smile, mol, models)
+    is_submitted, message = suitetask_process(request, smile=smile, mol=mol,
+                                              notes=notes, name=name,
+                                              unique_names=unique_names,
+                                              types=types,
+                                              models=models)
 
-    if total_tasks == 0:
-        return simplejson.dumps({'message': 'Please choice one model or input one search!',
-                                 'is_submitted': False})
-
-    suite_task = SuiteTask()
-    suite_task.sid = str(uuid.uuid4())
-    suite_task.user = request.user
-    suite.smiles = smile
-    suite.mol_graph = mol
-    suite_task.total_tasks = total_tasks
-    suite_task.has_finished_tasks = 0
-    suite_task.start_time = datetime.datetime.now()
-    suite_task.name = name
-    suite_task.notes = notes
-    suite_task.save()
-
-    models_dict = parse_models(models)
-    for key in models_dict:
-        #TODO: add mol arguments
-        start_smile_task(smile, key, suite_task.sid)
-        start_moldraw_task(mol, key, suite_task.sid)
-        start_files_task(pid_list, key, suite_task.sid)
-
-    return simplejson.dumps({'message': 'tianwei hello world!',
-                             'is_submitted': True})
+    return simplejson.dumps({'message': message,
+                             'is_submitted': is_submitted})
 
 
 @dajaxice_register(method='GET')
