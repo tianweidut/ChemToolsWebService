@@ -27,7 +27,7 @@ from const import ORIGIN_OTHER, ORIGIN_UNDEFINED
 from const.models import StatusCategory, FileSourceCategory
 from const import STATUS_WORKING
 from users.models import UserProfile
-
+from calcore.controllers.prediciton_model import PredictionModel
 
 def response_minetype(request):
     if "application/json" in request.META["HTTP_ACCEPT"]:
@@ -129,8 +129,11 @@ def save_record(f, model_name, sid, source_type, arguments=None):
 
     task.calculate_mol = mol_file
     task.save()
-
-    #TODO: call task query process function
+    #TODO: call task query process function filename needs path
+    para=dict.fromkeys(['smilestring','filename','cas'])
+    para['filename']=mol_file.file_obj
+    pm=PredictionModel(model_name,para)
+    print pm.predict_results
 
 
 def get_FileObj_by_smiles(smile):
@@ -173,7 +176,10 @@ def start_smile_task(smile, model_name, sid, arguments=None):
     f = get_FileObj_by_smiles(smile)
     save_record(f, model_name, sid, ORIGIN_SMILE, arguments)
     f.close()
+
+    
     loginfo(p=model_name, label="finish start smile task")
+    
 
 
 def start_moldraw_task(moldraw, model_name, sid, arguments=None):
