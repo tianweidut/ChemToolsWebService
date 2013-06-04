@@ -104,7 +104,7 @@ def calculate_tasks(pid_list, smile, mol, models):
 
     loginfo(p=number, label="calculate_tasks")
     return number
-def get_ModelName(name)
+def get_ModelName(name):
     temp={
             "koa":"logKOA"
             }
