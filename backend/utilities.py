@@ -104,7 +104,12 @@ def calculate_tasks(pid_list, smile, mol, models):
 
     loginfo(p=number, label="calculate_tasks")
     return number
-
+def get_ModelName(name)
+    temp={
+            "koa":"logKOA"
+            }
+    if temp.has_key(name):
+        return temp.get(name)
 
 def save_record(f, model_name, sid, source_type, arguments=None):
     """
@@ -132,7 +137,7 @@ def save_record(f, model_name, sid, source_type, arguments=None):
     #TODO: call task query process function filename needs path
     para=dict.fromkeys(['smilestring','filename','cas'])
     para['filename']=mol_file.file_obj
-    pm=PredictionModel(model_name,para)
+    pm=PredictionModel([get_ModelName(model_name)],para)
     print pm.predict_results
 
 
