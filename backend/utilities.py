@@ -104,13 +104,19 @@ def calculate_tasks(pid_list, smile, mol, models):
 
     loginfo(p=number, label="calculate_tasks")
     return number
-
+def get_ModelName(name):
+    temp={
+            "koa":"logKOA"
+            }
+    if temp.has_key(name):
+        return temp.get(name)
 
 def save_record(f, model_name, sid, source_type, arguments=None):
     """
     Here, we use decoartor design pattern,
     this function is the real function
     """
+    '''
     task = SingleTask()
     task.sid = SuiteTask.objects.get(sid=sid)
     task.pid = str(uuid.uuid4())
@@ -129,11 +135,16 @@ def save_record(f, model_name, sid, source_type, arguments=None):
 
     task.calculate_mol = mol_file
     task.save()
+    '''
     #TODO: call task query process function filename needs path
-    para=dict.fromkeys(['smilestring','filename','cas'])
-    para['filename']=mol_file.file_obj
-    pm=PredictionModel(model_name,para)
-    print pm.predict_results
+    para=dict.fromkeys(['smilestring','filename','cas'],"")
+    #para['filename']=model_name+str(uuid.uuid4())+".mol"
+    #para['smilestring']=""
+    #para['cas']=""
+    para['filename']=f.name
+    print para
+    pm=PredictionModel([get_ModelName(model_name)],para)
+    print pm.predict_results[f.name.split(".")[0]][get_ModelName(model_name)]
 
 
 def get_FileObj_by_smiles(smile):

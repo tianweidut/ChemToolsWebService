@@ -7,6 +7,7 @@ log/*
 tmp/*
 media/pictures/*
 media/tmp/*
+celerytest/
 
 .settings/*
 .pydevproject
