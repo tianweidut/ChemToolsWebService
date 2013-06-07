@@ -240,22 +240,4 @@ FILE_UPLOAD_HANDLERS = (
 
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
-#celery task queue
-import djcelery
-djcelery.setup_loader()
 
-BROKER_URL = "localhost"
-BROKER_BACKEND = "redis"
-REDIS_PORT = 6379
-REDIS_HOST = "localhost"
-BROKER_USER = ""
-BROKER_PASSWORD = ""
-REDIS_DB = 0
-REDIS_CONNECT_RETRY = True
-CELERY_SEND_EVENTS=True
-CELERY_RESULT_BACKEND = 'redis'
-CELERY_TASK_RESULT_EXPIRES = 10
-CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
-
-#for development
-CELERY_ALWAYS_EAGER = True

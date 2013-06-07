@@ -36,3 +36,23 @@ INSTALLED_APPS = INSTALLED_APPS + (
 MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + (
     'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',
     )
+
+#celery task queue
+import djcelery
+djcelery.setup_loader()
+
+BROKER_URL = "192.168.2.90"
+BROKER_BACKEND = "redis"
+REDIS_PORT = 6379
+REDIS_HOST = "192.168.2.90"
+BROKER_USER = ""
+BROKER_PASSWORD = ""
+REDIS_DB = 0
+REDIS_CONNECT_RETRY = True
+CELERY_SEND_EVENTS=True
+CELERY_RESULT_BACKEND = 'redis'
+CELERY_TASK_RESULT_EXPIRES = 10
+CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
+
+#for development
+CELERY_ALWAYS_EAGER = True
