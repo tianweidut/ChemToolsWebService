@@ -7,21 +7,23 @@ Created on 2012-11-26
 import sys, os, shutil, re
 sys.path.append("/usr/local/lib/")
 import openbabel,pybel
-from calcore.config.settings import globalpath, molpath
+from calcore.config.settings import globalpath
 from calcore.controllers.Mopac import Mopac
 from calcore.controllers.MolToGjfAndMop import Mol2GjfandMop
+
 class SmileToMol():
     '''
     to transfer from smile numbers to mol file:
     input parameter is a string,and multi_smiles is splited by ','
     such as [number1,number2,number3]
 '''
-    def __init__(self, smilenum=None, molfile=None):
+    def __init__(self, smilenum=None, molfile=None,molpath={}):
         self.__invalid_smile  = []
         self.__opt_smilenum   = []
         self.__unopt_smilenum = []
         self.__smilenum_list  = []
         self.__molfile        = []
+        self.molpath=molpath
         if smilenum == "":
             #raise Exception,"error input with 0 valid smilenum"
             pass
@@ -94,16 +96,16 @@ class SmileToMol():
                     revisedsmi += smilenum[i]
             ########################################################################################
             #2:mol to mop file
-            Mol2GjfandMop(molpath+'/'+revisedsmi+'.mol',mop=True)
+            Mol2GjfandMop(self.molpath+'/'+revisedsmi+'.mol',mop=True)
             #3:mop file into formopac folder
             dst = globalpath+'formopac/'+revisedsmi
             if not os.path.exists(dst):
                 os.makedirs(dst)
             real_dst = os.path.join(dst, revisedsmi+'.mop')
             if os.path.exists(real_dst):
-                os.remove(os.getcwd()+'/'+revisedsmi+'.mop')
+                os.remove(self.molpath+'/'+revisedsmi+'.mop')
             else:
-                shutil.move(os.getcwd()+'/'+revisedsmi+'.mop',globalpath+'formopac/'+revisedsmi)
+                shutil.move(self.molpath+'/'+revisedsmi+'.mop',globalpath+'formopac/'+revisedsmi)
         # to remove invalide smilenum from self.__unopt_smilenum
         for num in self.__invalid_smile:
             self.__unopt_smilenum.remove(num) 
@@ -111,16 +113,16 @@ class SmileToMol():
             #######################################################################################
         #deal with input mol file
         for mol in self.__molfile:
-            Mol2GjfandMop(molpath+'/'+mol,mop=True)
+            Mol2GjfandMop(self.molpath+'/'+mol,mop=True)
             mol_without_ext = mol.split('.')[0]
             dst = globalpath+'formopac/'+mol_without_ext
             if not os.path.exists(dst):
                 os.makedirs(dst)
             real_dst = os.path.join(dst, mol_without_ext+'.mop')
             if os.path.exists(real_dst):
-                os.remove(os.getcwd()+'/'+mol_without_ext+'.mop')
+                os.remove(self.molpath+'/'+mol_without_ext+'.mop')
             else:
-                shutil.move(os.getcwd()+'/'+mol_without_ext+'.mop',globalpath+'formopac/'+mol_without_ext)
+                shutil.move(self.molpath+'/'+mol_without_ext+'.mop',globalpath+'formopac/'+mol_without_ext)
                 #######################################################################################
     def mol2dragon_folder(self):
         # mol2mopac_folder here is to put mop file into mopac folder
@@ -147,7 +149,7 @@ class SmileToMol():
             if not os.path.exists(dst):
                 os.makedirs(dst)
             if not os.path.exists(dst+revisedsmi+'.mol'):
-                shutil.move(os.getcwd()+'/'+revisedsmi+'.mol',dst)
+                shutil.move(self.molpath+'/'+revisedsmi+'.mol',dst)
             mopfile.append(revisedsmi+'.mop')
             ###################################################################################
         for mol in self.__molfile:
@@ -157,7 +159,7 @@ class SmileToMol():
             if not os.path.exists(dst):
                 os.makedirs(dst)
             if not os.path.exists(dst+mol):
-                shutil.move(os.getcwd()+'/'+mol,dst)
+                shutil.move(self.molpath+'/'+mol,dst)
             mopfile.append(mol_without_ext+'.mop')
         mop = Mopac(mopfile)
         mop.opt4dragon()

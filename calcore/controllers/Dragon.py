@@ -8,8 +8,8 @@ from calcore.controllers.SmileToMol import SmileToMol
 from calcore.controllers.XmlCreate import write_xml
 #调用不同的分子计算符软件进行分子描述符计算参数分别为DRAGON,GAUSSIAN,MOPAC
 class Dragon(SmileToMol):
-    def __init__(self, smiles_str=None, molfile=None):
-        sm = SmileToMol(smiles_str, molfile)
+    def __init__(self, smiles_str=None, molfile=None,molpath={}):
+        sm = SmileToMol(smiles_str, molfile,molpath)
         sm.mol2dragon_folder()
         self.__file = sm.get_smilenum_list()
         for mol in sm.get_molfile():
