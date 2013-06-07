@@ -8,11 +8,12 @@ class PredictionModel_ForParamInDragon(object):
     '''
 this class is used for model computation that parameters needed in Dragon output file
     '''
-    def __init__(self , modelname=None ,para={},predict_results=None):
+    def __init__(self , modelname=None ,para={},predict_results=None,molpath={}):
         self.predict_result = predict_results
         para = para or {}
         #start to compute model  results
-        d = Dragon(smiles_str=para["smilestring"], molfile=para["filename"])
+        d = Dragon(smiles_str=para["smilestring"],
+                molfile=para["filename"],molpath=molpath)
         d.mol2drs()
         self.predict_result["invalidnums"] = d.invalidnums
         modelname = modelname or []
@@ -53,7 +54,7 @@ MODEL_FOR_COMPUTAIONCLASS = {}
 MODEL_FOR_COMPUTAIONCLASS["logKOA"] =  PredictionModel_ForParamInDragon
 MODEL_FOR_COMPUTAIONCLASS["logRP"]  =  PredictionModel_ForParamInDragon
 class PredictionModel(object):
-    def __init__(self, modelnames=None, para={}):
+    def __init__(self, modelnames=None, para={}, molpath={}):
         modelnames = modelnames or []
         predictionclass = {}
         self.predict_results={}
@@ -67,7 +68,7 @@ class PredictionModel(object):
         #2:start to initiate different computation models 
         for prediction_model in predictionclass.keys():
             prediction_model(predictionclass[prediction_model],
-                    para,self.predict_results)
+                    para,self.predict_results,molpath)
 '''            
 para ={
     "smilestring":"c1ccccc1C(=O)c1cc(c(cc1O)OC)S(=O)(=O)O,c1(ccc(cc1)OC)/C=C/C(=O)OCCOCC",
