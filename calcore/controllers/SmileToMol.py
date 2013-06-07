@@ -7,7 +7,7 @@ Created on 2012-11-26
 import sys, os, shutil, re
 sys.path.append("/usr/local/lib/")
 import openbabel,pybel
-from calcore.config.settings import globalpath
+from calcore.config.settings import globalpath, molpath
 from calcore.controllers.Mopac import Mopac
 from calcore.controllers.MolToGjfAndMop import Mol2GjfandMop
 class SmileToMol():
@@ -94,7 +94,7 @@ class SmileToMol():
                     revisedsmi += smilenum[i]
             ########################################################################################
             #2:mol to mop file
-            Mol2GjfandMop(os.getcwd()+'/'+revisedsmi+'.mol',mop=True)
+            Mol2GjfandMop(molpath+'/'+revisedsmi+'.mol',mop=True)
             #3:mop file into formopac folder
             dst = globalpath+'formopac/'+revisedsmi
             if not os.path.exists(dst):
@@ -111,7 +111,7 @@ class SmileToMol():
             #######################################################################################
         #deal with input mol file
         for mol in self.__molfile:
-            Mol2GjfandMop(os.getcwd()+'/'+mol,mop=True)
+            Mol2GjfandMop(molpath+'/'+mol,mop=True)
             mol_without_ext = mol.split('.')[0]
             dst = globalpath+'formopac/'+mol_without_ext
             if not os.path.exists(dst):

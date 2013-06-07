@@ -9,6 +9,7 @@ Desc: Celery Tasks
 import os
 import sys
 import uuid
+import time
 
 from celery.decorators import task
 
@@ -30,4 +31,11 @@ from backend.logging import logger
 
 @task()
 def add(x, y):
+    print "sleep!"
+    time.sleep(10)
+    return x+y+x+y
+
+@task()
+def add_a(x, y):
+    print "sleep! a"
     return x+y+x+y
