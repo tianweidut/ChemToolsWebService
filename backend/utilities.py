@@ -116,7 +116,7 @@ def save_record(f, model_name, sid, source_type, arguments=None):
     Here, we use decoartor design pattern,
     this function is the real function
     """
-    '''
+
     task = SingleTask()
     task.sid = SuiteTask.objects.get(sid=sid)
     task.pid = str(uuid.uuid4())
@@ -135,17 +135,25 @@ def save_record(f, model_name, sid, source_type, arguments=None):
 
     task.calculate_mol = mol_file
     task.save()
-    '''
+
     #TODO: call task query process function filename needs path
+    #global molpathtemp
+    molpath=os.path.split(f.name)[0]
+    print molpath
     para=dict.fromkeys(['smilestring','filename','cas'],"")
     #para['filename']=model_name+str(uuid.uuid4())+".mol"
     #para['smilestring']=""
     #para['cas']=""
-    para['filename']=f.name
+    para['filename']=os.path.split(f.name)[1]
     print para
-    pm=PredictionModel([get_ModelName(model_name)],para)
-    print pm.predict_results[f.name.split(".")[0]][get_ModelName(model_name)]
-
+    pm=PredictionModel([get_ModelName(model_name)],para,molpath)
+    result= pm.predict_results[os.path.split(f.name)[1].split(".")[0]][get_ModelName(model_name)]
+    print result
+    task.results=result
+    task.save()
+    suite=task.sid
+    suite.has_finished_tasks+=1
+    suite.save()
 
 def get_FileObj_by_smiles(smile):
     """

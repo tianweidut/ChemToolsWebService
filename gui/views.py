@@ -31,7 +31,8 @@ from backend.fileoperator import receiveFile
 from backend.ChemSpiderPy.wrapper import search_cheminfo
 from backend.logging import logger
 from backend.utilities import JSONResponse, response_minetype
-from calcore.models import ProcessedFile
+#from calcore.models import ProcessedFileedFile
+from calcore.models import *
 
 
 def step1_form(request=None):
@@ -129,3 +130,8 @@ def multi_inputform(request):
             return upload_response(request)
 
     return render(request, "features/newtask.html")
+
+def task_list(request):
+    SuiteTask_list = SuiteTask.objects.filter(user__user=request.user)
+   # SuiteTask_list = SuiteTask.objects.all()
+    return render(request, 'features/history.html', {'SuiteTask_list':SuiteTask_list})
