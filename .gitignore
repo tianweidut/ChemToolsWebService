@@ -8,6 +8,7 @@ tmp/*
 media/pictures/*
 media/tmp/*
 celerytest/
+*.rdb
 
 .settings/*
 .pydevproject
