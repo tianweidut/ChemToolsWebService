@@ -132,6 +132,6 @@ def multi_inputform(request):
     return render(request, "features/newtask.html")
 
 def task_list(request):
-    #SuiteTask_list = SuiteTask.objects.get(user=request.user.username)
-    SuiteTask_list = SuiteTask.objects.all()
+    SuiteTask_list = SuiteTask.objects.filter(user__user=request.user)
+   # SuiteTask_list = SuiteTask.objects.all()
     return render(request, 'features/history.html', {'SuiteTask_list':SuiteTask_list})

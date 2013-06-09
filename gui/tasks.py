@@ -40,7 +40,6 @@ def get_ModelName(name):
 @task()
 def add(x, y):
     print "sleep!"
-    time.sleep(10)
     return x+y+x+y
 
 @task()
