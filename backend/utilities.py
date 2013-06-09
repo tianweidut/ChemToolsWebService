@@ -28,6 +28,7 @@ from const.models import StatusCategory, FileSourceCategory
 from const import STATUS_WORKING
 from users.models import UserProfile
 from calcore.controllers.prediciton_model import PredictionModel
+from gui.tasks import *
 
 def response_minetype(request):
     if "application/json" in request.META["HTTP_ACCEPT"]:
@@ -104,12 +105,7 @@ def calculate_tasks(pid_list, smile, mol, models):
 
     loginfo(p=number, label="calculate_tasks")
     return number
-def get_ModelName(name):
-    temp={
-            "koa":"logKOA"
-            }
-    if temp.has_key(name):
-        return temp.get(name)
+
 
 def save_record(f, model_name, sid, source_type, arguments=None):
     """
@@ -138,22 +134,7 @@ def save_record(f, model_name, sid, source_type, arguments=None):
 
     #TODO: call task query process function filename needs path
     #global molpathtemp
-    molpath=os.path.split(f.name)[0]
-    print molpath
-    para=dict.fromkeys(['smilestring','filename','cas'],"")
-    #para['filename']=model_name+str(uuid.uuid4())+".mol"
-    #para['smilestring']=""
-    #para['cas']=""
-    para['filename']=os.path.split(f.name)[1]
-    print para
-    pm=PredictionModel([get_ModelName(model_name)],para,molpath)
-    result= pm.predict_results[os.path.split(f.name)[1].split(".")[0]][get_ModelName(model_name)]
-    print result
-    task.results=result
-    task.save()
-    suite=task.sid
-    suite.has_finished_tasks+=1
-    suite.save()
+    calculateTask.delay(f,task,model_name)
 
 def get_FileObj_by_smiles(smile):
     """

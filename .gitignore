@@ -18,6 +18,7 @@ celerytest/
 *.sdf
 *.out
 *.drs
+*.pid
 
 # Packages
 *.egg
