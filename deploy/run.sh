@@ -51,8 +51,8 @@ elif [ $1 = 'restart' ];then
     echo "*_* Restart uwsgi and nginx [OK] *_* "
 
 elif [ $1 = 'deploy' ];then
-    sudo cp province_server /etc/nginx/sites-available/province_server
-    sudo ln -s /etc/nginx/sites-available/province_server /etc/nginx/sites-enabled/province_server
+    sudo cp chemistry_server /etc/nginx/sites-available/chemistry_server
+    sudo ln -s /etc/nginx/sites-available/chemistry_server /etc/nginx/sites-enabled/chemistry_server
     sudo cp province.ini /etc/uwsgi/apps-available/
     sudo chmod 777 /var/run/nginx.pid
     echo "*_* Deploy and copy scipts *_*"
