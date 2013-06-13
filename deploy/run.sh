@@ -91,10 +91,9 @@ elif [ $1 = 'update' ];then
     python manage.py collectstatic
     cd -
     echo "*_* update codebase *_*"
-    echo "update worker"
-    update_worker
 
-elif [ $1 = 'test' ];then
+elif [ $1 = 'update_worker' ];then
+    echo "update worker"
     update_worker
 
 else
