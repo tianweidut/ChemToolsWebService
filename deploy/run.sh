@@ -19,12 +19,12 @@ restart_server(){
     echo "*_* Restart uwsgi and nginx [OK] *_* "
 }
 
-update_worker_core(host){
-    ssh host
+update_worker_core(){
+    ssh $1
     cd ~/mysites/ChemToolService/
     git checkout production
     git pull origin production
-    echo "finish this worker"
+    echo "finish this worker"$1
     exit
 }
 
