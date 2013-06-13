@@ -11,6 +11,33 @@ loadini_func(){
     echo "Finish the uwsgi operation!"
 }
 
+restart_server(){
+    sudo killall -9 uwsgi 
+    sudo killall -9 nginx 
+    loadini_func 
+    sudo /etc/init.d/nginx restart
+    echo "*_* Restart uwsgi and nginx [OK] *_* "
+}
+
+update_worker_core(host){
+    ssh host
+    cd ~/mysites/ChemToolService/
+    git checkout production
+    git pull origin production
+    echo "finish this worker"
+    exit
+}
+
+update_worker(){
+    task1 = "task1@task1"
+    task2 = "task2@task2"
+    task3 = "task3@task3"
+
+    update_worker_core(task1)
+    update_worker_core(task2)
+    update_worker_core(task3)
+}
+
 #start scripts for provincemanagement
 echo "************************************"
 echo "welcome to use server deploy scripts"
@@ -44,11 +71,7 @@ elif [ $1 = 'stop' ];then
     echo "*_* Stop uwsgi and nginx [OK] *_* "
 
 elif [ $1 = 'restart' ];then
-    sudo killall -9 uwsgi 
-    sudo killall -9 nginx 
-    loadini_func 
-    sudo /etc/init.d/nginx restart
-    echo "*_* Restart uwsgi and nginx [OK] *_* "
+    restart_server
 
 elif [ $1 = 'deploy' ];then
     sudo cp chemistry_server /etc/nginx/sites-available/chemistry_server
@@ -60,16 +83,19 @@ elif [ $1 = 'deploy' ];then
 elif [ $1 = 'update' ];then
     echo "update production source code and update static files"
     cd $(cd "$(dirname "$0")"; pwd)/../
-    echo "check branch to master"
-    git checkout master
+    echo "check branch to production"
+    git checkout production
     echo "update code repo"
-    git pull origin master
+    git pull origin production
     echo "update static folder"
     python manage.py collectstatic
     cd -
     echo "*_* update codebase *_*"
+    echo "update worker"
+    update_worker
+
 else
-    echo "Usages: sh run.sh [start|restart|stop|deploy]"
+    echo "Usages: sh run.sh [start|restart|stop|deploy|update]"
 fi
 
 echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
