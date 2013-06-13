@@ -2,6 +2,7 @@
 *~
 *.swp
 *.swo
+*.orig
 build/*
 log/*
 tmp/*
@@ -9,6 +10,9 @@ media/pictures/*
 media/tmp/*
 celerytest/
 *.rdb
+
+static/*
+
 
 .settings/*
 .pydevproject

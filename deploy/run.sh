@@ -19,29 +19,29 @@ restart_server(){
     echo "*_* Restart uwsgi and nginx [OK] *_* "
 }
 
-update_worker_core(host){
-    ssh host
-    cd ~/mysites/ChemToolService/
-    git checkout production
-    git pull origin production
-    echo "finish this worker"
-    exit
+update_worker_core(){
+    echo $1
+    cmd1="cd /home/$1/mysites/ChemToolService/"
+    cmd2="git checkout production"
+    cmd3="git pull origin production"
+
+    echo $cmd1
+
+    ssh -t $1@$1 "$cmd1;$cmd2;$cmd3"
+    echo "finish this worker"$1
 }
 
 update_worker(){
-    task1 = "task1@task1"
-    task2 = "task2@task2"
-    task3 = "task3@task3"
 
-    update_worker_core(task1)
-    update_worker_core(task2)
-    update_worker_core(task3)
+    update_worker_core "task1"
+    update_worker_core "task2"
+    update_worker_core "task3"
 }
 
 #start scripts for provincemanagement
 echo "************************************"
 echo "welcome to use server deploy scripts"
-echo "For Liaoning Province version"
+echo "For Chemistry Tool Service website version"
 echo "************************************"
 
 if [ $1 = 'start' ];then
@@ -76,7 +76,7 @@ elif [ $1 = 'restart' ];then
 elif [ $1 = 'deploy' ];then
     sudo cp chemistry_server /etc/nginx/sites-available/chemistry_server
     sudo ln -s /etc/nginx/sites-available/chemistry_server /etc/nginx/sites-enabled/chemistry_server
-    sudo cp province.ini /etc/uwsgi/apps-available/
+    sudo cp chemistry.ini /etc/uwsgi/apps-available/
     sudo chmod 777 /var/run/nginx.pid
     echo "*_* Deploy and copy scipts *_*"
 
@@ -91,6 +91,8 @@ elif [ $1 = 'update' ];then
     python manage.py collectstatic
     cd -
     echo "*_* update codebase *_*"
+
+elif [ $1 = 'update_worker' ];then
     echo "update worker"
     update_worker
 
