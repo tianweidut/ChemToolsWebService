@@ -33,9 +33,9 @@ update_worker(){
     task2 = "task2@task2"
     task3 = "task3@task3"
 
-    update_worker_core(task1)
-    update_worker_core(task2)
-    update_worker_core(task3)
+    update_worker_core task1
+    update_worker_core task2
+    update_worker_core task3
 }
 
 #start scripts for provincemanagement
