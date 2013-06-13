@@ -27,7 +27,7 @@ update_worker_core(){
 
     echo $cmd1
 
-    ssh -t $1@$1 $cmd1;$cmd2;$cmd3
+    ssh -t $1@$1 "$cmd1;$cmd2;$cmd3"
     echo "finish this worker"$1
 }
 
