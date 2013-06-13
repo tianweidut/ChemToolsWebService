@@ -29,13 +29,10 @@ update_worker_core(){
 }
 
 update_worker(){
-    task1 = "task1@task1"
-    task2 = "task2@task2"
-    task3 = "task3@task3"
 
-    update_worker_core task1
-    update_worker_core task2
-    update_worker_core task3
+    update_worker_core "task1@task1"
+    update_worker_core "task2@task2"
+    update_worker_core "task3@task3"
 }
 
 #start scripts for provincemanagement
