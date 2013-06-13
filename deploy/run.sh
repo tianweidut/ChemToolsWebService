@@ -20,10 +20,13 @@ restart_server(){
 }
 
 update_worker_core(){
-    ssh $1
-    cd ~/mysites/ChemToolService/
-    git checkout production
-    git pull origin production
+    cmd1 = $(cd ~/mysites/ChemToolService/)
+    cmd2 = $(git checkout production)
+    cmd3 = $(git pull origin production)
+
+    ssh -t $1 "$cmd1"
+    ssh -t $1 "$cmd2"
+    ssh -t $1 "$cmd3"
     echo "finish this worker"$1
     exit
 }
