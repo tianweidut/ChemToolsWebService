@@ -27,7 +27,7 @@ SEND_BROKEN_LINK_EMAILS = True
 # Set your DSN value
 RAVEN_CONFIG = {
         'dsn':
-        'http://a10a581505e9474b9dc4bd133430ef62:d1ba9b9676674c11b0c5c6ff9ad01ab1@sentryServer:19000/4',
+        'http://a98c9c1f6b9740e1b424a073e610751e:7e006e2a5787459f8aff0fd8ebb91652@sentryServer:19000/2',
     }
 
 # Add raven to the list of installed apps
