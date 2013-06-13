@@ -41,7 +41,7 @@ update_worker(){
 #start scripts for provincemanagement
 echo "************************************"
 echo "welcome to use server deploy scripts"
-echo "For Liaoning Province version"
+echo "For Chemistry Tool Service website version"
 echo "************************************"
 
 if [ $1 = 'start' ];then
@@ -76,7 +76,7 @@ elif [ $1 = 'restart' ];then
 elif [ $1 = 'deploy' ];then
     sudo cp chemistry_server /etc/nginx/sites-available/chemistry_server
     sudo ln -s /etc/nginx/sites-available/chemistry_server /etc/nginx/sites-enabled/chemistry_server
-    sudo cp province.ini /etc/uwsgi/apps-available/
+    sudo cp chemistry.ini /etc/uwsgi/apps-available/
     sudo chmod 777 /var/run/nginx.pid
     echo "*_* Deploy and copy scipts *_*"
 
