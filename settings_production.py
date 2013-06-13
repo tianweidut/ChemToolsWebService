@@ -16,7 +16,7 @@ DATABASES = {
         'NAME': 'Chemistry',             # Or path to database file if using sqlite3.
         'USER': 'root',                       # Not used with sqlite3.
         'PASSWORD': 'root',                   # Not used with sqlite3.
-        'HOST': '192.168.20.100',                           # Set to empty string for localhost. Not used with sqlite3.
+        'HOST': 'productionServer',                           # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '3306',                           # Set to empty string for default. Not used with sqlite3.
     }
 }
@@ -26,7 +26,8 @@ SEND_BROKEN_LINK_EMAILS = True
 
 # Set your DSN value
 RAVEN_CONFIG = {
-        'dsn': 'http://a10a581505e9474b9dc4bd133430ef62:d1ba9b9676674c11b0c5c6ff9ad01ab1@192.168.2.7:19000/4',
+        'dsn':
+        'http://a10a581505e9474b9dc4bd133430ef62:d1ba9b9676674c11b0c5c6ff9ad01ab1@sentryServer:19000/4',
     }
 
 # Add raven to the list of installed apps
@@ -38,21 +39,21 @@ MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + (
     )
 
 #celery task queue
-import djcelery
-djcelery.setup_loader()
-
-BROKER_URL = "192.168.2.90"
+BROKER_URL = "redis://:root@redisProductionServer:6379/0"
 BROKER_BACKEND = "redis"
+
+REDIS_HOST = "redisProductionServer"
 REDIS_PORT = 6379
-REDIS_HOST = "192.168.2.90"
-BROKER_USER = ""
-BROKER_PASSWORD = ""
 REDIS_DB = 0
+REDIT_PASSWORD = ""
 REDIS_CONNECT_RETRY = True
-CELERY_SEND_EVENTS=True
-CELERY_RESULT_BACKEND = 'redis'
-CELERY_TASK_RESULT_EXPIRES = 10
+
+CELERY_SEND_EVENTS = True
+CELERY_CONNECT_RETRY = True
+CELERY_RESULT_BACKEND = 'redis://:root@redisProductionServer:6379/0'
+CELERY_RESULT_PORT = 6379
+CELERY_TASK_RESULT_EXPIRES = 3600
 CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
 
-#for development
-CELERY_ALWAYS_EAGER = True
+import djcelery
+djcelery.setup_loader()

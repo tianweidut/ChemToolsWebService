@@ -15,17 +15,17 @@ DATABASES = {
         'NAME': 'Chemistry',             # Or path to database file if using sqlite3.
         'USER': 'root',                       # Not used with sqlite3.
         'PASSWORD': 'root',                   # Not used with sqlite3.
-        'HOST': '192.168.2.90',                           # Set to empty string for localhost. Not used with sqlite3.
+        'HOST': 'developmentServer',                           # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '3306',                           # Set to empty string for default. Not used with sqlite3.
     }
 }
 
 
 
-BROKER_URL = "redis://:root@192.168.2.90:6379/0"
+BROKER_URL = "redis://:root@redisDevelopmentServer:6379/0"
 BROKER_BACKEND = "redis"
 
-REDIS_HOST = "192.168.2.90"
+REDIS_HOST = "redisDevelopmentServer"
 REDIS_PORT = 6379
 REDIS_DB = 0
 REDIT_PASSWORD = ""
@@ -33,7 +33,7 @@ REDIS_CONNECT_RETRY = True
 
 CELERY_SEND_EVENTS = True
 CELERY_CONNECT_RETRY = True
-CELERY_RESULT_BACKEND = 'redis://:root@192.168.2.90:6379/0'
+CELERY_RESULT_BACKEND = 'redis://:root@redisDevelopmentServer:6379/0'
 CELERY_RESULT_PORT = 6379
 CELERY_TASK_RESULT_EXPIRES = 3600
 CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
@@ -41,5 +41,3 @@ CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
 #celery task queue
 import djcelery
 djcelery.setup_loader()
-#for development
-#CELERY_ALWAYS_EAGER = True
