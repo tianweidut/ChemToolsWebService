@@ -12,3 +12,4 @@ hiredis
 celery-with-redis
 django-chartit
 south
+raven
