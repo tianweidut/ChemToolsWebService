@@ -20,22 +20,22 @@ restart_server(){
 }
 
 update_worker_core(){
-    cmd1 = $(cd ~/mysites/ChemToolService/)
-    cmd2 = $(git checkout production)
-    cmd3 = $(git pull origin production)
+    echo $1
+    cmd1="cd /home/$1/mysites/ChemToolService/"
+    cmd2="git checkout production"
+    cmd3="git pull origin production"
 
-    ssh -t $1 "$cmd1"
-    ssh -t $1 "$cmd2"
-    ssh -t $1 "$cmd3"
+    echo $cmd1
+
+    ssh -t $1@$1 $cmd1;$cmd2;$cmd3
     echo "finish this worker"$1
-    exit
 }
 
 update_worker(){
 
-    update_worker_core "task1@task1"
-    update_worker_core "task2@task2"
-    update_worker_core "task3@task3"
+    update_worker_core "task1"
+    update_worker_core "task2"
+    update_worker_core "task3"
 }
 
 #start scripts for provincemanagement
@@ -92,6 +92,9 @@ elif [ $1 = 'update' ];then
     cd -
     echo "*_* update codebase *_*"
     echo "update worker"
+    update_worker
+
+elif [ $1 = 'test' ];then
     update_worker
 
 else
