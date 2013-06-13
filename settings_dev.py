@@ -21,7 +21,6 @@ DATABASES = {
 }
 
 
-
 BROKER_URL = "redis://:root@redisDevelopmentServer:6379/0"
 BROKER_BACKEND = "redis"
 

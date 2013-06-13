@@ -21,13 +21,9 @@ DATABASES = {
     }
 }
 
-#send 404 link to admin user
-SEND_BROKEN_LINK_EMAILS = True
-
 # Set your DSN value
 RAVEN_CONFIG = {
-        'dsn':
-        'http://a10a581505e9474b9dc4bd133430ef62:d1ba9b9676674c11b0c5c6ff9ad01ab1@sentryServer:19000/4',
+        'dsn':'http://a98c9c1f6b9740e1b424a073e610751e:7e006e2a5787459f8aff0fd8ebb91652@202.118.73.59:19000/2',
     }
 
 # Add raven to the list of installed apps
@@ -39,10 +35,10 @@ MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + (
     )
 
 #celery task queue
-BROKER_URL = "redis://:root@redisProductionServer:6379/0"
+BROKER_URL = "redis://:root@redisDevelopmentServer:6379/0"
 BROKER_BACKEND = "redis"
 
-REDIS_HOST = "redisProductionServer"
+REDIS_HOST = "redisDevelopmentServer"
 REDIS_PORT = 6379
 REDIS_DB = 0
 REDIT_PASSWORD = ""
@@ -50,7 +46,7 @@ REDIS_CONNECT_RETRY = True
 
 CELERY_SEND_EVENTS = True
 CELERY_CONNECT_RETRY = True
-CELERY_RESULT_BACKEND = 'redis://:root@redisProductionServer:6379/0'
+CELERY_RESULT_BACKEND = 'redis://:root@redisDevelopmentServer:6379/0'
 CELERY_RESULT_PORT = 6379
 CELERY_TASK_RESULT_EXPIRES = 3600
 CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
