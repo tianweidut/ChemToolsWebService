@@ -31,7 +31,8 @@ def calculate_submit(request,
                      types="pdf;txt;csv",
                      models=None
                      ):
-    add.delay(10,10)
+    for i in range(0,50):
+        add.delay(10,10)
 
     return simplejson.dumps({'message': "finish add async",
                              'is_submitted': True})
