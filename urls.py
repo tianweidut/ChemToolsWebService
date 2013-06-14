@@ -17,11 +17,12 @@ from dajaxice.core import dajaxice_autodiscover, dajaxice_config
 from gui import views as gui_views
 from users import views as users_views
 
-
-admin.autodiscover()
 dajaxice_autodiscover()
+admin.autodiscover()
 
-handler500 = 'djangotoolbox.errorviews.server_error'
+handler500 = 'backend.errorviews.error500'
+handler403 = 'backend.errorviews.error403'
+handler404 = 'backend.errorviews.error404'
 
 urlpatterns = patterns('',
     url(
@@ -62,8 +63,7 @@ urlpatterns = patterns('',
     url(
         r'^history/$',
         gui_views.task_list,
-        #direct_to_template, {'template': 'features/history.html'},
-       # name="history"
+        name="history"
     ),
     url(
         r'^details/$',
@@ -72,7 +72,8 @@ urlpatterns = patterns('',
     ),
     url(
         r'^settings/profile/$',
-        users_views.profile
+        users_views.profile,
+        name="settings_profile"
     ),
     url(
         r'^settings/admin/$',
@@ -80,11 +81,13 @@ urlpatterns = patterns('',
     ),
     url(
         r'^settings/billing/$',
-        users_views.billing
+        users_views.billing,
+        name="settings_billing"
     ),
     url(
         r'^settings/payments/$',
-        users_views.payments
+        users_views.payments,
+        name="settings_payments"
     ),
     url(
         dajaxice_config.dajaxice_url,
