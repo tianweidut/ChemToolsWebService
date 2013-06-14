@@ -25,15 +25,24 @@
     {% block forejs %}{% endblock %}
   </head>
     <body >
-		{# navigator bar#}
-		{% include "widgets/navbar.html" %}
+      <div class="github-fork-ribbon-wrapper right">
+        <div class="github-fork-ribbon">
+          {%if settings.PRODUCTION_FLAG %}
+            <a href="/">Technical Preview!</a>
+          {%else%}
+            <a href="/">Development Version!</a>
+          {%endif%}
+        </div>
+      </div>
+		  {# navigator bar#}
+		  {% include "widgets/navbar.html" %}
 		
-    {# Main-Content Section #}
-    {% block content %}{% endblock %}
+      {# Main-Content Section #}
+      {% block content %}{% endblock %}
 
-    {# Footer Section #}
-    {% include "widgets/footer.html" %}
-    {% include "meta/bottom_scripts.html" %}
-    {% block endjs %}{% endblock %}    
+      {# Footer Section #}
+      {% include "widgets/footer.html" %}
+      {% include "meta/bottom_scripts.html" %}
+      {% block endjs %}{% endblock %}    
 	</body>
 </html>
