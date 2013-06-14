@@ -10,7 +10,7 @@ from settings import *
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
-PRODUCTION_FLAG = not DEBUG
+PRODUCTION_FLAG = "Technical Preview!" 
 
 DATABASES = {
     'default': {

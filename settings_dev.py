@@ -9,7 +9,7 @@ from settings import *
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-PRODUCTION_FLAG = not DEBUG
+PRODUCTION_FLAG = "Development Version!" 
 
 DATABASES = {
     'default': {

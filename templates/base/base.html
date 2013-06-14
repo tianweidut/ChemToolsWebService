@@ -27,11 +27,7 @@
     <body >
       <div class="github-fork-ribbon-wrapper right">
         <div class="github-fork-ribbon">
-          {%if settings.PRODUCTION_FLAG %}
-            <a href="/">Technical Preview!</a>
-          {%else%}
-            <a href="/">Development Version!</a>
-          {%endif%}
+          <a href="/">{{settings.PRODUCTION_FLAG}}</a>
         </div>
       </div>
 		  {# navigator bar#}
