@@ -1,0 +1,36 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/error.css" >
+
+<div class="container form-container">
+{%block errors-content%}
+<!-- start: content -->
+<div id="content">
+  <div class="left-images">
+    <img src="{%block errors-images%}{%endblock%}" width="467" height="301" alt="403 error message">
+	</div><!--end of left-->
+	<!-- start: right -->
+  <div class="right-content">
+    <h1>不好意思啊！网站出现错误了</h1>
+    <br/>
+    <ul class="troubleshoot">
+      <li>网页可能已删除或者网页的名字可能已经改变</li>
+      <li>网页暂时不能被访问</li>
+      <li>您可能输入了错误的网址</li>
+      <li>您可能没有访问权限</li>
+    </ul>
+    <p>不要担心，对于所有可能出现的错误而引起的访问错误，你可以点击下面的链接跳转到其他页面。</p>
+    <div id="links">
+      <ul>
+        <li><a href="/">主页</a></li>
+        <li><a href="/features/">平台介绍</a></li>
+        <li><a href="/show/">成果展示</a></li>
+        <li><a href="/accounts/login">登陆</a></li>
+      </ul>
+    </div><!--end links-->
+  </div><!--end right div-->
+</div><!--end content div-->
+{%endblock%}
+</div>
+{% endblock %}
