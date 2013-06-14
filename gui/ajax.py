@@ -17,6 +17,7 @@ from backend.logging import logger, loginfo
 from backend.ChemSpiderPy.wrapper import search_cheminfo
 from calcore.models import *
 from backend.utilities import *
+from gui.tasks import *
 
 
 @dajaxice_register(method='GET')
@@ -30,6 +31,12 @@ def calculate_submit(request,
                      types="pdf;txt;csv",
                      models=None
                      ):
+    for i in range(0,50):
+        add.delay(10,10)
+
+    return simplejson.dumps({'message': "finish add async",
+                             'is_submitted': True})
+
 
     is_submitted, message = suitetask_process(request, smile=smile, mol=mol,
                                               notes=notes, name=name,
