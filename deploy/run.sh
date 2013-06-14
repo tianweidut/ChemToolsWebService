@@ -29,13 +29,32 @@ update_worker_core(){
 
     ssh -t $1@$1 "$cmd1;$cmd2;$cmd3"
     echo "finish this worker"$1
+    echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
 }
 
 update_worker(){
-
-    update_worker_core "task1"
+    #update_worker_core "task1"
     update_worker_core "task2"
     update_worker_core "task3"
+}
+
+restart_worker_core(){
+    cmd1="sudo supervisorctl -u admin -p 890iop*\(\)IOP restart celery_worker_1"
+    cmd2="sudo supervisorctl -u admin -p 890iop*\(\)IOP restart celery_worker_2"
+    if [ $1 = 'est863' ];then
+        sudo supervisorctl -u admin -p 890iop*\(\)IOP restart celery_worker_1
+    else
+        ssh -t $1@$1 "$cmd1;$cmd2"
+    fi
+
+    echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+}
+
+restart_worker(){
+    #restart_worker_core "task2"
+    restart_worker_core "est863"
+    restart_worker_core "task2"
+    restart_worker_core "task3"
 }
 
 #start scripts for provincemanagement
@@ -95,6 +114,10 @@ elif [ $1 = 'update' ];then
 elif [ $1 = 'update_worker' ];then
     echo "update worker"
     update_worker
+
+elif [ $1 = 'restart_worker' ];then
+    echo "restart workers"
+    restart_worker
 
 else
     echo "Usages: sh run.sh [start|restart|stop|deploy|update]"
