@@ -13,3 +13,4 @@ celery-with-redis
 django-chartit
 south
 raven
+django-tastypie
