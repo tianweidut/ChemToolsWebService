@@ -138,6 +138,7 @@ INSTALLED_APPS = (
     'registration',
     'users',
     'calcore',
+    'tastypie',
 
     #Add-on
     'dajaxice',
