@@ -41,6 +41,8 @@ class SuiteTask(models.Model):
     notes = models.CharField(max_length=5000, blank=True)
     status = models.ForeignKey(StatusCategory, blank=False,
                                default=STATUS_UNDEFINED)
+    models_str = models.CharField(max_length=50, blank=True)
+    models_category_str = models.CharField(max_length=50, blank=True)
 
     class Meta:
         verbose_name = "Suite Task"
