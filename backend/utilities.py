@@ -26,9 +26,11 @@ from const import ORIGIN_DRAW, ORIGIN_SMILE, ORIGIN_UPLOAD
 from const import ORIGIN_OTHER, ORIGIN_UNDEFINED
 from const.models import StatusCategory, FileSourceCategory
 from const import STATUS_WORKING
+from const import MODEL_SPLITS
 from users.models import UserProfile
 from calcore.controllers.prediciton_model import PredictionModel
 from gui.tasks import *
+
 
 def response_minetype(request):
     if "application/json" in request.META["HTTP_ACCEPT"]:
@@ -134,7 +136,8 @@ def save_record(f, model_name, sid, source_type, arguments=None):
 
     #TODO: call task query process function filename needs path
     #global molpathtemp
-    calculateTask.delay(f,task,model_name)
+    calculateTask.delay(f, task, model_name)
+
 
 def get_FileObj_by_smiles(smile):
     """
@@ -177,9 +180,7 @@ def start_smile_task(smile, model_name, sid, arguments=None):
     save_record(f, model_name, sid, ORIGIN_SMILE, arguments)
     f.close()
 
-    
     loginfo(p=model_name, label="finish start smile task")
-    
 
 
 def start_moldraw_task(moldraw, model_name, sid, arguments=None):
@@ -199,6 +200,44 @@ def start_moldraw_task(moldraw, model_name, sid, arguments=None):
 
     f.close()
     loginfo(p=model_name, label="finish start smile task")
+
+
+def get_model_category(model_name):
+    """
+    """
+    if not model_name:
+        return None
+
+    category = ModelCategory.object.get(category=model_name).\
+               origin_type.get_category_display()
+
+    return category
+
+
+def get_models_name(models=None):
+    """
+    Parse models json into models name and models type name,
+    which are CSV format, use MODEL_SPLITS in const.__init__
+
+    Out: a tuple, models_str + models_category_str
+    """
+    loginfo(p=models)
+    if not models:
+        return ("", "")
+
+    models_list = [i.split(MODEL_SPLITS)[0] for i in models]
+    category_set = set()
+    for i in models_list:
+        category = get_models_name(i)
+        category_set.update(category)
+
+    models_str = MODEL_SPLITS.join(models_list)
+    models_category_str = MODEL_SPLITS.join(category_set)
+
+    loginfo(p=models_str)
+    loginfo(p=models_category_str)
+
+    return (models_str, models_category_str)
 
 
 def suitetask_process(request, smile=None, mol=None, notes=None,
@@ -238,6 +277,7 @@ def suitetask_process(request, smile=None, mol=None, notes=None,
     suite_task.end_time = datetime.datetime.now()
     suite_task.name = name
     suite_task.notes = notes
+    suite_task.model_str, suite_task.model_category_str = get_models_name(models)
     suite_task.status = StatusCategory.objects.get(category=STATUS_WORKING)
     suite_task.save()
 
