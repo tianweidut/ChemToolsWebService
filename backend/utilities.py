@@ -208,7 +208,7 @@ def get_model_category(model_name):
     if not model_name:
         return None
 
-    category = ModelCategory.object.get(category=model_name).\
+    category = ModelCategory.objects.get(category=model_name).\
                origin_type.get_category_display()
 
     return category
@@ -226,13 +226,14 @@ def get_models_name(models=None):
         return ("", "")
 
     models_list = [i.split(MODEL_SPLITS)[0] for i in models]
-    category_set = set()
+    category_set = dict()
     for i in models_list:
-        category = get_models_name(i)
-        category_set.update(category)
+        category = get_model_category(i)
+        category_set[category] = ""
 
     models_str = MODEL_SPLITS.join(models_list)
-    models_category_str = MODEL_SPLITS.join(category_set)
+    loginfo(p=category_set)
+    models_category_str = MODEL_SPLITS.join(category_set.keys())
 
     loginfo(p=models_str)
     loginfo(p=models_category_str)
@@ -277,7 +278,7 @@ def suitetask_process(request, smile=None, mol=None, notes=None,
     suite_task.end_time = datetime.datetime.now()
     suite_task.name = name
     suite_task.notes = notes
-    suite_task.model_str, suite_task.model_category_str = get_models_name(models)
+    suite_task.models_str, suite_task.models_category_str = get_models_name(models)
     suite_task.status = StatusCategory.objects.get(category=STATUS_WORKING)
     suite_task.save()
 
