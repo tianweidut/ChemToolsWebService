@@ -78,9 +78,9 @@ $(document).ready(function(){
       $("ul li a.filter").parent().removeClass('active');
       $(this).parent().attr('class','active');
       
-      var success_queue = 'ul.tasklist > li.queue-success';
-      var failed_queue = 'ul.tasklist > li.queue-failed';
-      var inprogress_queue = 'ul.tasklist > li.queue-inprogress';
+      var success_queue = 'ul.tasklist > li.success';
+      var failed_queue = 'ul.tasklist > li.failed';
+      var inprogress_queue = 'ul.tasklist > li.calculating';
       switch($(this).attr('rel'))
       {
         case 'all':

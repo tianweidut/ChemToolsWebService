@@ -142,11 +142,11 @@ def history_view(request):
     for task in result_sets:
         task.models_str_list = get_models_selector(task.models_str)
         task.models_category_str_list = get_models_selector(task.models_category_str)
-        task.progress_value = float(task.has_finished_tasks) / task.total_tasks * 100
+        task.progress_value = "%0.2f"%(float(task.has_finished_tasks) / task.total_tasks * 100)
         task.is_finished = True if task.total_tasks == task.has_finished_tasks else False
 
     return render(request, 'features/history.html',
-                  {'SuiteTask_list': result_sets})
+                  {'history_lists': result_sets})
 
 
 #TODO: Add only user decorators

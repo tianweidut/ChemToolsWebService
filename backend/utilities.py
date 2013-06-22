@@ -308,7 +308,12 @@ def get_models_selector(models_str):
                        "badge-info", "badge-inverse", " ")
     models_list = models_str.split(MODEL_SPLITS)
 
-    result = [[models_list[i].upper(), colors[i % len(colors)]] \
-              for i in range(0, len(models_list))]
+    result = []
+
+    for i in range(0, len(models_list)):
+        e = {}
+        e["color"] = colors[i % len(colors)]
+        e["value"] = models_list[i]
+        result.append(e)
 
     return result
