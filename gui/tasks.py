@@ -34,8 +34,14 @@ def get_ModelName(name):
             "koa":"logKOA",
             "pl":"logRP",
             }
-    if temp.has_key(name):
-        return temp.get(name)
+    try:
+       return temp.get(name)
+    except IOError:
+        print "We don't have this model"
+   # if temp.has_key(name):
+   #     return temp.get(name)
+   
+     
 
 @task()
 def add(x, y):
