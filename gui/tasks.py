@@ -69,11 +69,14 @@ def calculateTask(f,task,model_name):
     except KeyError:
         print "We don't have this model"
         result=0
+        #add singletask state
+    else:
+        suite=task.sid
+        suite.has_finished_tasks+=1
+        suite.save()
     #task=SingleTask.objects.get(pid=pid)
     task.results=result
     task.save()
     #suite=SuiteTask.objects.get(sid=task.sid)
-    suite=task.sid
-    suite.has_finished_tasks+=1
-    suite.save()
+
     return result
