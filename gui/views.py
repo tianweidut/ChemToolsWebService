@@ -30,9 +30,9 @@ from gui import forms
 from backend.fileoperator import receiveFile
 from backend.ChemSpiderPy.wrapper import search_cheminfo
 from backend.logging import logger
-from backend.utilities import JSONResponse, response_minetype
-#from calcore.models import ProcessedFileedFile
+from backend.utilities import *
 from calcore.models import *
+from const import MODEL_SPLITS
 
 
 def step1_form(request=None):
@@ -131,9 +131,27 @@ def multi_inputform(request):
 
     return render(request, "features/newtask.html")
 
+
 @login_required
-def task_list(request):
+def history_view(request):
     """
     """
-    SuiteTask_list = SuiteTask.objects.filter(user__user=request.user)
-    return render(request, 'features/history.html', {'SuiteTask_list': SuiteTask_list})
+    result_sets = SuiteTask.objects.filter(user__user=request.user)
+
+    #Add more attributes inito SuiteTask_list
+    for task in result_sets:
+        task.models_str_list = get_models_selector(task.models_str)
+        task.models_category_str_list = get_models_selector(task.models_category_str)
+        task.progress_value = float(task.has_finished_tasks) / task.total_tasks * 100
+        task.is_finished = True if task.total_tasks == task.has_finished_tasks else False
+
+    return render(request, 'features/history.html',
+                  {'SuiteTask_list': result_sets})
+
+
+#TODO: Add only user decorators
+@login_required
+def details_view(request, sid=None):
+    """
+    """
+    return render(request, 'features/details.html', {})

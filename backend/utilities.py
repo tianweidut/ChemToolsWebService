@@ -295,3 +295,20 @@ def suitetask_process(request, smile=None, mol=None, notes=None,
     message = "Congratulations to you! calculated task has been submitted!"
 
     return (is_submitted, message)
+
+
+def get_models_selector(models_str):
+    """
+    get models name and color flag
+
+    Out:
+        a list, element is a two-tuple.
+    """
+    colors = ("badge-success", "badge-warning", "badge-important",
+                       "badge-info", "badge-inverse", " ")
+    models_list = models_str.split(MODEL_SPLITS)
+
+    result = [[models_list[i].upper(), colors[i % len(colors)]] \
+              for i in range(0, len(models_list))]
+
+    return result
