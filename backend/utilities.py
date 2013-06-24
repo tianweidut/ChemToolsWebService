@@ -261,6 +261,7 @@ def suitetask_process(request, smile=None, mol=None, notes=None,
 
     pid_list = make_uniquenames(unique_names)
     total_tasks = calculate_tasks(pid_list, smile, mol, models)
+    #TODO: Add suite id into ProcessedFile Model
 
     if total_tasks == 0:
         is_submitted = False

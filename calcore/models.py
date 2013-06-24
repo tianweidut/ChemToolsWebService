@@ -84,6 +84,8 @@ class SingleTask(models.Model):
     calculate_mol = models.OneToOneField(MolFile, blank=False)
     model = models.ForeignKey(ModelCategory, blank=False)
     results = models.TextField(blank=True, null=None)
+    status = models.ForeignKey(StatusCategory, blank=False,
+                               default=STATUS_WORKING)
 
     class Meta:
         verbose_name = "Single Task"
@@ -102,6 +104,7 @@ class ProcessedFile(models.Model):
     title = models.CharField(max_length=60, blank=False)
     file_type = models.CharField(max_length=10, blank=False)
     file_obj = models.FileField(upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
+    #sid = models.CharField(blank=True, max_length=50)
 
     def __unicode__(self):
         return self.title

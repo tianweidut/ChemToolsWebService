@@ -33,6 +33,7 @@ from backend.logging import logger
 from backend.utilities import *
 from calcore.models import *
 from const import MODEL_SPLITS
+from const import ORIGIN_UPLOAD
 
 
 def step1_form(request=None):
@@ -154,4 +155,12 @@ def history_view(request):
 def details_view(request, sid=None):
     """
     """
-    return render(request, 'features/details.html', {})
+    suitetask = get_object_or_404(SuiteTask, sid=sid)
+    single_lists = SingleTask.objects.filter(sid=sid)
+    molfile_lists = MolFile.objects.filter(sid=sid,
+                                           file_source__category=ORIGIN_UPLOAD)
+
+    return render(request, 'features/details.html',
+                  {"suitetask": suitetask,
+                   "single_lists": single_lists,
+                   "molfile_lists": molfile_lists})
