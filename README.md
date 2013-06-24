@@ -21,9 +21,6 @@
 # Installation:
  * web tools:
   * sudo pip install -r requirements.txt
-  * hg clone https://bitbucket.org/jespern/django-piston   # Piston, a RESTFul API 
-     * sudo python django-piston/setup.py build
-     * sudo python django-piston/setup.py install
  
  * Mysql:
   * create database Chemistry CHARACTER SET utf8;
