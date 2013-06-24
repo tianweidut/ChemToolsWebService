@@ -1,28 +1,39 @@
 <!--Task list-->
 <ul class="tasklist">
-{% for SuiteTask in SuiteTask_list %}  
-	<li class="queue-success">
+{% for task in history_lists%}  
+<li class="{{task.status.category}}">
 		<ul class="tasklist pull-right">
-			<p class="label label-success user-info-label">Environment toxicology</p>
-			<p class="label label-important user-info-label">Environment behavior</p>
-			<p class="label label-info user-info-label" >Health toxicology</p>
+      {% for category in task.models_category_str_list %}
+      <p class="label {{category.color}} user-info-label">{{category.value}}</p>
+      {% endfor %}
 		</ul>
 		
 		<h3>
-			<image src="/static/images/save48.png"></image>
-      <a href="/details">{{SuiteTask.name}}</a>
+      {%if task.status.category == "success"%}
+			  <image src="/static/images/save48.png"></image>
+      {%elif task.status.category == "failed"%}
+			  <image src="/static/images/close-bug48.png"></image>
+      {%else%}
+			  <image src="/static/images/reload48.png"></image>
+      {%endif%}
+      <a href="{%url gui.views.details_view task.sid%}">{{task.name}}</a>
 		</h3>
-    <p class="task-introduction">{{SuiteTask.notes}}</p>
-    <p class="task-date">{{SuiteTask.start_time}} ~ {{SuiteTask.end_time}}</p>
-		<a class="btn btn-primary pull-right" href="/details">Go Results!</a>
+    <p class="task-introduction">{{task.notes}}</p>
+    <p class="task-date">{{task.start_time|date:"Y-m-d H:m"}} ~ {{task.end_time|date:"Y-m-d H:m"}}</p>
+    {%if task.is_finished %}
+    <a class="btn btn-primary pull-right" href="{%url gui.views.details_view task.sid%}">Go Results!</a>
+    {%endif%}
 		<ul class="model-label">
-      <span><i class="icon-heart"></i>{{SuiteTask.has_fininshed_tasks}}</span>
-			<span class="badge badge-success">KOF</span>
-			<span class="badge badge-warning">PL</span>
-			<span class="badge badge-important">BCF</span>
-			<span class="badge badge-info">PPK</span>
-			<span class="badge badge-inverse">DFS</span>
+      {%for model in task.models_str_list%}
+      <span class="badge {{model.color}}">{{model.value|upper}}</span>
+      {%endfor%}
 		</ul>
+    {%if not task.is_finished %}
+      <p class="progress-value pull-right">{{task.progress_value}}%</p>
+      <div class="progress task-progress-bar active task-progress-bar">
+        <div class="bar" style="width:{{task.progress_value}}%;"></div>
+      </div>
+    {%endif%}
 		<hr/>
   </li>
 {% endfor %}

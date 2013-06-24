@@ -31,12 +31,8 @@ def calculate_submit(request,
                      types="pdf;txt;csv",
                      models=None
                      ):
-    for i in range(0,50):
-        add.delay(10,10)
-
-    return simplejson.dumps({'message': "finish add async",
-                             'is_submitted': True})
-
+    #TODO: this is only for test, later we will delete this line
+    add.delay(10, 10)
 
     is_submitted, message = suitetask_process(request, smile=smile, mol=mol,
                                               notes=notes, name=name,

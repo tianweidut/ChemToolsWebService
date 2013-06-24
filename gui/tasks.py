@@ -34,8 +34,13 @@ def get_ModelName(name):
             "koa":"logKOA",
             "pl":"logRP",
             }
+    # return temp.get(name)
     if temp.has_key(name):
         return temp.get(name)
+    else: 
+        raise KeyError,"We don't have this model"
+   
+     
 
 @task()
 def add(x, y):
@@ -57,14 +62,21 @@ def calculateTask(f,task,model_name):
     #para['cas']=""
     para['filename']=os.path.split(f.name)[1]
     print para
-    pm=PredictionModel([get_ModelName(model_name)],para,molpath)
-    result= pm.predict_results[os.path.split(f.name)[1].split(".")[0]][get_ModelName(model_name)]
-    print result
+    try:
+        pm=PredictionModel([get_ModelName(model_name)],para,molpath)
+        result= pm.predict_results[os.path.split(f.name)[1].split(".")[0]][get_ModelName(model_name)]
+        print result
+    except KeyError:
+        print "We don't have this model"
+        result=0
+        #add singletask state
+    else:
+        suite=task.sid
+        suite.has_finished_tasks+=1
+        suite.save()
     #task=SingleTask.objects.get(pid=pid)
     task.results=result
     task.save()
     #suite=SuiteTask.objects.get(sid=task.sid)
-    suite=task.sid
-    suite.has_finished_tasks+=1
-    suite.save()
+
     return result

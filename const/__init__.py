@@ -109,3 +109,5 @@ MOL_ORIGIN_CHOICES = (
     (ORIGIN_DRAW, "draw"),
     (ORIGIN_UNDEFINED, "undefined"),
 )
+
+MODEL_SPLITS = ";"

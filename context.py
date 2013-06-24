@@ -11,7 +11,7 @@ from users.models import UserGrade, UserProfile
 from calcore.models import *
 from const import STATUS_SUCCESS
 
-all_required = ()
+all_required = ("PRODUCTION_FLAG",)
 
 
 def application_settings(request):

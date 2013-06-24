@@ -10,6 +10,8 @@ from settings import *
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
+PRODUCTION_FLAG = "Technical Preview!" 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.

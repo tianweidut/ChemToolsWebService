@@ -7,9 +7,6 @@ from os.path import join
 
 SETTINGS_ROOT = os.path.dirname(__file__)
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
-
 ADMINS = (
      ('939829151', '939829151@qq.com'),
 )
@@ -115,7 +112,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.media',
     'django.core.context_processors.static',
     'django.core.context_processors.request',
-#    'context.application_settings',
+    'context.application_settings',
     'context.userinfo_context',
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.csrf',
@@ -141,6 +138,7 @@ INSTALLED_APPS = (
     'registration',
     'users',
     'calcore',
+    'tastypie',
 
     #Add-on
     'dajaxice',
