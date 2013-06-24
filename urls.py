@@ -66,9 +66,14 @@ urlpatterns = patterns('',
         name="history"
     ),
     url(
-        r'^details/(?P<sid>.{36})$',
-        gui_views.details_view,
-        name="details"
+        r'^details/suite/(?P<sid>.{36})$',
+        gui_views.suite_details_view,
+        name="suite_details"
+    ),
+    url(
+        r'^details/task/(?P<pid>.{36})$',
+        gui_views.task_details_view,
+        name="task_details"
     ),
     url(
         r'^settings/profile/$',

@@ -16,12 +16,12 @@
       {%else%}
 			  <image src="/static/images/reload48.png"></image>
       {%endif%}
-      <a href="{%url gui.views.details_view task.sid%}">{{task.name}}</a>
+      <a href="{%url gui.views.suite_details_view task.sid%}">{{task.name}}</a>
 		</h3>
     <p class="task-introduction">{{task.notes}}</p>
     <p class="task-date">{{task.start_time|date:"Y-m-d H:m"}} ~ {{task.end_time|date:"Y-m-d H:m"}}</p>
     {%if task.is_finished %}
-    <a class="btn btn-primary pull-right" href="{%url gui.views.details_view task.sid%}">Go Results!</a>
+    <a class="btn btn-primary pull-right" href="{%url gui.views.suite_details_view task.sid%}">Go Results!</a>
     {%endif%}
 		<ul class="model-label">
       {%for model in task.models_str_list%}

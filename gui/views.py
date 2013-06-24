@@ -152,15 +152,24 @@ def history_view(request):
 
 #TODO: Add only user decorators
 @login_required
-def details_view(request, sid=None):
+def suite_details_view(request, sid=None):
     """
+    Suitetask details view
     """
     suitetask = get_object_or_404(SuiteTask, sid=sid)
     single_lists = SingleTask.objects.filter(sid=sid)
-    molfile_lists = MolFile.objects.filter(sid=sid,
-                                           file_source__category=ORIGIN_UPLOAD)
 
     return render(request, 'features/details.html',
                   {"suitetask": suitetask,
-                   "single_lists": single_lists,
-                   "molfile_lists": molfile_lists})
+                   "single_lists": single_lists})
+
+
+#TODO: Add only user decorators
+@login_required
+def task_details_view(reqest, pid=None):
+    """
+    Every singletask details view
+    """
+    singletask = get_object_or_404(SingleTask, pid=pid)
+    return render(request, 'features/details.html',
+                  {"singletask": singletask,})
