@@ -84,6 +84,7 @@ class SingleTask(models.Model):
     calculate_mol = models.OneToOneField(MolFile, blank=False)
     model = models.ForeignKey(ModelCategory, blank=False)
     results = models.TextField(blank=True, null=None)
+    result_state=models.CharField(max_length=50,blank=True,default=None)
 
     class Meta:
         verbose_name = "Single Task"
