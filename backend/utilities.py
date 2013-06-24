@@ -261,6 +261,7 @@ def suitetask_process(request, smile=None, mol=None, notes=None,
 
     pid_list = make_uniquenames(unique_names)
     total_tasks = calculate_tasks(pid_list, smile, mol, models)
+    #TODO: Add suite id into ProcessedFile Model
 
     if total_tasks == 0:
         is_submitted = False
@@ -295,3 +296,25 @@ def suitetask_process(request, smile=None, mol=None, notes=None,
     message = "Congratulations to you! calculated task has been submitted!"
 
     return (is_submitted, message)
+
+
+def get_models_selector(models_str):
+    """
+    get models name and color flag
+
+    Out:
+        a list, element is a two-tuple.
+    """
+    colors = ("badge-success", "badge-warning", "badge-important",
+                       "badge-info", "badge-inverse", " ")
+    models_list = models_str.split(MODEL_SPLITS)
+
+    result = []
+
+    for i in range(0, len(models_list)):
+        e = {}
+        e["color"] = colors[i % len(colors)]
+        e["value"] = models_list[i]
+        result.append(e)
+
+    return result

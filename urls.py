@@ -62,12 +62,12 @@ urlpatterns = patterns('',
     ),
     url(
         r'^history/$',
-        gui_views.task_list,
+        gui_views.history_view,
         name="history"
     ),
     url(
-        r'^details/$',
-        direct_to_template, {'template': 'features/details.html'},
+        r'^details/(?P<sid>.{36})$',
+        gui_views.details_view,
         name="details"
     ),
     url(
