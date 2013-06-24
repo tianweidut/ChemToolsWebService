@@ -132,6 +132,7 @@ def save_record(f, model_name, sid, source_type, arguments=None):
     mol_file.save()
 
     task.calculate_mol = mol_file
+    task.status = StatusCategory.objects.get(category=STATUS_WORKING) 
     task.save()
 
     #TODO: call task query process function filename needs path
