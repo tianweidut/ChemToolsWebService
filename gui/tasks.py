@@ -28,6 +28,9 @@ from django.core.files.uploadedfile import UploadedFile
 from calcore.controllers.prediciton_model import PredictionModel
 from backend.logging import logger
 from calcore.models import SingleTask, ProcessedFile, MolFile, SuiteTask
+from const.models import StatusCategory
+from const import STATUS_WORKING,STATUS_SUCCESS,STATUS_FAILED,STATUS_UNDEFINED
+from settings import MEDIA_ROOT
 
 def get_ModelName(name):
     temp={
@@ -54,7 +57,8 @@ def add_a(x, y):
 
 @task()
 def calculateTask(f,task,model_name):
-    molpath=os.path.split(f.name)[0]
+    print MEDIA_ROOT
+    molpath=MEDIA_ROOT+os.path.split(f.name)[0]
     print molpath
     para=dict.fromkeys(['smilestring','filename','cas'],"")
     #para['filename']=model_name+str(uuid.uuid4())+".mol"
@@ -67,11 +71,18 @@ def calculateTask(f,task,model_name):
         result= pm.predict_results[os.path.split(f.name)[1].split(".")[0]][get_ModelName(model_name)]
         print result
     except KeyError:
+        task.result_state="We don't have this model"
         print "We don't have this model"
         result=0
+        suite=task.sid
+        #ModelCategory.objects.get(category=model_name)
+        suite.status_id=StatusCategory.objects.get(category=STATUS_WORKING)
+        suite.has_finished_tasks+=1
+        suite.save()
         #add singletask state
     else:
         suite=task.sid
+        suite.status_id=StatusCategory.objects.get(category=STATUS_SUCCESS)
         suite.has_finished_tasks+=1
         suite.save()
     #task=SingleTask.objects.get(pid=pid)
