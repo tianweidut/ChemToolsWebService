@@ -11,9 +11,10 @@ import os
 import urllib2
 
 from django.conf import settings
-from chemspipy import find_one
 
-from backend.logging import logger
+from chemspipy import find_one
+from backend.logging import logger, loginfo
+from calcore.models import SearchEngineModel
 
 
 def store_image(url, name):
@@ -88,6 +89,7 @@ def search_cheminfo(query):
         return search_result
 
     try:
+        loginfo(p=query)
         content = find_one(query)
     except:
         search_result["is_valid"] = False

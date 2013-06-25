@@ -108,5 +108,36 @@ class ProcessedFile(models.Model):
     file_obj = models.FileField(upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
     #sid = models.CharField(blank=True, max_length=50)
 
+    class Meta:
+        verbose_name = "Processed File"
+        verbose_name_plural = "Processed File"
+
     def __unicode__(self):
         return self.title
+
+
+class SearchEngineModel(models.Model):
+    """
+    Search Engineer by Chemspider
+    """
+    nid = models.CharField(max_length=50, unique=True, blank=False,
+                           primary_key=True, default=get_sid)
+    common_name = models.CharField(max_length=100, blank=False, null=True)
+    smiles = models.CharField(max_length=100, blank=False, null=True)
+    std_inchi= models.CharField(max_length=100, blank=False, null=True)
+    std_inchikey = models.CharField(max_length=100, blank=False, null=True)
+    mf = models.CharField(max_length=200, blank=False, null=True)
+    molecular_weight = models.CharField(max_length=20, blank=False, null=True)
+    alogp = models.CharField(max_length=20, blank=False, null=True)
+    xlogp = models.CharField(max_length=20, blank=False, null=True)
+    average_mass = models.CharField(max_length=20, blank=False, null=True)
+    monois_mass = models.CharField(max_length=20, blank=False, null=True)
+    search_query = models.CharField(max_length=100, blank=False, null=True)
+    image = models.FileField(upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
+
+    class Meta:
+        verbose_name = "Search Engine"
+        verbose_name_plural = "Search Engine"
+
+    def __unicode__(self):
+        return self.common_name
