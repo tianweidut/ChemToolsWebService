@@ -122,16 +122,16 @@ class SearchEngineModel(models.Model):
     """
     nid = models.CharField(max_length=50, unique=True, blank=False,
                            primary_key=True, default=get_sid)
-    common_name = models.CharField(max_length=100, blank=False, null=True)
+    commonname = models.CharField(max_length=100, blank=False, null=True)
     smiles = models.CharField(max_length=100, blank=False, null=True)
-    std_inchi= models.CharField(max_length=100, blank=False, null=True)
-    std_inchikey = models.CharField(max_length=100, blank=False, null=True)
+    inchi = models.CharField(max_length=100, blank=False, null=True)
+    inchikey = models.CharField(max_length=100, blank=False, null=True)
     mf = models.CharField(max_length=200, blank=False, null=True)
-    molecular_weight = models.CharField(max_length=20, blank=False, null=True)
+    molecularweight = models.CharField(max_length=20, blank=False, null=True)
     alogp = models.CharField(max_length=20, blank=False, null=True)
     xlogp = models.CharField(max_length=20, blank=False, null=True)
-    average_mass = models.CharField(max_length=20, blank=False, null=True)
-    monois_mass = models.CharField(max_length=20, blank=False, null=True)
+    averagemass = models.CharField(max_length=20, blank=False, null=True)
+    monoisotopicmass = models.CharField(max_length=20, blank=False, null=True)
     search_query = models.CharField(max_length=100, blank=False, null=True)
     image = models.FileField(upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
 

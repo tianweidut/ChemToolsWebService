@@ -11,6 +11,8 @@ import os
 import urllib2
 
 from django.conf import settings
+from django.db.models import Q
+from django.core.files import File
 
 from chemspipy import find_one
 from backend.logging import logger, loginfo
@@ -71,6 +73,60 @@ def show_structure(ori_str):
     return "<p>" + ori_str + "</p>"
 
 
+def copy_results(content, database=False):
+    """
+    copy result into HTML
+    """
+    # Fill ChemSpider search result
+    search_result = {"is_valid": True,
+                     "content": {},
+                     }
+
+    search_result["is_valid"] = True
+    if not database:
+        search_result["content"]["imagepath"] = store_image(content.imageurl, content.commonname)
+        search_result["content"]["mf"] = show_structure(content.mf)
+    else:
+        search_result["content"]["imagepath"] = content.image.url
+        search_result["content"]["mf"] = content.mf
+
+    search_result["content"]["commonname"] = content.commonname
+    search_result["content"]["inchi"] = content.inchi
+    search_result["content"]["inchikey"] = content.inchikey
+    search_result["content"]["averagemass"] = content.averagemass
+    search_result["content"]["molecularweight"] = content.molecularweight
+    search_result["content"]["monoisotopicmass"] = content.monoisotopicmass
+    search_result["content"]["alogp"] = content.alogp
+    search_result["content"]["xlogp"] = content.xlogp
+    search_result["content"]["smiles"] = content.smiles
+    return search_result
+
+
+def save_search_record(content, query):
+    """
+    save content into database
+    """
+    search_result = SearchEngineModel()
+    search_result.commonname = content.commonname
+    search_result.mf = show_structure(content.mf)
+    search_result.inchi = content.inchi
+    search_result.inchikey = content.inchikey
+    search_result.averagemass = content.averagemass
+    search_result.molecularweight = content.molecularweight
+    search_result.monoisotopicmass = content.monoisotopicmass
+    search_result.alogp = content.alogp
+    search_result.xlogp = content.xlogp
+    search_result.smiles = content.smiles
+    search_result.search_query = query
+    
+    #TODO: There we can optimize the file storage flow!
+    path = os.path.join(settings.MEDIA_ROOT, store_image(content.imageurl, content.commonname))
+    f = File(open(path, "r"))
+    search_result.image = f
+    f.close()
+    search_result.save()
+
+
 def search_cheminfo(query):
     """
         Search chem info wrapper
@@ -88,27 +144,19 @@ def search_cheminfo(query):
         search_result["is_valid"] = False
         return search_result
 
+    database_result = SearchEngineModel.objects.filter(Q(common_name__contains=query)|
+                                                      Q(smiles__contains=query)|
+                                                      Q(search_query__contains=query)) 
+    if len(database_result) != 0:
+        return copy_results(database_result[0], database=True)
+
     try:
         loginfo(p=query)
         content = find_one(query)
-    except:
+        save_search_record(content, query)
+    except Exception, err:
+        loginfo(p=err)
         search_result["is_valid"] = False
         return search_result
 
-    # Fill ChemSpider search result
-    search_result["is_valid"] = True
-    search_result["content"]["commonname"] = content.commonname
-    search_result["content"]["imagepath"] = store_image(content.imageurl, content.commonname)
-    search_result["content"]["mf"] = show_structure(content.mf)
-    search_result["content"]["inchi"] = content.inchi
-    search_result["content"]["inchikey"] = content.inchikey
-    search_result["content"]["averagemass"] = content.averagemass
-    search_result["content"]["molecularweight"] = content.molecularweight
-    search_result["content"]["monoisotopicmass"] = content.monoisotopicmass
-    search_result["content"]["nominalmass"] = content.nominalmass
-    search_result["content"]["alogp"] = content.alogp
-    search_result["content"]["xlogp"] = content.xlogp
-    search_result["content"]["smiles"] = content.smiles
-    #search_result["content"]["mol"] = content.mol
-
-    return search_result
+    return copy_results(content)
