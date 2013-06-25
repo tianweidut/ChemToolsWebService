@@ -77,6 +77,8 @@ def copy_results(content, database=False):
     """
     copy result into HTML
     """
+    if database:
+        loginfo(p="use local database!")
     # Fill ChemSpider search result
     search_result = {"is_valid": True,
                      "content": {},
@@ -84,7 +86,7 @@ def copy_results(content, database=False):
 
     search_result["is_valid"] = True
     if not database:
-        search_result["content"]["imagepath"] = store_image(content.imageurl, content.commonname)
+        search_result["content"]["imagepath"] = "media/" + store_image(content.imageurl, content.commonname)
         search_result["content"]["mf"] = show_structure(content.mf)
     else:
         search_result["content"]["imagepath"] = content.image.url
@@ -99,6 +101,7 @@ def copy_results(content, database=False):
     search_result["content"]["alogp"] = content.alogp
     search_result["content"]["xlogp"] = content.xlogp
     search_result["content"]["smiles"] = content.smiles
+
     return search_result
 
 
@@ -106,6 +109,8 @@ def save_search_record(content, query):
     """
     save content into database
     """
+    loginfo(p="save into search engine!")
+
     search_result = SearchEngineModel()
     search_result.commonname = content.commonname
     search_result.mf = show_structure(content.mf)
@@ -118,12 +123,12 @@ def save_search_record(content, query):
     search_result.xlogp = content.xlogp
     search_result.smiles = content.smiles
     search_result.search_query = query
-    
+
     #TODO: There we can optimize the file storage flow!
     path = os.path.join(settings.MEDIA_ROOT, store_image(content.imageurl, content.commonname))
     f = File(open(path, "r"))
+    loginfo(p=f, label="file")
     search_result.image = f
-    f.close()
     search_result.save()
 
 
@@ -144,19 +149,25 @@ def search_cheminfo(query):
         search_result["is_valid"] = False
         return search_result
 
-    database_result = SearchEngineModel.objects.filter(Q(common_name__contains=query)|
+    database_result = SearchEngineModel.objects.filter(Q(commonname__contains=query)|
                                                       Q(smiles__contains=query)|
-                                                      Q(search_query__contains=query)) 
+                                                      Q(search_query__contains=query))
+
     if len(database_result) != 0:
         return copy_results(database_result[0], database=True)
 
     try:
-        loginfo(p=query)
         content = find_one(query)
-        save_search_record(content, query)
+        search_result = copy_results(content)
+        # We should ensure the main process
+        try:
+            save_search_record(content, query)
+        except Exception, err:
+            loginfo(p=err)
+            pass
     except Exception, err:
         loginfo(p=err)
         search_result["is_valid"] = False
         return search_result
 
-    return copy_results(content)
+    return search_result

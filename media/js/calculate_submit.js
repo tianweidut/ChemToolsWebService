@@ -250,7 +250,7 @@ $('#search_varify_btn').click(function(){
           {
             $('#valid_results').show();
             $('#unvalid_results').hide();
-            $('#last_picture').attr('src', "/static/" + d.search_result.content.imagepath);
+            $('#last_picture').attr('src', d.search_result.content.imagepath);
             $('#xlogp').text(d.search_result.content.xlogp); 
             $('#alogp').text(d.search_result.content.alogp); 
             $('#molecular_weight').text(d.search_result.content.molecularweight); 
