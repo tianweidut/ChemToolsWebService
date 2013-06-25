@@ -254,7 +254,7 @@ $('#search_varify_btn').click(function(){
             $('#xlogp').text(d.search_result.content.xlogp); 
             $('#alogp').text(d.search_result.content.alogp); 
             $('#molecular_weight').text(d.search_result.content.molecularweight); 
-            $('#mf').text(d.search_result.content.mf); 
+            $('#mf').html(d.search_result.content.mf); 
             $('#std_inchikey').text(d.search_result.content.inchikey); 
             $('#std_inchi').text(d.search_result.content.inchi); 
             $('#last_smile').text(d.search_result.content.smiles); 
