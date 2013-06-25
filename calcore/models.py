@@ -87,6 +87,7 @@ class SingleTask(models.Model):
     result_state=models.CharField(max_length=50,blank=True,default=None)
     status = models.ForeignKey(StatusCategory, blank=False,
                                default=STATUS_WORKING)
+    #TODO: maybe we should add end time
 
     class Meta:
         verbose_name = "Single Task"

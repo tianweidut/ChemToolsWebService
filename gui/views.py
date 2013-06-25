@@ -166,10 +166,10 @@ def suite_details_view(request, sid=None):
 
 #TODO: Add only user decorators
 @login_required
-def task_details_view(reqest, pid=None):
+def task_details_view(request, pid=None):
     """
     Every singletask details view
     """
     singletask = get_object_or_404(SingleTask, pid=pid)
-    return render(request, 'features/details.html',
+    return render(request, 'widgets/task_details.html',
                   {"singletask": singletask,})

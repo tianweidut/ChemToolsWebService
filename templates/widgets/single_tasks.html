@@ -6,7 +6,6 @@
   <thead>
     <tr>
       <td>Status</td>
-      <td>ID</td>
       <td>Model</td>
       <td>Category</td>
       <td>Temperature</td>
@@ -14,7 +13,7 @@
       <td>Others</td>
       <td>Results</td>
       <td>Time</td>
-      <td>Calculate mol</td>
+      <td>Details</td>
     </tr>
   </thead>
   <tbody>
@@ -29,7 +28,6 @@
           <p class="label label-info">Calculating</p>
         {%endif%}
       </td>
-      <td>{{single.pid|truncatechars:8}}</td>
       <td>{{single.model|upper}}</td>
       <td>{{single.model.origin_type}}</td>
       <td>{{single.temperature}}</td>
@@ -38,7 +36,7 @@
       <td>{{single.results}}</td>
       <td>{{single.calculate_mol.upload_time|date:"m-d H:m"}}</td>
       <td>
-        <a class="btn btn-primary" href="{{single.calculate_mol.file_obj.url}}">Download</a>
+        <a class="btn btn-primary" href="{%url gui.views.task_details_view single.pid%}">Details</a>
       </td>
     </tr>
     {%endfor%}
