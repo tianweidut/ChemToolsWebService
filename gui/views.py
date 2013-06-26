@@ -137,7 +137,7 @@ def multi_inputform(request):
 def history_view(request):
     """
     """
-    result_sets = SuiteTask.objects.filter(user__user=request.user)
+    result_sets = SuiteTask.objects.filter(user__user=request.user).order_by('-start_time')
 
     #Add more attributes inito SuiteTask_list
     for task in result_sets:
