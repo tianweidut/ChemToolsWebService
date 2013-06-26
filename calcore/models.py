@@ -31,7 +31,8 @@ class ProcessedFile(models.Model):
     title = models.CharField(max_length=60, blank=False)
     file_type = models.CharField(max_length=10, blank=False)
     file_obj = models.FileField(upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
-    file_source = models.ForeignKey(FileSourceCategory, blank=False)
+    file_source = models.ForeignKey(FileSourceCategory,\
+                                    default=lambda: FileSourceCategory.objects.get(category=ORIGIN_UPLOAD))
     image = models.FileField(blank=True, null=True, upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
     smiles = models.CharField(max_length=2000, blank=True, null=True)
 
@@ -84,7 +85,7 @@ class SingleTask(models.Model):
     other = models.FloatField(blank=True, default=0.0)
     model = models.ForeignKey(ModelCategory, blank=False)
     results = models.TextField(blank=True, null=None)
-    result_state = models.CharField(max_length=100, blank=True, default=None)
+    result_state = models.CharField(max_length=100, blank=True, null=None)
     status = models.ForeignKey(StatusCategory, blank=False,
                                default=STATUS_WORKING)
     start_time = models.DateTimeField(blank=False,

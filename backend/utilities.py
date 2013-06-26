@@ -93,11 +93,16 @@ def calculate_tasks(pid_list, smile, mol, models):
     """
     Calculate all tasks
     """
-    number = 0
+    loginfo(p=pid_list, label="files")
+    loginfo(p=smile, label="smile")
+    loginfo(p=mol, label="mol")
 
-    number = number + len(pid_list)
-    number = number + 1 if smile else 0
-    number = number + 1 if mol else 0
+    number = 0
+    if len(pid_list) != 1 or pid_list[0] != "":
+        number = len(pid_list)
+
+    number = number + (1 if smile else 0)
+    number = number + (1 if mol else 0)
 
     if number == 0:
         return 0
@@ -109,7 +114,7 @@ def calculate_tasks(pid_list, smile, mol, models):
     return number
 
 
-def save_record(f, model_name, sid, source_type, arguments=None):
+def save_record(f, model_name, sid, source_type, smile=None, arguments=None):
     """
     Here, we use decoartor design pattern,
     this function is the real function
@@ -121,18 +126,31 @@ def save_record(f, model_name, sid, source_type, arguments=None):
     #TODO: add arguments into task
     task.model = ModelCategory.objects.get(category=model_name)
 
-    mol_file = MolFile()
-    mol_file.sid = task.sid
-    mol_file.name = model_name + str(uuid.uuid4())
-    mol_file.file_obj = f
-    mol_file.upload_time = datetime.datetime.now()
-    mol_file.file_type = "mol"
-    mol_file.file_size = f.size
-    mol_file.file_source = FileSourceCategory.objects.get(category=source_type)
-    mol_file.save()
+    if source_type == ORIGIN_UPLOAD:
+        #here, f is ProcessedFile record instance
+        f.file_source = FileSourceCategory.objects.get(category=source_type)
+        f.file_type = "mol"
+        task.file_obj = f
+        f.save()
+    elif source_type == ORIGIN_SMILE or source_type == ORIGIN_DRAW:
+        #here, f is a file path
+        processed_f = ProcessedFile()
+        f = File(open(f, "r"))
+        processed_f.title = os.path.basename(f.name)
+        processed_f.file_type = source_type
+        processed_f.file_source = FileSourceCategory.objects.get(category=source_type)
+        processed_f.file_obj = f
+        loginfo(p=f)
+        if smile:
+            processed_f.smiles = smile
+            #TODO: add database search local picture into here
+        processed_f.save()
+        task.file_obj = processed_f
+        f.close()
+    else:
+        loginfo(p=source_type, label="Cannot recongize this source type")
 
-    task.calculate_mol = mol_file
-    task.status = StatusCategory.objects.get(category=STATUS_WORKING) 
+    task.status = StatusCategory.objects.get(category=STATUS_WORKING)
     task.save()
 
     #TODO: call task query process function filename needs path
@@ -143,6 +161,7 @@ def save_record(f, model_name, sid, source_type, arguments=None):
 def get_FileObj_by_smiles(smile):
     """
     convert smile into mol file
+    Output: file path
     """
     name = str(uuid.uuid4()) + ".mol"
     name_path = os.path.join(settings.MOL_CONVERT_PATH, name)
@@ -152,9 +171,7 @@ def get_FileObj_by_smiles(smile):
     mol.make3D()
     mol.write('mol', name_path, overwrite=True)
 
-    f = File(open(name_path, "r"))
-
-    return f
+    return name_path
 
 
 def start_files_task(files_list, model_name, sid, arguments=None):
@@ -164,14 +181,15 @@ def start_files_task(files_list, model_name, sid, arguments=None):
     into system-task query.
     First, it shoud read files_list and convert them into MolFile
     """
-    if not files_list:
+    if len(files_list) == 1 and files_list[0] == "" or not files_list:
+
         loginfo(p=files_list,
                 label="Sorry, we cannot calculate files")
         return False
 
     for fid in files_list:
         record = ProcessedFile.objects.get(fid=fid)
-        save_record(record.file_obj, model_name, sid, ORIGIN_UPLOAD, arguments)
+        save_record(record, model_name, sid, ORIGIN_UPLOAD, arguments)
 
     loginfo(p=model_name, label="finish start smile task")
     return True
@@ -189,8 +207,7 @@ def start_smile_task(smile, model_name, sid, arguments=None):
         return False
 
     f = get_FileObj_by_smiles(smile)
-    save_record(f, model_name, sid, ORIGIN_SMILE, arguments)
-    f.close()
+    save_record(f, model_name, sid, ORIGIN_SMILE, smile, arguments)
 
     loginfo(p=model_name, label="finish start smile task")
     return True
@@ -213,10 +230,12 @@ def start_moldraw_task(moldraw, model_name, sid, arguments=None):
     path = os.path.join(settings.MOL_CONVERT_PATH, name)
     f = File(open(path, "w"))
     f.write(moldraw)
-
-    save_record(f, model_name, sid, ORIGIN_DRAW, arguments)
-
     f.close()
+
+    save_record(path, model_name, sid, ORIGIN_DRAW, arguments)
+
+    os.remove(path)
+
     loginfo(p=model_name, label="finish start smile task")
 
     return True
@@ -305,13 +324,14 @@ def suitetask_process(request, smile=None, mol=None, notes=None,
     loginfo(p="finish suite save")
 
     models_dict = parse_models(models)
+    flag = False
     for key in models_dict:
         #TODO: add mol arguments
-        smile_flag = start_smile_task(smile, key, suite_task.sid)
-        drawmol_flag = start_moldraw_task(mol, key, suite_task.sid)
-        files_flag = start_files_task(pid_list, key, suite_task.sid)
+        flag = flag | start_smile_task(smile, key, suite_task.sid)
+        flag = flag | start_moldraw_task(mol, key, suite_task.sid)
+        flag = flag | start_files_task(pid_list, key, suite_task.sid)
 
-    if smile_flag or drawmol_flag or files_flag:
+    if flag:
         is_submitted = True
         message = "Congratulations to you! calculated task has been submitted!"
     else:

@@ -27,9 +27,9 @@ from django.contrib.auth.decorators import login_required
 from django.core.files.uploadedfile import UploadedFile
 from calcore.controllers.prediciton_model import PredictionModel
 from backend.logging import logger
-from calcore.models import SingleTask, ProcessedFile, MolFile, SuiteTask
+from calcore.models import SingleTask, ProcessedFile, SuiteTask
 from const.models import StatusCategory
-from const import STATUS_WORKING,STATUS_SUCCESS,STATUS_FAILED,STATUS_UNDEFINED
+from const import STATUS_WORKING, STATUS_SUCCESS, STATUS_FAILED, STATUS_UNDEFINED
 from settings import MEDIA_ROOT
 
 def get_ModelName(name):
