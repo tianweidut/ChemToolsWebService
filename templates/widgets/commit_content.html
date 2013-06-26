@@ -1,66 +1,143 @@
-<!--head-->
-{%if singletask.calculate_mol.file_source.category == "smiles"%}
-  {%include "widgets/result_smiles.html"%}
-{%elif singletask.calculate_mol.file_source.category == "drawing"%}
-  {%include "widgets/result_drawing.html"%}
-{%elif singletask.calculate_mol.file_source.category == "upload"%}
-  {%include "widgets/result_upload.html"%}
-{%else%}
-  {%include "widgets/result_other.html"%}
-{%endif%} 
+<!--step1 content:basic information-->
+  <div class="container-fluid search-result">
+    <div class="row-fluid">
+      <div class="span4">
+        <fieldset>
+          <legend>Structure</legend>
+          <div class="images_copy_array">
+            <img id="last_picture_copy" src="{{STATIC_URL}}images/examples/structure.png">
+            <fieldset>
+              <legend>Other Images</legend>
+              <div class="remained_pictures_copy">
+              </div>
+            </fieldset>
+        </fieldset>
+        <br/>
+      </div>
 
-<!--Model Info-->
-<div class="container-fluid ">
+      <div class="span8">
+        <fieldset>
+          <legend>Smile Names</legend>
+          <div class="search_name_copy_array">
+            <div class="alert-info" id="last_smile_copy">S=C=NC</div> 
+          </div>
+        </fieldset>
+        <br/>
+        <fieldset>
+          <legend>Mol Files</legend>
+          <table class="table">
+            <thead>
+              <tr>
+                <td>Unique Name</td>
+              </tr>
+            </thead>
+            <tbody id="fileupload_copy">
+            </tbody>
+          </table>
+        </fieldset>
+        </br>
+        <fieldset>
+          <legend>Mol String</legend>
+          <div class="alert-info" id="mol_string_flag"></div> 
+          <p id="mol_file_string_copy" loaded="false"></p>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+
+  <!--step2 content:model choice-->
+  <div class="container-fluid search-result">
   <fieldset>
     <legend>Model Choice</legend>
-<table class="table table-hover ">
-  <thead>
-    <tr>
-      <td>Model</td>
-      <td>Category</td>
-      <td>Temperature</td>
-      <td>Humidity</td>
-      <td>Others</td>
-    </tr>
-  </thead>
-  <tbody>
-    <tr class="success">
-      <td>{{singletask.model|upper}}</td>
-      <td>{{singletask.model.origin_type}}</td>
-      <td>{{singletask.temperature}}</td>
-      <td>{{singletask.humidity}}</td>
-      <td>{{singletask.others}}</td>
-    </tr>
-  </tbody>
-</table><!--end table-->
-</fieldset>  
-</div>
-<br/>
-<div class="container-fluid">
-  <fieldset>
-    <legend>Results</legend>
-    <table class="table table-hover">
+    <table class="table" id="models_choice_copy">
       <thead>
-        <tr>
-          <td>Calculate Value</td>
-          <td>Calculate Record</td>
-        </tr>
+        <tr><td>Models</td><td>Arguments</td></tr>
       </thead>
-      <tbody>
-        <tr class="success">
-          <td width="25%">{{singletask.results}}</td>
-          <td>{{singletask.result_state}}</td>
+      <tbody id="model_copy_tbody">
+        <tr class="success" id="model_koa_choice_copy" model="koa"  rel="modified_choice" visible="false"><td>koa</td>
+          <td class="attrs">
+            temperature:<span id="temperature_koa_copy">none</span>;
+            humidity:<span id="humidity_koa_copy">80</span>%;
+            other:<span id="other_koa_copy">none</span>;
+          </td>
+        </tr>
+        <tr class="error" id="model_kof_choice_copy" model="kof"  rel="modified_choice" visible="false"><td>kof</td>
+          <td class="attrs">
+            temperature:<span id="temperature_kof_copy">none</span>;
+            humidity:<span id="humidity_kof_copy">80</span>%;
+            other:<span id="other_kof_copy">none</span>;
+          </td>
+        </tr>
+        <tr class="info" id="model_pl_choice_copy" model="pl"  rel="modified_choice" visible="false"><td>pl</td>
+          <td class="attrs">
+            temperature:<span id="temperature_pl_copy">none</span>;
+            humidity:<span id="humidity_pl_copy">80</span>%;
+            other:<span id="other_pl_copy">none</span>;
+          </td>
+        </tr>
+        <tr class="success" id="model_bcf_choice_copy" model="bcf" rel="modified_choice" visible="false"><td>bcf</td>
+          <td class="attrs">
+            temperature:<span id="temperature_bcf_copy">none</span>;
+            humidity:<span id="humidity_bcf_copy">80</span>%;
+            other:<span id="other_bcf_copy">none</span>;
+          </td>
+        </tr>
+        <tr class="error" id="model_pkd_choice_copy" model="pkd"  rel="modified_choice" visible="false"><td>pkd</td>
+          <td class="attrs">
+            temperature:<span id="temperature_pkd_copy">none</span>;
+            humidity:<span id="humidity_pkd_copy">80</span>%;
+            other:<span id="other_pkd_copy">none</span>;
+          </td>
+        </tr>
+        <tr class="info" id="model_ppk_choice_copy" model="ppk"  rel="modified_choice" visible="false"><td>ppk</td>
+          <td class="attrs">
+            temperature:<span id="temperature_ppk_copy">none</span>;
+            humidity:<span id="humidity_ppk_copy">80</span>%;
+            other:<span id="other_ppk_copy">none</span>;
+          </td>
+        </tr>
+        <tr class="success" id="model_dfs_choice_copy" model="dfs"  rel="modified_choice" visible="false"><td>dfs</td>
+          <td class="attrs">
+            temperature:<span id="temperature_dfs_copy">none</span>;
+            humidity:<span id="humidity_dfs_copy">80</span>%;
+            other:<span id="other_dfs_copy">none</span>;
+          </td>
         </tr>
       </tbody>
     </table>
-  </fieldset>
-</div>
-<br/>
-<div class="container-fluid">
+  </fieldset>  
+  </div>
+
+  <!--step3 content:notes-->
+  <div class="container-fluid search-result">
   <fieldset>
-    <legend>Notes</legend>
-    <blockquote id="commit_notes_copy">{{singletask.sid.notes}}</blockquote>
+    <legend>Response File Type</legend>
+    <div class="alert-success" id="response_type_copy">
+      <p class="span" id="choice_txt_selected" visible="true">TXT</p>
+      <p class="span" id="choice_pdf_selected" visible="true" >PDF</p>
+      <p class="span" id="choice_csv_selected" visible="true" >CSV</p>
+    </div> 
     </table>
   </fieldset>  
-</div>
-<br/>
+  </div>
+  
+  <br/>
+  <div class="container-fluid search-result">
+  <fieldset>
+    <legend>Notes</legend>
+    <blockquote id="commit_notes_copy">teastast test</blockquote>
+    </table>
+  </fieldset>  
+  </div>
+  <br/>
+  
+   <div class="container-fluid search-result">
+  <fieldset>
+    <legend>Task Name</legend>
+    <blockquote id="commit_name_copy">Task name</blockquote>
+    </table>
+  </fieldset>  
+  </div>
+
+  <br/>
+  
