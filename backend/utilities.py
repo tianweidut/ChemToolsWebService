@@ -167,13 +167,14 @@ def start_files_task(files_list, model_name, sid, arguments=None):
     if not files_list:
         loginfo(p=files_list,
                 label="Sorry, we cannot calculate files")
-        return
+        return False
 
     for fid in files_list:
         record = ProcessedFile.objects.get(fid=fid)
         save_record(record.file_obj, model_name, sid, ORIGIN_UPLOAD, arguments)
 
     loginfo(p=model_name, label="finish start smile task")
+    return True
 
 
 def start_smile_task(smile, model_name, sid, arguments=None):
@@ -185,12 +186,14 @@ def start_smile_task(smile, model_name, sid, arguments=None):
     if not smile:
         loginfo(p=smile,
                 label="Sorry, we cannot calculate smiles")
-    else:
-        f = get_FileObj_by_smiles(smile)
-        save_record(f, model_name, sid, ORIGIN_SMILE, arguments)
-        f.close()
+        return False
 
-        loginfo(p=model_name, label="finish start smile task")
+    f = get_FileObj_by_smiles(smile)
+    save_record(f, model_name, sid, ORIGIN_SMILE, arguments)
+    f.close()
+
+    loginfo(p=model_name, label="finish start smile task")
+    return True
 
 
 def start_moldraw_task(moldraw, model_name, sid, arguments=None):
@@ -204,7 +207,7 @@ def start_moldraw_task(moldraw, model_name, sid, arguments=None):
     if not moldraw:
         loginfo(p=moldraw,
                 label="Sorry, we cannot calculate draw mol files")
-        return
+        return False
 
     name = str(uuid.uuid4()) + ".mol"
     path = os.path.join(settings.MOL_CONVERT_PATH, name)
@@ -215,6 +218,8 @@ def start_moldraw_task(moldraw, model_name, sid, arguments=None):
 
     f.close()
     loginfo(p=model_name, label="finish start smile task")
+
+    return True
 
 
 def get_model_category(model_name):
@@ -302,12 +307,17 @@ def suitetask_process(request, smile=None, mol=None, notes=None,
     models_dict = parse_models(models)
     for key in models_dict:
         #TODO: add mol arguments
-        start_smile_task(smile, key, suite_task.sid)
-        start_moldraw_task(mol, key, suite_task.sid)
-        start_files_task(pid_list, key, suite_task.sid)
+        smile_flag = start_smile_task(smile, key, suite_task.sid)
+        drawmol_flag = start_moldraw_task(mol, key, suite_task.sid)
+        files_flag = start_files_task(pid_list, key, suite_task.sid)
 
-    is_submitted = True
-    message = "Congratulations to you! calculated task has been submitted!"
+    if smile_flag or drawmol_flag or files_flag:
+        is_submitted = True
+        message = "Congratulations to you! calculated task has been submitted!"
+    else:
+        is_submitted = False
+        message = "No one tasks can be added into calculated task queue successful!"
+        suite_task.delete()
 
     return (is_submitted, message)
 
