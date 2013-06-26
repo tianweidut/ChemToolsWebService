@@ -17,6 +17,7 @@ from const.models import *
 from const import *
 from users.models import UserProfile
 
+
 def get_sid():
     return str(uuid.uuid4())
 
@@ -29,8 +30,6 @@ class SuiteTask(models.Model):
                            verbose_name="id", primary_key=True,
                            default=get_sid)
     user = models.ForeignKey(UserProfile, blank=False, verbose_name="user")
-    smiles = models.CharField(max_length=2000, blank=True,
-                              verbose_name="smiles input")
     total_tasks = models.IntegerField(blank=False, verbose_name="total tasks")
     has_finished_tasks = models.IntegerField(blank=False, default=0,
                                              verbose_name="Finished number")
@@ -52,25 +51,6 @@ class SuiteTask(models.Model):
         return self.sid
 
 
-class MolFile(models.Model):
-    """
-    Mol File, which can process upload files,
-    draw chem structure files, smiles convert files
-    """
-    fid = models.CharField(max_length=50, primary_key=True, blank=False,
-                           default=get_sid)
-    sid = models.ForeignKey(SuiteTask, blank=False)
-    name = models.CharField(max_length=200, blank=False)
-    file_obj = models.FileField(upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
-    upload_time = models.DateTimeField(blank=True, default=lambda:datetime.datetime.now())
-    file_size = models.CharField(max_length=50, blank=True, default=None)
-    file_type = models.CharField(max_length=10, blank=False)
-    file_source = models.ForeignKey(FileSourceCategory, blank=False)
-
-    def __unicode__(self):
-        return self.name
-
-
 class SingleTask(models.Model):
     """
     Every specific task
@@ -81,13 +61,16 @@ class SingleTask(models.Model):
     temperature = models.FloatField(blank=True, default=0.0)
     humidity = models.FloatField(blank=True, default=0.0)
     other = models.FloatField(blank=True, default=0.0)
-    calculate_mol = models.OneToOneField(MolFile, blank=False)
     model = models.ForeignKey(ModelCategory, blank=False)
     results = models.TextField(blank=True, null=None)
-    result_state=models.CharField(max_length=50,blank=True,default=None)
+    result_state = models.CharField(max_length=100, blank=True, default=None)
     status = models.ForeignKey(StatusCategory, blank=False,
                                default=STATUS_WORKING)
-    #TODO: maybe we should add end time
+    start_time = models.DateTimeField(blank=False,
+                                      default=lambda: datetime.datetime.now())
+    end_time = models.DateTimeField(blank=True, null=True)
+
+    file_obj = models.ForeignKey(ProcessedFile, blank=False)
 
     class Meta:
         verbose_name = "Single Task"
@@ -99,14 +82,16 @@ class SingleTask(models.Model):
 
 class ProcessedFile(models.Model):
     """
-    Temp File
+    File Storage
     """
     fid = models.CharField(max_length=50, unique=True, blank=False,
                            primary_key=True, default=get_sid)
     title = models.CharField(max_length=60, blank=False)
     file_type = models.CharField(max_length=10, blank=False)
     file_obj = models.FileField(upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
-    #sid = models.CharField(blank=True, max_length=50)
+    file_source = models.ForeignKey(FileSourceCategory, blank=False)
+    image = models.FileField(blank=True, null=True, upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
+    smiles = models.CharField(max_length=2000, blank=True, null=True)
 
     class Meta:
         verbose_name = "Processed File"
