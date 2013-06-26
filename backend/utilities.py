@@ -17,7 +17,7 @@ from django.core.files import File
 import pybel
 
 from backend.logging import loginfo
-from calcore.models import SingleTask, ProcessedFile, MolFile, SuiteTask
+from calcore.models import SingleTask, ProcessedFile, SuiteTask
 from const.models import ModelCategory
 from const import MODEL_KOA, MODEL_KOF, MODEL_PL
 from const import MODEL_BCF, MODEL_PKD, MODEL_DFS
@@ -164,6 +164,11 @@ def start_files_task(files_list, model_name, sid, arguments=None):
     into system-task query.
     First, it shoud read files_list and convert them into MolFile
     """
+    if not files_list:
+        loginfo(p=files_list,
+                label="Sorry, we cannot calculate files")
+        return
+
     for fid in files_list:
         record = ProcessedFile.objects.get(fid=fid)
         save_record(record.file_obj, model_name, sid, ORIGIN_UPLOAD, arguments)
@@ -177,11 +182,15 @@ def start_smile_task(smile, model_name, sid, arguments=None):
     It will write a record into SingleTask and send this task
     into system-task query
     """
-    f = get_FileObj_by_smiles(smile)
-    save_record(f, model_name, sid, ORIGIN_SMILE, arguments)
-    f.close()
+    if not smile:
+        loginfo(p=smile,
+                label="Sorry, we cannot calculate smiles")
+    else:
+        f = get_FileObj_by_smiles(smile)
+        save_record(f, model_name, sid, ORIGIN_SMILE, arguments)
+        f.close()
 
-    loginfo(p=model_name, label="finish start smile task")
+        loginfo(p=model_name, label="finish start smile task")
 
 
 def start_moldraw_task(moldraw, model_name, sid, arguments=None):
@@ -192,6 +201,11 @@ def start_moldraw_task(moldraw, model_name, sid, arguments=None):
     First it should write moldraw into a file and clear the useless lines
     """
     #TODO: maybe we should clear the first three lines which are chemwrite info
+    if not moldraw:
+        loginfo(p=moldraw,
+                label="Sorry, we cannot calculate draw mol files")
+        return
+
     name = str(uuid.uuid4()) + ".mol"
     path = os.path.join(settings.MOL_CONVERT_PATH, name)
     f = File(open(path, "w"))
@@ -273,7 +287,6 @@ def suitetask_process(request, smile=None, mol=None, notes=None,
     suite_task = SuiteTask()
     suite_task.sid = str(uuid.uuid4())
     suite_task.user = UserProfile.objects.get(user=request.user)
-    suite_task.smiles = smile
     suite_task.total_tasks = int(total_tasks)
     suite_task.has_finished_tasks = 0
     suite_task.start_time = datetime.datetime.now()
