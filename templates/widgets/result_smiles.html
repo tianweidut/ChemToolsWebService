@@ -1,7 +1,7 @@
 {%extends "base/base_results.html"%}
 
 {%block picture-content%}
-<p>Here is a picture from mol file</p>
+<img id="last_picture" src="{{search_engine.image.url}}" style="width: 120px; height: 120px;">		
 {%endblock%}
 
 {%block input-details%}
@@ -25,15 +25,17 @@
       <tbody>
         <tr>
           <td>Smiles</td>
-          <td>{{singletask.calculate_mol.upload_time|date:"Y-m-d H:m"}}</td>
+          <td>{{search_engine.smiles}}</td>
         </tr>
         <tr>
           <td>Common Name</td>
-          <td>{{singletask.calculate_mol.file_type}}</td>
+          <td>{{search_engine.commonname}}</td>
         </tr>
         <tr>
           <td>Molecular Formula</td>
-          <td>{{singletask.calculate_mol.file_type}}</td>
+          {%autoescape off%}
+          <td>{{search_engine.mf}}</td>
+          {%endautoescape%}
         </tr>
         <tr>
           <td>Download</td>

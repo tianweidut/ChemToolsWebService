@@ -171,5 +171,14 @@ def task_details_view(request, pid=None):
     Every singletask details view
     """
     singletask = get_object_or_404(SingleTask, pid=pid)
+    suitetask = get_object_or_404(SuiteTask, sid=singletask.sid)
+
+    try:
+        search_engine = SearchEngineModel.objects.get(smiles__contains=suitetask.smiles)
+    except Exception, err:
+        loginfo(p=err)
+        search_engine = None
+
     return render(request, 'widgets/task_details.html',
-                  {"singletask": singletask,})
+                  {"singletask": singletask,
+                   "search_engine": search_engine})
