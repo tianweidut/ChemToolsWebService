@@ -22,6 +22,27 @@ def get_sid():
     return str(uuid.uuid4())
 
 
+class ProcessedFile(models.Model):
+    """
+    File Storage
+    """
+    fid = models.CharField(max_length=50, unique=True, blank=False,
+                           primary_key=True, default=get_sid)
+    title = models.CharField(max_length=60, blank=False)
+    file_type = models.CharField(max_length=10, blank=False)
+    file_obj = models.FileField(upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
+    file_source = models.ForeignKey(FileSourceCategory, blank=False)
+    image = models.FileField(blank=True, null=True, upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
+    smiles = models.CharField(max_length=2000, blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Processed File"
+        verbose_name_plural = "Processed File"
+
+    def __unicode__(self):
+        return self.title
+
+
 class SuiteTask(models.Model):
     """
     A group of task, which defined the one calculate submit
@@ -78,27 +99,6 @@ class SingleTask(models.Model):
 
     def __unicode__(self):
         return self.sid.name
-
-
-class ProcessedFile(models.Model):
-    """
-    File Storage
-    """
-    fid = models.CharField(max_length=50, unique=True, blank=False,
-                           primary_key=True, default=get_sid)
-    title = models.CharField(max_length=60, blank=False)
-    file_type = models.CharField(max_length=10, blank=False)
-    file_obj = models.FileField(upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
-    file_source = models.ForeignKey(FileSourceCategory, blank=False)
-    image = models.FileField(blank=True, null=True, upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
-    smiles = models.CharField(max_length=2000, blank=True, null=True)
-
-    class Meta:
-        verbose_name = "Processed File"
-        verbose_name_plural = "Processed File"
-
-    def __unicode__(self):
-        return self.title
 
 
 class SearchEngineModel(models.Model):
