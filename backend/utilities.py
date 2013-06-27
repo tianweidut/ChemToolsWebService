@@ -132,30 +132,33 @@ def save_record(f, model_name, sid, source_type, smile=None, arguments=None):
         f.file_type = "mol"
         task.file_obj = f
         f.save()
+        task.status = StatusCategory.objects.get(category=STATUS_WORKING)
+        task.save()
+        path = os.path.join(settings.MEDIA_ROOT, f.file_obj.url)
+        calculateTask.delay(path, task, model_name)
     elif source_type == ORIGIN_SMILE or source_type == ORIGIN_DRAW:
         #here, f is a file path
         processed_f = ProcessedFile()
-        f = File(open(f, "r"))
-        processed_f.title = os.path.basename(f.name)
+        obj = File(open(f, "r"))
+        processed_f.title = os.path.basename(obj.name)
         processed_f.file_type = source_type
         processed_f.file_source = FileSourceCategory.objects.get(category=source_type)
-        processed_f.file_obj = f
-        loginfo(p=f)
+        processed_f.file_obj = obj
         if smile:
             processed_f.smiles = smile
             #TODO: add database search local picture into here
         processed_f.save()
         task.file_obj = processed_f
-        f.close()
+        obj.close()
+        task.status = StatusCategory.objects.get(category=STATUS_WORKING)
+        task.save()
+        calculateTask.delay(f, task, model_name)
     else:
         loginfo(p=source_type, label="Cannot recongize this source type")
-
-    task.status = StatusCategory.objects.get(category=STATUS_WORKING)
-    task.save()
+        return
 
     #TODO: call task query process function filename needs path
     #global molpathtemp
-    calculateTask.delay(f, task, model_name)
 
 
 def get_FileObj_by_smiles(smile):

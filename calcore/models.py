@@ -80,9 +80,9 @@ class SingleTask(models.Model):
     sid = models.ForeignKey(SuiteTask, blank=False)
     pid = models.CharField(max_length=50, unique=True, blank=False,
                            primary_key=True, default=get_sid)
-    temperature = models.FloatField(blank=True, default=0.0)
-    humidity = models.FloatField(blank=True, default=0.0)
-    other = models.FloatField(blank=True, default=0.0)
+    temperature = models.FloatField(blank=True, default=-0.0)
+    humidity = models.FloatField(blank=True, default=-0.0)
+    other = models.FloatField(blank=True, default=-0.0)
     model = models.ForeignKey(ModelCategory, blank=False)
     results = models.TextField(blank=True, null=None)
     result_state = models.CharField(max_length=100, blank=True, null=None)
