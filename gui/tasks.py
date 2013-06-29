@@ -30,7 +30,7 @@ from backend.logging import logger, loginfo
 from calcore.models import SingleTask, ProcessedFile, SuiteTask
 from const.models import StatusCategory
 from const import STATUS_WORKING, STATUS_SUCCESS, STATUS_FAILED, STATUS_UNDEFINED
-from settings import MEDIA_ROOT
+from settings import MEDIA_ROOT,SETTINGS_ROOT
 
 
 def get_ModelName(name):
@@ -61,7 +61,13 @@ def add_a(x, y):
 def calculateTask(path, task, model_name):
     para = dict.fromkeys(['smilestring', 'filename', 'cas'], "")
     para['filename'] = os.path.basename(path)
-    only_path = os.path.split(path)[0]
+    print path
+    print SETTINGS_ROOT
+    temp= os.path.split(path)[0]
+    if(temp.startswith('/')):
+        temp=temp.lstrip('/')
+    only_path =os.path.join(SETTINGS_ROOT, temp)
+    print only_path
     loginfo(p=para, label="calculate task para")
     loginfo(p=path, label="calculate task filepath")
     loginfo(p=only_path, label="calculate task filepath")
