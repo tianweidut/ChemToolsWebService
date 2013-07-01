@@ -26,6 +26,7 @@ this class is used for model computation that parameters needed in Dragon output
                     {
          "logKOA" :  lambda para:self.logKOA(para ,instance_of_dragon),
          "logRP"  :  lambda para:self.logRP(para ,instance_of_dragon),
+         "logKOF" :  lambda para:self.logKOF(para ,instance_of_dragon),
          
         }[modelname](para)
     def logKOA(self, para ,d):
@@ -49,10 +50,26 @@ this class is used for model computation that parameters needed in Dragon output
             if not self.predict_result.has_key(smilenum):
                 self.predict_result[smilenum] = {}
             self.predict_result[smilenum]['logRP'] = -11.5+16.6*float(abstract_value[smilenum]['TDB05v'])+1.81*float(abstract_value[smilenum]['Hypnotic-80'])
-    
+    def logKOF(self, para,d):
+        '''
+        logKOF model computation
+        '''
+        abstract_value=d.extractparameter(["Wap","WiA_Dt","SM1_B(p)","P_VSA_LogP_4","P_VSA_s_1","H_G/D","Mor07e","nROH","nR=CRX","O-057","CATS2D_05_Dn","B05[C-O]","MLOGP","ALOGP2","LLS_01"])
+        for smilenum in abstract_value.keys():
+            if not self.predict_result.has_key(smilenum):
+                self.predict_result[smilenum]={}
+            self.predict_result[smilenum]['logKOF']=-0.0000137*float(abstract_value[smilenum]['Wap'])+0.18*float(abstract_value[smilenum]['WiA_Dt'])+ \
+            0.687*float(abstract_value[smilenum]['SM1_B(p)'])-0.008*float(abstract_value[smilenum]['P_VSA_LogP_4'])-0.034*float(abstract_value[smilenum]['P_VSA_s_1'])- \
+            0.001*float(abstract_value[smilenum]['H_G/D'])-0.086*float(abstract_value[smilenum]['Mor07e'])-0.373*float(abstract_value[smilenum]['nROH'])+ \
+            0.815*float(abstract_value[smilenum]['nR=CRX'])+0.279*float(abstract_value[smilenum]['O-057'])+0.975*float(abstract_value[smilenum]['CATS2D_05_Dn'])- \
+            0.209*float(abstract_value[smilenum]['B05[C-O]'])+0.161*float(abstract_value[smilenum]['MLOGP'])+0.03*float(abstract_value[smilenum]['ALOGP2'])-0.983*float(abstract_value[smilenum]['LLS_01'])+0.619
+            
+
+
 MODEL_FOR_COMPUTAIONCLASS = {}
 MODEL_FOR_COMPUTAIONCLASS["logKOA"] =  PredictionModel_ForParamInDragon
 MODEL_FOR_COMPUTAIONCLASS["logRP"]  =  PredictionModel_ForParamInDragon
+MODEL_FOR_COMPUTAIONCLASS["logKOF"] =  PredictionModel_ForParamInDragon
 class PredictionModel(object):
     def __init__(self, modelnames=None, para={}, molpath={}):
         modelnames = modelnames or []

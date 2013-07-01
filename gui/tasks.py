@@ -37,6 +37,7 @@ def get_ModelName(name):
     temp={
             "koa":"logKOA",
             "pl":"logRP",
+            "kof":"logKOF"
             }
     # return temp.get(name)
     if temp.has_key(name):
