@@ -7,7 +7,6 @@ Created on 2013-06-16
 
 from django.contrib.auth.models import User
 from django.conf.urls.defaults import *
-from piston.resource import Resource
 from tastypie.resources import ModelResource
 from tastypie.authorization import Authorization
 from tastypie.authentication import BasicAuthentication
