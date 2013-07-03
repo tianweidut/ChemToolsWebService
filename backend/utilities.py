@@ -192,9 +192,10 @@ def start_files_task(files_list, model_name, sid, arguments=None):
 
     for fid in files_list:
         record = ProcessedFile.objects.get(fid=fid)
+        loginfo(p=record, label="files upload")
         save_record(record, model_name, sid, ORIGIN_UPLOAD, arguments)
 
-    loginfo(p=model_name, label="finish start smile task")
+    loginfo(p=model_name, label="finish start files task")
     return True
 
 

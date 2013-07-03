@@ -67,11 +67,8 @@ def calculateTask(path, task, model_name):
     temp= os.path.split(path)[0]
     if(temp.startswith('/')):
         temp=temp.lstrip('/')
-    only_path =os.path.join(SETTINGS_ROOT, temp)
+    only_path = os.path.join(SETTINGS_ROOT, temp)
     print only_path
-    loginfo(p=para, label="calculate task para")
-    loginfo(p=path, label="calculate task filepath")
-    loginfo(p=only_path, label="calculate task filepath")
     try:
         pm = PredictionModel([get_ModelName(model_name)], para, only_path)
         result = pm.predict_results[para['filename'].split(".")[0]][get_ModelName(model_name)]
