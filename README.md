@@ -31,6 +31,11 @@
   * some other software should be installed manually
   * sudo apt-get install ia32-libs -y  #32-bit lib for 64-bit machine
 
+ * Cache
+  * Now, our website is very small, so we use database cache for cache,
+  later we may use memcache.
+  * please run: python manage.py createcachetable cachedatabasetable
+
 
  * python manage.py runserver IP:PORT
  * go web browser, visit: IP:PORT
