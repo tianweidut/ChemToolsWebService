@@ -10,6 +10,7 @@ import os
 import sys
 import uuid
 import time
+import datetime
 
 from celery.decorators import task
 
@@ -65,6 +66,8 @@ def calculateTask(task, model_name):
     fullpath = os.path.join(SETTINGS_ROOT, task.file_obj.file_obj.path)
     para['filename'] = os.path.basename(fullpath)
     filepath = os.path.dirname(fullpath)
+    suite = task.sid
+    result = 0
 
     print fullpath
     print para["filename"]
@@ -73,22 +76,32 @@ def calculateTask(task, model_name):
     try:
         pm = PredictionModel([get_ModelName(model_name)], para, filepath)
         result = pm.predict_results[para['filename'].split(".")[0]][get_ModelName(model_name)]
-        loginfo(p=result, label="calculate task result")
-    except KeyError:
-        task.result_state="We don't have this model"
+    except KeyError, err:
         print "We don't have this model"
-        result=0
-        suite=task.sid
-        suite.status_id=StatusCategory.objects.get(category=STATUS_WORKING)
-        suite.has_finished_tasks+=1
-        suite.save()
-        #add singletask state
+        result = 0
+        task.result_state = "We don't support this model now"
+        task.status = StatusCategory.objects.get(category=STATUS_SUCCESS)
+        suite.status_id = StatusCategory.objects.get(category=STATUS_WORKING)
+    except Exception, err:
+        print err
+        result = -10000
+        task.result_state = str(err)
+        task.status = StatusCategory.objects.get(category=STATUS_FAILED)
+        suite.status_id = StatusCategory.objects.get(category=STATUS_FAILED)
     else:
-        suite=task.sid
-        suite.status_id=StatusCategory.objects.get(category=STATUS_SUCCESS)
-        suite.has_finished_tasks+=1
-        suite.save()
-    task.results=result
+        print "calculate Successfully in celery queue!"
+        task.result_state = "Calculate Successfully!"
+        task.status = StatusCategory.objects.get(category=STATUS_SUCCESS)
+
+    if suite.has_finished_tasks < suite.total_tasks-1:
+        suite.has_finished_tasks += 1
+    else:
+        suite.has_finished_tasks = suite.total_tasks
+        suite.status_id = StatusCategory.objects.get(category=STATUS_SUCCESS)
+    suite.save()
+    loginfo(p=result, label="calculate task result")
+    task.end_time = datetime.datetime.now()
+    task.results = result
     task.save()
 
     return result
