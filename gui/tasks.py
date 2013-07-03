@@ -59,18 +59,19 @@ def add_a(x, y):
 
 
 @task()
-def calculateTask(path, task, model_name):
+def calculateTask(task, model_name):
     para = dict.fromkeys(['smilestring', 'filename', 'cas'], "")
-    para['filename'] = os.path.basename(path)
-    print path
-    print SETTINGS_ROOT
-    temp= os.path.split(path)[0]
-    if(temp.startswith('/')):
-        temp=temp.lstrip('/')
-    only_path = os.path.join(SETTINGS_ROOT, temp)
-    print only_path
+
+    fullpath = os.path.join(SETTINGS_ROOT, task.file_obj.file_obj.path)
+    para['filename'] = os.path.basename(fullpath)
+    filepath = os.path.dirname(fullpath)
+
+    print fullpath
+    print para["filename"]
+    print filepath
+
     try:
-        pm = PredictionModel([get_ModelName(model_name)], para, only_path)
+        pm = PredictionModel([get_ModelName(model_name)], para, filepath)
         result = pm.predict_results[para['filename'].split(".")[0]][get_ModelName(model_name)]
         loginfo(p=result, label="calculate task result")
     except KeyError:

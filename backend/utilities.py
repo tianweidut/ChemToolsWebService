@@ -135,7 +135,7 @@ def save_record(f, model_name, sid, source_type, smile=None, arguments=None):
         task.status = StatusCategory.objects.get(category=STATUS_WORKING)
         task.save()
         path = os.path.join(settings.MEDIA_ROOT, f.file_obj.url)
-        calculateTask.delay(path, task, model_name)
+        calculateTask.delay(task, model_name)
     elif source_type == ORIGIN_SMILE or source_type == ORIGIN_DRAW:
         #here, f is a file path
         processed_f = ProcessedFile()
@@ -152,7 +152,7 @@ def save_record(f, model_name, sid, source_type, smile=None, arguments=None):
         obj.close()
         task.status = StatusCategory.objects.get(category=STATUS_WORKING)
         task.save()
-        calculateTask.delay(f, task, model_name)
+        calculateTask.delay(task, model_name)
     else:
         loginfo(p=source_type, label="Cannot recongize this source type")
         return
