@@ -1,17 +1,24 @@
 <!--model choice base template-->
 <div class="models-choice-div">
 <!--title-->
+
 <div class="btn-group" >
   <a class="user-info accordion-toggle" data-toggle="collapse" data-parent="#models-choice-accordions" href={%block collapse_id%} {%endblock%}>
     {%block model_name_title %}{%endblock%}
   </a>
+
   <a class="{%block label-ui %}{%endblock%}">
     {%block model_type%}{%endblock%}
   </a>
   <a class="label label-warning user-info-label" id={%block choiced_label%}{%endblock%} visible="false" rel="label-choice">choiced!</a>
+  
 </div>
+  <a class="btn btn-large btn-primary pull-right" 
+              id={%block model_choice_id%}{%endblock%} rel="button-switch" 
+              model={%block model_name%}{%endblock%} switch_text="undo this model" 
+              control_id={%block control_id%}{%endblock%}>Choice This Model!</a>
 <!--Content-->
-<div id={%block collapse_id_real%}{%endblock%} class="accordion-body collapse in">
+<div id={%block collapse_id_real%}{%endblock%} class="accordion-body collapse ">
   <div class="accordion-inner">
     <div class="container-fluid">
       <div class="row-fluid">
@@ -27,12 +34,6 @@
 				<!--Choice and input args-->
 				<div class="span6">
 					<!--switch button-->
-					<div class="center-float">
-            <a class="btn btn-large btn-block btn-primary " 
-              id={%block model_choice_id%}{%endblock%} rel="button-switch" 
-              model={%block model_name%}{%endblock%} switch_text="undo this model" 
-              control_id={%block control_id%}{%endblock%}>Choice This Model!</a>
-					</div>
 					<br/>
 					<!--Input arguments-->
 					<fieldset>
