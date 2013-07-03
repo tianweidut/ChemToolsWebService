@@ -6,11 +6,11 @@
     <form id="fileupload" method="post" action="." enctype="multipart/form-data">{% csrf_token %}
         <div class="row fileupload-buttonbar" id="addinput">
             <div class="span12">
-                <span class="btn btn-primary fileinput-button" style="height:40px">
+                <button class="btn btn-primary fileinput-button" style="height:50px">
                     <i class="icon-plus icon-white"></i>
                     <input type="file" name="file" multiple >
                     <span>Add files...</span>
-                </span>
+                </button>
                 <button type="submit" class="btn btn-success start" style="height:50px"  rel="fileupload_operation">
                     <i class="icon-upload icon-white"></i>
                     <span>Start upload</span>

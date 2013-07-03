@@ -19,6 +19,7 @@ $(document).ready(function(){
   $('#unvalid_results').hide();
 
   $('#search-loading').hide();
+  $("div#commit_content").hide();
 });
 
 //raw content copy
@@ -123,6 +124,10 @@ $("#upload_update").click(function(){
   
   console.log(row);
   $("#fileupload_copy").append(row);
+  
+  $(this).text("Files Added!");
+  $(this).toggleClass("btn-danger");
+  $(this).toggleClass("btn-info");
 
 });
 
@@ -271,3 +276,21 @@ $('#search_varify_btn').click(function(){
   }
 });
 
+$("#commit-show-btn").click(function(){
+  if($(this).attr("visible")==="false")
+    {
+      $("div#commit_content").hide();
+      $(this).text("Show");
+      $(this).toggleClass("btn-primary");
+      $(this).toggleClass("btn-info");
+      $(this).attr("visible","true"); 
+    }
+  else
+    {
+      $("div#commit_content").show();
+      $(this).text("Hide");
+      $(this).toggleClass("btn-primary");
+      $(this).toggleClass("btn-info");
+      $(this).attr("visible","false"); 
+    }
+});
