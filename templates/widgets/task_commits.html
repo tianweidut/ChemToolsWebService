@@ -1,9 +1,9 @@
 <!--head-->
-{%if singletask.calculate_mol.file_source.category == "smiles"%}
+{%if singletask.file_obj.file_source.category == "smiles"%}
   {%include "widgets/result_smiles.html"%}
-{%elif singletask.calculate_mol.file_source.category == "drawing"%}
+{%elif singletask.file_obj.file_source.category == "drawing"%}
   {%include "widgets/result_drawing.html"%}
-{%elif singletask.calculate_mol.file_source.category == "upload"%}
+{%elif singletask.file_obj.file_source.category == "upload"%}
   {%include "widgets/result_upload.html"%}
 {%else%}
   {%include "widgets/result_other.html"%}

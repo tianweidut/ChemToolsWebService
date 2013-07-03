@@ -25,17 +25,17 @@
       </thead>
       <tbody>
         <tr>
-          <td>Time</td>
-          <td>{{singletask.calculate_mol.upload_time|date:"Y-m-d H:m"}}</td>
+          <td>Smiles</td>
+          <td>{{singletask.file_obj.smiles}}</td>
         </tr>
         <tr>
           <td>Type</td>
-          <td>{{singletask.calculate_mol.file_type}}</td>
+          <td>{{singletask.file_obj.file_type}}</td>
         </tr>
         <tr>
           <td>Download</td>
           <td>
-            <a class="btn btn-primary" href="{{singletask.calculate_mol.file_obj.url}}">Got it!</a>
+            <a class="btn btn-primary" href="{{singletask.file_obj.file_obj.url}}">Got it!</a>
           </td>
         </tr>
       </tbody>

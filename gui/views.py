@@ -174,7 +174,7 @@ def task_details_view(request, pid=None):
     suitetask = get_object_or_404(SuiteTask, sid=singletask.sid)
 
     try:
-        search_engine = SearchEngineModel.objects.get(smiles__contains=suitetask.smiles)
+        search_engine = SearchEngineModel.objects.get(smiles__contains=singletask.file_obj.smiles)
     except Exception, err:
         loginfo(p=err)
         search_engine = None
