@@ -238,9 +238,14 @@ FILE_UPLOAD_HANDLERS = (
 
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
-CACHES = {
-            'default': {
-                        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-                        'LOCATION': 'cachedatabasetable',
-                       }
-         }
+#TODO: Add cache into website
+#CACHES = {
+#            'default': {
+#                        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+#                        'LOCATION': 'cachedatabasetable',
+#                       }
+#         }
+FIXTURE_DIRS = (
+           os.path.join(SETTINGS_ROOT, 'users/fixtures/'),
+           os.path.join(SETTINGS_ROOT, 'const/fixtures/'),
+           )

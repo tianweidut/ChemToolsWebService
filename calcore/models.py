@@ -93,6 +93,7 @@ class SingleTask(models.Model):
     end_time = models.DateTimeField(blank=True, null=True)
 
     file_obj = models.ForeignKey(ProcessedFile, blank=False)
+    result_pdf = models.FileField(blank=True, null=True, upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
 
     class Meta:
         verbose_name = "Single Task"

@@ -80,11 +80,30 @@ def add_counter_core(suite_id):
         suite.status_id = StatusCategory.objects.get(category=STATUS_SUCCESS)
     suite.save()
 
-
 @task()
 def add_counter(suite_id):
     """
-    Add counter into
+    use filter to get task numbers
+    """
+    finished_count = SingleTask.objects.filter(sid=suite_id)\
+                                       .exclude(status=StatusCategory.objects.get(category=STATUS_WORKING))\
+                                       .count()
+    print finished_count
+    suite = SuiteTask.objects.get(sid=suite_id)
+    if finished_count == suite.total_tasks:
+        suite.has_finished_tasks = suite.total_tasks
+        print "Finished:" + str(suite.has_finished_tasks)
+        suite.status_id = StatusCategory.objects.get(category=STATUS_SUCCESS)
+    else:
+        suite.has_finished_tasks = finished_count
+
+    suite.save()
+
+
+@task()
+def add_counter_cache(suite_id):
+    """
+    Add counter by cache
     """
     id = md5(suite_id).hexdigest()
     lock_id = "%s-lock-%s" % ("add_counter", id)
