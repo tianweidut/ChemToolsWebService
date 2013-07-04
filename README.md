@@ -30,6 +30,8 @@
   * sudo apt-get install python-openbabel -y
   * some other software should be installed manually
   * sudo apt-get install ia32-libs -y  #32-bit lib for 64-bit machine
+  * wget http://bkchem.zirael.org/download/bkchem-0.13.0.tar.gz
+    * sudo python setup.py build & install
 
  * Cache
   * Now, our website is very small, so we use database cache for cache,

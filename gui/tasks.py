@@ -80,6 +80,7 @@ def add_counter_core(suite_id):
         suite.status_id = StatusCategory.objects.get(category=STATUS_SUCCESS)
     suite.save()
 
+
 @task()
 def add_counter(suite_id):
     """
