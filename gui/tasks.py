@@ -35,6 +35,10 @@ from const.models import StatusCategory
 from const import STATUS_WORKING, STATUS_SUCCESS, STATUS_FAILED, STATUS_UNDEFINED
 from settings import MEDIA_ROOT, SETTINGS_ROOT
 
+import pybel
+from calcore.models import *
+from const import ORIGIN_DRAW
+
 
 LOCK_EXPIRE = 60 * 5 # Lock expires in 5 minutes
 
@@ -139,16 +143,58 @@ def generate_pdf(task):
     pass
 
 
+def convert_smile_png(task):
+    """
+    convert mol into smile and png
+    """
+    abpath = task.file_obj.file_obj.url
+    fullpath = os.path.join(settings.MEDIA_ROOT, abpath)
+
+    mol = pybel.readfile("mol", fullpath).next()
+    task.file_obj.smiles = ("%s" % mol).split(" ")[0]
+
+    picname = uuid.uuid4() + ".png"
+    picpath = os.path.join(settings.SEARCH_IMAGE_PATH, picname)
+    mol.draw(show=False, filename=picpath)
+
+    f = open(picpath, "r")
+    task.file_obj.image = f
+    task.save()
+    f.close()
+    os.remove(picpath)
+
+
 @task
-def generate_smile_image(task):
+def generate_smile_image(task_id):
     """
     generate smile and image for task
     """
-    pass
+    task = SingleTask.objects.get(pid=task_id)
+    filetype = task.file_obj.file_source.category
+
+    if filetype == ORIGIN_SMILE:
+        #this type has already have image and smiles in local search machine,
+        #only copy them
+        print "search engine test"
+        task.image = SearchEngineModel.objects.get(smiles__contains=task.file_obj.smiles).image
+        task.save()
+    else:
+        #other types only contains mol file
+        print "other input method"
+        try:
+            convert_smile_png(task)
+        except Exception, err:
+            loginfo(p=err, label="convert error")
 
 
 @task()
 def calculateTask(task, model_name):
+    """
+    Calculate task
+    """
+    #Covert smiles, png
+    generate_smile_image.delay(task.pid) 
+
     para = dict.fromkeys(['smilestring', 'filename', 'cas'], "")
 
     fullpath = os.path.join(SETTINGS_ROOT, task.file_obj.file_obj.path)
