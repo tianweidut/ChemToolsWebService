@@ -151,7 +151,6 @@ def convert_smile_png(singletask):
     fullpath = settings.SETTINGS_ROOT + abpath
 
     print "convert_smile_png"
-    print fullpath
     mol = pybel.readfile("mol", fullpath).next()
     singletask.file_obj.smiles = ("%s" % mol).split("\t")[0]
 
@@ -166,7 +165,6 @@ def convert_smile_png(singletask):
     f.close()
     print singletask.file_obj.smiles
     print singletask.file_obj.image
-    print singletask
 
 
 def generate_smile_image(pid):
@@ -180,7 +178,8 @@ def generate_smile_image(pid):
         #this type has already have image and smiles in local search machine,
         #only copy them
         print "search engine test"
-        singletask.image = SearchEngineModel.objects.get(smiles__contains=task.file_obj.smiles).image
+        singletask.file_obj.image = SearchEngineModel.objects.get(smiles__contains=singletask.file_obj.smiles).image
+        singletask.file_obj.save()
         singletask.save()
     else:
         #other types only contains mol file
