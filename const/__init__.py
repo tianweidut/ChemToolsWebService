@@ -111,3 +111,6 @@ MOL_ORIGIN_CHOICES = (
 )
 
 MODEL_SPLITS = ";"
+
+TASK_SUITE = "suitetask"
+TASK_SINGLE = "singletask"

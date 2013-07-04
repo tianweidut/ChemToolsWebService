@@ -20,7 +20,6 @@ from django.shortcuts import render_to_response
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
-from django.http import HttpResponseForbidden, Http404
 from django.template import RequestContext
 from django.utils import simplejson
 from django.core.files import File
@@ -29,6 +28,13 @@ from django.contrib.auth.decorators import login_required
 from django.core.files.uploadedfile import UploadedFile
 from django.core.cache import cache
 from django.utils.hashcompat import md5_constructor as md5
+from django.template.loader import get_template
+from django.template import Context
+
+#import ho.pisa as pisa
+import xhtml2pdf.pisa as pisa
+import cStringIO as StringIO
+
 from calcore.controllers.prediciton_model import PredictionModel
 from backend.logging import logger, loginfo
 from calcore.models import SingleTask, ProcessedFile, SuiteTask
@@ -37,10 +43,27 @@ from const import STATUS_WORKING, STATUS_SUCCESS, STATUS_FAILED, STATUS_UNDEFINE
 
 import pybel
 from calcore.models import *
-from const import ORIGIN_DRAW
+from const import ORIGIN_DRAW, TASK_SUITE, TASK_SINGLE
 
 
 LOCK_EXPIRE = 60 * 5 # Lock expires in 5 minutes
+
+
+def task_details_context(pid):
+    """
+    """
+    singletask = get_object_or_404(SingleTask, pid=pid)
+
+    try:
+        search_engine = SearchEngineModel.objects.get(smiles__contains=singletask.file_obj.smiles)
+    except Exception, err:
+        loginfo(p=err)
+        search_engine = None
+
+    re_context = {"singletask": singletask,\
+                  "search_engine": search_engine}
+
+    return re_context
 
 
 def get_ModelName(name):
@@ -136,11 +159,35 @@ def send_email(task):
 
 
 @task
-def generate_pdf(task):
+def generate_pdf(id, task_type=None):
     """
     generate result in pdf format
     """
-    pass
+    if task_type == TASK_SINGLE: 
+        template = get_template("widgets/pdf/task_details_pdf.html")
+    elif task_type == TASK_SUITE:
+        template = get_template("widgets/pdf/suite_details_pdf.html")
+    else:
+        loginfo(p=task_type, label="Cannot check the type")
+        return
+
+    context = Context(task_details_context(pid=id))
+    html = template.render(context)
+    result = StringIO.StringIO()
+    
+    #pdf = pisa.pisaDocument(StringIO.StringIO(html.encode("UTF-8")), result)
+
+    print html
+    try:
+        name = str(uuid.uuid4()) + ".pdf"
+        path = os.path.join(settings.SEARCH_IMAGE_PATH, name)
+        f = open(path, "w")
+        pisa.CreatePDF(html, f)
+        #f.write(result.getvalue())
+        f.close()
+        print "finish pdf generate"
+    except Exception, err:
+        loginfo(p=err, label="cannot generate pdf")
 
 
 def convert_smile_png(singletask):
@@ -152,7 +199,7 @@ def convert_smile_png(singletask):
 
     print "convert_smile_png"
     mol = pybel.readfile("mol", fullpath).next()
-    singletask.file_obj.smiles = ("%s" % mol).split("\t")[0]
+    singletask.file_obj.smiles = ("%s" % mol).split("t")[0]
 
     picname = str(uuid.uuid4()) + ".png"
     picpath = os.path.join(settings.SEARCH_IMAGE_PATH, picname)
