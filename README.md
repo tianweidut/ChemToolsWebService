@@ -30,6 +30,19 @@
   * sudo apt-get install python-openbabel -y
   * some other software should be installed manually
   * sudo apt-get install ia32-libs -y  #32-bit lib for 64-bit machine
+  * Generate mol PONG
+    * sudo apt-get install bkchem
+    * oasa:
+      * wget http://bkchem.zirael.org/download/oasa-0.13.1.tar.gz
+      * tar -zxcf oasa*.tar.gz
+      * sudo python setup.py build & install
+    * PIL
+      * sudo apt-get install python python-tk idle python-pmw python-imaging
+
+ * Cache
+  * Now, our website is very small, so we use database cache for cache,
+  later we may use memcache.
+  * please run: python manage.py createcachetable cachedatabasetable
 
 
  * python manage.py runserver IP:PORT

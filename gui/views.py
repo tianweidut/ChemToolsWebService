@@ -164,14 +164,10 @@ def suite_details_view(request, sid=None):
                    "single_lists": single_lists})
 
 
-#TODO: Add only user decorators
-@login_required
-def task_details_view(request, pid=None):
+def task_details_context(pid):
     """
-    Every singletask details view
     """
     singletask = get_object_or_404(SingleTask, pid=pid)
-    suitetask = get_object_or_404(SuiteTask, sid=singletask.sid)
 
     try:
         search_engine = SearchEngineModel.objects.get(smiles__contains=singletask.file_obj.smiles)
@@ -179,6 +175,18 @@ def task_details_view(request, pid=None):
         loginfo(p=err)
         search_engine = None
 
-    return render(request, 'widgets/task_details.html',
-                  {"singletask": singletask,
-                   "search_engine": search_engine})
+    re_context = {"singletask": singletask,\
+                  "search_engine": search_engine}
+
+    return re_context
+
+
+#TODO: Add only user decorators
+@login_required
+def task_details_view(request, pid=None):
+    """
+    Every singletask details view
+    """
+    re_context = task_details_context(pid)
+
+    return render(request, 'widgets/task_details.html', re_context)
