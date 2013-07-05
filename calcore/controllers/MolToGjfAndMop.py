@@ -7,6 +7,7 @@ Created on 2012-7-30
 '''
 def Mol2GjfandMop(file,gjf=False, mop=False):
     #to gain input file name such as i.gif
+    print "in the Mol2GjfandMop"
     Inputfilename=file.split('/')[-1]
     #to gain input file name without extension such as i.gif
     InputfilenameWithoutExt=Inputfilename.split('.')[0]
@@ -22,26 +23,31 @@ def Mol2GjfandMop(file,gjf=False, mop=False):
         except:
             continue                                        
     if gjf == True:
+        print "gjf=true"
         GjfList=[]   
         GjfList.append('%chk='+InputfilenameWithoutExt+'.chk\n')
         GjfList.append('%nproc=2\n')
         GjfList.append('%mem=2GB\n')
-        GjfList.append('#p rb3lyp/6-31+g(d,p)\n')
+        GjfList.append('#p opt freq b3lyp/6-31+g(d,p) SCRF=(IEFPCM,SOLVENT=WATER)\n')
         GjfList.append('\n')
         GjfList.append('Title Card Required\n')
         GjfList.append('\n')
-        GjfList.append('0 1\r')
+        GjfList.append('0 1\n')
         GjfList.extend(OritationList)
         GjfList.append('\n\n')
         f=open(file.split('.')[0]+'.gjf','w')
         f.writelines(tuple(GjfList))
         f.close()
+        print "Mol2GjfandMop-gjf close"
     if mop == True:
+        print "mop=True"
         MopList=[]
         MopList.append(' PM3 CHARGE=0 GNORM=0.100  static\n')
+        #MopList.append('opt freq b3lyp/6-31+g(d,p) SCRF=(IEFPCM,SOLVENT=WATER)\n')
         MopList.append('\n\r\n')
         MopList.extend(OritationList)
         f=open(file.split('.')[0]+'.mop','w')
         f.writelines(tuple(MopList))
         f.close()
+        print "Mol2GjfandMop-mop close"
 #Mol2GjfandMop('/home/est863/workspace/863program/src/controllers/C(Cl)(Cl)(Cl)C.mol', mop = True)

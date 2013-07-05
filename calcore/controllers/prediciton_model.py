@@ -10,10 +10,15 @@ this class is used for model computation that parameters needed in Dragon output
     '''
     def __init__(self , modelname=None ,para={},predict_results=None,molpath={}):
         self.predict_result = predict_results
+        #self.model_type={}
         para = para or {}
+        print "in the PredictionModel_ForParamInDragon"
         #start to compute model  results
+        print modelname[0]
+        print self.get_ModelType(modelname[0])
+        #print self.model_type 
         d = Dragon(smiles_str=para["smilestring"],
-                molfile=para["filename"],molpath=molpath)
+                molfile=para["filename"],molpath=molpath,modeltype=self.get_ModelType(modelname[0]))
         d.mol2drs()
         self.predict_result["invalidnums"] = d.invalidnums
         modelname = modelname or []
@@ -22,6 +27,17 @@ this class is used for model computation that parameters needed in Dragon output
         print self.predict_result
         print "--------------------------------------------------"
 #print the model results
+    def get_ModelType(self,modelname=None):
+        modeltype={}
+        if modelname=="logKOA" or modelname=="logRP":
+            modeltype=1
+        elif modelname=="logKOF":
+            #self.model_type=2
+            modeltype=2
+        else: 
+            modeltype=0
+        return modeltype
+
     def models_computation(self, modelname, para ,instance_of_dragon):
                     {
          "logKOA" :  lambda para:self.logKOA(para ,instance_of_dragon),

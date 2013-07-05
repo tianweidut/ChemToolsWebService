@@ -10,6 +10,7 @@ import openbabel,pybel
 from calcore.config.settings import globalpath
 from calcore.controllers.Mopac import Mopac
 from calcore.controllers.MolToGjfAndMop import Mol2GjfandMop
+from calcore.controllers.GaussianOptimize import *
 
 class SmileToMol():
     '''
@@ -18,6 +19,7 @@ class SmileToMol():
     such as [number1,number2,number3]
 '''
     def __init__(self, smilenum=None, molfile=None,molpath={}):
+        print "in the SmileToMol-init"
         self.__invalid_smile  = []
         self.__opt_smilenum   = []
         self.__unopt_smilenum = []
@@ -37,6 +39,7 @@ class SmileToMol():
         for smilenum in self.__smilenum_list:
             self.__unopt_smilenum.append(smilenum)
         self.__smilenum_list = self.__unopt_smilenum
+        print "end SmileToMol-init"
     def check_smilenum(self): 
             #for query in mysql;
             #if smilenum in database,it means that the mol file has been optimized
@@ -52,6 +55,7 @@ class SmileToMol():
             #        self.unopt_smilnum.append(smilenum)
             pass
     def smile2_3d(self,smilenum):
+            print "in SmileToMol-smile2_3d "
             mymol=pybel.readstring('smi',smilenum)
             mymol.addh()
             mymol.make3D()
@@ -70,10 +74,12 @@ class SmileToMol():
                     revisedsmi += smilenum[i]
             ########################################################################################
             mymol.write('mol',revisedsmi+".mol",overwrite=True)
+            print "end SmileToMol-smile2_3d"
             
     def mop2mopac_folder(self):
         ######################################################################################
         # deal with smile numbers
+        print "in the SmileToMol-mop2mopac_folder"
         for smilenum in self.__unopt_smilenum:
             #1:smile number to 3d structure
             try:
@@ -102,8 +108,11 @@ class SmileToMol():
             if not os.path.exists(dst):
                 os.makedirs(dst)
             real_dst = os.path.join(dst, revisedsmi+'.mop')
+            print real_dst
             if os.path.exists(real_dst):
                 os.remove(self.molpath+'/'+revisedsmi+'.mop')
+                #os.remove(real_dst)
+                #print "remove real_dst"
             else:
                 shutil.move(self.molpath+'/'+revisedsmi+'.mop',globalpath+'formopac/'+revisedsmi)
         # to remove invalide smilenum from self.__unopt_smilenum
@@ -124,9 +133,71 @@ class SmileToMol():
             else:
                 shutil.move(self.molpath+'/'+mol_without_ext+'.mop',globalpath+'formopac/'+mol_without_ext)
                 #######################################################################################
+        print "end SmileToMol-mop2mopac_folder"
+    def gjf2gaussian_folder(self):
+        ######################################################################################
+        # deal with smile numbers
+        print "in the SmileToMol-gjf2gaussian_folder"
+        for smilenum in self.__unopt_smilenum:
+            #1:smile number to 3d structure
+            try:
+                self.smile2_3d(smilenum)
+            except:
+                self.__invalid_smile.append(smilenum)
+                continue
+            ########################################################################################
+            #if there exists '\' or '/' in filename ,substitute them with '#' and '$'
+            regex1 = "\\"
+            regex2 = '/'
+            
+            revisedsmi = ""
+            for i in range(0, len(smilenum)):
+                if smilenum[i] == regex1:
+                    revisedsmi +=  "#"
+                elif smilenum[i] == regex2:
+                    revisedsmi += "$"
+                else:
+                    revisedsmi += smilenum[i]
+            ########################################################################################
+            #2:mol to gjf file
+            Mol2GjfandMop(self.molpath+'/'+revisedsmi+'.mol',gjf=True)
+            #3:mop file into formopac folder
+            dst = globalpath+'forgaussian/'+revisedsmi
+            if not os.path.exists(dst):
+                os.makedirs(dst)
+            real_dst = os.path.join(dst, revisedsmi+'.gjf')
+            print real_dst
+            if os.path.exists(real_dst):
+                os.remove(self.molpath+'/'+revisedsmi+'.gjf')
+                #os.remove(real_dst)
+                #print "remove real_dst"
+            else:
+                shutil.move(self.molpath+'/'+revisedsmi+'.gjf',globalpath+'forgaussian/'+revisedsmi)
+        # to remove invalide smilenum from self.__unopt_smilenum
+        for num in self.__invalid_smile:
+            self.__unopt_smilenum.remove(num) 
+            ##########################################################################################
+            #######################################################################################
+        #deal with input mol file
+        for mol in self.__molfile:
+            #Mol2GjfandMop(self.molpath+'/'+mol,gjf=True)
+            mol_without_ext = mol.split('.')[0]
+            dst = globalpath+'fordragon/'+mol_without_ext
+            print mol_without_ext
+            print dst
+            if not os.path.exists(dst):
+                os.makedirs(dst)
+            real_dst = os.path.join(dst, mol_without_ext+'.mol')
+            if os.path.exists(real_dst):
+                os.remove(self.molpath+'/'+mol_without_ext+'.mol')
+            else:
+                shutil.move(self.molpath+'/'+mol_without_ext+'.mol',globalpath+'fordragon/'+mol_without_ext)
+                #######################################################################################
+        print "end SmileToMol-gjf2gaussian_folder"
     def mol2dragon_folder(self):
         # mol2mopac_folder here is to put mop file into mopac folder
         # so as to  optimize mol file with Mopac
+        print "in the mol2dragon_folder"
         self.mop2mopac_folder()
         mopfile = []
         for smilenum in self.__smilenum_list:
@@ -163,6 +234,50 @@ class SmileToMol():
             mopfile.append(mol_without_ext+'.mop')
         mop = Mopac(mopfile)
         mop.opt4dragon()
+        print "end mol2dragon_folder"
+    def mol2gjf2dragon_folder(self):
+        self.gjf2gaussian_folder()
+        gaussianfile=[]
+        for smilenum in self.__smilenum_list:
+                                ########################################################################################
+            #if there exists '\' or '/' in filename ,substitute them with '#' and '$'
+            regex1 = "\\"
+            regex2 = '/'
+            
+            revisedsmi = ""
+            for i in range(0, len(smilenum)):
+                if smilenum[i] == regex1:
+                    revisedsmi +=  "#"
+                elif smilenum[i] == regex2:
+                    revisedsmi += "$"
+                else:
+                    revisedsmi += smilenum[i]
+                                ########################################################################################
+            #delete mol file in current folder and move it to dragon dictionary
+            dst = globalpath+'fordragon/'+revisedsmi+'/'
+            if not os.path.exists(dst):
+                os.makedirs(dst)
+            if not os.path.exists(dst+revisedsmi+'.mol'):
+                shutil.move(self.molpath+'/'+revisedsmi+'.mol',dst)
+            gaussianfile.append(revisedsmi+'.gjf')
+            ###################################################################################
+            '''
+        for mol in self.__molfile:
+            mol_without_ext = mol.split('.')[0]
+            #delete mol file in current folder and move it to dragon dictionary
+            dst = globalpath+'fordragon/'+mol_without_ext+'/'
+            if not os.path.exists(dst):
+                os.makedirs(dst)
+            if not os.path.exists(dst+mol):
+                shutil.move(self.molpath+'/'+mol,dst)
+            gaussianfile.append(mol_without_ext+'.gjf')
+            '''
+        if gaussianfile:
+            gjf = GaussianOptimize(gaussianfile)
+            gjf.gjf4dragon()
+        print "end mol2gjf2dragon_folder"
+
+
     def get_unopt_smilelist(self):
         return self.__unopt_smilenum
     def get_opt_smilelist(self):

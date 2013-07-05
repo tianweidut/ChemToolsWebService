@@ -8,18 +8,25 @@ from calcore.controllers.SmileToMol import SmileToMol
 from calcore.controllers.XmlCreate import write_xml
 #调用不同的分子计算符软件进行分子描述符计算参数分别为DRAGON,GAUSSIAN,MOPAC
 class Dragon(SmileToMol):
-    def __init__(self, smiles_str=None, molfile=None,molpath={}):
+    def __init__(self, smiles_str=None, molfile=None,molpath={},modeltype=None):
+        print "in the Dragon-init"
         sm = SmileToMol(smiles_str, molfile,molpath)
-        sm.mol2dragon_folder()
+        if modeltype==1:
+            sm.mol2dragon_folder()
+        elif modeltype==2:
+            sm.mol2gjf2dragon_folder()
+            
         self.__file = sm.get_smilenum_list()
         for mol in sm.get_molfile():
             self.__file.append(mol.split('.')[0])
         self.invalidnums = sm.get_invalid_smile()
         self.parse=ParseInitPath(globalpath+'config/InitPath.xml')
         #dragon的filepath是xmlCreate生成的xml路径，默认在此文件夹中
-        self.OrderPath=self.parse.get_xml_data(globalpath+'config/InitPath.xml','DRAGON')  
+        self.OrderPath=self.parse.get_xml_data(globalpath+'config/InitPath.xml','DRAGON')
+        print "end Dragon-init"
 
     def mol2drs(self):
+        print "in dragon-mol2drs"
         for file in self.__file:
                                 ########################################################################################
             #if there exists '\' or '/' in filename ,substitute them with '#' and '$'
@@ -42,6 +49,7 @@ class Dragon(SmileToMol):
             #dragon6shell -s .drs to get the result 
             Cmd=self.OrderPath+"'"+filepath+revisedfilename+".drs'"
             subprocess.Popen(Cmd,shell=True).wait()
+            print "end dragon-mol2drs"
     def extractparameter(self,parameters = None):
         '''
         parameters is a list that needs abstracting from drs file

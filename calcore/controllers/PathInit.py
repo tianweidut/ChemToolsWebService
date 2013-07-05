@@ -33,7 +33,10 @@ class ParseInitPath():
             MOPAC = self.get_xmlnode(root,'MOPAC')    
             for node in MOPAC:
                 MOPAC_PATH = self.get_xmlnode(node,'PATH')
+                #print MOPAC_PATH[0]
                 MOPAC_PATH_Value=self.get_nodevalue(MOPAC_PATH[0])
+            print MOPAC_PATH_Value
+            #print os.environ[MOPAC_PATH_Value]
             return MOPAC_PATH_Value
         elif software_call=="GAUSSIAN":
             GAUSSIAN = self.get_xmlnode(root,'GAUSSIAN')    
