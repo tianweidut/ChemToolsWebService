@@ -69,8 +69,9 @@ def task_details_context(pid):
 def get_ModelName(name):
     temp={
             "koa":"logKOA",
-            "pl":"logRP",
-            "kof":"logKOF"
+            "rp":"logRP",
+            "koc":"logKOC",
+            "bcf":"logBCF",
             }
     # return temp.get(name)
     if temp.has_key(name):

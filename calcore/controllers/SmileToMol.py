@@ -57,7 +57,7 @@ class SmileToMol():
     def smile2_3d(self,smilenum):
             print "in SmileToMol-smile2_3d "
             mymol=pybel.readstring('smi',smilenum)
-            mymol.addh()
+            #mymol.addh()
             mymol.make3D()
                         ########################################################################################
             #if there exists '\' or '/' in filename ,substitute them with '#' and '$'
@@ -168,7 +168,8 @@ class SmileToMol():
             real_dst = os.path.join(dst, revisedsmi+'.gjf')
             print real_dst
             if os.path.exists(real_dst):
-                os.remove(self.molpath+'/'+revisedsmi+'.gjf')
+                os.remove(self.molpath+'/'+revisedsmi+'.gjf')#----添加
+                os.remove(self.molpath+'/'+revisedsmi+'.chk')
                 #os.remove(real_dst)
                 #print "remove real_dst"
             else:

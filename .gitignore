@@ -24,6 +24,9 @@ static/*
 *.out
 *.drs
 *.pid
+*.log
+*.chk
+*.gjf
 
 # Packages
 *.egg

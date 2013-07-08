@@ -32,7 +32,7 @@ def Mol2GjfandMop(file,gjf=False, mop=False):
         GjfList.append('\n')
         GjfList.append('Title Card Required\n')
         GjfList.append('\n')
-        GjfList.append('0 1\n')
+        GjfList.append('0  1\n')
         GjfList.extend(OritationList)
         GjfList.append('\n\n')
         f=open(file.split('.')[0]+'.gjf','w')

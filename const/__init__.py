@@ -27,16 +27,20 @@ FILE_CHOICES = (
 
 MODEL_KOA = "koa"
 MODEL_KOF = "kof"
-MODEL_PL = "pl"
+MODEL_KOC = "koc"
+MODEL_PL  = "pl"
 MODEL_BCF = "bcf"
 MODEL_PKD = "pkd"
 MODEL_PPK = "ppk"
 MODEL_DFS = "dfs"
+MODEL_RP  = "rp"
 
 MODEL_CHOICES = (
     (MODEL_KOA, MODEL_KOA),
     (MODEL_KOF, MODEL_KOF),
-    (MODEL_PL, MODEL_PL),
+    (MODEL_KOC, MODEL_KOC),
+    (MODEL_RP , MODEL_RP ),
+    (MODEL_PL,  MODEL_PL ),
     (MODEL_PKD, MODEL_PKD),
     (MODEL_PPK, MODEL_PPK),
     (MODEL_DFS, MODEL_DFS),
