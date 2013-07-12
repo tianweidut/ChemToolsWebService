@@ -159,12 +159,33 @@ def send_email(task):
     pass
 
 
+def fetch_resources(uri, rel):
+    """
+    change pisa resource url to retrive
+    pictures, css etc.
+    """
+    if uri.startswith(settings.MEDIA_URL):
+        path = os.path.join(settings.MEDIA_ROOT, uri.replace(settings.MEDIA_URL, ""))
+    elif uri.startswith(settings.STATIC_URL):
+        path = os.path.join(settings.STATIC_ROOT, uri.replace(settings.STATIC_URL, ""))
+    else:
+        path = os.path.join(settings.STATIC_ROOT, uri.replace(settings.STATIC_URL, ""))
+
+        if not os.path.isfile(path):
+            path = os.path.join(settings.MEDIA_ROOT, uri.replace(settings.MEDIA_URL, ""))
+
+            if not os.path.isfile(path):
+                raise Exception("Cannot import MEDIA_ROOT or STATIC_ROOT")
+
+    return path
+
+
 @task
 def generate_pdf(id, task_type=None):
     """
     generate result in pdf format
     """
-    if task_type == TASK_SINGLE: 
+    if task_type == TASK_SINGLE:
         template = get_template("widgets/pdf/task_details_pdf.html")
     elif task_type == TASK_SUITE:
         template = get_template("widgets/pdf/suite_details_pdf.html")
@@ -173,22 +194,38 @@ def generate_pdf(id, task_type=None):
         return
 
     context = Context(task_details_context(pid=id))
-    html = template.render(context)
-    result = StringIO.StringIO()
-    
-    #pdf = pisa.pisaDocument(StringIO.StringIO(html.encode("UTF-8")), result)
+    html = template.render(context).encode("UTF-8")
+    html = StringIO.StringIO(html)
 
-    print html
     try:
         name = str(uuid.uuid4()) + ".pdf"
         path = os.path.join(settings.SEARCH_IMAGE_PATH, name)
         f = open(path, "w")
-        pisa.CreatePDF(html, f)
-        #f.write(result.getvalue())
+        pisa.CreatePDF(html, dest=f, encoding="UTF-8",
+                       link_callback=fetch_resources)
         f.close()
         print "finish pdf generate"
     except Exception, err:
         loginfo(p=err, label="cannot generate pdf")
+
+
+def pdf_create_test():
+    """
+    pdf test create
+    """
+    task_id_search = "06b4c9a5-3a01-4bb4-a07c-d574d293d7e5"
+    task_id_draw = "0a72a6ba-63f0-41db-a04f-f71c292f6db8"
+    task_id_upload = "1142ae41-9497-4771-9c1c-d4dfcece994a"
+    task_id_none = "16b4c9a5-3a01-4bb4-a07c-d574d293d7e5"
+
+    print "search type for single task"
+    generate_pdf(id=task_id_search, task_type=TASK_SINGLE)
+    print "draw type for single task"
+    generate_pdf(id=task_id_draw, task_type=TASK_SINGLE)
+    print "upload type for single task"
+    generate_pdf(id=task_id_upload, task_type=TASK_SINGLE)
+    print "not found this task id"
+    #generate_pdf(id=task_id_none, task_type=TASK_SINGLE)
 
 
 def convert_smile_png(singletask):
