@@ -11,17 +11,19 @@
     <meta name="keywords" content="" />
     <meta name="author" content="tianwei" >
 
-    <!-- CSS Config. -->
-    {% include "meta/html_head_stylesheets.html" %}
     <!-- index style -->
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}pdf/bootstrap.css">
     <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/index.css" >
     <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/content.css" >
     <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/accounts_form.css" >
 
   </head>
   <body>
-      <div class="container form-container">
-        {%block calculate-content%} {% endblock %}
-      </div>
+    <center>
+      <h3>School of Environment Science and Technology, DUT</h3>
+    </center>
+    <div class="container form-container">
+      {%block calculate-content%} {% endblock %}
+    </div>
 	</body>
 </html>

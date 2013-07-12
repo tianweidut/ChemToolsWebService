@@ -1,0 +1,11 @@
+{%extends "base/base_results_pdf.html"%}
+
+{%block table-body-content%}
+  <tr><td>Smiles</td><td>{{singletask.file_obj.smiles}}</td></tr>
+  <tr><td>Type</td><td>{{singletask.file_obj.file_type}}</td></tr>
+  <tr><td>Specification</td><td>This file is created by Draw Engineer!</td></tr>
+  <tr><td>Calculate Source</td><td>Drawing by your hands!</td></tr>
+  <tr><td>Structure</td><td>
+      <img id="last_picture" src="{{singletask.file_obj.image.url}}" style="width: 120px; height: 120px;">		
+  </td></tr>
+{%endblock%}
