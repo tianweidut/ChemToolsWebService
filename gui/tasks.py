@@ -85,6 +85,13 @@ def add_counter(suite_id):
         suite.status_id = StatusCategory.objects.get(category=STATUS_SUCCESS)
     else:
         suite.has_finished_tasks = finished_count
+        try:
+            file_path = generate_pdf(id=suite_id, task_type=TASK_SUITE)
+            print file_path
+            f = File(open(file_path))
+            suite.result_pdf = f
+        except Exception, err:
+            loginfo(p=err, label="generate pdf error!")
 
     suite.save()
 
@@ -166,10 +173,15 @@ def calculateTask(task, model_name):
     task.results = result
 
     #Generate
-    file_path = generate_pdf(id=task.pid, task_type=TASK_SINGLE)
-    f = File(open(file_path, "r"))
-    task.result_pdf = f
-    f.close()
+    try:
+        file_path = generate_pdf(id=task.pid, task_type=TASK_SINGLE)
+        print file_path
+        f = File(open(file_path, "rb"))
+        task.result_pdf = f
+    except Exception, err:
+        loginfo(p=err, label="generate pdf error!")
 
     task.save()
+
+    add_counter.delay(suite.sid)
     return result

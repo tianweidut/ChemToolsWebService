@@ -167,7 +167,7 @@ def convert_smile_png(singletask):
 
     print "convert_smile_png"
     mol = pybel.readfile("mol", fullpath).next()
-    singletask.file_obj.smiles = ("%s" % mol).split("t")[0]
+    singletask.file_obj.smiles = ("%s" % mol).split("\t")[0]
 
     picname = str(uuid.uuid4()) + ".png"
     picpath = os.path.join(settings.SEARCH_IMAGE_PATH, picname)
@@ -217,10 +217,13 @@ def add_counter_core(suite_id):
         print suite.has_finished_tasks
         suite.status_id = StatusCategory.objects.get(category=STATUS_SUCCESS)
         # generate suite task report and send email
-        file_path = generate_pdf(id=suite_id, task_type=TASK_SUITE)
-
-        f = File(open(file_path, "r"))
-        suite.result_pdf = f
-        f.close()
+        
+       # try:
+       #     file_path = generate_pdf(id=suite_id, task_type=TASK_SUITE)
+       #     f = File(open(file_path, "r"))
+       #     suite.result_pdf = f
+       #     f.close()
+#except Exception, err:
+ #           loginfo(p=err, label="generate pdf error!")
 
     suite.save()
