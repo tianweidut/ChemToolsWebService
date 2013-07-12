@@ -20,15 +20,21 @@
       <image src="/static/images/reload256.png" style="width: 140px; height: 140px;" ></image>
     {%endif%}
   </div> 
-  <div class="span4">
+  <div class="span3">
     <h3>{{suitetask.status}}</h3>
     <h5>Start Time: {{suitetask.start_time|date:"Y-m-d H:m"}}</h5>
     <h5>End Time: {{suitetask.end_time|date:"Y-m-d H:m"}}</h5>
   </div>
-  <div class="span4">
+  <div class="span3">
     <h3>Statistics</h3>
     <h5>Total Tasks:{{suitetask.total_tasks}}</h5>
     <h5>Finished Tasks:{{suitetask.has_finished_tasks}}</h5>
   </div>
+  {%if singletask.total_tasks == singletask.has_finished_tasks %}
+  <div class="span3">
+    <h3>Report</h3>
+    <a href="{{suitetask.result_pdf.url}}" target="_blank"><image src="/static/images/pdf256.png" style="width: 70px; height: 70px;"></a>
+  </div>
+  {%endif%}
 </div>
 <br/>
