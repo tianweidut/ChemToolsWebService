@@ -218,4 +218,9 @@ def add_counter_core(suite_id):
         suite.status_id = StatusCategory.objects.get(category=STATUS_SUCCESS)
         # generate suite task report and send email
         file_path = generate_pdf(id=suite_id, task_type=TASK_SUITE)
+
+        f = File(open(file_path, "r"))
+        suite.result_pdf = f
+        f.close()
+
     suite.save()

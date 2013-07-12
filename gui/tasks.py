@@ -164,9 +164,12 @@ def calculateTask(task, model_name):
     loginfo(p=result, label="calculate task result")
     task.end_time = datetime.datetime.now()
     task.results = result
-    task.save()
 
     #Generate
     file_path = generate_pdf(id=task.pid, task_type=TASK_SINGLE)
+    f = File(open(file_path, "r"))
+    task.result_pdf = f
+    f.close()
 
+    task.save()
     return result
