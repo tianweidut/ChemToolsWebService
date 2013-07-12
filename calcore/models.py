@@ -65,6 +65,7 @@ class SuiteTask(models.Model):
     models_str = models.CharField(max_length=2000, blank=True)
     models_category_str = models.CharField(max_length=200, blank=True)
     result_pdf = models.FileField(blank=True, null=True, upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
+    email = models.EmailField(blank=True, null=True)
 
     class Meta:
         verbose_name = "Suite Task"

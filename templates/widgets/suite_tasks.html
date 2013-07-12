@@ -30,7 +30,7 @@
     <h5>Total Tasks:{{suitetask.total_tasks}}</h5>
     <h5>Finished Tasks:{{suitetask.has_finished_tasks}}</h5>
   </div>
-  {%if singletask.total_tasks == singletask.has_finished_tasks %}
+  {%if singletask.total_tasks == singletask.has_finished_tasks and suitetask.result_pdf %}
   <div class="span3">
     <h3>Report</h3>
     <a href="{{suitetask.result_pdf.url}}" target="_blank"><image src="/static/images/pdf256.png" style="width: 70px; height: 70px;"></a>

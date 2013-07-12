@@ -83,8 +83,6 @@ def add_counter(suite_id):
         suite.has_finished_tasks = suite.total_tasks
         print "Finished:" + str(suite.has_finished_tasks)
         suite.status_id = StatusCategory.objects.get(category=STATUS_SUCCESS)
-    else:
-        suite.has_finished_tasks = finished_count
         try:
             file_path = generate_pdf(id=suite_id, task_type=TASK_SUITE)
             print file_path
@@ -92,6 +90,9 @@ def add_counter(suite_id):
             suite.result_pdf = f
         except Exception, err:
             loginfo(p=err, label="generate pdf error!")
+
+    else:
+        suite.has_finished_tasks = finished_count
 
     suite.save()
 
