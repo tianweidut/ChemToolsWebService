@@ -31,10 +31,6 @@ from django.utils.hashcompat import md5_constructor as md5
 from django.template.loader import get_template
 from django.template import Context
 
-#import ho.pisa as pisa
-import xhtml2pdf.pisa as pisa
-import cStringIO as StringIO
-
 from calcore.controllers.prediciton_model import PredictionModel
 from backend.logging import logger, loginfo
 from calcore.models import SingleTask, ProcessedFile, SuiteTask
@@ -44,26 +40,7 @@ from const import STATUS_WORKING, STATUS_SUCCESS, STATUS_FAILED, STATUS_UNDEFINE
 import pybel
 from calcore.models import *
 from const import ORIGIN_DRAW, TASK_SUITE, TASK_SINGLE
-
-
-LOCK_EXPIRE = 60 * 5 # Lock expires in 5 minutes
-
-
-def task_details_context(pid):
-    """
-    """
-    singletask = get_object_or_404(SingleTask, pid=pid)
-
-    try:
-        search_engine = SearchEngineModel.objects.get(smiles__contains=singletask.file_obj.smiles)
-    except Exception, err:
-        loginfo(p=err)
-        search_engine = None
-
-    re_context = {"singletask": singletask,\
-                  "search_engine": search_engine}
-
-    return re_context
+from gui.utilities import *
 
 
 def get_ModelName(name):
@@ -90,23 +67,6 @@ def add(x, y):
 def add_a(x, y):
     print "sleep! a"
     return x+y+x+y
-
-
-def add_counter_core(suite_id):
-    """
-    core counter algorightm
-    """
-    print "add counter"
-    suite = SuiteTask.objects.get(sid=suite_id)
-    if suite.has_finished_tasks < suite.total_tasks-1:
-        suite.has_finished_tasks = suite.has_finished_tasks + 1
-        print "add:" + str(suite.has_finished_tasks)
-    else:
-        suite.has_finished_tasks = suite.total_tasks
-        print "Finished:" + str(suite.has_finished_tasks)
-        print suite.has_finished_tasks
-        suite.status_id = StatusCategory.objects.get(category=STATUS_SUCCESS)
-    suite.save()
 
 
 @task()
@@ -159,119 +119,6 @@ def send_email(task):
     pass
 
 
-def fetch_resources(uri, rel):
-    """
-    change pisa resource url to retrive
-    pictures, css etc.
-    """
-    if uri.startswith(settings.MEDIA_URL):
-        path = os.path.join(settings.MEDIA_ROOT, uri.replace(settings.MEDIA_URL, ""))
-    elif uri.startswith(settings.STATIC_URL):
-        path = os.path.join(settings.STATIC_ROOT, uri.replace(settings.STATIC_URL, ""))
-    else:
-        path = os.path.join(settings.STATIC_ROOT, uri.replace(settings.STATIC_URL, ""))
-
-        if not os.path.isfile(path):
-            path = os.path.join(settings.MEDIA_ROOT, uri.replace(settings.MEDIA_URL, ""))
-
-            if not os.path.isfile(path):
-                raise Exception("Cannot import MEDIA_ROOT or STATIC_ROOT")
-
-    return path
-
-
-@task
-def generate_pdf(id, task_type=None):
-    """
-    generate result in pdf format
-    """
-    if task_type == TASK_SINGLE:
-        template = get_template("widgets/pdf/task_details_pdf.html")
-    elif task_type == TASK_SUITE:
-        template = get_template("widgets/pdf/suite_details_pdf.html")
-    else:
-        loginfo(p=task_type, label="Cannot check the type")
-        return
-
-    context = Context(task_details_context(pid=id))
-    html = template.render(context).encode("UTF-8")
-    html = StringIO.StringIO(html)
-
-    try:
-        name = str(uuid.uuid4()) + ".pdf"
-        path = os.path.join(settings.SEARCH_IMAGE_PATH, name)
-        f = open(path, "w")
-        pisa.CreatePDF(html, dest=f, encoding="UTF-8",
-                       link_callback=fetch_resources)
-        f.close()
-        print "finish pdf generate"
-    except Exception, err:
-        loginfo(p=err, label="cannot generate pdf")
-
-
-def pdf_create_test():
-    """
-    pdf test create
-    """
-    task_id_search = "06b4c9a5-3a01-4bb4-a07c-d574d293d7e5"
-    task_id_draw = "0a72a6ba-63f0-41db-a04f-f71c292f6db8"
-    task_id_upload = "1142ae41-9497-4771-9c1c-d4dfcece994a"
-    task_id_none = "16b4c9a5-3a01-4bb4-a07c-d574d293d7e5"
-
-    print "search type for single task"
-    generate_pdf(id=task_id_search, task_type=TASK_SINGLE)
-    print "draw type for single task"
-    generate_pdf(id=task_id_draw, task_type=TASK_SINGLE)
-    print "upload type for single task"
-    generate_pdf(id=task_id_upload, task_type=TASK_SINGLE)
-    print "not found this task id"
-    #generate_pdf(id=task_id_none, task_type=TASK_SINGLE)
-
-
-def convert_smile_png(singletask):
-    """
-    convert mol into smile and png
-    """
-    abpath = singletask.file_obj.file_obj.url
-    fullpath = settings.SETTINGS_ROOT + abpath
-
-    print "convert_smile_png"
-    mol = pybel.readfile("mol", fullpath).next()
-    singletask.file_obj.smiles = ("%s" % mol).split("t")[0]
-
-    picname = str(uuid.uuid4()) + ".png"
-    picpath = os.path.join(settings.SEARCH_IMAGE_PATH, picname)
-    mol.draw(show=False, filename=picpath)
-
-    f = File(open(picpath, "r"))
-    singletask.file_obj.image = f
-    singletask.file_obj.save()
-    singletask.save()
-    f.close()
-    print singletask.file_obj.smiles
-    print singletask.file_obj.image
-
-
-def generate_smile_image(pid):
-    """
-    generate smile and image for task
-    """
-    singletask = SingleTask.objects.get(pid=pid)
-    filetype = singletask.file_obj.file_source.category
-
-    if filetype == ORIGIN_SMILE:
-        #this type has already have image and smiles in local search machine,
-        #only copy them
-        print "search engine test"
-        singletask.file_obj.image = SearchEngineModel.objects.get(smiles__contains=singletask.file_obj.smiles).image
-        singletask.file_obj.save()
-        singletask.save()
-    else:
-        #other types only contains mol file
-        print "other input method"
-        convert_smile_png(singletask)
-
-
 @task()
 def calculateTask(task, model_name):
     """
@@ -319,7 +166,7 @@ def calculateTask(task, model_name):
     task.results = result
     task.save()
 
-    #Add single task counter
-    add_counter.delay(suite.sid)
+    #Generate
+    file_path = generate_pdf(id=task.pid, task_type=TASK_SINGLE)
 
     return result
