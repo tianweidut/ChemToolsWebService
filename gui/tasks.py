@@ -96,6 +96,7 @@ def add_counter(suite_id):
 
         #send email
         send_email_task.delay(email=suite.email, sid=suite.sid)
+        suite.end_time = datetime.datetime.now()
 
     else:
         suite.has_finished_tasks = finished_count
