@@ -25,6 +25,8 @@
  * Mysql:
   * create database Chemistry CHARACTER SET utf8;
   * python manage.py syncdb
+  * If you want to update database in production environment, you can 
+    run this command: python manage.py syncdb --settings=settings_production 
 
  * Calculated software
   * sudo apt-get install python-openbabel -y
@@ -38,11 +40,6 @@
       * sudo python setup.py build & install
     * PIL
       * sudo apt-get install python python-tk idle python-pmw python-imaging
-
- * Cache
-  * Now, our website is very small, so we use database cache for cache,
-  later we may use memcache.
-  * please run: python manage.py createcachetable cachedatabasetable
 
 
  * python manage.py runserver IP:PORT
