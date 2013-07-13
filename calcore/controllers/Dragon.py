@@ -10,10 +10,11 @@ from calcore.controllers.XmlCreate import write_xml
 class Dragon(SmileToMol):
     def __init__(self, smiles_str=None, molfile=None,molpath={},modeltype=None):
         print "in the Dragon-init"
-        sm = SmileToMol(smiles_str, molfile,molpath)
+        self.modeltype=modeltype
+        sm = SmileToMol(smiles_str, molfile,molpath,modeltype)
         if modeltype==1:
             sm.mol2dragon_folder()
-        elif modeltype==2:
+        elif modeltype==2 or modeltype==3:
             sm.mol2gjf2dragon_folder()
             
         self.__file = sm.get_smilenum_list()
@@ -97,8 +98,25 @@ class Dragon(SmileToMol):
                         para_dic[file][key] = valueline[temp_dic[key]]
                     except:
                         print key,temp_dic[i],valueline[temp_dic[key]]
-
-                    
+            if self.modeltype==3:
+                gaussianpath=globalpath+"forgaussian/"+revisedfilename+"/"
+                f = open(gaussianpath+revisedfilename + '.log', 'r')
+                lines = f.readlines()
+                f.close()
+                regex = '.*Alpha  occ. eigenvalues.*'
+                for lineNum in range(len(lines)):
+                    if(re.match(regex, lines[lineNum]) != None):
+                        while(re.match(regex, lines[lineNum]) != None):
+                            lineNum = lineNum + 1
+                        List = list(lines[lineNum].split(' '))
+                        while(1):
+                            try:
+                                List.remove('')
+                            except:
+                                break
+                        EHOMO = lines[lineNum - 1].split(' ')[-1]
+                        para_dic[file]["EHOMO"]=EHOMO
+                        break              
                     
         return para_dic
 

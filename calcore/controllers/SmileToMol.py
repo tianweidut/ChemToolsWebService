@@ -18,13 +18,14 @@ class SmileToMol():
     input parameter is a string,and multi_smiles is splited by ','
     such as [number1,number2,number3]
 '''
-    def __init__(self, smilenum=None, molfile=None,molpath={}):
+    def __init__(self, smilenum=None, molfile=None,molpath={},modeltype=None):
         print "in the SmileToMol-init"
         self.__invalid_smile  = []
         self.__opt_smilenum   = []
         self.__unopt_smilenum = []
         self.__smilenum_list  = []
         self.__molfile        = []
+        self.modeltype=modeltype
         self.molpath=molpath
         if smilenum == "":
             #raise Exception,"error input with 0 valid smilenum"
@@ -57,7 +58,8 @@ class SmileToMol():
     def smile2_3d(self,smilenum):
             print "in SmileToMol-smile2_3d "
             mymol=pybel.readstring('smi',smilenum)
-            #mymol.addh()
+            if self.modeltype==3:
+                mymol.addh()
             mymol.make3D()
                         ########################################################################################
             #if there exists '\' or '/' in filename ,substitute them with '#' and '$'
@@ -159,21 +161,33 @@ class SmileToMol():
                 else:
                     revisedsmi += smilenum[i]
             ########################################################################################
-            #2:mol to gjf file
-            Mol2GjfandMop(self.molpath+'/'+revisedsmi+'.mol',gjf=True)
-            #3:mop file into formopac folder
             dst = globalpath+'forgaussian/'+revisedsmi
+            dsd = globalpath+'fordragon/'+revisedsmi
+            if os.path.exists(dst):
+                self.delete_file_folder(dst)
+            if os.path.exists(dsd):
+                self.delete_file_folder(dsd)
+            #2:mol to gjf file
+            Mol2GjfandMop(self.molpath+'/'+revisedsmi+'.mol',self.modeltype,gjf=True)
+            #3:mop file into formopac folder
+            
             if not os.path.exists(dst):
                 os.makedirs(dst)
             real_dst = os.path.join(dst, revisedsmi+'.gjf')
             print real_dst
             if os.path.exists(real_dst):
                 os.remove(self.molpath+'/'+revisedsmi+'.gjf')#----添加
-                os.remove(self.molpath+'/'+revisedsmi+'.chk')
+                #if os.path.exists(self.molpath+'/'+revisedsmi+'.chk'):
+                    #os.remove(self.molpath+'/'+revisedsmi+'.chk')
+                #if os.path.exists(self.molpath+'/'+revisedsmi+'.mol'):
+                    #os.remove(self.molpath+'/'+revisedsmi+'.mol')
+                #os.remove(self.molpath+'/'+revisedsmi+'.chk')
                 #os.remove(real_dst)
                 #print "remove real_dst"
             else:
                 shutil.move(self.molpath+'/'+revisedsmi+'.gjf',globalpath+'forgaussian/'+revisedsmi)
+                #if os.path.exists(self.molpath+'/'+revisedsmi+'.chk'):
+                    #os.remove(self.molpath+'/'+revisedsmi+'.chk')
         # to remove invalide smilenum from self.__unopt_smilenum
         for num in self.__invalid_smile:
             self.__unopt_smilenum.remove(num) 
@@ -193,6 +207,8 @@ class SmileToMol():
                 os.remove(self.molpath+'/'+mol_without_ext+'.mol')
             else:
                 shutil.move(self.molpath+'/'+mol_without_ext+'.mol',globalpath+'fordragon/'+mol_without_ext)
+            #if os.path.exists(self.molpath+'/'+revisedsmi+'.chk'):
+               # os.remove(self.molpath+'/'+revisedsmi+'.chk')
                 #######################################################################################
         print "end SmileToMol-gjf2gaussian_folder"
     def mol2dragon_folder(self):
@@ -276,6 +292,8 @@ class SmileToMol():
         if gaussianfile:
             gjf = GaussianOptimize(gaussianfile)
             gjf.gjf4dragon()
+        if os.path.exists(self.molpath+'/'+revisedsmi+'.chk'):
+            os.remove(self.molpath+'/'+revisedsmi+'.chk')
         print "end mol2gjf2dragon_folder"
 
 
@@ -289,6 +307,20 @@ class SmileToMol():
         return self.__smilenum_list
     def get_molfile(self):
         return self.__molfile
+    def delete_file_folder(self,src):
+        if os.path.isfile(src):
+            try:
+                os.remove(src)
+            except:
+                pass
+        elif os.path.isdir(src):
+            for item in os.listdir(src):
+                itemsrc=os.path.join(src,item)
+                self.delete_file_folder(itemsrc)
+            try:
+                os.rmdir(src)
+            except:
+                pass
 '''
 sm = SmileToMol('cab,cc,cd,ce,ccc')
 sm.optimize_mol()
