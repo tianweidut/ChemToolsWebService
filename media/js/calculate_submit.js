@@ -26,6 +26,7 @@ $(document).ready(function(){
 $("[rel='raw_content']").change(function(){
   var name = $(this).attr('id') + "_copy";
   //TODO: should check whether the element exists;
+  console.log($(this).val());
   $("#"+name).text($(this).val());
 });
 
@@ -218,6 +219,7 @@ $('#commit-saved-btn').click(function(){
           "mol":$("#mol_file_string_copy").text(),
           "notes":$("#commit_notes_copy").text(),
           "name":$("#commit_name_copy").text(),
+          "email":$("#commit_email_copy").text(),
           "types":types,
           "unique_names":unique_names,
           "models":models,

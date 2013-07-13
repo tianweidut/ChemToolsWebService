@@ -10,6 +10,7 @@ import uuid
 import os
 import simplejson
 import datetime
+import re
 
 from django.http import HttpResponse
 from django.conf import settings
@@ -284,8 +285,18 @@ def get_models_name(models=None):
     return (models_str, models_category_str)
 
 
+def get_email(email=None, backup_email=None):
+    """
+    """
+    if bool(re.match(r"^.+@([a-zA-Z0-9]+\.)+([a-zA-Z]{2,})$", email)):
+        return email
+    else:
+        #TODO: here, we should add email force-varify in registration page
+        return backup_email
+
+
 def suitetask_process(request, smile=None, mol=None, notes=None,
-                      name=None, unique_names=None, types=None,
+                      name=None, email=None, unique_names=None, types=None,
                       models=None):
     """
     real record operation
@@ -323,6 +334,7 @@ def suitetask_process(request, smile=None, mol=None, notes=None,
     suite_task.notes = notes
     suite_task.models_str, suite_task.models_category_str = get_models_name(models)
     suite_task.status = StatusCategory.objects.get(category=STATUS_WORKING)
+    suite_task.email = get_email(email, request.user.email)
     suite_task.save()
 
     loginfo(p="finish suite save")
@@ -354,7 +366,7 @@ def get_models_selector(models_str):
         a list, element is a two-tuple.
     """
     colors = ("badge-success", "badge-warning", "badge-important",
-                       "badge-info", "badge-inverse", " ")
+              "badge-info", "badge-inverse", " ")
     models_list = models_str.split(MODEL_SPLITS)
 
     result = []

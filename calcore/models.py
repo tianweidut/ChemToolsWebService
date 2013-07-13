@@ -64,13 +64,15 @@ class SuiteTask(models.Model):
                                default=STATUS_UNDEFINED)
     models_str = models.CharField(max_length=2000, blank=True)
     models_category_str = models.CharField(max_length=200, blank=True)
+    result_pdf = models.FileField(blank=True, null=True, upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
+    email = models.EmailField(blank=True, null=True)
 
     class Meta:
         verbose_name = "Suite Task"
         verbose_name_plural = "Suite Task"
 
     def __unicode__(self):
-        return self.sid
+        return self.name
 
 
 class SingleTask(models.Model):

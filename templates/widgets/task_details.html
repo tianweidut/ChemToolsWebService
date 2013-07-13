@@ -21,10 +21,10 @@
     <h5>Status: {{singletask.status}}</h5>
     <h5>Task ID: {{singletask.pid}}</h5>
   </div>
-  {%if singletask.status.category == "calculating"%}
+  {%if singletask.status.category == "success"%}
     <div class="span4">
       <h3>Report</h3>
-      <a href="#"><image src="/static/images/pdf256.png" style="width: 90px; height: 90px;"></a>
+      <a href="{{singletask.result_pdf.url}}" target="_blank"><image src="/static/images/pdf256.png" style="width: 90px; height: 90px;"></a>
     </div>
   {%endif%}
 </div>
