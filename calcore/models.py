@@ -72,7 +72,7 @@ class SuiteTask(models.Model):
         verbose_name_plural = "Suite Task"
 
     def __unicode__(self):
-        return self.sid
+        return self.name
 
 
 class SingleTask(models.Model):

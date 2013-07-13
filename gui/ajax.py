@@ -27,6 +27,7 @@ def calculate_submit(request,
                      mol=None,
                      notes=None,
                      name=None,
+                     email=None,
                      unique_names=None,
                      types="pdf;txt;csv",
                      models=None
@@ -36,6 +37,7 @@ def calculate_submit(request,
 
     is_submitted, message = suitetask_process(request, smile=smile, mol=mol,
                                               notes=notes, name=name,
+                                              email=email,
                                               unique_names=unique_names,
                                               types=types,
                                               models=models)
