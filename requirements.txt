@@ -14,5 +14,5 @@ django-chartit
 south
 raven
 django-tastypie
-pycairo
 pybel
+xhtml2pdf
