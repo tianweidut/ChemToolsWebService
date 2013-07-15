@@ -25,11 +25,14 @@ from django.utils import simplejson
 from django.core.files import File
 from django.views.decorators import csrf
 from django.contrib.auth.decorators import login_required
+from django.contrib.sites.models import Site
 from django.core.files.uploadedfile import UploadedFile
 from django.core.cache import cache
 from django.utils.hashcompat import md5_constructor as md5
 from django.template.loader import get_template
 from django.template import Context
+from django.core.mail import send_mail
+from django.contrib.sites.models import get_current_site
 
 from calcore.controllers.prediciton_model import PredictionModel
 from backend.logging import logger, loginfo
@@ -93,6 +96,10 @@ def add_counter(suite_id):
         except Exception, err:
             loginfo(p=err, label="generate pdf error!")
 
+        #send email
+        send_email_task.delay(email=suite.email, sid=suite.sid)
+        suite.end_time = datetime.datetime.now()
+
     else:
         suite.has_finished_tasks = finished_count
 
@@ -122,11 +129,27 @@ def add_counter_cache(suite_id):
 
 
 @task()
-def send_email(task):
+def send_email_task(email, sid):
     """
     send result email to user
     """
-    pass
+    subject = "EST863 Calculate WebService Notification Emails"
+    reports_list = ""
+    site = Site.objects.get()
+    suitetask = SuiteTask.objects.get(sid=sid)
+    reports_list += "http://" + site.domain + suitetask.result_pdf.url + "\n\r"
+    task_lists = SingleTask.objects.filter(sid=sid)
+    for task in task_lists:
+        reports_list += "http://" + site.domain + task.result_pdf.url + "\n\r"
+
+    message = "Congratulations! Your calculate task is Finished, please, check\
+               the reports\n%s" % reports_list
+
+    loginfo(p=message, label="Email Test")
+    send_mail(subject,
+               message,
+               settings.DEFAULT_FROM_EMAIL,
+               [email])
 
 
 @task()
@@ -175,7 +198,6 @@ def calculateTask(task, model_name):
     task.end_time = datetime.datetime.now()
     task.results = result
 
-    #Generate
     try:
         file_path = generate_pdf(id=task.pid, task_type=TASK_SINGLE)
         print file_path
