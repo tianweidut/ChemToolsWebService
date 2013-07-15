@@ -255,6 +255,7 @@ class SmileToMol():
     def mol2gjf2dragon_folder(self):
         self.gjf2gaussian_folder()
         gaussianfile=[]
+        revisedsmi=""
         for smilenum in self.__smilenum_list:
                                 ########################################################################################
             #if there exists '\' or '/' in filename ,substitute them with '#' and '$'

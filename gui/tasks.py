@@ -52,8 +52,8 @@ def get_ModelName(name):
             "rp":"logRP",
             "koc":"logKOC",
             "bcf":"logBCF",
-            "koh":"logKOH"
-            "koh":"logKOH_T"
+            "koh":"logKOH",
+            "koh":"logKOH_T",
             }
     # return temp.get(name)
     if temp.has_key(name):
