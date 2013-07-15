@@ -27,6 +27,8 @@ FILE_CHOICES = (
 
 MODEL_KOA = "koa"
 MODEL_KOF = "kof"
+MODEL_KOH = "koh"
+MODEL_KOH_T="koh_T"
 MODEL_KOC = "koc"
 MODEL_PL  = "pl"
 MODEL_BCF = "bcf"
@@ -45,6 +47,8 @@ MODEL_CHOICES = (
     (MODEL_PPK, MODEL_PPK),
     (MODEL_DFS, MODEL_DFS),
     (MODEL_BCF, MODEL_BCF),
+    (MODEL_KOH, MODEL_KOH),
+    (MODEL_KOH_T,MODEL_KOH_T),
 )
 
 MODEL_EN_BEHAVIOR = "en_behavior"
