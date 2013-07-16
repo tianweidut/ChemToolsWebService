@@ -313,7 +313,7 @@ class SmileToMol():
             try:
                 os.remove(src)
             except:
-                pass
+                raise Exception,'can not delete '+src
         elif os.path.isdir(src):
             for item in os.listdir(src):
                 itemsrc=os.path.join(src,item)
@@ -321,7 +321,7 @@ class SmileToMol():
             try:
                 os.rmdir(src)
             except:
-                pass
+                raise Exception,'can not delete '+src
 '''
 sm = SmileToMol('cab,cc,cd,ce,ccc')
 sm.optimize_mol()

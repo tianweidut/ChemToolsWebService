@@ -29,7 +29,7 @@ def Mol2GjfandMop(file,modeltype=None,gjf=False, mop=False):
                     #print List[3]
                     #print element[List[3]]
         except:
-            continue                                        
+            print "Mol2GjfandMop read mol failed"                                        
     if gjf == True:
         print "gjf=true"
         GjfList=[]   

@@ -32,13 +32,13 @@ class GaussianOptimize():
         try:
             os.mkdir(globalpath+'forgaussian/'+filename_without_ext)
         except:
-            None
+            print 'can not mkdir in forgaussian'
         gjffilepath=globalpath+'forgaussian/'+filename_without_ext+'/'
         self.gjffilepath.append(gjffilepath)
         try:
             shutil.move(filename,gjffilepath+inputfilename)
         except:
-            None
+            print "can not move gjffile"
         self.gjffilename.append(filename_without_ext+'.gjf')
         print self.gjffilepath
         print self.filename_without_ext
