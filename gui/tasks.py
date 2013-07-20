@@ -158,8 +158,10 @@ def calculateTask(task, model_name):
     Calculate task
     """
     #Covert smiles, png
+    print "**"*10, "generate smile image"
     generate_smile_image(task.pid)
 
+    print "**"*10, "Models Calculate"
     para = dict.fromkeys(['smilestring', 'filename', 'cas'], "")
 
     fullpath = os.path.join(settings.SETTINGS_ROOT, task.file_obj.file_obj.path)

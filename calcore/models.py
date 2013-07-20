@@ -129,4 +129,4 @@ class SearchEngineModel(models.Model):
         verbose_name_plural = "Search Engine"
 
     def __unicode__(self):
-        return self.common_name
+        return self.commonname

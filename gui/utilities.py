@@ -193,7 +193,9 @@ def generate_smile_image(pid):
         #this type has already have image and smiles in local search machine,
         #only copy them
         print "search engine test"
-        singletask.file_obj.image = SearchEngineModel.objects.get(smiles__contains=singletask.file_obj.smiles).image
+        print singletask.file_obj.smiles
+        print SearchEngineModel.objects.get(smiles=singletask.file_obj.smiles).image
+        singletask.file_obj.image = SearchEngineModel.objects.get(smiles=singletask.file_obj.smiles).image
         singletask.file_obj.save()
         singletask.save()
     else:
