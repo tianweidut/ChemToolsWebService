@@ -137,10 +137,12 @@ def send_email_task(email, sid):
     reports_list = ""
     site = Site.objects.get()
     suitetask = SuiteTask.objects.get(sid=sid)
-    reports_list += "http://" + site.domain + suitetask.result_pdf.url + "\n\r"
+    if suitetask.result_pdf:
+        reports_list += "http://" + site.domain + suitetask.result_pdf.url + "\n\r"
     task_lists = SingleTask.objects.filter(sid=sid)
     for task in task_lists:
-        reports_list += "http://" + site.domain + task.result_pdf.url + "\n\r"
+        if task.result_pdf:
+            reports_list += "http://" + site.domain + task.result_pdf.url + "\n\r"
 
     message = "Congratulations! Your calculate task is Finished, please, check\
                the reports\n%s" % reports_list
@@ -158,8 +160,10 @@ def calculateTask(task, model_name):
     Calculate task
     """
     #Covert smiles, png
+    print "**"*10, "generate smile image"
     generate_smile_image(task.pid)
 
+    print "**"*10, "Models Calculate"
     para = dict.fromkeys(['smilestring', 'filename', 'cas'], "")
 
     fullpath = os.path.join(settings.SETTINGS_ROOT, task.file_obj.file_obj.path)

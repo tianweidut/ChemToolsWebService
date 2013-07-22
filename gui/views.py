@@ -170,7 +170,7 @@ def task_details_context(pid):
     singletask = get_object_or_404(SingleTask, pid=pid)
 
     try:
-        search_engine = SearchEngineModel.objects.get(smiles__contains=singletask.file_obj.smiles)
+        search_engine = SearchEngineModel.objects.get(smiles=singletask.file_obj.smiles)
     except Exception, err:
         loginfo(p=err)
         search_engine = None

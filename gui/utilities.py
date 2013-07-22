@@ -69,7 +69,7 @@ def task_details_context(pid):
     singletask = get_object_or_404(SingleTask, pid=pid)
 
     try:
-        search_engine = SearchEngineModel.objects.get(smiles__contains=singletask.file_obj.smiles)
+        search_engine = SearchEngineModel.objects.get(smiles=singletask.file_obj.smiles)
     except Exception, err:
         loginfo(p=err)
         search_engine = None
@@ -193,7 +193,9 @@ def generate_smile_image(pid):
         #this type has already have image and smiles in local search machine,
         #only copy them
         print "search engine test"
-        singletask.file_obj.image = SearchEngineModel.objects.get(smiles__contains=singletask.file_obj.smiles).image
+        print singletask.file_obj.smiles
+        print SearchEngineModel.objects.get(smiles=singletask.file_obj.smiles).image
+        singletask.file_obj.image = SearchEngineModel.objects.get(smiles=singletask.file_obj.smiles).image
         singletask.file_obj.save()
         singletask.save()
     else:
