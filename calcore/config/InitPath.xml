@@ -4,7 +4,7 @@
         <PATH>DRAGON6</PATH>
 	</DRAGON>
 	<MOPAC>
-        <PATH>mopac  </PATH>
+        <PATH>mopac</PATH>
 	</MOPAC>
 	<GAUSSIAN>
         <PATH>g09 </PATH>

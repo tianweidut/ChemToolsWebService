@@ -16,6 +16,7 @@ def Mol2GjfandMop(file,modeltype=None,gjf=False, mop=False):
     #to gain input file name without extension such as i.gif
     InputfilenameWithoutExt=Inputfilename.split('.')[0]
     OritationList=[]
+    print file
     f=open(file,'r')
     lines=f.readlines()
     f.close()
@@ -29,7 +30,7 @@ def Mol2GjfandMop(file,modeltype=None,gjf=False, mop=False):
                     #print List[3]
                     #print element[List[3]]
         except:
-            print "Mol2GjfandMop read mol failed"                                        
+            continue                                       
     if gjf == True:
         print "gjf=true"
         GjfList=[]   
