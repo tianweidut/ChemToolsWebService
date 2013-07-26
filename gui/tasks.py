@@ -167,7 +167,13 @@ def calculateTask(task, model_name):
     para = dict.fromkeys(['smilestring', 'filename', 'cas'], "")
 
     fullpath = os.path.join(settings.SETTINGS_ROOT, task.file_obj.file_obj.path)
-    para['filename'] = os.path.basename(fullpath)
+    print task.file_obj.file_type
+    
+    if task.file_obj.file_type=='smiles':
+        para['smilestring']=task.file_obj.smiles
+        print task.file_obj.smiles
+    else:    
+        para['filename'] = os.path.basename(fullpath)
     filepath = os.path.dirname(fullpath)
     suite = task.sid
     result = 0

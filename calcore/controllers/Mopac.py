@@ -54,6 +54,7 @@ class Mopac():
             #now orientation_info is filed with optimized orientationn
                                 ###############################################################################################
             cmd = 'obabel -imoo '+self.mopfilepath[i]+self.filename_without_ext[i]+'.out '+' -omol -O '+dragonpath
+            print cmd
             subprocess.Popen(cmd,shell=True).wait()
                                 ###############################################################################################
        

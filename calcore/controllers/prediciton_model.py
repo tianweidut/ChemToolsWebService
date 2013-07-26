@@ -11,6 +11,8 @@ this class is used for model computation that parameters needed in Dragon output
     def __init__(self , modelname=None,para={},predict_results=None,molpath={},T=None):
         self.predict_result = predict_results
         self.T=T
+        if self.T==0:
+            raise Exception,'KOH_T can not be 0'
         #self.model_type={}
         para = para or {}
         print "in the PredictionModel_ForParamInDragon"
