@@ -169,11 +169,12 @@ def calculateTask(task, model_name):
     fullpath = os.path.join(settings.SETTINGS_ROOT, task.file_obj.file_obj.path)
     print task.file_obj.file_type
     
-    if task.file_obj.file_type=='smiles':
-        para['smilestring']=task.file_obj.smiles
-        print task.file_obj.smiles
-    else:    
+    if task.file_obj.file_type=='mol':
         para['filename'] = os.path.basename(fullpath)
+    else:
+        para['smilestring']=task.file_obj.smiles.encode('utf-8')
+        print task.file_obj.smiles
+        
     filepath = os.path.dirname(fullpath)
     suite = task.sid
     result = 0
@@ -184,7 +185,11 @@ def calculateTask(task, model_name):
 
     try:
         pm = PredictionModel([get_ModelName(model_name)], para, filepath)
-        result = pm.predict_results[para['filename'].split(".")[0]][get_ModelName(model_name)]
+        if task.file_obj.file_type=='mol':
+            result =pm.predict_results[para['filename'].split(".")[0]][get_ModelName(model_name)]
+        else:
+            result=pm.predict_results[para['smilestring']][get_ModelName(model_name)]
+
     except KeyError, err:
         print "We don't have this model"
         result = 0

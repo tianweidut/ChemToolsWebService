@@ -57,6 +57,7 @@ class SmileToMol():
             pass
     def smile2_3d(self,smilenum):
             print "in SmileToMol-smile2_3d "
+            #print smilenum
             mymol=pybel.readstring('smi',smilenum)
             if self.modeltype==3:
                 mymol.addh()
@@ -75,7 +76,11 @@ class SmileToMol():
                 else:
                     revisedsmi += smilenum[i]
             ########################################################################################
-            mymol.write('mol',revisedsmi+".mol",overwrite=True)
+            #print revisedsmi
+            #print self.molpath 
+            tmpstring=self.molpath.encode('utf-8')+'/'+revisedsmi+'.mol'
+            #print tmpstring
+            mymol.write('mol',tmpstring,overwrite=True)
             print "end SmileToMol-smile2_3d"
             
     def mop2mopac_folder(self):
@@ -88,6 +93,7 @@ class SmileToMol():
                 self.smile2_3d(smilenum)
             except:
                 self.__invalid_smile.append(smilenum)
+                print "input smilenum invalide ",smilenum
                 continue
             ########################################################################################
             #if there exists '\' or '/' in filename ,substitute them with '#' and '$'
@@ -140,12 +146,15 @@ class SmileToMol():
         ######################################################################################
         # deal with smile numbers
         print "in the SmileToMol-gjf2gaussian_folder"
+        print self.__unopt_smilenum
         for smilenum in self.__unopt_smilenum:
             #1:smile number to 3d structure
+            #print smilenum
             try:
                 self.smile2_3d(smilenum)
             except:
                 self.__invalid_smile.append(smilenum)
+                print "input smilenum invalide ",smilenum
                 continue
             ########################################################################################
             #if there exists '\' or '/' in filename ,substitute them with '#' and '$'

@@ -20,7 +20,7 @@ import pybel
 from backend.logging import loginfo
 from calcore.models import SingleTask, ProcessedFile, SuiteTask
 from const.models import ModelCategory
-from const import MODEL_KOA, MODEL_KOF, MODEL_PL
+from const import MODEL_KOA, MODEL_KOF, MODEL_PL, MODEL_KOC, MODEL_KOH, MODEL_KOH_T, MODEL_RP
 from const import MODEL_BCF, MODEL_PKD, MODEL_DFS
 from const import MODEL_DFS
 from const import ORIGIN_DRAW, ORIGIN_SMILE, ORIGIN_UPLOAD
@@ -168,6 +168,8 @@ def get_FileObj_by_smiles(smile):
     Output: file path
     """
     name = str(uuid.uuid4()) + ".mol"
+    if not os.path.exists(settings.MOL_CONVERT_PATH):
+        os.makedirs(settings.MOL_CONVERT_PATH)
     name_path = os.path.join(settings.MOL_CONVERT_PATH, name)
 
     mol = pybel.readstring('smi', str(smile))
