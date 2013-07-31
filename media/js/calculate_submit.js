@@ -56,11 +56,14 @@ $("[rel='button-switch']").click(function(){
  
   if($(checked_element).attr("visible") === "false")
     {
+      //alert("visible=false")
       $(this).text("undo this choice");
       $(this).toggleClass("btn-danger");
       $(checked_element).attr("visible", "true");
       $(checked_element).show();
       $(show_element).attr("visible", "true");
+      //alert($(show_element).attr("visible"))
+      //alert($(checked_element).attr("visible"))
       $(show_element).show();
     }
   else
@@ -138,6 +141,7 @@ function GetModels(){
   var index = 0;
   
   $("#models_choice_copy >tbody >tr").each(function(trindex, tritem){
+    //alert($(tritem).attr("visible"))
     if($(tritem).attr("visible") === "true")
       {
         var model = $(tritem).attr("model");
