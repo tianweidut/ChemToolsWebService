@@ -79,7 +79,7 @@ def Mol2GjfandMop(file,modeltype=None,gjf=False, mop=False):
     if mop == True:
         print "mop=True"
         MopList=[]
-        MopList.append(' PM3 CHARGE=0 GNORM=0.100  static\n')
+        MopList.append('EF GNORM=0.0001 MMOK GEO-OK PM3\n')
         #MopList.append('opt freq b3lyp/6-31+g(d,p) SCRF=(IEFPCM,SOLVENT=WATER)\n')
         MopList.append('\n\r\n')
         MopList.extend(OritationList)

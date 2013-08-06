@@ -27,6 +27,7 @@ class SmileToMol():
         self.__molfile        = []
         self.modeltype=modeltype
         self.molpath=molpath
+        self.molusemopac=True
         if smilenum == "":
             #raise Exception,"error input with 0 valid smilenum"
             pass
@@ -88,13 +89,7 @@ class SmileToMol():
         # deal with smile numbers
         print "in the SmileToMol-mop2mopac_folder"
         for smilenum in self.__unopt_smilenum:
-            #1:smile number to 3d structure
-            try:
-                self.smile2_3d(smilenum)
-            except:
-                self.__invalid_smile.append(smilenum)
-                print "input smilenum invalide ",smilenum
-                continue
+            #1:smile number to mop
             ########################################################################################
             #if there exists '\' or '/' in filename ,substitute them with '#' and '$'
             regex1 = "\\"
@@ -109,20 +104,48 @@ class SmileToMol():
                 else:
                     revisedsmi += smilenum[i]
             ########################################################################################
-            #2:mol to mop file
-            Mol2GjfandMop(self.molpath+'/'+revisedsmi+'.mol',mop=True)
-            #3:mop file into formopac folder
             dst = globalpath+'formopac/'+revisedsmi
             if not os.path.exists(dst):
                 os.makedirs(dst)
             real_dst = os.path.join(dst, revisedsmi+'.mop')
             print real_dst
             if os.path.exists(real_dst):
-                os.remove(self.molpath+'/'+revisedsmi+'.mop')
+                os.remove(real_dst)
                 #os.remove(real_dst)
                 #print "remove real_dst"
             else:
-                shutil.move(self.molpath+'/'+revisedsmi+'.mop',globalpath+'formopac/'+revisedsmi)
+                #shutil.move(self.molpath+'/'+revisedsmi+'.mop',globalpath+'formopac/'+revisedsmi)
+                print "old mop file deleted"
+            try:
+                #self.smile2_3d(smilenum)
+                cmd='obabel -:\"'+smilenum+'\" -omop -O\"'+real_dst+'\"'+" --gen3D"
+                subprocess.Popen(cmd,shell=True).wait()
+                print "smi->mop",cmd
+                
+            except:
+                self.__invalid_smile.append(smilenum)
+                print "input smilenum invalide ",smilenum
+                continue
+            #2:mol to mop file
+            #Mol2GjfandMop(self.molpath+'/'+revisedsmi+'.mol',mop=True)
+            #MopList=[]
+            #MopList.append('EF GNORM=0.0001 MMOK GEO-OK PM3\n')
+            #MopList.append('opt freq b3lyp/6-31+g(d,p) SCRF=(IEFPCM,SOLVENT=WATER)\n')
+            #MopList.append('\n\r\n')
+            #MopList.extend(OritationList)
+            #f=open(real_dst,'r+')
+            #lines=f.readlines()
+            #re.sub(r"PUT KEYWORDS HERE","EF GNORM=0.0001 MMOK GEO-OK PM3\n",f.read())
+            lines=open(real_dst,"rb").readlines()
+            lines[0]='EF GNORM=0.0001 MMOK GEO-OK PM3\n'
+            lines[1]=real_dst+"\n"
+            f=open(real_dst,"wb")
+            f.writelines(lines)
+            f.close()
+
+            print "Mol2GjfandMop-mop close"
+            #3:mop file into formopac folder
+
         # to remove invalide smilenum from self.__unopt_smilenum
         for num in self.__invalid_smile:
             self.__unopt_smilenum.remove(num) 
@@ -130,16 +153,31 @@ class SmileToMol():
             #######################################################################################
         #deal with input mol file
         for mol in self.__molfile:
-            Mol2GjfandMop(self.molpath+'/'+mol,mop=True)
-            mol_without_ext = mol.split('.')[0]
-            dst = globalpath+'formopac/'+mol_without_ext
-            if not os.path.exists(dst):
-                os.makedirs(dst)
-            real_dst = os.path.join(dst, mol_without_ext+'.mop')
-            if os.path.exists(real_dst):
-                os.remove(self.molpath+'/'+mol_without_ext+'.mop')
+
+            #molusemopac=False
+            if self.molusemopac:
+                mol_without_ext=mol.split('.')[0]
+                Mol2GjfandMop(self.molpath+'/'+mol,mop=True)
+                dst=globalpath+'formopac/'+mol_without_ext
+                if not os.path.exists(dst):
+                    os.makedirs(dst)
+                real_dst=os.path.join(dst,mol_without_ext+'.mop')
+                if os.path.exists(real_dst):
+                    os.remove(self.molpath+'/'+mol_without_ext+'.mop')
+                else:
+                    shutil.move(self.molpath+'/'+mol_without_ext+'.mop',globalpath+'formopac/'+mol_without_ext)
             else:
-                shutil.move(self.molpath+'/'+mol_without_ext+'.mop',globalpath+'formopac/'+mol_without_ext)
+                mol_without_ext=mol.split('.')[0]
+                dst=globalpath+'fordragon/'+mol_without_ext
+                if not os.path.exists(dst):
+                    os.makedirs(dst)
+                real_dst = os.path.join(self.molpath, mol_without_ext+'.mol')
+                if os.path.exists(real_dst):
+                    if os.path.exists(dst+'/'+mol_without_ext+'.mol'):
+                        self.delete_file_folder(dst+'/'+mol_without_ext+'.mol')
+                    shutil.move(self.molpath+'/'+mol_without_ext+'.mol',dst)
+                else:
+                    raise Exception,"molpath have no mol!"
                 #######################################################################################
         print "end SmileToMol-mop2mopac_folder"
     def gjf2gaussian_folder(self):
@@ -245,19 +283,21 @@ class SmileToMol():
             dst = globalpath+'fordragon/'+revisedsmi+'/'
             if not os.path.exists(dst):
                 os.makedirs(dst)
-            if not os.path.exists(dst+revisedsmi+'.mol'):
+            print os.path.exists(self.molpath+'/'+revisedsmi+'.mol')
+            if os.path.exists(self.molpath+'/'+revisedsmi+'.mol'):
                 shutil.move(self.molpath+'/'+revisedsmi+'.mol',dst)
             mopfile.append(revisedsmi+'.mop')
             ###################################################################################
-        for mol in self.__molfile:
-            mol_without_ext = mol.split('.')[0]
-            #delete mol file in current folder and move it to dragon dictionary
-            dst = globalpath+'fordragon/'+mol_without_ext+'/'
-            if not os.path.exists(dst):
-                os.makedirs(dst)
-            if not os.path.exists(dst+mol):
-                shutil.move(self.molpath+'/'+mol,dst)
-            mopfile.append(mol_without_ext+'.mop')
+        if self.molusemopac:
+            for mol in self.__molfile:
+                mol_without_ext = mol.split('.')[0]
+                #delete mol file in current folder and move it to dragon dictionary
+                dst = globalpath+'fordragon/'+mol_without_ext+'/'
+                if not os.path.exists(dst):
+                    os.makedirs(dst)
+                if not os.path.exists(dst+mol):
+                    shutil.move(self.molpath+'/'+mol,dst)
+                mopfile.append(mol_without_ext+'.mop')
         mop = Mopac(mopfile)
         mop.opt4dragon()
         print "end mol2dragon_folder"

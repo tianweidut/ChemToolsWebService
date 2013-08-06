@@ -53,7 +53,7 @@ class Mopac():
             #get the optimized orientation in out file and replace counterpart in mol file with it
             #now orientation_info is filed with optimized orientationn
                                 ###############################################################################################
-            cmd = 'obabel -imoo '+self.mopfilepath[i]+self.filename_without_ext[i]+'.out '+' -omol -O '+dragonpath
+            cmd = 'obabel -imoo '+'\"'+self.mopfilepath[i]+self.filename_without_ext[i]+'.out\" '+'-omol -O \"'+dragonpath+'\" --gen3D'
             print cmd
             subprocess.Popen(cmd,shell=True).wait()
                                 ###############################################################################################

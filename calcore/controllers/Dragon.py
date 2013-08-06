@@ -116,8 +116,52 @@ class Dragon(SmileToMol):
                                 break
                         EHOMO = lines[lineNum - 1].split(' ')[-1]
                         para_dic[file]["EHOMO"]=EHOMO
-                        break              
-                    
+                        break
+            elif self.modeltype==2:
+                gaussianpath=globalpath+"forgaussian/"+revisedfilename+"/"
+                f = open(gaussianpath+revisedfilename + '.log', 'r')
+                lines = f.readlines()
+                length=len(lines)
+                f.close()
+                AtomicCharges=[]
+                while(length):
+                    length = length - 1
+                    #to eject ' ' appeared in first and last position
+                    lines[length] = str(lines[length]).strip()
+                    #to find and save element and atomic charges to list
+                    if(re.match('Mulliken atomic charges:', lines[length]) != None):
+                        j = 2
+                        line = lines[length + j].split(' ')
+                        while(re.match('Sum.*', line[0]) == None):
+                            List = list(line)
+
+                            while(1):
+                                try:
+                                    List.remove('')
+                                except:
+                                    break
+                            List.pop(0)
+                            j = j + 1
+                            line = lines[length + j].split(' ')
+                            AtomicCharges.append(List)
+                        break
+                #print AtomicCharges
+
+                QHmax = 0.0
+                for i in range(len(AtomicCharges)):
+                    if(AtomicCharges[i][0]=='H'):
+                        if(float(AtomicCharges[i][1]) > QHmax):
+                            QHmax = float(AtomicCharges[i][1])
+                #print QHmax
+                para_dic[file]["q+"]=QHmax
+                f = open(gaussianpath+revisedfilename + '.log', 'r')
+                lines = f.readlines()
+                f.close()
+                for i in range(len(lines)):
+                    if(re.match('.*Isotropic polarizability.*', lines[i]) != None):
+                        Polarizability = float(str(lines[i]).split(' ')[-2])
+                #print Polarizability
+                para_dic[file]["a"]=Polarizability
         return para_dic
 
 

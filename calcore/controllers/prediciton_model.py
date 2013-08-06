@@ -12,7 +12,7 @@ this class is used for model computation that parameters needed in Dragon output
         self.predict_result = predict_results
         self.T=T
         if self.T==0:
-            raise Exception,'KOH_T can not be 0'
+            raise Exception,'The T of KOA or KOH_T can not be 0'
         #self.model_type={}
         para = para or {}
         print "in the PredictionModel_ForParamInDragon"
@@ -61,10 +61,12 @@ this class is used for model computation that parameters needed in Dragon output
         for smilenum in abstract_value.keys():
             if not self.predict_result.has_key(smilenum):
                 self.predict_result[smilenum] = {}
-            self.predict_result[smilenum]['logKOA'] = 0.509 + 0.986*float(abstract_value[smilenum]['X1sol'])-1.018*float(abstract_value[smilenum]['Mor13v'])+ \
-            1.384*float(abstract_value[smilenum]['H-050'])-1.528*float(abstract_value[smilenum]['R5v'])-0.015*float(abstract_value[smilenum]['T(O..Cl)'])+ \
-            0.043*float(abstract_value[smilenum]['HATS5v'])-0.026*float(abstract_value[smilenum]['RDF035m'])-0.197*float(abstract_value[smilenum]['RCI'])- \
-            0.130*float(abstract_value[smilenum]['nRCOOR'])-0.077*float(abstract_value[smilenum]['Mor15u'])-0.077*float(abstract_value[smilenum]['RDF090m'])
+            self.predict_result[smilenum]['logKOA']=-3.03+313*float(abstract_value[smilenum]['X1sol'])/(self.T)-85.7*float(abstract_value[smilenum]['Mor13v'])/(self.T)+ \
+            432*float(abstract_value[smilenum]['H-050'])/(self.T)-1270*float(abstract_value[smilenum]['R5v'])/(self.T)-5.54*float(abstract_value[smilenum]['T(O..Cl)'])/(self.T)+ \
+            125*float(abstract_value[smilenum]['HATS5v'])/(self.T)-13.3*float(abstract_value[smilenum]['RDF035m'])/(self.T)-61.1*float(abstract_value[smilenum]['RCI'])/(self.T)- \
+            37.6*float(abstract_value[smilenum]['nRCOOR'])/(self.T)-156*float(abstract_value[smilenum]['Mor15u'])/(self.T)-5.49*float(abstract_value[smilenum]['RDF090m'])/(self.T)+1040.0/(self.T)
+        print self.T
+        print 'X1sol',float(abstract_value[smilenum]['X1sol'])/(self.T),"Mor13v",float(abstract_value[smilenum]['Mor13v'])/(self.T),"H_050",float(abstract_value[smilenum]['H-050'])/(self.T),"R5v",float(abstract_value[smilenum]['R5v'])/(self.T),"T(O..Cl)",float(abstract_value[smilenum]['T(O..Cl)'])/(self.T),"HATS5v",float(abstract_value[smilenum]['HATS5v'])/(self.T),"RDF035m",float(abstract_value[smilenum]['RDF035m'])/(self.T),"RCI",float(abstract_value[smilenum]['RCI'])/(self.T),"nRCOOR",float(abstract_value[smilenum]['nRCOOR'])/(self.T),"Mor15u",float(abstract_value[smilenum]['Mor15u'])/(self.T),"RDF090m",float(abstract_value[smilenum]['RDF090m'])/(self.T)
     def logRP(self, para,d):
         '''
         logRP model computation
@@ -73,7 +75,7 @@ this class is used for model computation that parameters needed in Dragon output
         for smilenum in abstract_value.keys():
             if not self.predict_result.has_key(smilenum):
                 self.predict_result[smilenum] = {}
-            self.predict_result[smilenum]['logRP'] = -11.5+16.6*float(abstract_value[smilenum]['TDB05v'])+1.81*float(abstract_value[smilenum]['Hypnotic-80'])
+            self.predict_result[smilenum]['logRP'] =-11.857+18.968*float(abstract_value[smilenum]['TDB05v'])+1.480*float(abstract_value[smilenum]['Hypnotic-80'])
     def logBCF(self, para,d):
         '''
         logBCF model computation
@@ -119,16 +121,16 @@ this class is used for model computation that parameters needed in Dragon output
         '''
         logKOC model computation
         '''
-        abstract_value=d.extractparameter(["Wap","WiA_Dt","SM1_B(p)","P_VSA_LogP_4","P_VSA_s_1","H_G/D","Mor07e","nROH","nR=CRX","O-057","CATS2D_05_Dn","B05[C-O]","MLOGP","ALOGP2","LLS_01"])
+        abstract_value=d.extractparameter(["MLOGP","nCIC","nCb-","nHM","q+","nP(=O)O2R","O-058","a","F03[O-Cl]","nN=C-N<","F05[C-P]","C-030","B10[N-N]","nN(CO)2","nR=CRX"])
         for smilenum in abstract_value.keys():
             if not self.predict_result.has_key(smilenum):
                 self.predict_result[smilenum]={}
-            self.predict_result[smilenum]['logKOC']=-0.0000137*float(abstract_value[smilenum]['Wap'])+0.18*float(abstract_value[smilenum]['WiA_Dt'])+ \
-            0.687*float(abstract_value[smilenum]['SM1_B(p)'])-0.008*float(abstract_value[smilenum]['P_VSA_LogP_4'])-0.034*float(abstract_value[smilenum]['P_VSA_s_1'])- \
-            0.001*float(abstract_value[smilenum]['H_G/D'])-0.086*float(abstract_value[smilenum]['Mor07e'])-0.373*float(abstract_value[smilenum]['nROH'])+ \
-            0.815*float(abstract_value[smilenum]['nR=CRX'])+0.279*float(abstract_value[smilenum]['O-057'])+0.975*float(abstract_value[smilenum]['CATS2D_05_Dn'])- \
-            0.209*float(abstract_value[smilenum]['B05[C-O]'])+0.161*float(abstract_value[smilenum]['MLOGP'])+0.03*float(abstract_value[smilenum]['ALOGP2'])-0.983*float(abstract_value[smilenum]['LLS_01'])+0.619
-            
+            self.predict_result[smilenum]['logKOC']=0.247*float(abstract_value[smilenum]['MLOGP'])+0.107*float(abstract_value[smilenum]['nCIC'])+ \
+            0.108*float(abstract_value[smilenum]['nCb-'])+0.091*float(abstract_value[smilenum]['nHM'])-1.482*float(abstract_value[smilenum]['q+'])+ \
+            2.173*float(abstract_value[smilenum]['nP(=O)O2R'])-0.322*float(abstract_value[smilenum]['O-058'])+0.005*float(abstract_value[smilenum]['a'])- \
+            0.192*float(abstract_value[smilenum]['F03[O-Cl]'])-0.761*float(abstract_value[smilenum]['nN=C-N<'])-0.250*float(abstract_value[smilenum]['F05[C-P]'])- \
+            0.866*float(abstract_value[smilenum]['C-030'])-1.006*float(abstract_value[smilenum]['B10[N-N]'])+0.490*float(abstract_value[smilenum]['nN(CO)2'])+0.618*float(abstract_value[smilenum]['nR=CRX'])+1.181
+        print float(abstract_value[smilenum]['q+']),float(abstract_value[smilenum]['a'])   
 
 
 MODEL_FOR_COMPUTAIONCLASS = {}
