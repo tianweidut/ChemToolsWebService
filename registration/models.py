@@ -20,7 +20,7 @@ from django.contrib.sites.models import get_current_site
 from django.db import models
 from django.core.mail import send_mail
 
-from backend.logging import logger
+from backend.logging import logger, loginfo
 from users.models import UserProfile, UserGrade
 from const import LEVEL_1
 
@@ -72,11 +72,11 @@ class RegistrationManager(models.Manager):
             new_profile = UserProfile.objects.create(user=new_user,
                                                      user_grade=free_grade)
             new_profile.save()
-        except:
+        except Exception, err:
             #TODO: later, we should process the object is empty, as the same
             #word, the adminuser should import base data into database, maybe
             #a log record for admin user is necessary
-            pass
+            loginfo(p=err)
 
         registration_profile = self.create_profile(new_user)
 
@@ -93,7 +93,6 @@ class RegistrationManager(models.Manager):
                                        {'activation_key':registration_profile.activation_key,
                                         'expiration_days':settings.ACCOUNT_ACTIVATION_DAYS,
                                         'site':get_current_site(request)})
-            logger.error(message)          
             send_mail(subject,
                       message,
                       settings.DEFAULT_FROM_EMAIL,
