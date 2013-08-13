@@ -153,7 +153,7 @@ def save_record(f, model_name, sid, source_type, smile=None, arguments=None):
         obj.close()
         task.status = StatusCategory.objects.get(category=STATUS_WORKING)
         task.save()
-        calculateTask.delay(task, model_name)
+        calculateTask.delay(task, model_name,arguments)
     else:
         loginfo(p=source_type, label="Cannot recongize this source type")
         return
@@ -342,12 +342,13 @@ def suitetask_process(request, smile=None, mol=None, notes=None,
     loginfo(p="finish suite save")
 
     models_dict = parse_models(models)
+    print models_dict
     flag = False
     for key in models_dict:
         #TODO: add mol arguments
-        flag = flag | start_smile_task(smile, key, suite_task.sid)
-        flag = flag | start_moldraw_task(mol, key, suite_task.sid)
-        flag = flag | start_files_task(pid_list, key, suite_task.sid)
+        flag = flag | start_smile_task(smile, key,suite_task.sid,models_dict[key]['temp'])
+        flag = flag | start_moldraw_task(mol, key,suite_task.sid,models_dict[key]['temp'])
+        flag = flag | start_files_task(pid_list, key,suite_task.sid,models_dict[key]['temp'])
 
     if flag:
         is_submitted = True
