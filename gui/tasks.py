@@ -185,6 +185,8 @@ def calculateTask(task, model_name,arguments=None):
 
     try:
         print "---T----",arguments
+        if arguments:
+            arguments= 25
         pm =PredictionModel([get_ModelName(model_name)],para,filepath,float(arguments.encode('utf-8')))
         if task.file_obj.file_type=='mol':
             result =pm.predict_results[para['filename'].split(".")[0]][get_ModelName(model_name)]
