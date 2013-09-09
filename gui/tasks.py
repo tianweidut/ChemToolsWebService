@@ -185,7 +185,7 @@ def calculateTask(task, model_name,arguments=None):
 
     try:
         print "---T----",arguments
-        if arguments:
+        if arguments is None:
             arguments='25'
         pm =PredictionModel([get_ModelName(model_name)],para,filepath,float(arguments.encode('utf-8')))
         if task.file_obj.file_type=='mol':
