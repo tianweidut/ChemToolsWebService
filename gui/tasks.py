@@ -185,7 +185,7 @@ def calculateTask(task, model_name,arguments=None):
 
     try:
         print "---T----",arguments
-        if arguments is None:
+        if arguments is None or arguments=='none':
             arguments='25'
             print "---afterT---",arguments
         pm =PredictionModel([get_ModelName(model_name)],para,filepath,float(arguments.encode('utf-8')))
