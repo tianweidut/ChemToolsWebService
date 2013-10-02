@@ -137,9 +137,9 @@ class ChemInfoLocal(models.Model):
     Chemistry database for locally search
     """
     cas = models.CharField(max_length=200, blank=False, unique=True)
-    einecs = models.CharField(max_length=200, blank=False)
-    einecs_name = models.CharField(max_length=200, blank=False)
-    einecs_mf = models.CharField(max_length=200, blank=False)
+    einecs = models.CharField(max_length=2000, blank=False)
+    einecs_name = models.CharField(max_length=2000, blank=False)
+    einecs_mf = models.CharField(max_length=2000, blank=False)
     frequency = models.IntegerField(blank=False)
     positive_atoms = models.IntegerField(blank=False)
     negative_atoms = models.IntegerField(blank=False)
@@ -149,11 +149,11 @@ class ChemInfoLocal(models.Model):
     molecular_solubility = models.FloatField(blank=False)
     alogp = models.FloatField(blank=False)
     logd = models.FloatField(blank=False)
-    molecular_formula = models.CharField(max_length=200, blank=False)
+    molecular_formula = models.CharField(max_length=2000, blank=False)
     smiles = models.CharField(max_length=2000, blank=False)
     inchl = models.CharField(max_length=2000, blank=False)
+    molecular_savol = models.FloatField(blank=False)
     image = models.FileField(upload_to=settings.SEARCH_IMAGE_PATH, blank=True)
-
 
     class Meta:
         verbose_name = "Chemistry Info Local"
