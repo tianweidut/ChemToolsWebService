@@ -11,6 +11,8 @@ import sys
 import uuid
 import time
 import datetime
+import pprint
+from functools import wraps
 
 from celery.decorators import task
 
@@ -30,6 +32,7 @@ from django.core.cache import cache
 from django.utils.hashcompat import md5_constructor as md5
 from django.template.loader import get_template
 from django.template import Context
+from django.db.models import Q
 
 #import ho.pisa as pisa
 import xhtml2pdf.pisa as pisa
@@ -44,6 +47,7 @@ from const import STATUS_WORKING, STATUS_SUCCESS, STATUS_FAILED, STATUS_UNDEFINE
 import pybel
 from calcore.models import *
 from const import ORIGIN_DRAW, TASK_SUITE, TASK_SINGLE
+from calcore.models import ChemInfoLocal
 
 
 LOCK_EXPIRE = 60 * 5 # Lock expires in 5 minutes
@@ -141,7 +145,6 @@ def pdf_create_test():
     task_id_search = "06b4c9a5-3a01-4bb4-a07c-d574d293d7e5"
     task_id_draw = "0a72a6ba-63f0-41db-a04f-f71c292f6db8"
     task_id_upload = "1142ae41-9497-4771-9c1c-d4dfcece994a"
-    task_id_none = "16b4c9a5-3a01-4bb4-a07c-d574d293d7e5"
     task_id_ch = "17673ac1-17dd-4f0d-958a-4ef44bba8a92"
     suite_id = "c933deb5-beda-4a41-84be-759a5795aca1"
 
@@ -152,8 +155,7 @@ def pdf_create_test():
     print "upload type for single task"
     generate_pdf(id=task_id_upload, task_type=TASK_SINGLE)
     print "not found this task id"
-    #generate_pdf(id=task_id_none, task_type=TASK_SINGLE)
-    generate_pdf(id=task_id_ch, task_type=TASK_SINGLE)
+    Generate_pdf(id=task_id_ch, task_type=TASK_SINGLE)
     print "suite task id"
     generate_pdf(id=suite_id, task_type=TASK_SUITE)
 
@@ -192,9 +194,6 @@ def generate_smile_image(pid):
     if filetype == ORIGIN_SMILE:
         #this type has already have image and smiles in local search machine,
         #only copy them
-        print "search engine test"
-        print singletask.file_obj.smiles
-        print SearchEngineModel.objects.get(smiles=singletask.file_obj.smiles).image
         singletask.file_obj.image = SearchEngineModel.objects.get(smiles=singletask.file_obj.smiles).image
         singletask.file_obj.save()
         singletask.save()
@@ -219,13 +218,38 @@ def add_counter_core(suite_id):
         print suite.has_finished_tasks
         suite.status_id = StatusCategory.objects.get(category=STATUS_SUCCESS)
         # generate suite task report and send email
-        
-       # try:
-       #     file_path = generate_pdf(id=suite_id, task_type=TASK_SUITE)
-       #     f = File(open(file_path, "r"))
-       #     suite.result_pdf = f
-       #     f.close()
-#except Exception, err:
- #           loginfo(p=err, label="generate pdf error!")
-
     suite.save()
+
+
+def simple_search_output(func):
+    @wraps(func)
+    def _(*a, **kw):
+        rs = func(*a, **kw)
+        rs = [dict(cas=r.cas, smiles=r.smiles,
+                   commonname=r.einecs_name,
+                   formula=r.molecular_formula,
+                   alogp=r.alogp) for r in rs]
+        return rs
+    return _
+
+
+def simple_search_output_api(func):
+    @wraps(func)
+    def _(*a, **kw):
+        rs = func(*a, **kw)
+        rs = [dict(cas="", smiles=r['content']['smiles'],
+                   commonname=r['content']['commonname'],
+                   formula=r['content']['mf'],
+                   alogp=r['content']['alogp']) for r in rs]
+        return rs
+    return _
+
+
+@simple_search_output
+def search_cheminfo_local(query):
+    q = Q(cas=query) | \
+        Q(smiles__contains=query) | \
+        Q(molecular_formula=query)
+
+    results = ChemInfoLocal.objects.filter(q)
+    return results
