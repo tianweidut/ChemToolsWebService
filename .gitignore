@@ -10,6 +10,7 @@ media/pictures/*
 media/tmp/*
 celerytest/
 *.rdb
+data.xls
 
 static/*
 
