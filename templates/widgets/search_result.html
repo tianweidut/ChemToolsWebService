@@ -1,92 +1,36 @@
 <!-- cas,name,chinese name, smiles search results-->
-<div class="container-fluid search-result">
+<div class="container-fluid">
+  <fieldset>
+    <legend>Local Chemistry Database</legend>
+    <table class="table table-hover table-search" id="search-local">
+      <thead>
+        <tr>
+          <th>CAS</th>
+          <th>Formula</th>
+          <th>CommonName</th>
+          <th class="smile">Smile</th>
+          <th>Alogp</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </fieldset>
 
-	<div class="row-fluid" id="valid_results">
-		<div class="span4">
-				<!--Sidebar content: pic and some introduction-->
-			<h3>Structure</h3>
-      <img id="last_picture" src="{{search_result.content.imagepath }}" style="width: 120px; height: 120px;">		
-			<br/>	
-			<br/>			
-			<div class="caption">
-				<h3>Compound Infomation</h3>
-				<!--Properties-->
-				<table class="table">
-					<thead>
-						<tr>
-							<td>#</td>
-							<td>Properities</td>
-							<td>Value</td>
-						</tr>
-					</thead>
-					<tbody>
-						<tr class="success">
-							<td>1</td>
-							<td>Average mass</td>
-              <td id="average_mass">{{ search_result.content.averagemass }} Da</td>
-						</tr>
-						<tr class="success">
-							<td>2</td>
-							<td>Monoisotopic mass</td>
-              <td id="mono_mass">{{ search_result.content.monoisotopicmass }} Da</td>
-						</tr>
-					</tbody>	
-				</table>
-			</div>
-		</div>
-		<div class="span8">
-			 <!--Body content-->
-			 <h3>Details</h3>
-			 <!--Results list-->
-			 <table class="table">
-					<thead>
-						<tr>
-							<td>Name</td>
-							<td>Value</td>
-						</tr>
-					</thead>
-					<tbody>
-						<tr class="success">
-							<td>Common Name</td>
-              <td id="common_name">{{ search_result.content.commonname }}</td>
-						</tr>
-						<tr class="error">
-							<td>Smiles</td>
-              <td id="last_smile">{{ search_result.content.smiles}}</td>
-						</tr>
-						<tr class="inverse">
-							<td>Std. Inchi</td>
-              <td id="std_inchi">{{ search_result.content.inchi }}</td>
-						</tr>
-						<tr class="info">
-							<td>Std. InChiKey</td>
-              <td id="std_inchikey">{{ search_result.content.inchikey}}</td>
-						</tr>
-						<tr class="warning">
-							<td>mf</td>
-              <td id="mf">
-              </td>
-						</tr>
-						<tr class="important">
-							<td>molecular weight</td>
-              <td id="molecular_weight">{{ search_result.content.molecularweight}}</td>
-						</tr>		
-            <tr class="error">
-							<td>alogp</td>
-              <td id="alogp">{{ search_result.content.alogp }}</td>
-						</tr>
-						<tr class="error">
-							<td>xlogp</td>
-              <td id="xlogp">{{ search_result.content.xlogp }}</td>
-						</tr>
-					</tbody>	
-				</table>
-		</div>
-			 <!--Operations Button-->
-       <br/>
-       <center>
-			 	<button class="btn  btn-large btn-primary calculated-btn" id="basic_search_add">Save</button>
-       </center>
-	</div>
-  <h3 id="unvalid_results">Sorry, cannot search anything! Please check your input string!</h3>
+  <fieldset>
+    <legend>3rd Chemistry Database</legend>
+    <table class="table table-hover table-search" id="search-api">
+      <thead>
+        <tr>
+          <th>CAS</th>
+          <th>Formula</th>
+          <th>CommonName</th>
+          <th class="smile">Smile</th>
+          <th>Alogp</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </fieldset>
 </div>
