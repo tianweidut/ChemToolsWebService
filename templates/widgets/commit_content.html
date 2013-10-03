@@ -1,16 +1,14 @@
-  
-  <!--step1 content:basic information-->
+<!--step1 content:basic information-->
   <div class="container-fluid search-result">
     <div class="row-fluid">
       <div class="span4">
         <fieldset>
           <legend>Structure</legend>
           <div class="images_copy_array">
-            <img id="last_picture_copy" src="{{STATIC_URL}}images/examples/structure.png">
+            <img id="last_picture_copy" src="">
             <fieldset>
-              <legend>Other Images</legend>
-              <div class="remained_pictures_copy">
-              </div>
+              <legend>Report Emails</legend>
+              <blockquote id="commit_email_copy"></blockquote>
             </fieldset>
         </fieldset>
         <br/>
@@ -20,7 +18,7 @@
         <fieldset>
           <legend>Smile Names</legend>
           <div class="search_name_copy_array">
-            <div class="alert-info" id="last_smile_copy">S=C=NC</div> 
+            <div class="alert-info" id="last_smile_copy"></div> 
           </div>
         </fieldset>
         <br/>
@@ -29,7 +27,7 @@
           <table class="table">
             <thead>
               <tr>
-                <td>Unique Name</td>
+                <td></td>
               </tr>
             </thead>
             <tbody id="fileupload_copy">
@@ -62,11 +60,18 @@
             other:<span id="other_koa_copy">none</span>;
           </td>
         </tr>
-        <tr class="error" id="model_kof_choice_copy" model="kof"  rel="modified_choice" visible="false"><td>kof</td>
+        <tr class="error" id="model_koh_choice_copy" model="koh"  rel="modified_choice" visible="false"><td>koh</td>
           <td class="attrs">
-            temperature:<span id="temperature_kof_copy">none</span>;
-            humidity:<span id="humidity_kof_copy">80</span>%;
-            other:<span id="other_kof_copy">none</span>;
+            temperature:<span id="temperature_koh_copy">none</span>;
+            humidity:<span id="humidity_koh_copy">80</span>%;
+            other:<span id="other_koh_copy">none</span>;
+          </td>
+        </tr>
+        <tr class="success" id="model_koh_T_choice_copy" model="koh_T"  rel="modified_choice" visible="false"><td>koh_T</td>
+          <td class="attrs">
+            temperature:<span id="temperature_koh_T_copy">none</span>;
+            humidity:<span id="humidity_koh_T_copy">80</span>%;
+            other:<span id="other_koh_T_copy">none</span>;
           </td>
         </tr>
         <tr class="info" id="model_pl_choice_copy" model="pl"  rel="modified_choice" visible="false"><td>pl</td>
@@ -76,6 +81,15 @@
             other:<span id="other_pl_copy">none</span>;
           </td>
         </tr>
+        <tr class="success" id="model_koc_choice_copy" model="koc" rel="modified_choice" visible="false"><td>koc</td>
+          <td class="attrs">
+            temperature:<span id="temperature_koc_copy">none</span>;
+            humidity:<span id="humidity_koc_copy">80</span>%;
+            other:<span id="other_koc_copy">none</span>;
+          </td>
+        </tr>
+
+
         <tr class="success" id="model_bcf_choice_copy" model="bcf" rel="modified_choice" visible="false"><td>bcf</td>
           <td class="attrs">
             temperature:<span id="temperature_bcf_copy">none</span>;
@@ -126,7 +140,7 @@
   <div class="container-fluid search-result">
   <fieldset>
     <legend>Notes</legend>
-    <blockquote id="commit_notes_copy">teastast test</blockquote>
+    <blockquote id="commit_notes_copy"></blockquote>
     </table>
   </fieldset>  
   </div>
@@ -135,7 +149,7 @@
    <div class="container-fluid search-result">
   <fieldset>
     <legend>Task Name</legend>
-    <blockquote id="commit_name_copy">Task name</blockquote>
+    <blockquote id="commit_name_copy"></blockquote>
     </table>
   </fieldset>  
   </div>

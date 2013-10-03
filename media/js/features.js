@@ -6,20 +6,11 @@
 // tooltips
 $(document).ready(function(){
   $("[rel=tooltip]").tooltip();
-});
-
-// carousel
-$(document).ready(function(){
   $('#myCarousel').carousel();
 });
 
-// carousel
-$(document).ready(function(){
-  //$('#carousel-bootcamp').carousel();
-});
 
 //step-contents
-
 $(document).ready(function () {
 	// WIZARD
 	$('#MyWizard').on('change', function(e, data) {
@@ -78,9 +69,9 @@ $(document).ready(function(){
       $("ul li a.filter").parent().removeClass('active');
       $(this).parent().attr('class','active');
       
-      var success_queue = 'ul.tasklist > li.queue-success';
-      var failed_queue = 'ul.tasklist > li.queue-failed';
-      var inprogress_queue = 'ul.tasklist > li.queue-inprogress';
+      var success_queue = 'ul.tasklist > li.success';
+      var failed_queue = 'ul.tasklist > li.failed';
+      var inprogress_queue = 'ul.tasklist > li.calculating';
       switch($(this).attr('rel'))
       {
         case 'all':
@@ -109,13 +100,3 @@ $(document).ready(function(){
   });
   
 });
-
-/*
-$(document).ready(function(){
-	$('ul li a.setting-bar').click(
-		function(){
-			$("ul li a.setting-bar").parent().removeClass('active');
-			$(this).parent().attr('class','active');
-		});
-});
-*/

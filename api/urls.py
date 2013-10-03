@@ -5,31 +5,9 @@ Created on 2012-11-5
 @author: tianwei
 '''
 from django.conf.urls.defaults import *
-from piston.resource import Resource
+from api.apis import *
 
-from api.Handler import *
-
-class CsrfExemptResource(Resource):
-    def __init__(self,handler, authentication = None):
-        super( CsrfExemptResource, self ).__init__( handler, authentication )
-        self.csrf_exempt = getattr( self.handler, 'csrf_exempt', True )
-
-ACTIVE_HANDLERS = (
-          DataHandler,
-          SmileSearchHandler,
-          CasSearchHandler,
-          FileUploadCalculateSearchHandler,
-          LoginHandler,
-          LogoutHandler,
-          FileUploadTestHandler,
-          GetAllCalculateHandler,
-          RegisterHandler,
-          CheckUsernameHandler,
-          CheckEmailHandler,
-          GetLicenseInfoHandler,
-          GetChemistryInfoHandler,
-                   )
+entry_resource = UserResource()
 
 urlpatterns = patterns('',
-        *[url(r'^%s/?$' %  Handler.url,CsrfExemptResource(Handler))\
-          for Handler in ACTIVE_HANDLERS])
+        (r'', include(entry_resource.urls)))

@@ -21,18 +21,25 @@
 # Installation:
  * web tools:
   * sudo pip install -r requirements.txt
-  * hg clone https://bitbucket.org/jespern/django-piston   # Piston, a RESTFul API 
-     * sudo python django-piston/setup.py build
-     * sudo python django-piston/setup.py install
  
  * Mysql:
   * create database Chemistry CHARACTER SET utf8;
   * python manage.py syncdb
+  * If you want to update database in production environment, you can 
+    run this command: python manage.py syncdb --settings=settings_production 
 
  * Calculated software
   * sudo apt-get install python-openbabel -y
   * some other software should be installed manually
   * sudo apt-get install ia32-libs -y  #32-bit lib for 64-bit machine
+  * Generate mol PONG
+    * sudo apt-get install bkchem
+    * oasa:
+      * wget http://bkchem.zirael.org/download/oasa-0.13.1.tar.gz
+      * tar -zxcf oasa*.tar.gz
+      * sudo python setup.py build & install
+    * PIL
+      * sudo apt-get install python python-tk idle python-pmw python-imaging
 
 
  * python manage.py runserver IP:PORT

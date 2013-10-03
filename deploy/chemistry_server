@@ -2,7 +2,7 @@ server {
 	listen   80; ## listen for ipv4; this line is default and implied
 	listen   [::]:80 default ipv6only=on; ## listen for ipv6
 
-    root /home/est863/mysites/ChemToolService;
+    root /home/est863/mysites/ChemToolsWebService;
 
 	# Make site accessible from http://localhost/
 	server_name 202.118.73.59;
@@ -10,7 +10,7 @@ server {
     client_body_temp_path /home/est863/mysites/tmp;
 
 	location / {
-        root /home/est863/mysites/ChemToolService;
+        root /home/est863/mysites/ChemToolsWebService;
         uwsgi_pass 127.0.0.1:8080;
         include uwsgi_params;
         access_log off;
@@ -24,7 +24,7 @@ server {
 	}
 
     location /static {
-       alias /home/est863/mysites/ChemToolService/static/; 
+       alias /home/est863/mysites/ChemToolsWebService/static/; 
        access_log off;  
     }
 
@@ -34,7 +34,7 @@ server {
     }
 
     location /media {
-        root  /home/est863/mysites/ChemToolService/media/; 
+        root  /home/est863/mysites/ChemToolsWebService/media/; 
         break;
     }
 

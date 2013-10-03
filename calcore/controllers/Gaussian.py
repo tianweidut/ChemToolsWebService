@@ -5,9 +5,9 @@ Created on 2012-7-12
 
 @author: sytmac
 '''
-from config.settings import  globalpath
+from calcore.config.settings import  globalpath
 import subprocess
-from controllers.PathInit import ParseInitPath
+from calcore.controllers.PathInit import ParseInitPath
 import shutil
 import re
 import time

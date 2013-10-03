@@ -1,0 +1,41 @@
+{%extends "base/base_results.html"%}
+
+{%block input-details%}
+<div class="span4">
+  <fieldset>
+    <legend>Calculate Source</legend>
+      <div class="alert-info">MOl File Upload!</div> 
+  </fieldset>
+  <br/>
+  <fieldset>
+    <legend>Specification</legend>
+    <blockquote>This file is uploaded by batch method!</blockquote>
+  </fieldset>
+</div><!--end left panel-->
+<div class="span3">
+  <fieldset>
+    <legend>Mol Files</legend>
+    <table class="table table-hover">
+      <thead>
+        <tr><td>Item</td><td>Value</td></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Smiles</td>
+          <td>{{singletask.file_obj.smiles}}</td>
+        </tr>
+        <tr>
+          <td>Type</td>
+          <td>{{singletask.file_obj.file_type}}</td>
+        </tr>
+        <tr>
+          <td>Download</td>
+          <td>
+            <a class="btn btn-primary" href="{{singletask.file_obj.file_obj.url}}">Got it!</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </fieldset>
+</div><!--end right panel-->
+{%endblock%}

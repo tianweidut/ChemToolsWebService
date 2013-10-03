@@ -1,0 +1,56 @@
+{% extends "base/_pdf_content.html" %}
+
+{% block calculate-content%}
+<div class="page-header">
+  <h3>Overview</h3>
+</div> 
+<blockquote id="commit_notes_copy">
+    <p>{{suitetask.status}}</p>
+    <p>Start Time: {{suitetask.start_time|date:"Y-m-d H:m"}}</p>
+    <p>End Time: {{suitetask.end_time|date:"Y-m-d H:m"}}</p>
+    <p>Total Tasks:{{suitetask.total_tasks}}</p>
+    <p>Finished Tasks:{{suitetask.has_finished_tasks}}</p>
+</blockquote>
+<br/>
+<div class="page-header">
+  <h3>Details</h3>
+</div> 
+<blockquote id="commit_notes_copy">
+ <table class="table table-hover ">
+  <thead>
+    <tr>
+      <td>Status</td>
+      <td>Model</td>
+      <td>Category</td>
+      <td>Temperature</td>
+      <td>Humidity</td>
+      <td>Others</td>
+      <td>Results</td>
+      <td>Time</td>
+    </tr>
+  </thead>
+  <tbody>
+    {%for single in single_lists%}
+    <tr>
+      <td>
+        {% if single.status.category == "success" %}
+          <p class="label label-success">Success</p>
+        {% elif single.status.category == "failed" %}
+          <p class="label label-important">Failed</p>
+        {% else %}
+          <p class="label label-info">Calculating</p>
+        {%endif%}
+      </td>
+      <td>{{single.model|upper}}</td>
+      <td>{{single.model.origin_type}}</td>
+      <td>{{single.temperature}}</td>
+      <td>{{single.humidity}}</td>
+      <td>{{single.others}}</td>
+      <td>{{single.results}}</td>
+      <td>{{single.start_time|date:"m-d H:m"}}</td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table><!--end table--> 
+</blockquote>
+{% endblock %}

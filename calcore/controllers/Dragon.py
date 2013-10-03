@@ -8,18 +8,26 @@ from calcore.controllers.SmileToMol import SmileToMol
 from calcore.controllers.XmlCreate import write_xml
 #调用不同的分子计算符软件进行分子描述符计算参数分别为DRAGON,GAUSSIAN,MOPAC
 class Dragon(SmileToMol):
-    def __init__(self, smiles_str=None, molfile=None,molpath={}):
-        sm = SmileToMol(smiles_str, molfile,molpath)
-        sm.mol2dragon_folder()
+    def __init__(self, smiles_str=None, molfile=None,molpath={},modeltype=None):
+        print "in the Dragon-init"
+        self.modeltype=modeltype
+        sm = SmileToMol(smiles_str, molfile,molpath,modeltype)
+        if modeltype==1:
+            sm.mol2dragon_folder()
+        elif modeltype==2 or modeltype==3:
+            sm.mol2gjf2dragon_folder()
+            
         self.__file = sm.get_smilenum_list()
         for mol in sm.get_molfile():
             self.__file.append(mol.split('.')[0])
         self.invalidnums = sm.get_invalid_smile()
         self.parse=ParseInitPath(globalpath+'config/InitPath.xml')
         #dragon的filepath是xmlCreate生成的xml路径，默认在此文件夹中
-        self.OrderPath=self.parse.get_xml_data(globalpath+'config/InitPath.xml','DRAGON')  
+        self.OrderPath=self.parse.get_xml_data(globalpath+'config/InitPath.xml','DRAGON')
+        print "end Dragon-init"
 
     def mol2drs(self):
+        print "in dragon-mol2drs"
         for file in self.__file:
                                 ########################################################################################
             #if there exists '\' or '/' in filename ,substitute them with '#' and '$'
@@ -42,6 +50,7 @@ class Dragon(SmileToMol):
             #dragon6shell -s .drs to get the result 
             Cmd=self.OrderPath+"'"+filepath+revisedfilename+".drs'"
             subprocess.Popen(Cmd,shell=True).wait()
+            print "end dragon-mol2drs"
     def extractparameter(self,parameters = None):
         '''
         parameters is a list that needs abstracting from drs file
@@ -89,9 +98,70 @@ class Dragon(SmileToMol):
                         para_dic[file][key] = valueline[temp_dic[key]]
                     except:
                         print key,temp_dic[i],valueline[temp_dic[key]]
+            if self.modeltype==3:
+                gaussianpath=globalpath+"forgaussian/"+revisedfilename+"/"
+                f = open(gaussianpath+revisedfilename + '.log', 'r')
+                lines = f.readlines()
+                f.close()
+                regex = '.*Alpha  occ. eigenvalues.*'
+                for lineNum in range(len(lines)):
+                    if(re.match(regex, lines[lineNum]) != None):
+                        while(re.match(regex, lines[lineNum]) != None):
+                            lineNum = lineNum + 1
+                        List = list(lines[lineNum].split(' '))
+                        while(1):
+                            try:
+                                List.remove('')
+                            except:
+                                break
+                        EHOMO = lines[lineNum - 1].split(' ')[-1]
+                        para_dic[file]["EHOMO"]=EHOMO
+                        break
+            elif self.modeltype==2:
+                gaussianpath=globalpath+"forgaussian/"+revisedfilename+"/"
+                f = open(gaussianpath+revisedfilename + '.log', 'r')
+                lines = f.readlines()
+                length=len(lines)
+                f.close()
+                AtomicCharges=[]
+                while(length):
+                    length = length - 1
+                    #to eject ' ' appeared in first and last position
+                    lines[length] = str(lines[length]).strip()
+                    #to find and save element and atomic charges to list
+                    if(re.match('Mulliken atomic charges:', lines[length]) != None):
+                        j = 2
+                        line = lines[length + j].split(' ')
+                        while(re.match('Sum.*', line[0]) == None):
+                            List = list(line)
 
-                    
-                    
+                            while(1):
+                                try:
+                                    List.remove('')
+                                except:
+                                    break
+                            List.pop(0)
+                            j = j + 1
+                            line = lines[length + j].split(' ')
+                            AtomicCharges.append(List)
+                        break
+                #print AtomicCharges
+
+                QHmax = 0.0
+                for i in range(len(AtomicCharges)):
+                    if(AtomicCharges[i][0]=='H'):
+                        if(float(AtomicCharges[i][1]) > QHmax):
+                            QHmax = float(AtomicCharges[i][1])
+                #print QHmax
+                para_dic[file]["q+"]=QHmax
+                f = open(gaussianpath+revisedfilename + '.log', 'r')
+                lines = f.readlines()
+                f.close()
+                for i in range(len(lines)):
+                    if(re.match('.*Isotropic polarizability.*', lines[i]) != None):
+                        Polarizability = float(str(lines[i]).split(' ')[-2])
+                #print Polarizability
+                para_dic[file]["a"]=Polarizability
         return para_dic
 
 

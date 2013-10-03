@@ -1,0 +1,81 @@
+{% extends "base/_pdf_content.html" %}
+
+{% block calculate-content%}
+<div class="page-header">
+  <h4>Overview</h4>
+</div> 
+<blockquote id="commit_notes_copy">
+  <p>Suite Task:{{singletask.sid.name}}</p>
+  <p>Start Time:{{singletask.sid.start_time|date:"Y-m-d H:m"}}</p>
+  <p>End Time:{{singletask.sid.end_time|date:"Y-m-d H:m"}}</p>
+  <p>Status:{{singletask.status}}</p>
+  <p>Task ID:{{singletask.pid}}</p>
+</blockquote>
+
+<div class="page-header">
+  <h3>Details</h3>
+</div> 
+<!--head-->
+{%if singletask.file_obj.file_source.category == "smiles"%}
+  {%include "widgets/pdf/result_smiles.html"%}
+{%elif singletask.file_obj.file_source.category == "drawing"%}
+  {%include "widgets/pdf/result_drawing.html"%}
+{%elif singletask.file_obj.file_source.category == "upload"%}
+  {%include "widgets/pdf/result_upload.html"%}
+{%else%}
+  {%include "widgets/pdf/result_other.html"%}
+{%endif%} 
+
+<!--Model Info-->
+<br/>
+<div class="container-fluid ">
+  <fieldset>
+    <legend>Model Choice</legend>
+    <blockquote id="commit_notes_copy">
+      <table class="table table-hover ">
+        <thead>
+          <tr><td>Model</td><td>Category</td>
+            <td>Temperature</td><td>Humidity</td><td>Others</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="success">
+            <td>{{singletask.model|upper}}</td>
+            <td>{{singletask.model.origin_type}}</td>
+            <td>{{singletask.temperature}}</td>
+            <td>{{singletask.humidity}}</td>
+            <td>{{singletask.others}}</td>
+          </tr>
+        </tbody>
+      </table><!--end table-->
+    </blockquote>
+  </fieldset>  
+</div>
+
+<br/>
+<div class="container-fluid">
+  <fieldset>
+    <legend>Results</legend>
+    <blockquote id="commit_notes_copy"i>
+      <table class="table table-hover">
+        <thead>
+          <tr><td>Calculate Value</td><td>Calculate Record</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="success"><td width="25%">{{singletask.results}}</td><td>{{singletask.result_state}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+  </fieldset>
+</div>
+
+<br/>
+<div class="container-fluid">
+  <fieldset>
+    <legend>Notes</legend>
+    <blockquote id="commit_notes_copy">{{singletask.sid.notes}}</blockquote>
+  </fieldset>  
+</div>
+{% endblock %}

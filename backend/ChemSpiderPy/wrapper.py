@@ -11,9 +11,13 @@ import os
 import urllib2
 
 from django.conf import settings
-from chemspipy import find_one
+from django.db.models import Q
+from django.core.files import File
 
-from backend.logging import logger
+from .chemspipy import find
+from backend.logging import logger, loginfo
+from calcore.models import SearchEngineModel
+from gui.utilities import simple_search_output_api
 
 
 def store_image(url, name):
@@ -70,43 +74,77 @@ def show_structure(ori_str):
     return "<p>" + ori_str + "</p>"
 
 
-def search_cheminfo(query):
+def copy_results(content, database=False):
     """
-        Search chem info wrapper
-
-        Args:
-            In: query string
-            Out: a dict for search result ,
-                 which include is_valid, content(it is also a dict)
+    copy result into HTML
     """
+    if database:
+        loginfo(p="use local database!")
+    # Fill ChemSpider search result
     search_result = {"is_valid": True,
                      "content": {},
                      }
 
-    if query is None or query is "":
-        search_result["is_valid"] = False
-        return search_result
-
-    try:
-        content = find_one(query)
-    except:
-        search_result["is_valid"] = False
-        return search_result
-
-    # Fill ChemSpider search result
     search_result["is_valid"] = True
+    if not database:
+        search_result["content"]["imagepath"] = "media/" + store_image(content.imageurl, content.commonname)
+        search_result["content"]["mf"] = show_structure(content.mf)
+    else:
+        search_result["content"]["imagepath"] = content.image.url
+        search_result["content"]["mf"] = content.mf
+
     search_result["content"]["commonname"] = content.commonname
-    search_result["content"]["imagepath"] = store_image(content.imageurl, content.commonname)
-    search_result["content"]["mf"] = show_structure(content.mf)
     search_result["content"]["inchi"] = content.inchi
     search_result["content"]["inchikey"] = content.inchikey
     search_result["content"]["averagemass"] = content.averagemass
     search_result["content"]["molecularweight"] = content.molecularweight
     search_result["content"]["monoisotopicmass"] = content.monoisotopicmass
-    search_result["content"]["nominalmass"] = content.nominalmass
     search_result["content"]["alogp"] = content.alogp
     search_result["content"]["xlogp"] = content.xlogp
     search_result["content"]["smiles"] = content.smiles
-    #search_result["content"]["mol"] = content.mol
 
     return search_result
+
+
+def save_search_record(content, query):
+    """
+    save content into database
+    """
+    loginfo(p="save into search engine!")
+
+    search_result = SearchEngineModel()
+    search_result.commonname = content.commonname
+    search_result.mf = show_structure(content.mf)
+    search_result.inchi = content.inchi
+    search_result.inchikey = content.inchikey
+    search_result.averagemass = content.averagemass
+    search_result.molecularweight = content.molecularweight
+    search_result.monoisotopicmass = content.monoisotopicmass
+    search_result.alogp = content.alogp
+    search_result.xlogp = content.xlogp
+    search_result.smiles = content.smiles
+    search_result.search_query = query
+
+    #TODO: There we can optimize the file storage flow!
+    path = os.path.join(settings.MEDIA_ROOT, store_image(content.imageurl, content.commonname))
+    f = File(open(path, "r"))
+    loginfo(p=f, label="file")
+    search_result.image = f
+    search_result.save()
+
+
+@simple_search_output_api
+def search_cheminfo(query):
+    rs = SearchEngineModel.objects.filter(Q(commonname__contains=query)|
+                                          Q(smiles__contains=query)|
+                                          Q(search_query__contains=query))
+
+    if len(rs) != 0:
+        return [copy_results(r, database=True) for r in rs]
+
+    rs = list()
+    for r in find(query):
+        rs.append(copy_results(r))
+        save_search_record(r, query)
+
+    return rs

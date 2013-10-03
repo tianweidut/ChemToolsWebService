@@ -15,8 +15,10 @@ class Mopac():
     '''
     def __init__(self,filename):        
         self.parse = ParseInitPath(globalpath+'config/InitPath.xml')        
-        #dragon的filepath是xmlCreate生成的xml路径，默认在此文件夹中        
-        self.commandpath = self.parse.get_xml_data(globalpath+'config/InitPath.xml','MOPAC')        
+        #dragon的filepath是xmlCreate生成的xml路径，默认在此文件夹中
+        temppath=os.environ['mopac']
+        self.commandpath=temppath+' '
+        #self.commandpath = self.parse.get_xml_data(globalpath+'config/InitPath.xml','MOPAC')        
         #self.InputFile=filePath #public variable       
         #to gain input file name such as i.mop it is a list
         self.filename                = filename     
@@ -46,11 +48,13 @@ class Mopac():
         for i in range(0, len(self.filename)):
             dragonpath = globalpath+'fordragon/'+self.filename_without_ext[i]+'/'+self.filename_without_ext[i]+'.mol'
             cmd = self.commandpath+"'"+self.mopfilepath[i]+self.filename[i]+"'"
+            print cmd
             subprocess.Popen(cmd,shell=True).wait()
             #get the optimized orientation in out file and replace counterpart in mol file with it
             #now orientation_info is filed with optimized orientationn
                                 ###############################################################################################
-            cmd = 'obabel -imoo '+self.mopfilepath[i]+self.filename_without_ext[i]+'.out '+' -omol -O '+dragonpath
+            cmd = 'obabel -imoo '+'\"'+self.mopfilepath[i]+self.filename_without_ext[i]+'.out\" '+'-omol -O \"'+dragonpath+'\" --gen3D'
+            print cmd
             subprocess.Popen(cmd,shell=True).wait()
                                 ###############################################################################################
        

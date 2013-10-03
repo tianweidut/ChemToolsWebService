@@ -1,24 +1,8 @@
 {% extends "base/_content.html" %}
 
 {% block calculate-content%}
-  <div class="tabbable">
-    <ul class="nav nav-tabs">
-      <li class="active">
-        <a class="details_tabs" href="#submit_tabs" data-toggle="tab">Submit Original</a>
-        </li>
-      <li >
-        <a class="details_tabs" href="#result_tabs" data-toggle="tab">Calculated Results</a>
-      </li>
-    </ul>
-    <div class="tab-content">
-      <div class="tab-pane active" id ="submit_tabs">
-        <!--Original submit content-->
-        {% include "widgets/commit_content.html" %} 
-        </div>
-      <div class="tab-pane" id ="result_tabs">
-        <!--results-->
-        {% include "widgets/calculated_results.html" %}
-      </div>
-    </div>
-  </div>
+  {% include "widgets/suite_tasks.html" %}
+  {% include "widgets/single_tasks.html" %}
+  {#TODO:Add input arguments with pictures#}
+  {#% include "widgets/input_args.html" %#}
 {% endblock %}

@@ -62,13 +62,18 @@ urlpatterns = patterns('',
     ),
     url(
         r'^history/$',
-        gui_views.task_list,
+        gui_views.history_view,
         name="history"
     ),
     url(
-        r'^details/$',
-        direct_to_template, {'template': 'features/details.html'},
-        name="details"
+        r'^details/suite/(?P<sid>.{36})$',
+        gui_views.suite_details_view,
+        name="suite_details"
+    ),
+    url(
+        r'^details/task/(?P<pid>.{36})$',
+        gui_views.task_details_view,
+        name="task_details"
     ),
     url(
         r'^settings/profile/$',

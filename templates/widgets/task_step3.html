@@ -8,46 +8,44 @@
     <div class="row-fluid show-grid">
       <div class="span6">
         <fieldset>
-          <legend>Response Method</legend>
-          <div class="row">
-            <div class="span6">
-              <div class="alert-success response-label ">
-                1. WEB Download
-              </div>
-            </div>
-            <div class="span6"> 
-              <div class="alert-success response-label">
-                2. Email Deliver
-              </div>
-            </div>
-          </div>
-        </fieldset>
-        
-        <br/>
-        <fieldset>
-          <legend>Presentation Mode</legend>
-          <div class="span3">
-            <label class="checkbox left-txt alert-info filetype"><input type="checkbox" id="choice_txt" checked="true" rel="raw_choice" value="TXT">TXT</label>
-          </div>
-          <div class="span3">
-            <label class="checkbox left-txt alert-info filetype"><input type="checkbox" id="choice_csv" checked="true"   rel="raw_choice"  value="CSV">CSV</label>
-          </div>
-          <div class="span3">
-            <label class="checkbox left-txt alert-info filetype"><input type="checkbox" id="choice_pdf" checked="true"   rel="raw_choice" value="PDF">PDF</label>
-          </div>
+          <legend>Results Email Notification</legend>
+          <input class="span10" id="commit_email" type="TEXT" rel="raw_content" placeholder="{{request.user.email}}" >
         </fieldset>
         <fieldset>
           <legend>Task Name</legend>
-          <input class="span12" id="commit_name" type="TEXT" rel="raw_content"  placeholder="unique name for task...">
+          <input class="span10" id="commit_name" type="TEXT" rel="raw_content"  placeholder="unique name for task...">
         </fieldset>
       </div>
       <div class="span6">
         <fieldset>
           <legend>Commit Notes</legend>
-          <textarea rows="5" cols="8" id="commit_notes" rel="raw_content" style="margin: 0px 0px 10px; width: 469px; height: 247px;"></textarea>
+          <textarea rows="5" cols="8" id="commit_notes" rel="raw_content" style="margin: 0px 0px 10px; width: 469px; height: 135px;"></textarea>
         </fieldset>
       </div>
     </div>
   </div>
 </div>
-
+<br/>
+<!--  calculate task step4 -->
+<div class="calculate-steps" >
+  <!--Operations Button-->
+  <div class="container-fluid search-result">
+  <center>
+    <div class="rows">
+      <div class="span4">
+        <button class="btn btn-primary show-btn" visible="true" id="commit-show-btn">Show</button>
+      </div>
+      <div class="span6">
+		    <button class="btn btn-large btn-success calculated-btn" id="commit-saved-btn">Calculate</button>
+      </div>
+    </div>
+  </center>
+  </div>
+</div>
+<br/>
+<div id="commit_content"  class="calculate-steps" >
+  <div class="page-header">
+    <h2>Confirm Your Commits</h2>
+  </div>
+  {% include "widgets/commit_content.html" %} 
+</div>

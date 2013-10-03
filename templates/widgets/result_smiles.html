@@ -1,0 +1,50 @@
+{%extends "base/base_results.html"%}
+
+{%block picture-content%}
+<img id="last_picture" src="{{search_engine.image.url}}" style="width: 120px; height: 120px;">		
+{%endblock%}
+
+{%block input-details%}
+<div class="span4">
+  <fieldset>
+    <legend>Calculate Source</legend>
+      <div class="alert-info">Knowledge Search Engine</div> 
+  </fieldset>
+  <br/>
+  <fieldset>
+    <legend>Specification</legend>
+    <blockquote>This is third submit method!</blockquote>
+  </fieldset>
+</div><!--end left panel-->
+<div class="span4">
+  <fieldset>
+    <legend>Mol Files</legend>
+    <table class="table table-hover">
+      <thead>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Smiles</td>
+          <td>{{search_engine.smiles}}</td>
+        </tr>
+        <tr>
+          <td>Common Name</td>
+          <td>{{search_engine.commonname}}</td>
+        </tr>
+        <tr>
+          <td>Molecular Formula</td>
+          {%autoescape off%}
+          <td>{{search_engine.mf}}</td>
+          {%endautoescape%}
+        </tr>
+        <tr>
+          <!--td>Download</td>
+          <td>
+            <a class="btn btn-primary" href="{{singletask.file_obj.file_obj.url}}" target="_blank" >Got it!</a>
+          </td-->
+        </tr>
+      </tbody>
+    </table>
+  </fieldset>
+</div><!--end right panel-->
+{%endblock%}

@@ -238,7 +238,7 @@ div#info-input-tab1{
 	margin-right: 30px;
 }
 
-div#models-choice-accordions{
+div#models-choice-panel{
 	margin-left: 50px;
 	margin-right: 50px;
 	text-align:left;
@@ -369,8 +369,28 @@ button.calculated-btn{
 	font-weight:bold;
 }
 
+button.show-btn{
+  width: 200px;
+  height: 50px;
+  font-size: 14px;
+	font-weight:bold;
+}
+
+
 #search-loading{
   width:60px;
   height:60px;
   text-align: center;
+}
+
+button#upload_update {
+  width:500px;
+  height:50px;
+}
+table.table-search tr td a.btn{
+  display:none;
+
+}
+table.table-search tr:hover td a.btn{
+  display:inline-block;
 }

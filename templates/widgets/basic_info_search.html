@@ -5,7 +5,7 @@
     <input type="text" id="query_input"  class="span4 search-query" placeholder="cas,name,smiles...">
 		<button id="search_varify_btn" class="btn" rel="tooltip" data-placement="right" 
 		data-original-title = "varify your input, like name,
-		cas, smile and chinese">Search & Varify</button>
+		cas, smile and chinese">Search</button>
 	</div>
 <br/>
 <!-- tips for search -->
@@ -15,7 +15,6 @@
 	<br/>
 	<ul>
 		<li>Name: Lipitor, Ibuprofen </li>
-		<li>CAS Num: 15687-27-1</li>
 		<li>SMILES: S=C=NC</li>
 		<li>Chinese name: 苯</li>
 	</ul>
@@ -27,7 +26,7 @@
 </div>
 </center>
 
-<!-- varify results -->
+<!-- results -->
 <div class="accordion" id="search_result_panel">
   <hr/>
 	{% include "widgets/search_result.html" %}

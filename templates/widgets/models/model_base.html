@@ -1,75 +1,51 @@
 <!--model choice base template-->
 <div class="models-choice-div">
-<!--title-->
-<div class="btn-group" >
-  <a class="user-info accordion-toggle" data-toggle="collapse" data-parent="#models-choice-accordions" href={%block collapse_id%} {%endblock%}>
-    {%block model_name_title %}{%endblock%}
-  </a>
-  <a class="{%block label-ui %}{%endblock%}">
-    {%block model_type%}{%endblock%}
-  </a>
-  <a class="label label-warning user-info-label" id={%block choiced_label%}{%endblock%} visible="false" rel="label-choice">choiced!</a>
+  <table>
+    <thead>
+      <tr>
+        <th width="125px">
+          <a class="user-info accordion-toggle" data-toggle="collapse" data-parent="#models-choice-accordions" href={%block collapse_id%} {%endblock%}>
+            {%block model_name_title %}{%endblock%}
+          </a>
+        </th>
+        <th width="150px">
+          <a class="{%block label-ui %}{%endblock%}">
+            {%block model_type%}{%endblock%}
+          </a>
+        </th>
+        <th width="65px">
+          <a class="label label-warning user-info-label" id={%block choiced_label%}{%endblock%} visible="false" rel="label-choice">choiced!</a>
+        </th>
+        <th width="400px">
+          <input class="span3"  id={%block temperature_model%}{%endblock%} 
+                 rel="raw_content"  type="text" placeholder="temperature(C)">
+        </th>
+        <th>
+          <a class="btn btn-large btn-primary pull-right" 
+             id={%block model_choice_id%}{%endblock%} rel="button-switch" 
+             model={%block model_name%}{%endblock%} switch_text="undo this model" 
+             control_id={%block control_id%}{%endblock%}>Choice This Model!</a>
+        </th>
+      </tr>
+    </thead>
+  </table>
+
+  
+  <div id={%block collapse_id_real%}{%endblock%} class="accordion-body collapse ">
+    <div class="accordion-inner">
+      <div class="container-fluid">
+        <div class="row-fluid">
+          <div class="span12">
+            <div class="page-header">
+              <h4>Abstract</h4>
+            </div>
+            <blockquote>
+              {%block model_introduction%}{%endblock%}
+            </blockquote>
+          </div><!--end span12--->
+        </div><!--end row-->
+      </div>
+    </div>
+  </div>
 </div>
-<!--Content-->
-<div id={%block collapse_id_real%}{%endblock%} class="accordion-body collapse in">
-  <div class="accordion-inner">
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <!--Introductions-->
-				<div class="span6">
-					<div class="page-header">
-            <h4>Abstract</h4>
-					</div>
-					<blockquote>
-            {%block model_introduction%}{%endblock%}
-					</blockquote>
-				</div>
-				<!--Choice and input args-->
-				<div class="span6">
-					<!--switch button-->
-					<div class="center-float">
-            <a class="btn btn-large btn-block btn-primary " 
-              id={%block model_choice_id%}{%endblock%} rel="button-switch" 
-              model={%block model_name%}{%endblock%} switch_text="undo this model" 
-              control_id={%block control_id%}{%endblock%}>Choice This Model!</a>
-					</div>
-					<br/>
-					<!--Input arguments-->
-					<fieldset>
-						<legend>Temperature Arguments</legend>
-						<div class="input-prepend input-append">
-							<select class="span4">
-								<option>Centigrade(C)</option>
-								<option>Fahrenheit(F)</option>
-						  </select>							
-							<input class="span6"  id={%block temperature_model%}{%endblock%} rel="raw_content"  type="text" placeholder="temperature(T or C)">
-							<select class="span2">
-								<option>.1</option>
-								<option>.01</option>
-								<option>.001</option>
-                <option>.0001</option>
-								<option>.00001</option>
-							</select>
-					  </div>
-			    </fieldset>
-					<br/>
-					<fieldset>
-						<legend>Humidity Arguments</legend>
-							<div class="input-prepend input-append">						
-								<input class="span6" id={%block humidity_model%}{%endblock%} rel="raw_content" type="text" placeholder="humidity(percentage)">
-								<span class="add-on">%</span>
-							</div>
-					</fieldset>
-					<fieldset>
-						<legend>Other Arguments</legend>
-							<div class="input-prepend input-append">						
-                <input class="span6"  id={%block other_model%}{%endblock%} rel="raw_content"  type="text" placeholder="other">
-								<span class="add-on">**</span>
-							</div>
-					</fieldset>
-			</div><!--span6 end-->	
-		</div>
-	</div>
-</div>
-</div>
-</div>
+<hr/>

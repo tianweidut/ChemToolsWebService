@@ -1,0 +1,16 @@
+<!--This is commit results page from search-->
+<div class="container-fluid ">
+  <div class="row-fluid">
+    <div class="span4">
+      <fieldset>
+        <legend>Structure</legend>
+        {%block picture-content%}
+          {% if singletask.file_obj.image %}
+            <img id="last_picture" src="{{singletask.file_obj.image.url}}" style="width: 120px; height: 120px;">		
+          {% endif %}
+        {%endblock%}
+      </fieldset>
+    </div><!--end first column panel-->
+    {%block input-details%}{%endblock%}
+  </div>
+</div>

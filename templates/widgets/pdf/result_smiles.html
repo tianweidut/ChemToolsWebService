@@ -1,0 +1,14 @@
+{%extends "base/base_results_pdf.html"%}
+
+{%block table-body-content%}
+  <tr><td>Smiles</td><td>{{search_engine.smiles}}</td></tr>
+  <tr><td>Common Name</td><td>{{search_engine.commonname}}</td></tr>
+  <tr><td>Molecular Formula</td>{%autoescape off%}
+      <td>{{search_engine.mf}}</td>{%endautoescape%}
+  </tr>
+  <tr><td>Specification</td><td>This is smiles search submit method!</td></tr>
+  <tr><td>Calculate Source</td><td>Knowledge Search Engineer</td></tr>
+  <tr><td>Structure</td><td>
+      <img id="last_picture" src="{{search_engine.image.url}}" style="width: 120px; height: 120px;">		
+  </td></tr>
+{%endblock%}

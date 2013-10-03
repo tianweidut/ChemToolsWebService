@@ -11,8 +11,8 @@ from calcore.models import *
 
 RegisterClass = (SuiteTask,
                  SingleTask,
-                 MolFile,
                  ProcessedFile,
+                 SearchEngineModel,
                  )
 
 for item in RegisterClass:

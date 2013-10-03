@@ -18,6 +18,7 @@ from backend.ChemSpiderPy.wrapper import search_cheminfo
 from calcore.models import *
 from backend.utilities import *
 from gui.tasks import *
+from gui.utilities import search_cheminfo_local
 
 
 @dajaxice_register(method='GET')
@@ -27,19 +28,17 @@ def calculate_submit(request,
                      mol=None,
                      notes=None,
                      name=None,
+                     email=None,
                      unique_names=None,
                      types="pdf;txt;csv",
                      models=None
                      ):
-    for i in range(0,50):
-        add.delay(10,10)
-
-    return simplejson.dumps({'message': "finish add async",
-                             'is_submitted': True})
-
+    #TODO: this is only for test, later we will delete this line
+    add.delay(10, 10)
 
     is_submitted, message = suitetask_process(request, smile=smile, mol=mol,
                                               notes=notes, name=name,
+                                              email=email,
                                               unique_names=unique_names,
                                               types=types,
                                               models=models)
@@ -56,11 +55,26 @@ def search_varify_info(request, query=None):
     data = {}
 
     if query is not None:
-        search_result = search_cheminfo(query.strip())
+        results = search_cheminfo(query.strip())
         data = {"is_searched": True,
-                "search_result": search_result}
+                "results": results}
     else:
-        data = {"is_searched": False,
-                "search_result": "None"}
+        data = {"is_searched": False}
+    logger.info(data)
+    return simplejson.dumps(data)
+
+
+@dajaxice_register(method='GET')
+@dajaxice_register(method='POST', name="search_local")
+def search_local(request, query=None):
+    logger.info(query)
+    data = {}
+
+    if query is not None:
+        results = search_cheminfo_local(query.strip())
+        data = {"is_searched": True,
+                "results": results}
+    else:
+        data = {"is_searched": False}
     logger.info(data)
     return simplejson.dumps(data)

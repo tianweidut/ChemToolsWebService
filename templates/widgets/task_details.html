@@ -1,0 +1,36 @@
+{% extends "base/_content.html" %}
+
+{% block calculate-content%}
+<div class="page-header">
+  <h3>Overview</h3>
+</div> 
+<div class="row">
+  <div class="span2">
+    {%if singletask.status.category == "success"%}
+      <image src="/static/images/save256.png" style="width: 140px; height: 140px;" ></image>
+    {%elif singletask.status.category == "failed"%}
+		  <image src="/static/images/close-bug256.png" style="width: 140px; height: 140px;" ></image>
+    {%else%}
+      <image src="/static/images/reload256.png" style="width: 140px; height: 140px;" ></image>
+    {%endif%}
+  </div>
+  <div class="span5"> 
+    <h3>Basic Info</h3>
+    <h5>Suite Task:{{singletask.sid.name}}</h5>
+    <h5>Start Time:{{singletask.sid.start_time|date:"Y-m-d H:m"}}</h5>
+    <h5>Status: {{singletask.status}}</h5>
+    <h5>Task ID: {{singletask.pid}}</h5>
+  </div>
+  {%if singletask.status.category == "success"%}
+    <div class="span4">
+      <h3>Report</h3>
+      <a href="{{singletask.result_pdf.url}}" target="_blank"><image src="/static/images/pdf256.png" style="width: 90px; height: 90px;"></a>
+    </div>
+  {%endif%}
+</div>
+<br/>
+<div class="page-header">
+  <h3>Details</h3>
+</div> 
+{%include "widgets/task_commits.html"%}
+{% endblock %}

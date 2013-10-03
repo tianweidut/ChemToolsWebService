@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 from  xml.dom import  minidom
+import os
 class ParseInitPath():
     
     def __init__(self,filename):
@@ -20,15 +21,22 @@ class ParseInitPath():
         if software_call=="DRAGON":
             
             DRAGON = self.get_xmlnode(root,'DRAGON')    
+            print DRAGON
             for node in DRAGON: 
                 DRAGON_PATH = self.get_xmlnode(node,'PATH')
+                print DRAGON_PATH
                 DRAGON_PATH_Value=self.get_nodevalue(DRAGON_PATH[0])
-            return  DRAGON_PATH_Value
+            print DRAGON_PATH_Value
+            print os.environ[DRAGON_PATH_Value]+'dragon6shell -s '
+            return os.environ[DRAGON_PATH_Value]+'dragon6shell -s '  
         elif software_call=="MOPAC":
             MOPAC = self.get_xmlnode(root,'MOPAC')    
             for node in MOPAC:
                 MOPAC_PATH = self.get_xmlnode(node,'PATH')
+                #print MOPAC_PATH[0]
                 MOPAC_PATH_Value=self.get_nodevalue(MOPAC_PATH[0])
+            print MOPAC_PATH_Value
+            #print os.environ[MOPAC_PATH_Value]
             return MOPAC_PATH_Value
         elif software_call=="GAUSSIAN":
             GAUSSIAN = self.get_xmlnode(root,'GAUSSIAN')    

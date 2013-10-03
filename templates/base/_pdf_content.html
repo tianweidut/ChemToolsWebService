@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <!--style>
+    @font-face{
+        font-family: "simsun";
+        src: url("{{STATIC_URL}}pdf/simsun.ttc");
+      }
+      html{
+        font-family: simsun;
+      }
+  </style-->
+  <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Chemistry Tools</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    {% block meta_description %}
+    <meta name="description" content="" />
+    {% endblock %}
+    <meta name="keywords" content="" />
+    <meta name="author" content="tianwei" >
+
+    <!-- index style -->
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}pdf/bootstrap.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/index.css" >
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/content.css" >
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/accounts_form.css" >
+
+  </head>
+  <body>
+    <center>
+      <h3>School of Environment Science and Technology, DUT</h3>
+    </center>
+    <div class="container form-container">
+      {%block calculate-content%} {% endblock %}
+    </div>
+	</body>
+</html>
