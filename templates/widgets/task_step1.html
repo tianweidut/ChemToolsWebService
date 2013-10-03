@@ -1,31 +1,23 @@
-<!--  calculate task step1: input your calculated information -->
-
 <div class="calculate-steps" >
 	<div class="page-header">
 		<h2>STEP1: Basic Infomation Input</h2> 
 	</div>
-	
 	<div class="tabbable">
 		<ul class="nav nav-tabs tab-fix">
 			<li > <a href="#info-input-tab1" id="tab1" data-toggle="tab">Search</a></li>
 			<li class="active"> <a href="#info-input-tab2" data-toggle="tab">Drawing</a></li>
 			<li > <a href="#info-input-tab3" data-toggle="tab">Files</a></li>
 		</ul>
-		
 		<div class="tab-content">
-			
 			<div class="tab-pane" id="info-input-tab1">
-				<!-- Basic Info search input -->
-				{% include "widgets/basic_info_search.html"%}
+				{% include "widgets/info-search.html"%}
 			</div>
 			<div class="tab-pane active" id="info-input-tab2">
-				<!--draw chemistry structure -->
-				{% include "widgets/chem_structure_draw.html" %}
+				{% include "widgets/chem-draw.html" %}
 			</div>
 			<div class="tab-pane " id="info-input-tab3">
-				<!-- Files upload for search or calculate -->	
-				{% include "widgets/file_upload.html" %}
+				{% include "widgets/file-upload.html" %}
 			</div>		
-		</div>
-	</div>
-</div>                             
+    </div><!--end table content-->
+  </div><!--end tabbable-->
+</div><!--end first step div-->                             

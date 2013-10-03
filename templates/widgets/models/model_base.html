@@ -4,7 +4,9 @@
     <thead>
       <tr>
         <th width="125px">
-          <a class="user-info accordion-toggle" data-toggle="collapse" data-parent="#models-choice-accordions" href={%block collapse_id%} {%endblock%}>
+          <a class="user-info accordion-toggle" 
+             data-toggle="collapse" data-parent="#models-choice-accordions" 
+             href={%block collapse_id%} {%endblock%}>
             {%block model_name_title %}{%endblock%}
           </a>
         </th>
@@ -14,11 +16,13 @@
           </a>
         </th>
         <th width="65px">
-          <a class="label label-warning user-info-label" id={%block choiced_label%}{%endblock%} visible="false" rel="label-choice">choiced!</a>
+          <a class="label label-warning user-info-label" 
+             id={%block choiced_label%}{%endblock%} 
+             visible="false" rel="label-choice">choiced!</a>
         </th>
         <th width="400px">
           <input class="span3"  id={%block temperature_model%}{%endblock%} 
-                 rel="raw_content"  type="text" placeholder="temperature(C)">
+                 type="text" placeholder="temperature(C)" value="25">
         </th>
         <th>
           <a class="btn btn-large btn-primary pull-right" 
