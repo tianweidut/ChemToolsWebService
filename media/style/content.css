@@ -388,3 +388,11 @@ button#upload_update {
   height:50px;
 }
 
+
+table.table-search tr td a.btn{
+  display:none;
+
+}
+table.table-search tr:hover td a.btn{
+  display:inline-block;
+}

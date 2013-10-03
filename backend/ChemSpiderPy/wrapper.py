@@ -14,9 +14,10 @@ from django.conf import settings
 from django.db.models import Q
 from django.core.files import File
 
-from chemspipy import find_one
+from .chemspipy import find
 from backend.logging import logger, loginfo
 from calcore.models import SearchEngineModel
+from gui.utilities import simple_search_output_api
 
 
 def store_image(url, name):
@@ -132,42 +133,18 @@ def save_search_record(content, query):
     search_result.save()
 
 
+@simple_search_output_api
 def search_cheminfo(query):
-    """
-        Search chem info wrapper
+    rs = SearchEngineModel.objects.filter(Q(commonname__contains=query)|
+                                          Q(smiles__contains=query)|
+                                          Q(search_query__contains=query))
 
-        Args:
-            In: query string
-            Out: a dict for search result ,
-                 which include is_valid, content(it is also a dict)
-    """
-    search_result = {"is_valid": True,
-                     "content": {},
-                     }
+    if len(rs) != 0:
+        return [copy_results(r, database=True) for r in rs]
 
-    if query is None or query is "":
-        search_result["is_valid"] = False
-        return search_result
+    rs = list()
+    for r in find(query):
+        rs.append(copy_results(r))
+        save_search_record(r, query)
 
-    database_result = SearchEngineModel.objects.filter(Q(commonname__contains=query)|
-                                                      Q(smiles__contains=query)|
-                                                      Q(search_query__contains=query))
-
-    if len(database_result) != 0:
-        return copy_results(database_result[0], database=True)
-
-    try:
-        content = find_one(query)
-        search_result = copy_results(content)
-        # We should ensure the main process
-        try:
-            save_search_record(content, query)
-        except Exception, err:
-            loginfo(p=err)
-            pass
-    except Exception, err:
-        loginfo(p=err)
-        search_result["is_valid"] = False
-        return search_result
-
-    return search_result
+    return rs

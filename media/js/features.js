@@ -6,20 +6,11 @@
 // tooltips
 $(document).ready(function(){
   $("[rel=tooltip]").tooltip();
-});
-
-// carousel
-$(document).ready(function(){
   $('#myCarousel').carousel();
 });
 
-// carousel
-$(document).ready(function(){
-  //$('#carousel-bootcamp').carousel();
-});
 
 //step-contents
-
 $(document).ready(function () {
 	// WIZARD
 	$('#MyWizard').on('change', function(e, data) {
@@ -109,13 +100,3 @@ $(document).ready(function(){
   });
   
 });
-
-/*
-$(document).ready(function(){
-	$('ul li a.setting-bar').click(
-		function(){
-			$("ul li a.setting-bar").parent().removeClass('active');
-			$(this).parent().attr('class','active');
-		});
-});
-*/
