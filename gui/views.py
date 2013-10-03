@@ -34,39 +34,7 @@ from backend.utilities import *
 from calcore.models import *
 from const import MODEL_SPLITS
 from const import ORIGIN_UPLOAD
-
-
-def step1_form(request=None):
-    """
-        Step1 for module choice,
-        basic info input and search
-    """
-    data = {}
-    search_result = None
-    if request is not None:
-        basic_form = forms.BasicInfoForm(request.POST)
-
-        if basic_form.is_valid():
-            search_text = basic_form.cleaned_data["info"]
-            search_result = search_cheminfo(search_text)
-            data = {"is_valid": True,
-                    "is_searched": True,
-                    "search_result": search_result,
-                    "basic_form": basic_form}
-        else:
-            data = {"is_valid": False,
-                    "is_searched": True,
-                    "search_result": "None",
-                    "basic_form": basic_form}
-        return data
-    else:
-        basic_form = forms.BasicInfoForm()
-        data = {"is_valid": True,
-                "is_searched": False,
-                "search_result": "None",
-                "basic_form": basic_form}
-
-        return data
+from const.models import ModelCategory
 
 
 def split_name(name, sep="."):
@@ -126,11 +94,13 @@ def multi_inputform(request):
          for STEP1 page and Search page
        * multi files upload
     """
+    models = {model.category: model.desc for model in ModelCategory.objects.all()}
+
     if request.method == "POST":
         if request.FILES is not None:
             return upload_response(request)
 
-    return render(request, "features/newtask.html")
+    return render(request, "features/newtask.html",dict(models=models))
 
 
 @login_required
