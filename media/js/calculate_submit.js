@@ -3,8 +3,6 @@
  * the 
  */
 
-// inital hide
-
 var table_data;
 
 $(document).ready(function(){
@@ -22,7 +20,6 @@ $(document).ready(function(){
   $("div#commit_content").hide();
 });
 
-//raw content copy
 $("[rel='raw_content']").change(function(){
   var name = $(this).attr('id') + "_copy";
   //TODO: should check whether the element exists;
@@ -30,7 +27,6 @@ $("[rel='raw_content']").change(function(){
   $("#"+name).text($(this).val());
 });
 
-//raw choice copy
 $("[rel='raw_choice']").change(function(){
   var name = $(this).attr("id") + "_selected";
   if($(this).attr("checked") === "checked")
@@ -45,36 +41,57 @@ $("[rel='raw_choice']").change(function(){
     }
 });
 
-// modified choice copy, it means KOA, KOF ,... model choice
 $("[rel='button-switch']").click(function(){
-  var show_element = "#"+ $(this).attr("id") + "_copy";
-  var model = $(this).attr("model");
-  var checked_element ="#label_id_" + model;
-  var temperature_element = "#temperature__" + model; 
-  var humidity_element = "#humidity_" + model; 
-  var other_element = "#other_" + model; 
+  var show= "#"+ $(this).attr("id") + "_copy";
+  var checked="#label_id_" + $(this).attr("model");
  
-  if($(checked_element).attr("visible") === "false")
+  if($(checked).attr("visible") === "false")
     {
-      //alert("visible=false")
-      $(this).text("undo this choice");
-      $(this).toggleClass("btn-danger");
-      $(checked_element).attr("visible", "true");
-      $(checked_element).show();
-      $(show_element).attr("visible", "true");
-      //alert($(show_element).attr("visible"))
-      //alert($(checked_element).attr("visible"))
-      $(show_element).show();
+      $(this).text("undo this choice").toggleClass("btn-danger");
+      $(checked).attr("visible", "true").show();
+      $(show).attr("visible", "true").show();
     }
   else
     {
-      $(this).text("Please choice");
-      $(this).toggleClass("btn-danger");
-      $(checked_element).attr("visible", "false");
-      $(checked_element).hide();
-      $(show_element).attr("visible", "false");
-      $(show_element).hide(); 
+      $(this).text("Choice This Model!").toggleClass("btn-danger");
+      $(checked).attr("visible", "false").hide();
+      $(show).attr("visible", "false").hide(); 
     }
+});
+
+$("#model-choice-all").click(function(){
+  $("[rel=button-switch]").each(function(){
+    var show= "#"+ $(this).attr("id") + "_copy";
+    var checked="#label_id_" + $(this).attr("model");
+    $(this).text("undo this choice").addClass("btn-danger");
+    $(checked).attr("visible", "true").show();
+    $(show).attr("visible", "true").show();
+  });
+});
+
+$("#model-cancel-all").click(function(){
+  $("[rel=button-switch]").each(function(){
+    var show= "#"+ $(this).attr("id") + "_copy";
+    var checked="#label_id_" + $(this).attr("model");
+    $(this).text("Choice This Model!").removeClass("btn-danger");
+    $(checked).attr("visible", "false").hide();
+    $(show).attr("visible", "false").hide(); 
+  });
+});
+
+
+$('#basic_search_add').click(function(){
+  var smile_element = $('#last_smile');
+  var pic_element = $('#last_picture');
+  var smile_copy = "#" + smile_element.attr("id") + "_copy";
+  var pic_copy = "#" + pic_element.attr("id") + "_copy";
+
+  $(smile_copy).text(smile_element.text());
+  $(pic_copy).attr("src", pic_element.attr("src"));
+  
+  $(this).text("Added!");
+  $(this).toggleClass("btn-primary");
+  $(this).toggleClass("btn-danger");
 });
 
 $(document).ready(function(){
@@ -291,6 +308,3 @@ $("#commit-show-btn").click(function(){
       $(this).attr("visible","false"); 
     }
 });
-
-
-

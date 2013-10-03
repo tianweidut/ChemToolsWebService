@@ -1,47 +1,23 @@
 <!--  calculate task step2 -->
 <div class="calculate-steps" >
-	<div class="page-header">
-		<h2>STEP2: Choice Chemistry Models</h2> 
-	</div>
-	
-	<!--choice models with collapse plugin-->
-	<div class="accordion" id="models-choice-accordions">
-	<div class="tabbable">
-		<ul class="nav nav-tabs tab-fix">
-			<li > <a href="#model-input-tab1" data-toggle="tab">Environement behavior</a></li>
-			<li class="active"> <a href="#model-input-tab2" data-toggle="tab">Environement toxicology</a></li>
-			<li > <a href="#model-input-tab3" data-toggle="tab">Health toxicology</a></li>
-		</ul>
-		
-		<div class="tab-content">
-			<div class="tab-pane" id="model-input-tab1">
-        <!--model 1-->
-        {% include "widgets/models/KOA.html" %}	
-        <!--model 2-->
-	      {% include "widgets/models/KOC.html" %}	
-		    <!--model 3-->
-        {% include "widgets/models/PL.html" %}
-    		<!--model 4-->
-        {% include "widgets/models/BCF.html" %}
-    		<!--model 7-->
-        {% include "widgets/models/KOH.html" %}
-    		<!--model 8-->
-        {% include "widgets/models/KOH_T.html" %}
-			</div>
-			<div class="tab-pane active" id="model-input-tab2">
-
-		    <!--model 5-->
-	      {% include "widgets/models/PKD.html" %}	
-			</div>
-			<div class="tab-pane " id="model-input-tab3">
-    		<!--model 6-->
-	      {% include "widgets/models/PPK.html" %}	
-		    <!--model 7-->
-        {% include "widgets/models/DFS.html" %}
-    		<!--model 9-->
-	      {% include "widgets/models/RP.html" %}	
-			</div>		
-		</div>
-	</div>
+  <div class="page-header">
+    <h2>STEP2: Choice Chemistry Models</h2> 
+  </div>
+  <div id="models-choice-panel">
+    {% include "widgets/models/KOA.html" %}	
+    {% include "widgets/models/KOC.html" %}	
+    {% include "widgets/models/PL.html" %}
+    {% include "widgets/models/KOH.html" %}
+    {% include "widgets/models/KOH_T.html" %}
+    {% include "widgets/models/PKD.html" %}
+    {% include "widgets/models/PPK.html" %}
+    {% include "widgets/models/DFS.html" %}
+    {% include "widgets/models/RP.html" %}
+    <div class="row-fluid">
+      <div class="span4 offset9 btn-group">
+        <a class="btn btn-danger btn-large " id="model-cancel-all">Cancel ALL</a>
+        <a class="btn btn-primary btn-large " id="model-choice-all">Choice ALL</a>
+      </div>
+    </div>
   </div>
 </div>
