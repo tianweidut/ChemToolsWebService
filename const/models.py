@@ -48,6 +48,7 @@ class ModelCategory(models.Model):
                                 choices=MODEL_CHOICES,
                                 verbose_name=u"Calculate Model")
     origin_type = models.ForeignKey(ModelTypeCategory, blank=False)
+    desc = models.TextField(blank=True)
 
     class Meta:
         verbose_name = "Calculate Model"
