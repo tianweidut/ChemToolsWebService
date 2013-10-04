@@ -48,5 +48,18 @@
   <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/csrf.js"></script>
 
   <!--JS for calculate sumbit content update and Ajax opteration-->
-  <script type='text/javascript' src="{{STATIC_URL}}js/calculate_submit.js"></script>
+  <script>
+    var Calculate = {}; 
+    Calculate.query = "";
+    Calculate.smile = "";
+    Calculate.draw_mol = "";
+    Calculate.files = [];
+
+    Calculate.models = {};
+
+    Calculate.task_name = "";
+    Calculate.notes = "";
+    Calculate.email = "{{request.user.email}}";
+  </script>
+  <script type='text/javascript' src="{{STATIC_URL}}js/calculate.js"></script>
 {% endblock %}

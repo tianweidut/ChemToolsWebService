@@ -1,25 +1,14 @@
 /**
  * @author tianwei
- * the whole features js
  */
 
-// tooltips
-$(document).ready(function(){
+$(function(){
   $("[rel=tooltip]").tooltip();
   $('#myCarousel').carousel();
 });
 
 
-//step-contents
-$(document).ready(function () {
-	// WIZARD
-	$('#MyWizard').on('change', function(e, data) {
-		console.log('change');
-		if(data.step===3 && data.direction==='next') {
-			// return e.preventDefault();
-		}
-  });
-
+$(function () {
   $('#MyWizard').on('changed', function(e, data) {
 		console.log('changed');
 	});
@@ -34,36 +23,11 @@ $(document).ready(function () {
 	});
 	$('#btnWizardStep').on('click', function() {
 		var item = $('#MyWizard').wizard('selectedItem');
-		console.log(item.step);
 	});
 });
 
 
-$(document).ready(function(){ 
-  
-  //date picker
-  $('.datepicker').datepicker({
-		format: 'yyyy-mm-dd'
-	});
-	
-  //search options
-  var search_panel = "#search-options-panel";
-  $(search_panel).hide();
-  $('#option-search').click(
-    function(){
-    if($(search_panel).attr('visible')==='false')
-      {
-        $(search_panel).show();
-        $(search_panel).attr('visible','true');
-      }
-      else
-      {
-        $(search_panel).hide();
-        $(search_panel).attr('visible','false');
-      }
-  });
-  
-  //task details filter label
+$(function(){ 
   $('ul li a.filter').click(
     function(){
       $("ul li a.filter").parent().removeClass('active');
@@ -98,5 +62,4 @@ $(document).ready(function(){
           break;
       }
   });
-  
 });
