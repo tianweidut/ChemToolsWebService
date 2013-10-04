@@ -192,8 +192,8 @@ $("#commit-show-btn").click(function(){
     }
   else
     {
-
       update_model();
+      update_pre();
       $("div#commit_content").show();
       $(this).text("Hide")
              .toggleClass("btn-primary")
@@ -201,3 +201,42 @@ $("#commit-show-btn").click(function(){
              .attr("visible","false"); 
     }
 });
+
+function update_info(){
+  Calculate.query = $("#query_input").val();
+}
+
+function update_pre(){
+  var row = "<tr><td colspan='2'><p class='alert'>Inputs</p></td></tr>";
+
+  if(Calculate.query){
+    row += "<tr><td>Query</td><td>"+
+           Calculate.query+"</td></tr>";
+    row += "<tr><td>Smiles</td><td>"+
+           Calculate.smiles+"</td></tr>";
+  }
+
+  if(Calculate.draw_mol){
+    row += "<tr><td>Chem Structure</td>"+
+           "<td>Draw Structure has been added!</td></tr>";
+  }
+
+  if(Calculate.files){
+    row += "<tr><td>Upload Files</td>"+
+           "<td>Upload "+ Calculate.files.length +" mol files</td></tr>";
+  }
+
+  row += "<tr><td colspan='2'><p class='alert'>Models</p></td></tr>"; 
+  if(Calculate.models){
+    $.each(Calculate.models, function(k,v){
+      row += "<tr><td>"+k+"</td><td>"+v.temperature+"(temperature)</td></tr>";  
+    });
+  }
+
+  row += "<tr><td colspan='2'><p class='alert'>Meta</p></td></tr>"; 
+  row += "<tr><td>Task Name</td><td>" +Calculate.task_name+"</td></tr>";
+  row += "<tr><td>Notify Email</td><td>"+Calculate.email+"</td></tr>";
+  row += "<tr><td>Notes</td><td>"+Calculate.notes+"</td></tr>";
+
+  $("#calculate-pre").append(row);
+}
