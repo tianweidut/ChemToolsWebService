@@ -154,7 +154,7 @@ $('#search_varify_btn').click(function(){
     $("#search-loading").hide();
     $("#search_result_panel").show();
 
-    if(data.is_searched && data.results.length != 0){
+    if(data.is_searched && data.results.length !== 0){
       $(element).find("tbody").html("");
       $.each(data.results, function(k,v){
         var row = "<tr class='search-content'><td>"+ v.cas +"</td><td>"+
