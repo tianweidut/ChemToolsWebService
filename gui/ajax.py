@@ -7,10 +7,7 @@ Created on 2013-03-25
 Desc: This module will be used for ajax request, such as form valid, search
       query, calculated submit.
 '''
-
 import simplejson
-import uuid
-import datetime
 from dajaxice.decorators import dajaxice_register
 
 from backend.logging import logger, loginfo
@@ -25,23 +22,25 @@ from gui.utilities import search_cheminfo_local
 @dajaxice_register(method='POST', name="calculate_submit_post")
 def calculate_submit(request,
                      smile=None,
-                     mol=None,
+                     draw_mol=None,
                      notes=None,
-                     name=None,
+                     task_name=None,
                      email=None,
-                     unique_names=None,
-                     types="pdf;txt;csv",
-                     models=None
-                     ):
-    #TODO: this is only for test, later we will delete this line
-    add.delay(10, 10)
-
-    is_submitted, message = suitetask_process(request, smile=smile, mol=mol,
-                                              notes=notes, name=name,
-                                              email=email,
-                                              unique_names=unique_names,
-                                              types=types,
-                                              models=models)
+                     files=None,
+                     models=None):
+    try:
+        is_submitted, message = suitetask_process(request,
+                                                  smile=smile,
+                                                  mol=draw_mol,
+                                                  notes=notes,
+                                                  name=task_name,
+                                                  email=email,
+                                                  unique_names=files,
+                                                  models=models)
+    except Exception, err:
+        loginfo(err)
+        message = "Server maybe wrong!, please contact administrator."
+        is_submitted = False
 
     return simplejson.dumps({'message': message,
                              'is_submitted': is_submitted})
