@@ -4,7 +4,6 @@ Created on 2013-5-21
 
 @author: tianwei
 
-Desc: a source code tool
 '''
 import uuid
 import os
@@ -20,16 +19,11 @@ import pybel
 from backend.logging import loginfo
 from calcore.models import SingleTask, ProcessedFile, SuiteTask
 from const.models import ModelCategory
-from const import MODEL_KOA, MODEL_KOF, MODEL_PL, MODEL_KOC, MODEL_KOH, MODEL_KOH_T, MODEL_RP
-from const import MODEL_BCF, MODEL_PKD, MODEL_DFS
-from const import MODEL_DFS
 from const import ORIGIN_DRAW, ORIGIN_SMILE, ORIGIN_UPLOAD
-from const import ORIGIN_OTHER, ORIGIN_UNDEFINED
 from const.models import StatusCategory, FileSourceCategory
 from const import STATUS_WORKING
 from const import MODEL_SPLITS
 from users.models import UserProfile
-from calcore.controllers.prediciton_model import PredictionModel
 from gui.tasks import *
 
 
@@ -46,48 +40,6 @@ class JSONResponse(HttpResponse):
                  *args, **kwargs):
         content = simplejson.dumps(obj, **json_opts)
         super(JSONResponse, self).__init__(content, mimetype, *args, **kwargs)
-
-
-def make_uniquenames(name_str=None):
-    """
-    This function can process the unique name which is splited by
-    comma
-    Arguments:
-        In: name_str, which is a comma strings
-        Out: fid list, which are the primary key in ProcessedFile table
-    """
-    if name_str is None:
-        return []
-
-    fid_list = name_str.strip(";").split(";")
-
-    loginfo(p=fid_list, label="make_uniquenames")
-
-    return fid_list
-
-
-def parse_models(model_str):
-    """
-    Parse models string
-    Arguments:
-        In: a list like [u'koa;none;80;none', u'kof;none;80;none']
-        Out: a complex dict
-    """
-
-    loginfo(model_str)
-    ret = {}
-    if not model_str:
-        return ret
-
-    for item in model_str:
-        item = item.split(";")
-        ret[item[0]] = {}
-        ret[item[0]]["temp"] = item[1]
-        ret[item[0]]["humdity"] = item[2]
-        ret[item[0]]["other"] = item[3]
-
-    loginfo(p=ret, label="parse_models")
-    return ret
 
 
 def calculate_tasks(pid_list, smile, mol, models):
@@ -108,8 +60,7 @@ def calculate_tasks(pid_list, smile, mol, models):
     if number == 0:
         return 0
 
-    models_dict = parse_models(models)
-    number = number * len(models_dict)
+    number = number * len(models.keys())
 
     loginfo(p=number, label="calculate_tasks")
     return number
@@ -135,7 +86,6 @@ def save_record(f, model_name, sid, source_type, smile=None, arguments=None):
         f.save()
         task.status = StatusCategory.objects.get(category=STATUS_WORKING)
         task.save()
-        path = os.path.join(settings.MEDIA_ROOT, f.file_obj.url)
         calculateTask.delay(task, model_name)
     elif source_type == ORIGIN_SMILE or source_type == ORIGIN_DRAW:
         #here, f is a file path
@@ -153,7 +103,7 @@ def save_record(f, model_name, sid, source_type, smile=None, arguments=None):
         obj.close()
         task.status = StatusCategory.objects.get(category=STATUS_WORKING)
         task.save()
-        calculateTask.delay(task, model_name,arguments)
+        calculateTask.delay(task, model_name, arguments)
     else:
         loginfo(p=source_type, label="Cannot recongize this source type")
         return
@@ -249,47 +199,35 @@ def start_moldraw_task(moldraw, model_name, sid, arguments=None):
 
 
 def get_model_category(model_name):
-    """
-    """
-    if not model_name:
-        return None
-
-    category = ModelCategory.objects.get(category=model_name).\
-               origin_type.get_category_display()
+    try:
+        category = ModelCategory.objects.get(category=model_name).\
+                                 origin_type.get_category_display()
+    except Exception, err:
+        loginfo(err)
+        loginfo(model_name)
+        category = ""
 
     return category
 
 
-def get_models_name(models=None):
+def get_models_name(models):
     """
     Parse models json into models name and models type name,
     which are CSV format, use MODEL_SPLITS in const.__init__
 
     Out: a tuple, models_str + models_category_str
     """
-    loginfo(p=models)
-    if not models:
-        return ("", "")
+    categorys = set()
+    for model in models.keys():
+        categorys.add(get_model_category(model))
 
-    models_list = [i.split(MODEL_SPLITS)[0] for i in models]
-    category_set = dict()
-    for i in models_list:
-        category = get_model_category(i)
-        category_set[category] = ""
+    models_str = MODEL_SPLITS.join(models.keys())
+    categorys_str = MODEL_SPLITS.join(list(categorys))
 
-    models_str = MODEL_SPLITS.join(models_list)
-    loginfo(p=category_set)
-    models_category_str = MODEL_SPLITS.join(category_set.keys())
-
-    loginfo(p=models_str)
-    loginfo(p=models_category_str)
-
-    return (models_str, models_category_str)
+    return (models_str, categorys_str)
 
 
 def get_email(email=None, backup_email=None):
-    """
-    """
     if bool(re.match(r"^.+@([a-zA-Z0-9]+\.)+([a-zA-Z]{2,})$", email)):
         return email
     else:
@@ -298,7 +236,7 @@ def get_email(email=None, backup_email=None):
 
 
 def suitetask_process(request, smile=None, mol=None, notes=None,
-                      name=None, email=None, unique_names=None, types=None,
+                      name=None, email=None, unique_names=None,
                       models=None):
     """
     real record operation
@@ -315,15 +253,12 @@ def suitetask_process(request, smile=None, mol=None, notes=None,
         message = "anonymous auth failed!"
         return (is_submitted, message)
 
-    pid_list = make_uniquenames(unique_names)
-    total_tasks = calculate_tasks(pid_list, smile, mol, models)
-    #TODO: Add suite id into ProcessedFile Model
+    total_tasks = calculate_tasks(unique_names, smile, mol, models)
 
     if total_tasks == 0:
         is_submitted = False
         message = "Please choice one model or input one search!"
         return (is_submitted, message)
-
 
     suite_task = SuiteTask()
     suite_task.sid = str(uuid.uuid4())
@@ -341,14 +276,15 @@ def suitetask_process(request, smile=None, mol=None, notes=None,
 
     loginfo(p="finish suite save")
 
-    models_dict = parse_models(models)
-    print models_dict
     flag = False
-    for key in models_dict:
-        #TODO: add mol arguments
-        flag = flag | start_smile_task(smile, key,suite_task.sid,models_dict[key]['temp'])
-        flag = flag | start_moldraw_task(mol, key,suite_task.sid,models_dict[key]['temp'])
-        flag = flag | start_files_task(pid_list, key,suite_task.sid,models_dict[key]['temp'])
+    try:
+        for k, v in models.items():
+            flag = flag | start_smile_task(smile, k, suite_task.sid, v['temperature'])
+            flag = flag | start_moldraw_task(mol, k, suite_task.sid, v['temperature'])
+            flag = flag | start_files_task(unique_names, k, suite_task.sid, v['temperature'])
+    except Exception, err:
+        loginfo(err)
+        flag = False
 
     if flag:
         is_submitted = True

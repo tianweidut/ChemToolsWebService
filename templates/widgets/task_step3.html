@@ -1,32 +1,30 @@
-<!--  calculate task step3 -->
 <div class="calculate-steps">
   <div class="page-header">
     <h2>STEP3: Response Message </h2>
   </div>
-  
   <div class="container-fluid">
     <div class="row-fluid show-grid">
       <div class="span6">
         <fieldset>
-          <legend>Results Email Notification</legend>
-          <input class="span10" id="commit_email" type="TEXT" rel="raw_content" placeholder="{{request.user.email}}" >
+          <legend>Task Name</legend>
+          <input class="span10" id="commit_name" type="TEXT"  placeholder="unique name for task...">
         </fieldset>
         <fieldset>
-          <legend>Task Name</legend>
-          <input class="span10" id="commit_name" type="TEXT" rel="raw_content"  placeholder="unique name for task...">
+          <legend>Results Email Notification</legend>
+          <input class="span10" id="commit_email" type="TEXT" value="{{request.user.email}}" placeholder="notify email" >
         </fieldset>
-      </div>
+      </div><!--end left span-->
       <div class="span6">
         <fieldset>
           <legend>Commit Notes</legend>
-          <textarea rows="5" cols="8" id="commit_notes" rel="raw_content" style="margin: 0px 0px 10px; width: 469px; height: 135px;"></textarea>
+          <textarea rows="5" cols="8" id="commit_notes" style="margin: 0px 0px 10px; width: 469px; height: 135px;"></textarea>
         </fieldset>
-      </div>
-    </div>
-  </div>
-</div>
+      </div><!--end right span-->
+    </div><!--end row-fluid-->
+  </div><!--end container-->
+</div><!--end step3-->
 <br/>
-<!--  calculate task step4 -->
+
 <div class="calculate-steps" >
   <!--Operations Button-->
   <div class="container-fluid search-result">
@@ -42,10 +40,6 @@
   </center>
   </div>
 </div>
+<div id="calculate-submit-info" class="alert alert-error"></div>
 <br/>
-<div id="commit_content"  class="calculate-steps" >
-  <div class="page-header">
-    <h2>Confirm Your Commits</h2>
-  </div>
-  {% include "widgets/commit_content.html" %} 
-</div>
+{% include "widgets/pre.html" %} 

@@ -3,8 +3,6 @@
 Created on 2013-05-20
 
 @author: tianwei
-
-Desc: dict table
 '''
 
 import datetime

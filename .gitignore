@@ -11,6 +11,7 @@ media/tmp/*
 celerytest/
 *.rdb
 deploy/*.xls
+.DS_Store
 
 static/*
 
