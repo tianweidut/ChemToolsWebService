@@ -207,6 +207,7 @@ function update_info(){
 }
 
 function update_pre(){
+  $("#calculate-pre").html("");
   var row = "<tr><td colspan='2'><p class='alert'>Inputs</p></td></tr>";
 
   if(Calculate.query){
