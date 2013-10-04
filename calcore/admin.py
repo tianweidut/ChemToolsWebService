@@ -6,13 +6,15 @@ Created on 2012-11-5
 '''
 
 from django.contrib import admin
-from calcore.models import *
+from calcore.models import (SuiteTask, SingleTask, ProcessedFile,
+                            SearchEngineModel, ChemInfoLocal)
 
 
 RegisterClass = (SuiteTask,
                  SingleTask,
                  ProcessedFile,
                  SearchEngineModel,
+                 ChemInfoLocal,
                  )
 
 for item in RegisterClass:
