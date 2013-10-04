@@ -15,6 +15,7 @@ $(document).ready(function(){
 
   $('#search-loading').hide();
   $("div#commit_content").hide();
+  $("#calculate-submit-info").hide();
 });
 
 
@@ -120,14 +121,13 @@ $('#commit-saved-btn').click(function(){
           "models":Calculate.models,
          };
 
-  console.log(data);
-
   Dajaxice.gui.calculate_submit(calculate_callback ,data);
   
   function calculate_callback(data){
-    console.log(data.message);
-    if(data.is_submitted === true){
+    if(data.is_submitted){
       window.location.href="/history/";
+    }else{
+      $("#calculate-submit-info").show().text(data.message);
     }
   }
 });
