@@ -132,6 +132,11 @@ $('#commit-saved-btn').click(function(){
   }
 });
 
+$("#smile-direct").click(function(){
+  $(this).addClass("btn-danger");
+  Calculate.smile = $("#query_input").val(); 
+});
+
 $('#search_varify_btn').click(function(){
   data = {
           "query":$("#query_input").val(),
@@ -174,6 +179,7 @@ $('#search_varify_btn').click(function(){
 
         $(".search-content").removeClass("alert alert-error");
         $(td).addClass("alert alert-error");
+        $("#smile-direct").removeClass("btn-danger");
       });
     }else{
       $(element).text("No matching results!");
