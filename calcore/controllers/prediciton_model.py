@@ -121,16 +121,16 @@ this class is used for model computation that parameters needed in Dragon output
         '''
         logKOC model computation
         '''
-        abstract_value=d.extractparameter(["MLOGP","nCIC","nCb-","nHM","q+","nP(=O)O2R","O-058","a","F03[O-Cl]","nN=C-N<","F05[C-P]","C-030","B10[N-N]","nN(CO)2","nR=CRX"])
+        abstract_value=d.extractparameter(["MLOGP2","WiA_Dt","H_D/Dt","nHM","O-061","HATS4v","P-117","nR=CRX","F05[N-O]","B08[Br-Br]","R3e+","B03[N-S]","CATS2D_05_NL","F02[S-S]","nRCN"])
         for smilenum in abstract_value.keys():
             if not self.predict_result.has_key(smilenum):
                 self.predict_result[smilenum]={}
-            self.predict_result[smilenum]['logKOC']=0.247*float(abstract_value[smilenum]['MLOGP'])+0.107*float(abstract_value[smilenum]['nCIC'])+ \
-            0.108*float(abstract_value[smilenum]['nCb-'])+0.091*float(abstract_value[smilenum]['nHM'])-1.482*float(abstract_value[smilenum]['q+'])+ \
-            2.173*float(abstract_value[smilenum]['nP(=O)O2R'])-0.322*float(abstract_value[smilenum]['O-058'])+0.005*float(abstract_value[smilenum]['a'])- \
-            0.192*float(abstract_value[smilenum]['F03[O-Cl]'])-0.761*float(abstract_value[smilenum]['nN=C-N<'])-0.250*float(abstract_value[smilenum]['F05[C-P]'])- \
-            0.866*float(abstract_value[smilenum]['C-030'])-1.006*float(abstract_value[smilenum]['B10[N-N]'])+0.490*float(abstract_value[smilenum]['nN(CO)2'])+0.618*float(abstract_value[smilenum]['nR=CRX'])+1.181
-        print float(abstract_value[smilenum]['q+']),float(abstract_value[smilenum]['a'])   
+            self.predict_result[smilenum]['logKOC']=0.063*float(abstract_value[smilenum]['MLOGP2'])+0.332*float(abstract_value[smilenum]['WiA_Dt'])+ \
+            0.260*float(abstract_value[smilenum]['nHM'])-0.002*float(abstract_value[smilenum]['H_D/Dt'])+1.338*float(abstract_value[smilenum]['O-061'])- \
+            1.037*float(abstract_value[smilenum]['HATS4v'])-0.803*float(abstract_value[smilenum]['P-117'])+1.011*float(abstract_value[smilenum]['nR=CRX'])- \
+            0.123*float(abstract_value[smilenum]['F05[N-O]'])+1.185*float(abstract_value[smilenum]['B08[Br-Br]'])-1.868*float(abstract_value[smilenum]['R3e+'])- \
+            0.537*float(abstract_value[smilenum]['B03[N-S]'])-0.227*float(abstract_value[smilenum]['CATS2D_05_NL'])+0.220*float(abstract_value[smilenum]['F02[S-S]'])+0.627*float(abstract_value[smilenum]['nRCN'])+0.546
+        #print float(abstract_value[smilenum]['q+']),float(abstract_value[smilenum]['a'])   
 
 
 MODEL_FOR_COMPUTAIONCLASS = {}
