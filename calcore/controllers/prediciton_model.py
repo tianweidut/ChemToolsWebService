@@ -119,7 +119,15 @@ this class is used for model computation that parameters needed in Dragon output
             0.6430*float(abstract_value[smilenum]['Mor29u'])+0.5870*float(abstract_value[smilenum]['NdsCH'])+0.5870*float(abstract_value[smilenum]['GATS1e'])+ \
             0.5770*float(abstract_value[smilenum]['X3A'])-0.2450*float(abstract_value[smilenum]['SdsCH'])-167.0*(1/self.T)+1.103*float(abstract_value[smilenum]['BIC1'])+ \
             0.1170*float(abstract_value[smilenum]['RDF015m'])-1.044*float(abstract_value[smilenum]['SpMin8_Bh(p)'])+0.2390*float(abstract_value[smilenum]['nR=Cp'])-0.1980*float(abstract_value[smilenum]['NssssC'])-0.5080*float(abstract_value[smilenum]['F02[F-Br]'])
-            print self.T
+        x=matrix([[float(abstract_value[smilenum]['X%']),float(abstract_value[smilenum]['EHOMO']),float(abstract_value[smilenum]['Mor29u']),
+            float(abstract_value[smilenum]['NdsCH']),float(abstract_value[smilenum]['GATS1e']),float(abstract_value[smilenum]['X3A']),
+            1.0/self.T,float(abstract_value[smilenum]['SdsCH']),float(abstract_value[smilenum]['nR=Cp']),
+            float(abstract_value[smilenum]['F02[F-Br]']),float(abstract_value[smilenum]['RDF015m']),float(abstract_value[smilenum]['BIC1']),
+            float(abstract_value[smilenum]['SpMin8_Bh(p)']),float(abstract_value[smilenum]['NssssC'])]])
+        print koh_TX,x
+        
+        self.Williams(koh_TX,x)
+        print self.T
             
     def logKOC(self, para,d):
         '''
