@@ -65,10 +65,10 @@ this class is used for model computation that parameters needed in Dragon output
         for smilenum in abstract_value.keys():
             if not self.predict_result.has_key(smilenum):
                 self.predict_result[smilenum] = {}
-            self.predict_result[smilenum]['logKOA']=-3.03+313*float(abstract_value[smilenum]['X1sol'])/(self.T)-85.7*float(abstract_value[smilenum]['Mor13v'])/(self.T)+ \
-            432*float(abstract_value[smilenum]['H-050'])/(self.T)-1270*float(abstract_value[smilenum]['R5v'])/(self.T)-5.54*float(abstract_value[smilenum]['T(O..Cl)'])/(self.T)+ \
-            125*float(abstract_value[smilenum]['HATS5v'])/(self.T)-13.3*float(abstract_value[smilenum]['RDF035m'])/(self.T)-61.1*float(abstract_value[smilenum]['RCI'])/(self.T)- \
-            37.6*float(abstract_value[smilenum]['nRCOOR'])/(self.T)-156*float(abstract_value[smilenum]['Mor15u'])/(self.T)-5.49*float(abstract_value[smilenum]['RDF090m'])/(self.T)+1040.0/(self.T)
+            self.predict_result[smilenum]['logKOA']=-3.03+313.0*float(abstract_value[smilenum]['X1sol'])/(self.T)-85.7*float(abstract_value[smilenum]['Mor13v'])/(self.T)+ \
+            432.0*float(abstract_value[smilenum]['H-050'])/(self.T)-1270.0*float(abstract_value[smilenum]['R5v'])/(self.T)-5.54*float(abstract_value[smilenum]['T(O..Cl)'])/(self.T)+ \
+            125.0*float(abstract_value[smilenum]['HATS5v'])/(self.T)-13.3*float(abstract_value[smilenum]['RDF035m'])/(self.T)-61.1*float(abstract_value[smilenum]['RCI'])/(self.T)- \
+            37.6*float(abstract_value[smilenum]['nRCOOR'])/(self.T)+156.0*float(abstract_value[smilenum]['Mor15u'])/(self.T)-5.49*float(abstract_value[smilenum]['RDF090m'])/(self.T)+1040.0/(self.T)
         print self.T
         print 'X1sol',float(abstract_value[smilenum]['X1sol'])/(self.T),"Mor13v",float(abstract_value[smilenum]['Mor13v'])/(self.T),"H_050",float(abstract_value[smilenum]['H-050'])/(self.T),"R5v",float(abstract_value[smilenum]['R5v'])/(self.T),"T(O..Cl)",float(abstract_value[smilenum]['T(O..Cl)'])/(self.T),"HATS5v",float(abstract_value[smilenum]['HATS5v'])/(self.T),"RDF035m",float(abstract_value[smilenum]['RDF035m'])/(self.T),"RCI",float(abstract_value[smilenum]['RCI'])/(self.T),"nRCOOR",float(abstract_value[smilenum]['nRCOOR'])/(self.T),"Mor15u",float(abstract_value[smilenum]['Mor15u'])/(self.T),"RDF090m",float(abstract_value[smilenum]['RDF090m'])/(self.T)
     def logRP(self, para,d):
