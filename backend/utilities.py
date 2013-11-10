@@ -1,10 +1,4 @@
 # coding: UTF-8
-'''
-Created on 2013-5-21
-
-@author: tianwei
-
-'''
 import uuid
 import os
 import simplejson

@@ -1,33 +1,11 @@
-# -*- coding: UTF-8 -*-
-'''
-Created on 2013-03-03
-
-@author: tianwei
-
-Desc: This module contains views that allow users to submit the calculated
-      tasks.
-'''
-import datetime
-import logging
-import os
-import sys
-import uuid
+#coding: utf-8
 
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
-from django.shortcuts import render_to_response
-from django.conf import settings
-from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, HttpResponse
-from django.http import HttpResponseForbidden, Http404
-from django.template import RequestContext
-from django.utils import simplejson
-from django.views.decorators import csrf
 from django.contrib.auth.decorators import login_required
-from django.core.files.uploadedfile import UploadedFile
 
 from gui import forms
-from backend.fileoperator import receiveFile
+from backend.fileoperator import upload_response
 from backend.ChemSpiderPy.wrapper import search_cheminfo
 from backend.logging import logger
 from backend.utilities import *
@@ -35,55 +13,6 @@ from calcore.models import *
 from const import MODEL_SPLITS
 from const import ORIGIN_UPLOAD
 from const.models import ModelCategory
-
-
-def split_name(name, sep="."):
-    """
-        split type and name in a filename
-    """
-    if sep in name:
-        f = name.split(sep)[0]
-        t = name.split(sep)[1]
-    else:
-        f = name
-        t = " "
-
-    return (f, t)
-
-
-def upload_save_process(request):
-    """
-        save file into local storage
-    """
-    f = request.FILES["file"]
-    wrapper_f = UploadedFile(f)
-
-    name, filetype = split_name(wrapper_f.name)
-    #TODO: we maybe check file type here!
-
-    obj = ProcessedFile()
-    obj.title = name
-    obj.file_type = filetype
-    obj.file_obj = f
-    obj.save()
-
-    return obj
-
-
-def upload_response(request):
-    """
-        use AJAX to process file upload
-    """
-    f = upload_save_process(request)
-    data = [{'name': f.title,
-             'id': f.fid,
-             'type': f.file_type,
-             }]
-
-    response = JSONResponse(data, {}, response_minetype(request))
-    response["Content-Dispostion"] = "inline; filename=files.json"
-
-    return response
 
 
 @login_required
@@ -96,11 +25,11 @@ def multi_inputform(request):
     """
     models = {model.category: model.desc for model in ModelCategory.objects.all()}
 
-    if request.method == "POST":
-        if request.FILES is not None:
-            return upload_response(request)
+    if request.method == "POST" and request.FILES:
+        return upload_response(request)
 
-    return render(request, "features/newtask.html",dict(models=models))
+    return render(request, "features/newtask.html",
+                           dict(models=models))
 
 
 @login_required

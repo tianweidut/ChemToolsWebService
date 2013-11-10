@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 from .utilities import jsonize
 from backend.ChemSpiderPy.wrapper import search_cheminfo
+from backend.fileoperator import upload_save_process
 from gui.utilities import search_cheminfo_local
 
 
@@ -50,7 +51,23 @@ def smile_search(request):
 @login_required
 @jsonize
 def mol_upload(request):
-    return dict()
+    if request.method == "POST" and request.FILES:
+        try:
+            f = upload_save_process(request)
+        except Exception as err:
+            data = dict(status=False,
+                        info=str(err),
+                        uuid=None)
+        else:
+            data = dict(status=True,
+                        info="upload file succeed",
+                        uuid=f.fid,
+                        name=f.title)
+    else:
+        data = dict(status=False,
+                    uuid=None,
+                    info='post file field is required')
+    return data
 
 
 @require_POST
