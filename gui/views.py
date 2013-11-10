@@ -16,7 +16,7 @@ from const.models import ModelCategory
 
 
 @login_required
-def multi_inputform(request):
+def submit(request):
     """
     Multi input form:
        * basic info search view function
@@ -33,7 +33,7 @@ def multi_inputform(request):
 
 
 @login_required
-def history_view(request):
+def history(request):
     """
     """
     result_sets = SuiteTask.objects.filter(user__user=request.user).order_by('-start_time')
@@ -42,7 +42,7 @@ def history_view(request):
     for task in result_sets:
         task.models_str_list = get_models_selector(task.models_str)
         task.models_category_str_list = get_models_selector(task.models_category_str)
-        task.progress_value = "%0.2f"%(float(task.has_finished_tasks) / task.total_tasks * 100)
+        task.progress_value = "%0.2f" % (float(task.has_finished_tasks) / task.total_tasks * 100)
         task.is_finished = True if task.total_tasks == task.has_finished_tasks else False
 
     return render(request, 'features/history.html',
@@ -51,7 +51,7 @@ def history_view(request):
 
 #TODO: Add only user decorators
 @login_required
-def suite_details_view(request, sid=None):
+def suitetask(request, sid=None):
     """
     Suitetask details view
     """
@@ -82,7 +82,7 @@ def task_details_context(pid):
 
 #TODO: Add only user decorators
 @login_required
-def task_details_view(request, pid=None):
+def singletask(request, pid=None):
     """
     Every singletask details view
     """

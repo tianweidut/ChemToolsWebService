@@ -15,8 +15,6 @@ from django.conf import settings
 
 from dajaxice.core import dajaxice_autodiscover, dajaxice_config
 
-from gui import views as gui_views
-
 dajaxice_autodiscover()
 admin.autodiscover()
 
@@ -58,24 +56,8 @@ urlpatterns = patterns('',
         name="features"
     ),
     url(
-        r'^newtask/$',
-        gui_views.multi_inputform,
-        name="newtasks"
-    ),
-    url(
-        r'^history/$',
-        gui_views.history_view,
-        name="history"
-    ),
-    url(
-        r'^details/suite/(?P<sid>.{36})$',
-        gui_views.suite_details_view,
-        name="suite_details"
-    ),
-    url(
-        r'^details/task/(?P<pid>.{36})$',
-        gui_views.task_details_view,
-        name="task_details"
+        r'',
+        include('gui.urls'),
     ),
     url(
         dajaxice_config.dajaxice_url,
