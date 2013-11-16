@@ -29,9 +29,10 @@ class ProcessedFile(models.Model):
     title = models.CharField(max_length=500, blank=False)
     file_type = models.CharField(max_length=100, blank=False)
     file_obj = models.FileField(upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
-    file_source = models.ForeignKey(FileSourceCategory,\
+    file_source = models.ForeignKey(FileSourceCategory,
                                     default=lambda: FileSourceCategory.objects.get(category=ORIGIN_UPLOAD))
-    image = models.FileField(blank=True, null=True, upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
+    image = models.FileField(blank=True, null=True,
+                             upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
     smiles = models.CharField(max_length=2000, blank=True, null=True)
 
     class Meta:
@@ -62,7 +63,8 @@ class SuiteTask(models.Model):
                                default=STATUS_UNDEFINED)
     models_str = models.CharField(max_length=2000, blank=True)
     models_category_str = models.CharField(max_length=200, blank=True)
-    result_pdf = models.FileField(blank=True, null=True, upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
+    result_pdf = models.FileField(blank=True, null=True,
+                                  upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
     email = models.EmailField(blank=True, null=True)
 
     class Meta:
@@ -93,7 +95,8 @@ class SingleTask(models.Model):
     end_time = models.DateTimeField(blank=True, null=True)
 
     file_obj = models.ForeignKey(ProcessedFile, blank=False)
-    result_pdf = models.FileField(blank=True, null=True, upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
+    result_pdf = models.FileField(blank=True, null=True,
+                                  upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
 
     class Meta:
         verbose_name = "Single Task"

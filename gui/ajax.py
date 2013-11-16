@@ -29,15 +29,15 @@ def calculate_submit(request,
                      files=None,
                      models=None):
     try:
-        is_submitted, message = suitetask_process(request,
-                                                  smile=smile,
-                                                  mol=draw_mol,
-                                                  notes=notes,
-                                                  name=task_name,
-                                                  email=email,
-                                                  unique_names=files,
-                                                  models=models)
-    except Exception, err:
+        is_submitted, message, id = submit_calculate(request,
+                                                 smile=smile,
+                                                 mol=draw_mol,
+                                                 notes=notes,
+                                                 name=task_name,
+                                                 email=email,
+                                                 unique_names=files,
+                                                 models=models)
+    except Exception as err:
         loginfo(err)
         message = "Server maybe wrong!, please contact administrator."
         is_submitted = False

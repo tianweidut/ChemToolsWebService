@@ -6,7 +6,10 @@ from django.contrib.auth.decorators import login_required
 from .utilities import jsonize
 from backend.ChemSpiderPy.wrapper import search_cheminfo
 from backend.fileoperator import upload_save_process
+from backend.utilities import (singletask_details, suitetask_details,
+                               summit_calculate)
 from gui.utilities import search_cheminfo_local
+from calcore.models import SuiteTask
 
 
 @require_POST
@@ -74,6 +77,21 @@ def mol_upload(request):
 @login_required
 @jsonize
 def task_submit(request):
+    smile = request.POST.get('smile')
+    draw = request.POST.get('draw')
+    files = request.POST.get('files')
+    models = request.POST.get('models')
+    notes = request.POST.get('notes')
+    name = request.POST.get('name')
+    emails = request.POST.get('emails')
+
+    try:
+        status, info, id = summit_calculate(request.user,
+            smile=smile, draw=draw, files=files, models=models,
+            notes=notes, name=name, email=emails)
+    except Exception as err:
+        status, info, id = False, str(err), None
+
     return dict()
 
 
@@ -81,18 +99,37 @@ def task_submit(request):
 @login_required
 @jsonize
 def suitetask(request):
-    return dict()
+    id = request.POST.get('id')
+    content = suitetask_details(id)
+    details = content.get('suitetask')
+    ret = details.__dict__
+    ret.update(dict(models=details.models_str,
+                    models_category=details.models_category_str,
+                    result=details.result_pdf.url,
+                    singletask_lists=[t.pid for t in content.get('single_lists')]))
+    return ret
 
 
 @require_POST
 @login_required
 @jsonize
 def singletask(request):
-    return dict()
+    id = request.POST.get('id')
+    details = singletask_details(id).get("singletask")
+    ret = details.__dict__
+    ret.update(result_file=details.result_pdf.url)
+    ret.update(src_file=details.file_obj.url)
+    return ret
 
 
 @require_POST
 @login_required
 @jsonize
 def history(request):
-    return dict()
+    start = int(request.POST.get('start', 0))
+    limit = int(request.POST.get('limit', 30))
+
+    #Django queryset is lazy, like iterator
+    results = SuiteTask.objects.filter(user__user=request.user)\
+                .order_by('-start_time')[start:(start+limit)]
+    return dict(suitetask_lists=[r.sid for r in results])
