@@ -7,7 +7,7 @@ from .utilities import jsonize
 from backend.ChemSpiderPy.wrapper import search_cheminfo
 from backend.fileoperator import upload_save_process
 from backend.utilities import (singletask_details, suitetask_details,
-                               summit_calculate)
+                               submit_calculate)
 from gui.utilities import search_cheminfo_local
 from calcore.models import SuiteTask
 
@@ -86,7 +86,7 @@ def task_submit(request):
     emails = request.POST.get('emails')
 
     try:
-        status, info, id = summit_calculate(request.user,
+        status, info, id = submit_calculate(request.user,
             smile=smile, draw=draw, files=files, models=models,
             notes=notes, name=name, email=emails)
     except Exception as err:

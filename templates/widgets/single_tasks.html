@@ -36,7 +36,7 @@
       <td>{{single.results}}</td>
       <td>{{single.calculate_mol.upload_time|date:"m-d H:m"}}</td>
       <td>
-        <a class="btn btn-primary" href="{%url gui.views.task_details_view single.pid%}">Details</a>
+        <a class="btn btn-primary" href="{%url gui.views.singletask single.pid%}">Details</a>
       </td>
     </tr>
     {%endfor%}
