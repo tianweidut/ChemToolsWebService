@@ -116,11 +116,19 @@ def suitetask(request):
     id = request.POST.get('id')
     content = suitetask_details(id)
     details = content.get('suitetask')
-    ret = details.__dict__
-    ret.update(dict(models=details.models_str,
-                    models_category=details.models_category_str,
-                    result=details.result_pdf.url,
-                    singletask_lists=[t.pid for t in content.get('single_lists')]))
+    ret = dict(start_time=str(details.start_time),
+               end_time=str(details.end_time),
+               total_tasks=details.total_tasks,
+               has_finished_tasks=details.has_finished_tasks,
+               name=details.name,
+               notes=details.notes,
+               email=details.email,
+               status=str(details.status),
+               models=details.models_str,
+               models_category=details.models_category_str,
+               result=details.result_pdf.url if details.result_pdf else None,
+               singletask_lists=[t.pid for t in content.get('single_lists')])
+
     return make_json_response(ret)
 
 
@@ -132,9 +140,17 @@ def singletask(request):
 
     id = request.POST.get('id')
     details = singletask_details(id).get("singletask")
-    ret = details.__dict__
-    ret.update(result_file=details.result_pdf.url)
-    ret.update(src_file=details.file_obj.url)
+    ret = dict(start_time=str(details.start_time),
+               end_time=str(details.end_time),
+               sid=str(details.sid),
+               temperature=details.temperature,
+               humidity=details.humidity,
+               model=str(details.model),
+               status=str(details.status),
+               results=details.results,
+               result_file=details.result_pdf.url if details.result_pdf else None,
+               src_file=details.file_obj.file_obj.url if details.file_obj else None)
+
     return make_json_response(ret)
 
 
