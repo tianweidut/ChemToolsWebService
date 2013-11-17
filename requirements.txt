@@ -2,8 +2,6 @@ Django==1.4.2
 PIL
 pillow
 djangocms-admin-style
-django-dajax
-django-dajaxice
 django-celery
 django-kombu
 Celery

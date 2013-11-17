@@ -73,7 +73,6 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'dajaxice.finders.DajaxiceFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -137,11 +136,6 @@ INSTALLED_APPS = (
     'registration',
     'users',
     'calcore',
-
-    #Add-on
-    'dajaxice',
-    'dajax',
-    'djcelery',
 )
 
 #Add support  to user profile
