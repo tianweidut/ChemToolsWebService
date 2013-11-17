@@ -1,7 +1,3 @@
-/**
- * @author tianwei
- */
-
 $(document).ready(function(){
   $('#response_type_copy > p').hide();
   $('[rel="modified_choice"]').hide();
@@ -33,8 +29,6 @@ $(function(){
 
 //model choice
 $(function(){
-
-
   $("[rel='button-switch']").click(function(){
     var checked="#label_id_" + $(this).attr("model");
  
@@ -138,34 +132,24 @@ $("#smile-direct").click(function(){
 });
 
 $('#search_varify_btn').click(function(){
-  data = {
-          "query":$("#query_input").val(),
-  };
+  var data = {"query":$("#query_input").val(),};
+  var url = "/api/smile-search/";
   
   $('#search-loading').show();
-
-  Dajaxice.gui.search_varify_info(function(d){
-   callback(d, "search-api"); 
-  },data);
-
-  Dajaxice.gui.search_local(function(d){
-   callback(d, "search-local"); 
-  },data);
-
-
-  function callback(data, element){
-    element = "#" + element;
-    console.log(data);
+  
+  $.post(url, data).done(function(content){
+    var element = "#search-smile-content";
+    console.log(content);
     $("#search-loading").hide();
     $("#search_result_panel").show();
 
-    if(data.is_searched && data.results.length !== 0){
+    if(content.length !== 0){
       $(element).find("tbody").html("");
-      $.each(data.results, function(k,v){
+      $.each(content, function(k,v){
         var row = "<tr class='search-content'><td>"+ v.cas +"</td><td>"+
                   v.formula + "</td><td>" +
                   v.commonname + "</td><td class='smile'>" +
-                  v.smiles + "</td><td>" +
+                  v.smile + "</td><td>" +
                   v.alogp + "</td>"+
                   "<td><a class='btn btn-primary search-select'>Select</a></td></tr>";
         $(element).find("tbody").append(row);
@@ -184,7 +168,7 @@ $('#search_varify_btn').click(function(){
     }else{
       $(element).text("No matching results!");
     }
-  }
+  });
 });
 
 $("#commit-show-btn").click(function(){

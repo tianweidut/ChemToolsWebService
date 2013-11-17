@@ -1,9 +1,11 @@
 #coding: utf-8
 
 from django.views.decorators.http import require_POST
-from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
-from .utilities import jsonize
+from django.http import HttpResponseForbidden
+
+from .utilities import make_json_response, basic_auth_api
 from backend.ChemSpiderPy.wrapper import search_cheminfo
 from backend.fileoperator import upload_save_process
 from backend.utilities import (singletask_details, suitetask_details,
@@ -13,9 +15,11 @@ from calcore.models import SuiteTask
 
 
 @require_POST
-@login_required
-@jsonize
+@csrf_exempt
 def login(request):
+    if not basic_auth_api(request):
+        return HttpResponseForbidden()
+
     if request.user.username:
         info = "login succeed"
         status = True
@@ -23,13 +27,15 @@ def login(request):
         info = "login failed"
         status = False
 
-    return dict(info=info, status=status)
+    return make_json_response(dict(info=info, status=status))
 
 
 @require_POST
-@login_required
-@jsonize
+@csrf_exempt
 def smile_search(request):
+    if not basic_auth_api(request):
+        return HttpResponseForbidden()
+
     query = request.POST.get('query', '')
     start = int(request.POST.get('start', 0))
     limit = int(request.POST.get('limit', 10))
@@ -40,20 +46,23 @@ def smile_search(request):
 
     results = []
     for r in search_results:
-        c = dict(cas=r.cas,
-                 forumula=r.forumula,
-                 commonname=r.commonname,
-                 smile=r.smiles,
-                 alogp=r.alogp)
+        if not r:
+            continue
+        c = dict(cas=r['cas'],
+                 formula=r['formula'],
+                 commonname=r['commonname'],
+                 smile=r['smiles'],
+                 alogp=r['alogp'])
         results.append(c)
-
-    return results
+    return make_json_response(results)
 
 
 @require_POST
-@login_required
-@jsonize
+@csrf_exempt
 def mol_upload(request):
+    if not basic_auth_api(request):
+        return HttpResponseForbidden()
+
     if request.method == "POST" and request.FILES:
         try:
             f = upload_save_process(request)
@@ -70,13 +79,15 @@ def mol_upload(request):
         data = dict(status=False,
                     uuid=None,
                     info='post file field is required')
-    return data
+    return make_json_response(data)
 
 
 @require_POST
-@login_required
-@jsonize
+@csrf_exempt
 def task_submit(request):
+    if not basic_auth_api(request):
+        return HttpResponseForbidden()
+
     smile = request.POST.get('smile')
     draw = request.POST.get('draw')
     files = request.POST.get('files')
@@ -92,13 +103,16 @@ def task_submit(request):
     except Exception as err:
         status, info, id = False, str(err), None
 
-    return dict()
+    return make_json_response(dict(status=status, info=info,
+                                   id=id))
 
 
 @require_POST
-@login_required
-@jsonize
+@csrf_exempt
 def suitetask(request):
+    if not basic_auth_api(request):
+        return HttpResponseForbidden()
+
     id = request.POST.get('id')
     content = suitetask_details(id)
     details = content.get('suitetask')
@@ -107,29 +121,34 @@ def suitetask(request):
                     models_category=details.models_category_str,
                     result=details.result_pdf.url,
                     singletask_lists=[t.pid for t in content.get('single_lists')]))
-    return ret
+    return make_json_response(ret)
 
 
 @require_POST
-@login_required
-@jsonize
+@csrf_exempt
 def singletask(request):
+    if not basic_auth_api(request):
+        return HttpResponseForbidden()
+
     id = request.POST.get('id')
     details = singletask_details(id).get("singletask")
     ret = details.__dict__
     ret.update(result_file=details.result_pdf.url)
     ret.update(src_file=details.file_obj.url)
-    return ret
+    return make_json_response(ret)
 
 
 @require_POST
-@login_required
-@jsonize
+@csrf_exempt
 def history(request):
+    if not basic_auth_api(request):
+        return HttpResponseForbidden()
+
     start = int(request.POST.get('start', 0))
     limit = int(request.POST.get('limit', 30))
 
     #Django queryset is lazy, like iterator
     results = SuiteTask.objects.filter(user__user=request.user)\
                 .order_by('-start_time')[start:(start+limit)]
-    return dict(suitetask_lists=[r.sid for r in results])
+    data = dict(suitetask_lists=[r.sid for r in results])
+    return make_json_response(data)

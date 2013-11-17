@@ -246,10 +246,10 @@ def simple_search_output_api(func):
 
 
 @simple_search_output
-def search_cheminfo_local(query):
+def search_cheminfo_local(query, start=0, limit=10):
     q = Q(cas=query) | \
         Q(smiles__contains=query) | \
         Q(molecular_formula=query)
 
-    results = ChemInfoLocal.objects.filter(q)
+    results = ChemInfoLocal.objects.filter(q)[start:(start+limit)]
     return results
