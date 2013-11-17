@@ -2,6 +2,7 @@
 
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 from backend.fileoperator import upload_response
 from backend.utilities import (singletask_details, suitetask_details,
@@ -10,6 +11,7 @@ from calcore.models import SuiteTask
 from const.models import ModelCategory
 
 
+@csrf_exempt
 @login_required
 def submit(request):
     """

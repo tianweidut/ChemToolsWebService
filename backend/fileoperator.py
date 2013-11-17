@@ -41,9 +41,9 @@ def upload_response(request):
         use AJAX to process file upload
     """
     f = upload_save_process(request)
-    data = {'name': f.title,
+    data = [{'name': f.title,
             'id': f.fid,
-            'type': f.file_type}
+            'type': f.file_type}]
 
     response = JSONResponse(data, {}, response_minetype(request))
     response["Content-Dispostion"] = "inline; filename=files.json"
