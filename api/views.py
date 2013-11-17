@@ -1,4 +1,5 @@
 #coding: utf-8
+import json
 
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
@@ -90,15 +91,18 @@ def task_submit(request):
 
     smile = request.POST.get('smile')
     draw = request.POST.get('draw')
-    files = request.POST.get('files')
-    models = request.POST.get('models')
+    files = request.POST.get('files', [])
+    models = request.POST.get('models', [])
     notes = request.POST.get('notes')
     name = request.POST.get('name')
     emails = request.POST.get('emails')
 
+    models = json.loads(models)
+    files = json.loads(files)
+
     try:
         status, info, id = submit_calculate(request.user,
-            smile=smile, draw=draw, files=files, models=models,
+            smile=smile, mol=draw, unique_names=files, models=models,
             notes=notes, name=name, email=emails)
     except Exception as err:
         status, info, id = False, str(err), None

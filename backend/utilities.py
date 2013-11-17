@@ -55,7 +55,7 @@ def calculate_tasks(pid_list, smile, mol, models):
     if number == 0:
         return 0
 
-    number = number * len(models.keys())
+    number = number * len(models)
 
     loginfo(p=number, label="calculate_tasks")
     return number
@@ -213,10 +213,12 @@ def get_models_name(models):
     Out: a tuple, models_str + models_category_str
     """
     categorys = set()
-    for model in models.keys():
-        categorys.add(get_model_category(model))
+    models_name = []
+    for m in models:
+        categorys.add(get_model_category(m['model']))
+        models_name.append(m['model'])
 
-    models_str = MODEL_SPLITS.join(models.keys())
+    models_str = MODEL_SPLITS.join(models_name)
     categorys_str = MODEL_SPLITS.join(list(categorys))
 
     return (models_str, categorys_str)
@@ -239,6 +241,7 @@ def submit_calculate(user, smile=None, mol=None, notes=None,
         status, True or False
         message: summit message
     """
+
     total_tasks = calculate_tasks(unique_names, smile, mol, models)
 
     if total_tasks == 0:
@@ -265,10 +268,10 @@ def submit_calculate(user, smile=None, mol=None, notes=None,
 
     flag = False
     try:
-        for k, v in models.items():
-            flag = flag | start_smile_task(smile, k, suite_task.sid, v['temperature'])
-            flag = flag | start_moldraw_task(mol, k, suite_task.sid, v['temperature'])
-            flag = flag | start_files_task(unique_names, k, suite_task.sid, v['temperature'])
+        for m in models:
+            flag = flag | start_smile_task(smile, m['model'], suite_task.sid, m['temperature'])
+            flag = flag | start_moldraw_task(mol, m['model'], suite_task.sid, m['temperature'])
+            flag = flag | start_files_task(unique_names, m['model'], suite_task.sid, m['temperature'])
     except Exception as err:
         loginfo(err)
         flag = False

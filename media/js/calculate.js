@@ -90,40 +90,38 @@ $("#upload_update").click(function(){
 });
 
 function update_model(){
-  Calculate.models = {};
+  Calculate.models = [];
   $("[rel=button-switch]").each(function(){
     var model = $(this).attr("model");
     var checked="#label_id_" + model; 
     var temp = "#temperature_" + model;
     if($(checked).attr("visible") === "true"){
-      Calculate.models[model] = {};
-      Calculate.models[model]["temperature"]= $(temp).val();
+      Calculate.models.push({'model':model, 'temperature':$(temp).val()});
     }
   });
-  console.log(Calculate.models);
 }
 
 $('#commit-saved-btn').click(function(){
   update_model();
-  data = {
+  var data = {
           "smile":Calculate.smile,
-          "draw_mol":Calculate.draw_mol,
+          "draw":Calculate.draw_mol,
           "notes":Calculate.notes,
-          "task_name":Calculate.task_name,
-          "email":Calculate.email,
-          "files":Calculate.files,
-          "models":Calculate.models,
+          "name":Calculate.task_name,
+          "emails":Calculate.email,
+          "files":JSON.stringify(Calculate.files),
+          "models":JSON.stringify(Calculate.models),
          };
 
-  Dajaxice.gui.calculate_submit(calculate_callback ,data);
-  
-  function calculate_callback(data){
-    if(data.is_submitted){
+  var url = '/api/task-submit/';
+
+  $.post(url, data).done(function(content){
+    if(content.status){
       window.location.href="/history/";
     }else{
-      $("#calculate-submit-info").show().text(data.message);
+      $("#calculate-submit-info").show().text(content.info);
     }
-  }
+  });
 });
 
 $("#smile-direct").click(function(){
@@ -139,7 +137,6 @@ $('#search_varify_btn').click(function(){
   
   $.post(url, data).done(function(content){
     var element = "#search-smile-content";
-    console.log(content);
     $("#search-loading").hide();
     $("#search_result_panel").show();
 
@@ -220,7 +217,7 @@ function update_pre(){
   row += "<tr><td colspan='2'><p class='alert'>Models</p></td></tr>"; 
   if(Calculate.models){
     $.each(Calculate.models, function(k,v){
-      row += "<tr><td>"+k+"</td><td>"+v.temperature+"(temperature)</td></tr>";  
+      row += "<tr><td>"+v.model+"</td><td>"+v.temperature+"(temperature)</td></tr>";  
     });
   }
 
