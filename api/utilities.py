@@ -3,9 +3,8 @@ import base64
 import json
 from functools import wraps
 
-from django.http import HttpResponse, HttpResponseForbidden
-from django.core.exceptions import PermissionDenied
-from django.contrib.auth import authenticate, login
+from django.http import HttpResponse
+from django.contrib.auth import authenticate
 
 
 def jsonize(func):
@@ -33,6 +32,7 @@ def basic_auth_api(request):
                     username, password = base64.b64decode(auth[1]).split(':')
                     user = authenticate(username=username, password=password)
                     if user and not user.is_anonymous():
+                        request.user = user
                         return True
                 except Exception as err:
                     pass
