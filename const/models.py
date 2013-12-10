@@ -70,7 +70,7 @@ class StatusCategory(models.Model):
         verbose_name_plural = "Calculate Status"
 
     def __unicode__(self):
-        return self.get_category_display()
+        return self.category
 
 
 class LevelGrageCategory(models.Model):

@@ -73,7 +73,6 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'dajaxice.finders.DajaxiceFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -115,7 +114,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'context.application_settings',
     'context.userinfo_context',
     'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.csrf',
     'django.contrib.messages.context_processors.messages',
 )
 
@@ -138,12 +136,6 @@ INSTALLED_APPS = (
     'registration',
     'users',
     'calcore',
-    'tastypie',
-
-    #Add-on
-    'dajaxice',
-    'dajax',
-    'djcelery',
 )
 
 #Add support  to user profile

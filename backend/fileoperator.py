@@ -1,32 +1,51 @@
-# -*- coding: UTF-8 -*-
-'''
-Created on 2012-11-17
+#coding: utf-8
+from django.core.files.uploadedfile import UploadedFile
 
-@author: tianwei
-'''
-import os
-from django.conf import settings
-from backend.logging import logger
+from backend.utilities import JSONResponse, response_minetype
+from calcore.models import ProcessedFile
 
-def receiveFile(uploadFileObj, save_path=None):
-        """
-        upload File objects generate
-        """
-        try:
-            for key, fileop in uploadFileObj.items():
-                save_path = save_path if save_path is not None else settings.TMP_FILE_PATH
-                path = os.path.join(save_path, fileop.name)
-                dest = open(path.encode('utf-8'), 'wb+')
-                if fileop.multiple_chunks:
-                    for c in fileop.chunks():
-                        dest.write(c)
-                else:
-                    dest.write(fileop.read())
-                dest.close()
-                
-            return path
-                        
-        except Exception,err:
-            import pdb;
-            print pdb.traceback
-            logger.error("recv Error %s "%err)
+
+def split_name(name, sep="."):
+    """
+        split type and name in a filename
+    """
+    if sep in name:
+        f, t = name.split(sep, 1)
+    else:
+        f, t = name, " "
+
+    return (f, t)
+
+
+def upload_save_process(request):
+    """
+        save file into local storage
+    """
+    f = request.FILES["file"]
+    wrapper_f = UploadedFile(f)
+
+    name, filetype = split_name(wrapper_f.name)
+    #TODO: we maybe check file type here!
+
+    obj = ProcessedFile()
+    obj.title = name
+    obj.file_type = filetype
+    obj.file_obj = f
+    obj.save()
+
+    return obj
+
+
+def upload_response(request):
+    """
+        use AJAX to process file upload
+    """
+    f = upload_save_process(request)
+    data = [{'name': f.title,
+            'id': f.fid,
+            'type': f.file_type}]
+
+    response = JSONResponse(data, {}, response_minetype(request))
+    response["Content-Dispostion"] = "inline; filename=files.json"
+
+    return response

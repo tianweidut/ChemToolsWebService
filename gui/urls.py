@@ -1,12 +1,12 @@
-# -*- coding: UTF-8 -*-
-'''
-Created on 2012-11-5
+#coding: utf-8
+from django.conf.urls import patterns, url
 
-@author: tianwei
-'''
-from django.conf.urls.defaults import *
-from piston.resource import Resource
-from django.views.generic.simple import direct_to_template
+from .views import (submit, history, suitetask, singletask)
+
 
 urlpatterns = patterns('',
-        url(r'^/$' ,direct_to_template, {'template': 'userinfo/userinfo.html'}))
+    url(r'^newtask/$', submit),
+    url(r'^history/$', history),
+    url(r'^details/suite/(?P<sid>.{36})$', suitetask),
+    url(r'^details/task/(?P<pid>.{36})$', singletask),
+)

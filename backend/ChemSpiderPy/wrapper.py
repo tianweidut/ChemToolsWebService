@@ -134,11 +134,11 @@ def save_search_record(content, query):
 
 
 @simple_search_output_api
-def search_cheminfo(query):
+def search_cheminfo(query, start=0, limit=10):
     rs = SearchEngineModel.objects.filter(Q(commonname__contains=query)|
                                           Q(smiles__contains=query)|
                                           Q(search_query__contains=query))
-
+    rs = rs[start:(start+limit)]
     if len(rs) != 0:
         return [copy_results(r, database=True) for r in rs]
 

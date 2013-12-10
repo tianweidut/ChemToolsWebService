@@ -1,7 +1,6 @@
 *.py[co]
 *~
-*.swp
-*.swo
+*.sw[opn]
 *.orig
 build/*
 log/*

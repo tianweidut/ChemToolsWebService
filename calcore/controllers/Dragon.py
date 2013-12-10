@@ -117,6 +117,7 @@ class Dragon(SmileToMol):
                         EHOMO = lines[lineNum - 1].split(' ')[-1]
                         para_dic[file]["EHOMO"]=EHOMO
                         break
+            '''
             elif self.modeltype==2:
                 gaussianpath=globalpath+"forgaussian/"+revisedfilename+"/"
                 f = open(gaussianpath+revisedfilename + '.log', 'r')
@@ -162,6 +163,7 @@ class Dragon(SmileToMol):
                         Polarizability = float(str(lines[i]).split(' ')[-2])
                 #print Polarizability
                 para_dic[file]["a"]=Polarizability
+                '''
         return para_dic
 
 

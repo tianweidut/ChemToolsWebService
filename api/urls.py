@@ -1,13 +1,16 @@
-# -*- coding: UTF-8 -*-
-'''
-Created on 2012-11-5
+#coding: utf-8
+from django.conf.urls.defaults import patterns, url
 
-@author: tianwei
-'''
-from django.conf.urls.defaults import *
-from api.apis import *
-
-entry_resource = UserResource()
+from .views import (login, smile_search, mol_upload,
+                    task_submit, suitetask, singletask,
+                    history)
 
 urlpatterns = patterns('',
-        (r'', include(entry_resource.urls)))
+    url(r'^login/$', login),
+    url(r'^smile-search/$', smile_search),
+    url(r'^mol-upload/$', mol_upload),
+    url(r'^task-submit/$', task_submit),
+    url(r'^suitetask/$', suitetask),
+    url(r'^singletask/$', singletask),
+    url(r'^history/$', history),
+)

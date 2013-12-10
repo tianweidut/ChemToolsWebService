@@ -1,7 +1,3 @@
-/**
- * @author tianwei
- */
-
 $(document).ready(function(){
   $('#response_type_copy > p').hide();
   $('[rel="modified_choice"]').hide();
@@ -33,8 +29,6 @@ $(function(){
 
 //model choice
 $(function(){
-
-
   $("[rel='button-switch']").click(function(){
     var checked="#label_id_" + $(this).attr("model");
  
@@ -96,71 +90,63 @@ $("#upload_update").click(function(){
 });
 
 function update_model(){
-  Calculate.models = {};
+  Calculate.models = [];
   $("[rel=button-switch]").each(function(){
     var model = $(this).attr("model");
     var checked="#label_id_" + model; 
     var temp = "#temperature_" + model;
     if($(checked).attr("visible") === "true"){
-      Calculate.models[model] = {};
-      Calculate.models[model]["temperature"]= $(temp).val();
+      Calculate.models.push({'model':model, 'temperature':$(temp).val()});
     }
   });
-  console.log(Calculate.models);
 }
 
 $('#commit-saved-btn').click(function(){
   update_model();
-  data = {
+  var data = {
           "smile":Calculate.smile,
-          "draw_mol":Calculate.draw_mol,
+          "draw":Calculate.draw_mol,
           "notes":Calculate.notes,
-          "task_name":Calculate.task_name,
-          "email":Calculate.email,
-          "files":Calculate.files,
-          "models":Calculate.models,
+          "name":Calculate.task_name,
+          "emails":Calculate.email,
+          "files":JSON.stringify(Calculate.files),
+          "models":JSON.stringify(Calculate.models),
          };
 
-  Dajaxice.gui.calculate_submit(calculate_callback ,data);
-  
-  function calculate_callback(data){
-    if(data.is_submitted){
+  var url = '/api/task-submit/';
+
+  $.post(url, data).done(function(content){
+    if(content.status){
       window.location.href="/history/";
     }else{
-      $("#calculate-submit-info").show().text(data.message);
+      $("#calculate-submit-info").show().text(content.info);
     }
-  }
+  });
+});
+
+$("#smile-direct").click(function(){
+  $(this).addClass("btn-danger");
+  Calculate.smile = $("#query_input").val(); 
 });
 
 $('#search_varify_btn').click(function(){
-  data = {
-          "query":$("#query_input").val(),
-  };
+  var data = {"query":$("#query_input").val(),};
+  var url = "/api/smile-search/";
   
   $('#search-loading').show();
-
-  Dajaxice.gui.search_varify_info(function(d){
-   callback(d, "search-api"); 
-  },data);
-
-  Dajaxice.gui.search_local(function(d){
-   callback(d, "search-local"); 
-  },data);
-
-
-  function callback(data, element){
-    element = "#" + element;
-    console.log(data);
+  
+  $.post(url, data).done(function(content){
+    var element = "#search-smile-content";
     $("#search-loading").hide();
     $("#search_result_panel").show();
 
-    if(data.is_searched && data.results.length !== 0){
+    if(content.length !== 0){
       $(element).find("tbody").html("");
-      $.each(data.results, function(k,v){
+      $.each(content, function(k,v){
         var row = "<tr class='search-content'><td>"+ v.cas +"</td><td>"+
                   v.formula + "</td><td>" +
                   v.commonname + "</td><td class='smile'>" +
-                  v.smiles + "</td><td>" +
+                  v.smile + "</td><td>" +
                   v.alogp + "</td>"+
                   "<td><a class='btn btn-primary search-select'>Select</a></td></tr>";
         $(element).find("tbody").append(row);
@@ -174,11 +160,12 @@ $('#search_varify_btn').click(function(){
 
         $(".search-content").removeClass("alert alert-error");
         $(td).addClass("alert alert-error");
+        $("#smile-direct").removeClass("btn-danger");
       });
     }else{
       $(element).text("No matching results!");
     }
-  }
+  });
 });
 
 $("#commit-show-btn").click(function(){
@@ -230,7 +217,7 @@ function update_pre(){
   row += "<tr><td colspan='2'><p class='alert'>Models</p></td></tr>"; 
   if(Calculate.models){
     $.each(Calculate.models, function(k,v){
-      row += "<tr><td>"+k+"</td><td>"+v.temperature+"(temperature)</td></tr>";  
+      row += "<tr><td>"+v.model+"</td><td>"+v.temperature+"(temperature)</td></tr>";  
     });
   }
 

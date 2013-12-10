@@ -1,10 +1,4 @@
 # coding: UTF-8
-'''
-Created on 2013-5-21
-
-@author: tianwei
-
-'''
 import uuid
 import os
 import simplejson
@@ -14,6 +8,7 @@ import re
 from django.http import HttpResponse
 from django.conf import settings
 from django.core.files import File
+from django.shortcuts import get_object_or_404
 import pybel
 
 from backend.logging import loginfo
@@ -60,7 +55,7 @@ def calculate_tasks(pid_list, smile, mol, models):
     if number == 0:
         return 0
 
-    number = number * len(models.keys())
+    number = number * len(models)
 
     loginfo(p=number, label="calculate_tasks")
     return number
@@ -218,10 +213,12 @@ def get_models_name(models):
     Out: a tuple, models_str + models_category_str
     """
     categorys = set()
-    for model in models.keys():
-        categorys.add(get_model_category(model))
+    models_name = []
+    for m in models:
+        categorys.add(get_model_category(m['model']))
+        models_name.append(m['model'])
 
-    models_str = MODEL_SPLITS.join(models.keys())
+    models_str = MODEL_SPLITS.join(models_name)
     categorys_str = MODEL_SPLITS.join(list(categorys))
 
     return (models_str, categorys_str)
@@ -235,34 +232,27 @@ def get_email(email=None, backup_email=None):
         return backup_email
 
 
-def suitetask_process(request, smile=None, mol=None, notes=None,
-                      name=None, email=None, unique_names=None,
-                      models=None):
+def submit_calculate(user, smile=None, mol=None, notes=None,
+                     name=None, email=None, unique_names=None,
+                     models=None):
     """
     real record operation
     Out:
-        is_submitted, True or False
+        status, True or False
         message: summit message
     """
-    is_submitted = False
-    message = None
-
-    #TODO: we should check remaining counts
-    if request.user.is_anonymous():
-        is_submitted = False
-        message = "anonymous auth failed!"
-        return (is_submitted, message)
 
     total_tasks = calculate_tasks(unique_names, smile, mol, models)
 
     if total_tasks == 0:
-        is_submitted = False
-        message = "Please choice one model or input one search!"
-        return (is_submitted, message)
+        status = False
+        info = "Please choice one model or input one search!"
+        id = None
+        return (status, info, id)
 
     suite_task = SuiteTask()
     suite_task.sid = str(uuid.uuid4())
-    suite_task.user = UserProfile.objects.get(user=request.user)
+    suite_task.user = UserProfile.objects.get(user=user)
     suite_task.total_tasks = int(total_tasks)
     suite_task.has_finished_tasks = 0
     suite_task.start_time = datetime.datetime.now()
@@ -271,30 +261,32 @@ def suitetask_process(request, smile=None, mol=None, notes=None,
     suite_task.notes = notes
     suite_task.models_str, suite_task.models_category_str = get_models_name(models)
     suite_task.status = StatusCategory.objects.get(category=STATUS_WORKING)
-    suite_task.email = get_email(email, request.user.email)
+    suite_task.email = get_email(email, user.email)
     suite_task.save()
 
     loginfo(p="finish suite save")
 
     flag = False
     try:
-        for k, v in models.items():
-            flag = flag | start_smile_task(smile, k, suite_task.sid, v['temperature'])
-            flag = flag | start_moldraw_task(mol, k, suite_task.sid, v['temperature'])
-            flag = flag | start_files_task(unique_names, k, suite_task.sid, v['temperature'])
-    except Exception, err:
+        for m in models:
+            flag = flag | start_smile_task(smile, m['model'], suite_task.sid, m['temperature'])
+            flag = flag | start_moldraw_task(mol, m['model'], suite_task.sid, m['temperature'])
+            flag = flag | start_files_task(unique_names, m['model'], suite_task.sid, m['temperature'])
+    except Exception as err:
         loginfo(err)
         flag = False
 
     if flag:
-        is_submitted = True
-        message = "Congratulations to you! calculated task has been submitted!"
+        status = True
+        info = "Congratulations to you! calculated task has been submitted!"
+        id = suite_task.sid
     else:
-        is_submitted = False
-        message = "No one tasks can be added into calculated task queue successful!"
+        status = False
+        info = "No one tasks can be added into calculated task queue successful!"
         suite_task.delete()
+        id = None
 
-    return (is_submitted, message)
+    return (status, info, id)
 
 
 def get_models_selector(models_str):
@@ -317,3 +309,23 @@ def get_models_selector(models_str):
         result.append(e)
 
     return result
+
+
+def singletask_details(pid):
+    singletask = get_object_or_404(SingleTask, pid=pid)
+
+    try:
+        search_engine = SearchEngineModel.objects.get(smiles=singletask.file_obj.smiles)
+    except Exception:
+        search_engine = None
+
+    return dict(singletask=singletask,
+                search_engine=search_engine)
+
+
+def suitetask_details(sid):
+    suitetask = get_object_or_404(SuiteTask, sid=sid)
+    single_lists = SingleTask.objects.filter(sid=sid)
+
+    return dict(suitetask=suitetask,
+                single_lists=single_lists)
