@@ -19,6 +19,10 @@ class PredictionModel(object):
 
         self.dragon_model = DragonModel(model_name, smile, mol_fpath)
 
+    def round(self, value):
+        value = float(value)
+        return round(value, 4)
+
     def calculate(self, modelname):
         {
             "logKOA": self.logKOA,
@@ -46,7 +50,7 @@ class PredictionModel(object):
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = defaultdict(dict)
 
-            self.predict_result[smilenum]['logKOA']['value'] = -3.03 + \
+            value = -3.03 + \
                 313.0 * abstract_value[smilenum]['X1sol'] / self.T - \
                 85.7 * abstract_value[smilenum]['Mor13v'] / self.T + \
                 432.0 * abstract_value[smilenum]['H-050'] / self.T - \
@@ -59,6 +63,8 @@ class PredictionModel(object):
                 156.0 * abstract_value[smilenum]['Mor15u'] / self.T -\
                 5.49 * abstract_value[smilenum]['RDF090m'] / self.T + \
                 1040.0 / self.T
+
+            self.predict_result[smilenum]['logKOA']['value'] = self.round(value)
 
             x = matrix([[abstract_value[smilenum]['X1sol'],
                          abstract_value[smilenum]['Mor13v'],
@@ -98,22 +104,26 @@ class PredictionModel(object):
             if ((ab[s]['nCar'] == 0 and cap_v == 0 and ab[s]['nX'] >= 0) or
                     (ab[s]['nCar'] == 0 and cap_v > 0)):
                 # 模型2
-                self.predict_result[s]['logRP']['value'] = -4.279 + \
+                value = -4.279 + \
                     3.891 * 0.01 * ab[s]['H2s'] - \
                     1.961 * 0.1 * ab[s]['Mor07m'] + \
                     5.476 * 10 * ab[s]['R8v+']
+                
+                self.predict_result[s]['logRP']['value'] = self.round(value) 
                 x = matrix([[ab[s]['H2s'],
                              ab[s]['Mor07m'],
                              ab[s]['R8v+']]])
                 williams = self.get_williams(rp2X, x)
             else:
                 # 模型1
-                self.predict_result[s]['logRP']['value'] = -3.181 + \
+                value = -3.181 + \
                     2.515 * ab[s]['nArOH'] - \
                     8.990 * 0.1 * ab[s]['CIC3'] + \
                     3.463 * ab[s]['Eig15_EA(dm)'] + \
                     2.723 * 0.1 * ab[s]['H7m'] + \
                     6.901 * 0.1 * ab[s]['RTs+']
+
+                self.predict_result[s]['logRP']['value'] = self.round(value) 
                 x = matrix([[ab[s]['nArOH'],
                              ab[s]['CIC3'],
                              ab[s]['Eig15_EA(dm)'],
@@ -136,7 +146,7 @@ class PredictionModel(object):
         for smilenum in abstract_value:
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = defaultdict(dict)
-            self.predict_result[smilenum]['logBCF']['value'] = 2.137 + \
+            value = 2.137 + \
                 0.061 * abstract_value[smilenum]['MLOGP2'] + \
                 0.034 * abstract_value[smilenum]['F02[C-Cl]'] - \
                 0.312 * abstract_value[smilenum]['nROH'] - \
@@ -149,6 +159,8 @@ class PredictionModel(object):
                 1.387 * abstract_value[smilenum]['H4v'] + \
                 0.071 * abstract_value[smilenum]['SM12_AEA(dm)'] - \
                 0.269 * abstract_value[smilenum]['O-057']
+            
+            self.predict_result[smilenum]['logBCF']['value'] = self.round(value)
 
             x = matrix([[abstract_value[smilenum]['MLOGP2'],
                          abstract_value[smilenum]['F02[C-Cl]'],
@@ -177,7 +189,8 @@ class PredictionModel(object):
         for smilenum in abstract_value:
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = defaultdict(dict)
-            self.predict_result[smilenum]['logKOH']['value'] = -6.511 + \
+            
+            value = -6.511 + \
                 15.85 * abstract_value[smilenum]['EHOMO'] - \
                 0.03800 * abstract_value[smilenum]['AMW'] + \
                 0.1300 * abstract_value[smilenum]['NdsCH'] + \
@@ -190,6 +203,8 @@ class PredictionModel(object):
                 0.4550 * abstract_value[smilenum]['SpMaxA_AEA(dm)'] + \
                 0.05600 * abstract_value[smilenum]['nCbH'] + \
                 0.1410 * abstract_value[smilenum]['CATS2D_03_DL']
+            
+            self.predict_result[smilenum]['logKOH']['value'] = self.round(value)
 
             x = matrix([[abstract_value[smilenum]['EHOMO'],
                          abstract_value[smilenum]['AMW'],
@@ -218,7 +233,7 @@ class PredictionModel(object):
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = defaultdict(dict)
 
-            self.predict_result[smilenum]['logKOH_T']['value'] = -8.613 - \
+            value = -8.613 - \
                 0.02100 * abstract_value[smilenum]['X%'] + \
                 14.38 * abstract_value[smilenum]['EHOMO'] - \
                 0.6430 * abstract_value[smilenum]['Mor29u'] + \
@@ -233,6 +248,8 @@ class PredictionModel(object):
                 0.2390 * abstract_value[smilenum]['nR=Cp'] - \
                 0.1980 * abstract_value[smilenum]['NssssC'] - \
                 0.5080 * abstract_value[smilenum]['F02[F-Br]']
+            
+            self.predict_result[smilenum]['logKOH_T']['value'] = self.round(value)
 
             x = matrix([[abstract_value[smilenum]['X%'],
                          abstract_value[smilenum]['EHOMO'],
@@ -263,7 +280,7 @@ class PredictionModel(object):
         for smilenum in abstract_value:
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = defaultdict(dict)
-            self.predict_result[smilenum]['logKOC']['value'] = -1.612 + \
+            value = -1.612 + \
                 0.039 * abstract_value[smilenum]['MLOGP2'] +\
                 0.010 * abstract_value[smilenum]["α"] -\
                 0.342 * abstract_value[smilenum]['O-058'] -\
@@ -274,6 +291,7 @@ class PredictionModel(object):
                 2.335 * abstract_value[smilenum]['SpMaxA_G/D'] +\
                 0.302 * abstract_value[smilenum]['Mor16u']
 
+            self.predict_result[smilenum]['logKOC']['value'] = self.round(value)
             x = matrix([[abstract_value[smilenum]['nN'],
                          abstract_value[smilenum]['ATSC8v'],
                          abstract_value[smilenum]['SpMaxA_G/D'],
@@ -313,7 +331,7 @@ class PredictionModel(object):
                     0.7091 * abstract_value[smilenum]['H-048'] - \
                     0.1553 * abstract_value[smilenum]['H-051'] + \
                     0.955 * abstract_value[smilenum]['O-059']
-                self.predict_result[smilenum]['logBDG']['value'] = 1 / (1 + math.exp(-x))
+                self.predict_result[smilenum]['logBDG']['value'] = self.round(1 / (1 + math.exp(-x)))
 
             x = matrix([[abstract_value[smilenum]['nN'],
                          abstract_value[smilenum]['nHM'],
@@ -342,13 +360,15 @@ class PredictionModel(object):
         for smilenum in abstract_value.keys():
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = defaultdict(dict)
-            self.predict_result[smilenum]['logPL']['value'] = 13.33 - \
+            value = 13.33 - \
                 2571.0 * (1 / self.T) - \
                 0.5061 * abstract_value[smilenum]['nHDon'] - \
                 0.6896 * abstract_value[smilenum]['X1sol'] + \
                 0.8014 * abstract_value[smilenum]['GATS1v'] - \
                 0.1363 * abstract_value[smilenum]['μ '] - \
                 0.6094 * abstract_value[smilenum]['nROH']
+
+            self.predict_result[smilenum]['logPL']['value'] = self.round(value) 
 
             x = matrix([[(1 / self.T),
                          abstract_value[smilenum]['nHDon'],
