@@ -105,11 +105,8 @@ class Converter():
             mop_fname_set.add('%s.mop' % name)
 
         # 使用mopac对dragon结果进行优化(输入转化生成的mop文件)
-        try:
-            mop = MopacModel(mop_fname_set)
-            mop.opt4dragon(self.model_name)
-        except Exception:
-            chemistry_logger.exception('!!!Failed to mopac optimize for dragon')
+        mop = MopacModel(mop_fname_set)
+        mop.opt4dragon(self.model_name)
 
     def mol2gjf2dragon_folder(self):
         gaussian_files_set = set()
