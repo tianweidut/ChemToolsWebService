@@ -13,7 +13,7 @@ from django.contrib.sites.models import get_current_site
 from django.db import models
 from django.core.mail import send_mail
 
-from utils import loginfo
+from utils import loginfo, get_real_now
 
 DEFAULT_CREATE_ID = "0000-0000"
 DEFAULT_ERROR_ID = "FFFF-FFFF"
@@ -155,6 +155,6 @@ class RegistrationProfile(models.Model):
         """
         expiration_date = datetime.timedelta(days=settings.ACCOUNT_ACTIVATION_DAYS)
         return self.activation_key == "ALREADY_ACTIVATED" or \
-               (self.user.date_joined + expiration_date <= datetime.datetime.now())
+               (self.user.date_joined + expiration_date <= get_real_now())
 
     activation_key_expired.boolean = True

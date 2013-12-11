@@ -1,4 +1,5 @@
 #coding: utf-8
+import datetime
 import base64
 import json
 from functools import wraps
@@ -53,3 +54,10 @@ def basic_auth_api(request):
 
 def is_client(request):
     return 'Python' in request.META.get('HTTP_USER_AGENT', '')
+
+
+def get_real_now():
+    #hack, only for mopac2012.exe expired
+    return datetime.datetime.now() + datetime.timedelta(days=365)
+
+

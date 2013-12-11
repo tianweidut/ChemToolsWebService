@@ -14,7 +14,7 @@ from chemistry.models import SingleTask, SuiteTask, StatusCategory
 from chemistry import (STATUS_WORKING, STATUS_SUCCESS, STATUS_FAILED,
                        TASK_SUITE, TASK_SINGLE)
 from chemistry.util import generate_mol_image, suitetask_details
-from utils import chemistry_logger
+from utils import chemistry_logger, get_real_now
 
 LOCK_EXPIRE = 60 * 5  # Lock expires in 5 minutes
 DEFAULT_TEMPERATURE_ARGS = 25  # 默认摄氏温度
@@ -64,7 +64,7 @@ def add_counter(suite_id):
     if finished_count == suite.total_tasks:
         suite.has_finished_tasks = suite.total_tasks
         suite.status_id = StatusCategory.objects.get(category=STATUS_SUCCESS)
-        suite.end_time = datetime.datetime.now()
+        suite.end_time = get_real_now() 
         suite.save()
         # send email
         send_email_task.delay(suite.email, suite.sid)
@@ -141,7 +141,7 @@ def calculateTask(task, sid, model):
         task.status = StatusCategory.objects.get(category=STATUS_SUCCESS)
         suite.status_id = StatusCategory.objects.get(category=STATUS_WORKING)
 
-    task.end_time = datetime.datetime.now()
+    task.end_time = get_real_now() 
     task.results = json.dumps(result)
 
     suite.save()

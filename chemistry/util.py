@@ -20,7 +20,7 @@ from chemistry.models import (SingleTask, SuiteTask, StatusCategory,
 from chemistry import (TASK_SUITE, TASK_SINGLE,
                        ORIGIN_DRAW, ORIGIN_UPLOAD, ORIGIN_SMILE,
                        STATUS_WORKING, MODEL_SPLITS, STATUS_FAILED)
-from utils import chemistry_logger
+from utils import chemistry_logger, get_real_now
 from celery.decorators import task
 
 
@@ -418,7 +418,7 @@ def generate_calculate_task(models, smile, draw_mol_data, files_id_list,
     except Exception:
         chemistry_logger.exception('failed to generate suite_task:%s' % sid)
         s = SuiteTask.objects.get(sid=sid)
-        s.end_time = datetime.datetime.now()
+        s.end_time = get_real_now() 
         s.status_id = StatusCategory.objects.get(category=STATUS_FAILED)
         s.save()
         send_email_task.delay(s.email, s.sid)
