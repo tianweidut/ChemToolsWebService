@@ -46,12 +46,6 @@ def get_model_name(name):
     return model
 
 
-@task()
-def add(x, y):
-    return x + y
-
-
-@task()
 def add_counter(suite_id):
     """
     use filter to get task numbers
@@ -66,8 +60,8 @@ def add_counter(suite_id):
         suite.status_id = StatusCategory.objects.get(category=STATUS_SUCCESS)
         suite.end_time = get_real_now() 
         suite.save()
-        # send email
-        send_email_task.delay(suite.email, suite.sid)
+
+        send_email_task(suite.email, suite.sid)
     else:
         suite.has_finished_tasks = finished_count
         suite.save()
@@ -83,7 +77,6 @@ def render_calculate_result_as_html(sid):
     return t.render(c)
 
 
-@task()
 def send_email_task(observers, sid):
     subject = "计算结果结果邮件-化学品预测毒理学平台"
     if isinstance(observers, basestring):
@@ -147,6 +140,6 @@ def calculateTask(task, sid, model):
     suite.save()
     task.save()
 
-    add_counter.delay(suite.sid)
+    add_counter(suite.sid)
 
     return result

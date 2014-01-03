@@ -202,11 +202,21 @@ def get_singletask_area(data):
 
 
 def calculate_tasks(files_id_list, smile, mol_data, models):
-    number = len(files_id_list)
-    number += 1 if smile else 0
-    number += 1 if mol_data else 0
+    num = len(files_id_list)
+    num += 1 if smile else 0
+    num += 1 if mol_data else 0
 
-    return number * len(models)
+    #TODO: 计算需要优化
+    for fid in files_id_list:
+        if not fid:
+            continue
+
+        #根据id，获取前端页面上传的文件model
+        f_record = ProcessedFile.objects.get(fid=fid)
+        if f_record.file_type.lower() in ('smi', 'cas'):
+            num += cnt_batch_file_task(f_record)
+
+    return num * len(models)
 
 
 class ErrorCalculateType(Exception):
@@ -273,7 +283,6 @@ def handle_files_task(files_id_list, model, sid):
 
 def handle_batch_file_task(f_record, sid, model):
     # 只添加成功的任务，对失败的输入直接过滤掉
-    cnt = 0
     path = join(settings.SETTINGS_ROOT, f_record.file_obj.path)
     with open(path, 'r') as f:
         for line in f.readlines():
@@ -288,12 +297,29 @@ def handle_batch_file_task(f_record, sid, model):
                 handle_smile_task(smile, model, sid)
             except:
                 chemistry_logger.error('failed to submit %s' % line)
+
+
+def cnt_batch_file_task(f_record):
+    # 只添加成功的任务，对失败的输入直接过滤掉
+    #TODO: 计算需要优化
+    cnt = 0
+    path = join(settings.SETTINGS_ROOT, f_record.file_obj.path)
+    with open(path, 'r') as f:
+        for line in f.readlines():
+            line = line.strip().strip('\n')
+            try:
+                # TODO: 需要检测是否符合格式
+                if f_record.file_type.lower() == 'cas':
+                    smile = get_smile_by_cas(line)
+                else:
+                    smile = line
+
+            except:
+                chemistry_logger.error('failed to submit %s' % line)
             else:
                 cnt += 1
 
-        s = SuiteTask.objects.get(sid=sid)
-        s.total_tasks = s.total_tasks + cnt - 1
-        s.save()
+    return cnt - 1
 
 
 def get_smile_by_cas(cas):
@@ -421,4 +447,4 @@ def generate_calculate_task(models, smile, draw_mol_data, files_id_list,
         s.end_time = get_real_now() 
         s.status_id = StatusCategory.objects.get(category=STATUS_FAILED)
         s.save()
-        send_email_task.delay(s.email, s.sid)
+        send_email_task(s.email, s.sid)
