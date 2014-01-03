@@ -16,7 +16,8 @@
     </div>
     <div class="col-xs-10">
       <p>组任务名称:{{singletask.sid.name}}</p>
-      <p>开始时间:{{singletask.sid.start_time|date:"Y-m-d H:m"}}</p>
+      <p>开始时间:{{singletask.sid.start_time|date:"Y-m-d H:i"}}</p>
+      <p>结束时间:{{singletask.sid.end_time|date:"Y-m-d H:i"}}</p>
       <p>状态: 
         {%if singletask.status.category == "success"%}
           <span class="label label-success">计算成功</span>

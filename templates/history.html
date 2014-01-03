@@ -39,7 +39,7 @@
     {%endif%}
 
     <p class="task-introduction">{{task.notes}}</p>
-    <p class="task-date">{{task.start_time|date:"Y-m-d H:m"}} ~ {{task.end_time|date:"Y-m-d H:m"}}</p>
+    <p class="task-date">{{task.start_time|date:"Y-m-d H:i"}} ~ {{task.end_time|date:"Y-m-d H:i"}}</p>
     
     {%if not task.is_finished %}
       <p class="progress-value pull-right">{{task.progress_value}}%</p>
