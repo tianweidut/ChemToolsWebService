@@ -14,7 +14,8 @@ from chemistry.models import SingleTask, SuiteTask, StatusCategory
 from chemistry import (STATUS_WORKING, STATUS_SUCCESS, STATUS_FAILED,
                        TASK_SUITE, TASK_SINGLE)
 from chemistry.util import generate_mol_image, suitetask_details
-from utils import chemistry_logger, get_real_now
+from utils import chemistry_logger
+import utils
 
 LOCK_EXPIRE = 60 * 5  # Lock expires in 5 minutes
 DEFAULT_TEMPERATURE_ARGS = 25  # 默认摄氏温度
@@ -58,13 +59,15 @@ def add_counter(suite_id):
     if finished_count == suite.total_tasks:
         suite.has_finished_tasks = suite.total_tasks
         suite.status_id = StatusCategory.objects.get(category=STATUS_SUCCESS)
-        suite.end_time = get_real_now() 
+        suite.end_time = utils.get_real_now()
         suite.save()
 
         send_email_task(suite.email, suite.sid)
     else:
         suite.has_finished_tasks = finished_count
         suite.save()
+
+    chemistry_logger.info('~~~~~~~~ s-e:%s' % suite.end_time)
 
 
 
@@ -101,8 +104,12 @@ def calculateTask(task, sid, model):
 
         # smile, mol_fpath 输入只选择一种方式(优先smile)
         mol_fpath = os.path.join(settings.SETTINGS_ROOT, task.file_obj.file_obj.path) if not smile else None
+        
+        try:
+            temperature = float(model.get('temperature'))
+        except:
+            temperature = DEFAULT_TEMPERATURE_ARGS
 
-        temperature = float(model.get('temperature', DEFAULT_TEMPERATURE_ARGS))
         chemistry_logger.info('PredictionModel calculating: model name(%s),'
                               'smile(%s) mol path(%s) temperature(%s)',
                               map_model_name, smile, mol_fpath, temperature)
@@ -134,11 +141,13 @@ def calculateTask(task, sid, model):
         task.status = StatusCategory.objects.get(category=STATUS_SUCCESS)
         suite.status_id = StatusCategory.objects.get(category=STATUS_WORKING)
 
-    task.end_time = get_real_now() 
+    task.end_time = utils.get_real_now() 
     task.results = json.dumps(result)
 
     suite.save()
     task.save()
+
+    chemistry_logger.info('~~~~~~~~ t-e:%s' % task.end_time)
 
     add_counter(suite.sid)
 

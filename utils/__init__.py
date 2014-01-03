@@ -1,5 +1,6 @@
 #coding: utf-8
 import datetime
+import time
 import base64
 import json
 from functools import wraps
@@ -58,6 +59,8 @@ def is_client(request):
 
 def get_real_now():
     #hack, only for mopac2012.exe expired
-    return datetime.datetime.now() + datetime.timedelta(days=365)
-
-
+    d = datetime.datetime.now() + datetime.timedelta(days=365)
+    s = time.mktime(d.timetuple())
+    now = datetime.datetime.fromtimestamp(s)
+    chemistry_logger.info('------nws get real now %s' % now)
+    return now 

@@ -10,7 +10,7 @@ from chemistry import (MODEL_ORIGIN_CHOICES,
                        MODEL_CHOICES, STATUS_CHOICES, MOL_ORIGIN_CHOICES,
                        ORIGIN_UNDEFINED, STATUS_UNDEFINED, STATUS_WORKING,
                        ORIGIN_UPLOAD)
-from utils import get_real_now
+import utils
 
 
 def get_sid():
@@ -102,8 +102,7 @@ class SuiteTask(models.Model):
     total_tasks = models.IntegerField(blank=False, verbose_name="total tasks")
     has_finished_tasks = models.IntegerField(blank=False, default=0,
                                              verbose_name="Finished number")
-    start_time = models.DateTimeField(blank=False,
-                                      default=lambda: get_real_now())
+    start_time = models.DateTimeField(blank=False, null=True)
     end_time = models.DateTimeField(blank=True, null=True)
     name = models.CharField(max_length=2000, blank=True)
     notes = models.CharField(max_length=5000, blank=True)
@@ -136,8 +135,7 @@ class SingleTask(models.Model):
     result_state = models.CharField(max_length=1000, blank=True, null=None)
     status = models.ForeignKey(StatusCategory, blank=False,
                                default=STATUS_WORKING)
-    start_time = models.DateTimeField(blank=False,
-                                      default=lambda: get_real_now())
+    start_time = models.DateTimeField(blank=False, null=True)
     end_time = models.DateTimeField(blank=True, null=True)
 
     file_obj = models.ForeignKey(ProcessedFile, blank=False)

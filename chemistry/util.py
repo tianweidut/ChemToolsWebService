@@ -20,7 +20,8 @@ from chemistry.models import (SingleTask, SuiteTask, StatusCategory,
 from chemistry import (TASK_SUITE, TASK_SINGLE,
                        ORIGIN_DRAW, ORIGIN_UPLOAD, ORIGIN_SMILE,
                        STATUS_WORKING, MODEL_SPLITS, STATUS_FAILED)
-from utils import chemistry_logger, get_real_now
+from utils import chemistry_logger
+import utils
 from celery.decorators import task
 
 
@@ -226,6 +227,7 @@ class ErrorCalculateType(Exception):
 def save_record(f, model, sid, source_type, smile=None, local_search_id=None):
     from chemistry.tasks import calculateTask, DEFAULT_TEMPERATURE_ARGS
     task = SingleTask()
+    task.start_time = utils.get_real_now() 
     task.sid = SuiteTask.objects.get(sid=sid)
     task.pid = str(uuid.uuid4())
     task.model = ModelCategory.objects.get(category=model['model'])
@@ -261,6 +263,8 @@ def save_record(f, model, sid, source_type, smile=None, local_search_id=None):
 
     task.status = StatusCategory.objects.get(category=STATUS_WORKING)
     task.save()
+
+    chemistry_logger.info('~~~~~~~~ t:%s' % task.start_time)
 
     calculateTask.delay(task, sid, model)
 
@@ -410,12 +414,15 @@ def submit_calculate_task(user, smile=None, draw_mol_data=None,
         s.user = UserProfile.objects.get(user=user)
         s.total_tasks = tasks_num
         s.has_finished_tasks = 0
+        s.start_time = utils.get_real_now()
         s.name = task_name
         s.notes = task_notes
         s.models_str, s.models_category_str = parse_models(models)
         s.status = StatusCategory.objects.get(category=STATUS_WORKING)
         s.email = user.email
         s.save()
+        
+        chemistry_logger.info('~~~~~~~~ s:%s' % s.start_time)
 
         generate_calculate_task.delay(models, smile, draw_mol_data,
                                       files_id_list, id, local_search_id)
@@ -444,7 +451,7 @@ def generate_calculate_task(models, smile, draw_mol_data, files_id_list,
     except Exception:
         chemistry_logger.exception('failed to generate suite_task:%s' % sid)
         s = SuiteTask.objects.get(sid=sid)
-        s.end_time = get_real_now() 
+        s.end_time = utils.get_real_now() 
         s.status_id = StatusCategory.objects.get(category=STATUS_FAILED)
         s.save()
         send_email_task(s.email, s.sid)
