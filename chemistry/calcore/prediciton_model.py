@@ -59,7 +59,7 @@ class PredictionModel(object):
                 125.0 * abstract_value[smilenum]['HATS5v'] / self.T - \
                 13.3 * abstract_value[smilenum]['RDF035m'] / self.T - \
                 61.1 * abstract_value[smilenum]['RCI'] / self.T - \
-                37.6 * abstract_value[smilenum]['nCOOR'] / self.T + \
+                37.6 * abstract_value[smilenum]['nRCOOR'] / self.T + \
                 156.0 * abstract_value[smilenum]['Mor15u'] / self.T -\
                 5.49 * abstract_value[smilenum]['RDF090m'] / self.T + \
                 1040.0 / self.T
