@@ -224,7 +224,7 @@ class XMLWriter():
 
 
 def fetch_polarizability(name, model):
-    path = os.path.join(config.GAUSSIAN_PATH, model, name, '%.log' % name)
+    path = os.path.join(config.GAUSSIAN_PATH, model, name, '%s.log' % name)
 
     if not os.path.exists(path):
         chemistry_logger.error('Cannot fetch Polarizability %s' % path)

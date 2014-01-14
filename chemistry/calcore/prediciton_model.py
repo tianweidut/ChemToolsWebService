@@ -280,11 +280,11 @@ class PredictionModel(object):
             "nN", "ATSC8v", "SpMaxA_G/D", "Mor16u", "nROH",
             "O-058", "P-117", "MLOGP2", "α"])
 
-        abstract_value['smilenum']['α'] = fetch_polarizability(smilenum, 'logKOC')
-
         for smilenum in abstract_value:
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = defaultdict(dict)
+
+            abstract_value[smilenum]['α'] = fetch_polarizability(smilenum, 'logKOC')
             value = -1.612 + \
                 0.039 * abstract_value[smilenum]['MLOGP2'] +\
                 0.010 * abstract_value[smilenum]["α"] -\
