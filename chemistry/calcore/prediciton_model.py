@@ -4,7 +4,7 @@ import math
 from collections import defaultdict
 
 from .dragon import DragonModel
-from chemistry.calcore.utils import fetch_polarizability, convert_stand_t
+from chemistry.calcore.utils import fetch_polarizability, convert_stand_t, fetch_ehomo
 from utils import chemistry_logger
 
 
@@ -193,6 +193,8 @@ class PredictionModel(object):
         for smilenum in abstract_value:
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = defaultdict(dict)
+
+            abstract_value[smilenum]['EHOMO'] = fetch_ehomo(smilenum, 'logKOH')
             
             value = -6.511 + \
                 15.85 * abstract_value[smilenum]['EHOMO'] - \
@@ -201,7 +203,7 @@ class PredictionModel(object):
                 0.1630 * abstract_value[smilenum]['Mor14i'] + \
                 0.7790 * abstract_value[smilenum]['nP'] + \
                 0.3170 * abstract_value[smilenum]['nR=Cp'] + \
-                0.01900 * abstract_value[smilenum]['X%'] - \
+                0.01900 * abstract_value[smilenum]['X%'] + \
                 0.3930 * abstract_value[smilenum]['nRCHO'] - \
                 0.5890 * abstract_value[smilenum]['C-020'] - \
                 0.4550 * abstract_value[smilenum]['SpMaxA_AEA(dm)'] + \
@@ -238,6 +240,8 @@ class PredictionModel(object):
         for smilenum in abstract_value:
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = defaultdict(dict)
+
+            abstract_value[smilenum]['EHOMO'] = fetch_ehomo(smilenum, 'logKOH_T')
 
             value = -8.613 - \
                 0.02100 * abstract_value[smilenum]['X%'] + \

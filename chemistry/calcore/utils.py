@@ -10,6 +10,7 @@ from chemistry.calcore import config
 
 
 P_RE = re.compile(r'.*Isotropic polarizability.*')
+EHOMO_RE = re.compile(r'.*Alpha  occ. eigenvalues.*')
 
 
 class CalcoreCmd(object):
@@ -242,6 +243,30 @@ def fetch_polarizability(name, model):
                     break
 
     return v
+
+
+def fetch_ehomo(name, model):
+    path = os.path.join(config.GAUSSIAN_PATH, model, name, '%s.log' % name)
+
+    if not os.path.exists(path):
+        chemistry_logger.error('Cannot fetch HOMO %s' % path)
+        return path
+
+    ret = []
+
+    with open(path, 'r') as f:
+        for line in f.readlines():
+            if EHOMO_RE.search(line):
+                chemistry_logger.info(line)
+                ret.append(line)
+    try:
+        v = float(ret[-1].split()[-1])
+    except Exception as e:
+        chemistry_logger.exception('Cannot get EHOMO value %s ' % line)
+        v = 0
+
+    return v
+
 
 
 def convert_stand_t(t):
