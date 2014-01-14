@@ -50,6 +50,8 @@ class PredictionModel(object):
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = defaultdict(dict)
 
+            chemistry_logger.info('dragon: %s' % abstract_value[smilenum])
+
             value = -3.03 + \
                 313.0 * abstract_value[smilenum]['X1sol'] / self.T - \
                 85.7 * abstract_value[smilenum]['Mor13v'] / self.T + \
