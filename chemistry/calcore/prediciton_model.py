@@ -51,8 +51,6 @@ class PredictionModel(object):
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = defaultdict(dict)
 
-            chemistry_logger.info('dragon: %s' % abstract_value[smilenum])
-
             value = -3.03 + \
                 313.0 * abstract_value[smilenum]['X1sol'] / self.T - \
                 85.7 * abstract_value[smilenum]['Mor13v'] / self.T + \
@@ -68,6 +66,7 @@ class PredictionModel(object):
                 1040.0 / self.T
 
             self.predict_result[smilenum]['logKOA']['value'] = self.round(value)
+            chemistry_logger.info('koa(%s) dragon: %s' % (smilenum, abstract_value[smilenum]))
 
             x = matrix([[abstract_value[smilenum]['X1sol'],
                          abstract_value[smilenum]['Mor13v'],
@@ -165,6 +164,8 @@ class PredictionModel(object):
             
             self.predict_result[smilenum]['logBCF']['value'] = self.round(value)
 
+            chemistry_logger.info('bcf(%s) dragon: %s' % (smilenum, abstract_value[smilenum]))
+
             x = matrix([[abstract_value[smilenum]['MLOGP2'],
                          abstract_value[smilenum]['F02[C-Cl]'],
                          abstract_value[smilenum]['nROH'],
@@ -208,6 +209,8 @@ class PredictionModel(object):
                 0.1410 * abstract_value[smilenum]['CATS2D_03_DL']
             
             self.predict_result[smilenum]['logKOH']['value'] = self.round(value)
+
+            chemistry_logger.info('koh(%s) dragon: %s' % (smilenum, abstract_value[smilenum]))
 
             x = matrix([[abstract_value[smilenum]['EHOMO'],
                          abstract_value[smilenum]['AMW'],
@@ -254,6 +257,8 @@ class PredictionModel(object):
             
             self.predict_result[smilenum]['logKOH_T']['value'] = self.round(value)
 
+            chemistry_logger.info('koh_t(%s) dragon: %s' % (smilenum, abstract_value[smilenum]))
+
             x = matrix([[abstract_value[smilenum]['X%'],
                          abstract_value[smilenum]['EHOMO'],
                          abstract_value[smilenum]['Mor29u'],
@@ -297,6 +302,8 @@ class PredictionModel(object):
                 0.302 * abstract_value[smilenum]['Mor16u']
 
             self.predict_result[smilenum]['logKOC']['value'] = self.round(value)
+            chemistry_logger.info('koc(%s) dragon: %s' % (smilenum, abstract_value[smilenum]))
+
             x = matrix([[abstract_value[smilenum]['nN'],
                          abstract_value[smilenum]['ATSC8v'],
                          abstract_value[smilenum]['SpMaxA_G/D'],
@@ -321,7 +328,8 @@ class PredictionModel(object):
         for smilenum in abstract_value.keys():
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = defaultdict(dict)
-                x = 1.9025 + \
+
+            x = 1.9025 + \
                     1.0457 * abstract_value[smilenum]['nN'] + \
                     0.6662 * abstract_value[smilenum]['nHM'] - \
                     0.1078 * abstract_value[smilenum]['O%'] + \
@@ -336,8 +344,10 @@ class PredictionModel(object):
                     0.7091 * abstract_value[smilenum]['H-048'] - \
                     0.1553 * abstract_value[smilenum]['H-051'] + \
                     0.955 * abstract_value[smilenum]['O-059']
-                self.predict_result[smilenum]['logBDG']['value'] = self.round(x)
-                #self.predict_result[smilenum]['logBDG']['value'] = self.round(1 / (1 + math.exp(-x)))
+            
+            self.predict_result[smilenum]['logBDG']['value'] = self.round(x)
+            chemistry_logger.info('bdg(%s) dragon: %s' % (smilenum, abstract_value[smilenum]))
+            #self.predict_result[smilenum]['logBDG']['value'] = self.round(1 / (1 + math.exp(-x)))
 
             x = matrix([[abstract_value[smilenum]['nN'],
                          abstract_value[smilenum]['nHM'],
@@ -375,6 +385,7 @@ class PredictionModel(object):
                 0.6094 * abstract_value[smilenum]['nROH']
 
             self.predict_result[smilenum]['logPL']['value'] = self.round(value)
+            chemistry_logger.info('pl(%s) dragon: %s' % (smilenum, abstract_value[smilenum]))
 
             x = matrix([[(1 / self.T),
                          abstract_value[smilenum]['nHDon'],
