@@ -202,11 +202,11 @@ class PredictionModel(object):
                 0.1300 * abstract_value[smilenum]['NdsCH'] + \
                 0.1630 * abstract_value[smilenum]['Mor14i'] + \
                 0.7790 * abstract_value[smilenum]['nP'] + \
-                0.3170 * abstract_value[smilenum]['nR=Cp'] + \
+                0.3170 * abstract_value[smilenum]['nR=Cp'] - \
                 0.01900 * abstract_value[smilenum]['X%'] + \
-                0.3930 * abstract_value[smilenum]['nRCHO'] - \
+                0.3930 * abstract_value[smilenum]['nRCHO'] + \
                 0.5890 * abstract_value[smilenum]['C-020'] - \
-                0.4550 * abstract_value[smilenum]['SpMaxA_AEA(dm)'] + \
+                0.4550 * abstract_value[smilenum]['SpMaxA_AEA(dm)'] - \
                 0.05600 * abstract_value[smilenum]['nCbH'] + \
                 0.1410 * abstract_value[smilenum]['CATS2D_03_DL']
             
