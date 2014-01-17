@@ -113,6 +113,8 @@
       window.location.reload();
     }
     
-    setTimeout('refreshPage()', 10 * 1000);
+    {%if suitetask.status.category != "success" %}
+      setTimeout('refreshPage()', 10 * 1000);
+    {% endif %}
   </script>
 {% endblock %}
