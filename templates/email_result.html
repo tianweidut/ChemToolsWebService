@@ -44,7 +44,7 @@
         <td>{{single.temperature}}</td>
         <td>{{single.result_value}}
             {% if single.model.desc == 'BDG'%}
-              {% if single.raw_data.get('degrade', 0.0) > 0.5 %}
+              {% if single.degrade > 0.5 %}
                 (难降解类)
               {%else%}
                 (易降解类)

@@ -23,14 +23,13 @@ def submit(request):
 @login_required
 def history(request):
     #TODO: Add pagination
-    results = SuiteTask.objects.filter(user__user=request.user).order_by('-start_time')
-
-    show_all = request.META.get('show_all', '0') == '1'
-    if not show_all:
-        results = results.filter(is_hide=False)
-
     results = SuiteTask.objects.filter(user__user=request.user,
-                                       is_hide=not show_all).order_by('-start_time')
+            is_hide=False).order_by('-start_time')
+
+    #show_all = request.META.get('show_all', '0') == '1'
+    #if not show_all:
+    #    pass
+        #results = results.filter(is_hide=True)
 
     for r in results:
         r.models_str_list = get_models_selector(r.models_str)

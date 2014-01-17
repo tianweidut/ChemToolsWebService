@@ -161,7 +161,7 @@ def singletask_details(pid):
     single_task = get_object_or_404(SingleTask, pid=pid)
     if not has_temperature(single_task.model.desc):
         single_task.temperature = '--'
-    single_task.result_value, single_task.hi, single_task.hx, single_task.raw_data = get_singletask_area(single_task.results)
+    single_task.result_value, single_task.hi, single_task.hx, single_task.degrade = get_singletask_area(single_task.results)
     try:
         local_search_id = single_task.file_obj.local_search_id
         if local_search_id:
@@ -184,7 +184,7 @@ def suitetask_details(sid):
     for s in single_lists:
         if not has_temperature(s.model.desc):
             s.temperature = '--'
-        s.result_value, s.hi, s.hx, s.raw_data = get_singletask_area(s.results)
+        s.result_value, s.hi, s.hx, s.degrade = get_singletask_area(s.results)
 
     return dict(suitetask=suitetask,
                 single_lists=single_lists)
@@ -202,7 +202,7 @@ def get_singletask_area(data):
     return (data.get('value', '--'),
             data.get('hi'),
             data.get('hx'),
-            data)
+            data.get('degrade', 0))
 
 
 def calculate_tasks(files_id_list, smile, mol_data, models):

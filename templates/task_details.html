@@ -124,7 +124,7 @@
           {% if singletask.model.desc == 'BDG'%}
           <tr>
               <td>降解属性</td>
-              {% if singletask.raw_data.get('degrade', 0.0) > 0.5 %}
+              {% if singletask.degrade > 0.5 %}
                 <td>难降解类</td>
               {%else%}
                 <td>易降解类</td>
