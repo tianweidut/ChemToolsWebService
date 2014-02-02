@@ -71,7 +71,7 @@
         {%endif%}
       </td>
       <td>{{single.model|upper}}
-        {% if single.model.desc in ('bdg', 'BDG')}
+        {% if single.model.desc == 'bdg'%}
           ({{single.model.desc|upper}})
         {% else %}
           (log{{single.model.desc|upper}})
