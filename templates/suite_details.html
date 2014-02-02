@@ -70,7 +70,13 @@
           <p class="label label-info">正在计算</p>
         {%endif%}
       </td>
-      <td>{{single.model|upper}}({{single.model.desc|upper}})</td>
+      <td>{{single.model|upper}}
+        {% if single.model.desc in ('bdg', 'BDG')}
+          ({{single.model.desc|upper}})
+        {% else %}
+          (log{{single.model.desc|upper}})
+        {% endif %}
+      </td>
       <td>{{single.model.origin_type}}</td>
       <td>{{single.file_obj.file_source}}</td>
 
@@ -82,13 +88,14 @@
       
       <td>{{single.temperature}}</td>
       <td>
-        {{single.result_value}}
         {% if single.model.desc == 'BDG'%}
             {% if single.degrade > 0.5 %}
-                (难降解类)
+                难降解
             {%else%}
-                (易降解类)
+                易降解
             {% endif %}
+        {%else%}
+            {{single.result_value}}
         {% endif %}
       </td>
       <td>
