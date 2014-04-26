@@ -4,7 +4,7 @@ Created on 2012-11-10
 
 @author: tianwei
 '''
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 from django.views.generic.simple import direct_to_template
 from django.contrib.auth import views as auth_views
 
