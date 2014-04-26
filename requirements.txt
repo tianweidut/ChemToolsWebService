@@ -1,5 +1,4 @@
-Django==1.4.2
-PIL
+Django==1.6.3
 pillow
 djangocms-admin-style
 django-celery
@@ -8,8 +7,4 @@ Celery
 redis
 hiredis
 celery-with-redis
-django-chartit
-south
 raven
-pybel
-xhtml2pdf
