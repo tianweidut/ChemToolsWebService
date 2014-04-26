@@ -1,14 +1,12 @@
 # Django settings for Rest project.
 
 import os
-import sys
-import logging
 from os.path import join
 
 SETTINGS_ROOT = os.path.dirname(__file__)
 
 ADMINS = (
-     ('939829151', '939829151@qq.com'),
+    ('tianwei', '416774905@qq.com'),
 )
 
 MANAGERS = ADMINS
@@ -49,7 +47,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT =join(SETTINGS_ROOT, 'static/')
+STATIC_ROOT = join(SETTINGS_ROOT, 'static/')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -99,7 +97,6 @@ ROOT_URLCONF = 'urls'
 WSGI_APPLICATION = 'wsgi.application'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     join(SETTINGS_ROOT, 'templates'),
@@ -125,11 +122,11 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    #Enhanced Admin
+    # Enhanced Admin
     'djangocms_admin_style',
     'django.contrib.admin',
 
-    #project
+    # project
     'gui',
     'api',
     'const',
@@ -138,7 +135,7 @@ INSTALLED_APPS = (
     'calcore',
 )
 
-#Add support  to user profile
+# Add support  to user profile
 ACCOUNT_ACTIVATION_DAYS = 30
 LOGIN_REDIRECT_URL = '/'
 
@@ -182,12 +179,12 @@ LOGGING = {
     },
     'handlers': {
         'null': {
-            'level':'DEBUG',
-            'class':'django.utils.log.NullHandler',
+            'level': 'DEBUG',
+            'class': 'django.utils.log.NullHandler',
         },
-        'console':{
-            'level':'INFO',
-            'class':'logging.StreamHandler',
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
             'formatter': 'verbose'
         },
         'mail_admins': {
@@ -206,10 +203,10 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': False,
         },
-        'dajaxice':{
-            'handlers':['console'],
-            'level':'INFO',
-            'propagate':True,
+        'dajaxice': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
         },
         'django.db.backends': {
             'handlers': ['console'],
@@ -222,22 +219,26 @@ LOGGING = {
 """
 FILE Upload
 """
-FILE_UPLOAD_TEMP_DIR  = os.path.join(os.path.dirname(__file__),"tmp").replace("\\",'/')
+FILE_UPLOAD_TEMP_DIR = os.path.join(
+    os.path.dirname(__file__),
+    "tmp").replace(
+    "\\",
+    '/')
 FILE_UPLOAD_HANDLERS = (
-            'django.core.files.uploadhandler.MemoryFileUploadHandler',
-            'django.core.files.uploadhandler.TemporaryFileUploadHandler',
-                )
+    'django.core.files.uploadhandler.MemoryFileUploadHandler',
+    'django.core.files.uploadhandler.TemporaryFileUploadHandler',
+)
 
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
-#TODO: Add cache into website
-#CACHES = {
+# TODO: Add cache into website
+# CACHES = {
 #            'default': {
 #                        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
 #                        'LOCATION': 'cachedatabasetable',
 #                       }
 #         }
 FIXTURE_DIRS = (
-           os.path.join(SETTINGS_ROOT, 'users/fixtures/'),
-           os.path.join(SETTINGS_ROOT, 'const/fixtures/'),
-           )
+    os.path.join(SETTINGS_ROOT, 'users/fixtures/'),
+    os.path.join(SETTINGS_ROOT, 'const/fixtures/'),
+)
