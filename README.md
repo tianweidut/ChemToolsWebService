@@ -39,7 +39,7 @@
       * tar -zxcf oasa*.tar.gz
       * sudo python setup.py build & install
     * PIL
-      * sudo apt-get install python python-tk idle python-pmw python-imaging
+      * sudo apt-get install python-tk idle python-pmw python-imaging
 
 
  * python manage.py runserver IP:PORT
