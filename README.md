@@ -1,7 +1,7 @@
 # Introduction:
 
  * Chemistry Service
- * Web: Bootstrap + Django + Piston
+ * Web: Bootstrap + Django
  * Client: WPF
  * Calculate Service: some specific software, dragon, mopac etc.
 
@@ -12,11 +12,11 @@
  * Inorder to adapt different computers and different network environment,
  we will use hosts trick.
  * You should add some host name in /etc/hosts.
-   * developmentServer -> mysql server for development environment
-   * redisDevelopmentServer -> redis server and message queue broker for development environment
-   * productionServer -> mysql server for production environment
-   * redisProductionServer -> redis server for production environment
-   * sentryServer -> sentry monitoring server in production environment
+   * dev-server -> mysql server for development environment
+   * redis-dev-server -> redis server and message queue broker for development environment
+   * production-server-> mysql server for production environment
+   * redis-production-server -> redis server for production environment
+   * sentry-server-> sentry monitoring server in production environment
 
 # Installation:
  * web tools:
