@@ -22,6 +22,45 @@ DEFAULT_ERROR_ID = "FFFF-FFFF"
 SHA1_RE = re.compile('^[a-f0-9]{40}$')  # Activation Key
 
 
+class LevelGrageCategory(models.Model):
+    category = models.CharField(max_length=30, blank=False, unique=True,
+                                choices=LEVEL2_CHOICES,
+                                verbose_name=u"Level grade")
+
+    class Meta:
+        verbose_name = "Level grage"
+        verbose_name_plural = "Levle grade"
+
+    def __unicode__(self):
+        return self.get_category_display()
+
+
+class LevelAccountCategory(models.Model):
+    category = models.CharField(max_length=30, blank=False, unique=True,
+                                choices=LEVEL_CHOICES,
+                                verbose_name=u"Level account")
+
+    class Meta:
+        verbose_name = "Level account"
+        verbose_name_plural = "Levle account"
+
+    def __unicode__(self):
+        return self.get_category_display()
+
+
+class LevelBillCategory(models.Model):
+    category = models.CharField(max_length=30, blank=False, unique=True,
+                                choices=LEVEL3_CHOICES,
+                                verbose_name=u"level bill")
+
+    class meta:
+        verbose_name = "level bill"
+        verbose_name_plural = "levle bill"
+
+    def __unicode__(self):
+        return self.get_category_display()
+
+
 class UserGrade(models.Model):
     """
     User Grade
@@ -180,41 +219,3 @@ class RegistrationProfile(models.Model):
 
     activation_key_expired.boolean = True
 
-
-class LevelGrageCategory(models.Model):
-    category = models.CharField(max_length=30, blank=False, unique=True,
-                                choices=LEVEL2_CHOICES,
-                                verbose_name=u"Level grade")
-
-    class Meta:
-        verbose_name = "Level grage"
-        verbose_name_plural = "Levle grade"
-
-    def __unicode__(self):
-        return self.get_category_display()
-
-
-class LevelAccountCategory(models.Model):
-    category = models.CharField(max_length=30, blank=False, unique=True,
-                                choices=LEVEL_CHOICES,
-                                verbose_name=u"Level account")
-
-    class Meta:
-        verbose_name = "Level account"
-        verbose_name_plural = "Levle account"
-
-    def __unicode__(self):
-        return self.get_category_display()
-
-
-class LevelBillCategory(models.Model):
-    category = models.CharField(max_length=30, blank=False, unique=True,
-                                choices=LEVEL3_CHOICES,
-                                verbose_name=u"level bill")
-
-    class meta:
-        verbose_name = "level bill"
-        verbose_name_plural = "levle bill"
-
-    def __unicode__(self):
-        return self.get_category_display()
