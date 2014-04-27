@@ -15,7 +15,7 @@ handler404 = 'utils.error_views.error404'
 urlpatterns = patterns('',
                        url(
                            r'^$',
-                           TemplateView.as_view(template_name='home/index.html'),
+                           TemplateView.as_view(template_name='index.html'),
                            name='index'
                        ),
                        url(r'^admin/', include(admin.site.urls)),
@@ -23,12 +23,12 @@ urlpatterns = patterns('',
                        url(r'', include('chemistry.urls')),
                        url(
                            '^download/$',
-                           TemplateView.as_view(template_name='introduction/download.html'),
+                           TemplateView.as_view(template_name='download.html'),
                            name="download"
                        ),
                        url(
                            r'^features/$',
-                           TemplateView.as_view(template_name='introduction/features.html'),
+                           TemplateView.as_view(template_name='features.html'),
                            name="features"
                        ),
                        )

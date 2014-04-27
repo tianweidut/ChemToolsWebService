@@ -284,3 +284,11 @@ li.nav-li{
 li.nav-li-username{
 	float: center;
 }
+
+#logo-img {
+  width: 1140px;
+  height: 180px;
+  line-height:180px;
+  text-align: center;
+  border: 1px solid;
+}
