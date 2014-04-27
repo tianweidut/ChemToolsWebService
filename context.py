@@ -1,15 +1,9 @@
-"""
-    Author:tianwei
-    Email: liutianweidlut@gmail.com
-    Desc: settings context processor for templates, 
-          then we can use 
-"""
-
+#coding: utf-8
 from django.conf import settings
 
-from users.models import UserGrade, UserProfile
-from calcore.models import *
-from const import STATUS_SUCCESS
+from users.models import UserProfile
+from chemistry import STATUS_SUCCESS
+from chemistry.models import SuiteTask
 
 all_required = ("PRODUCTION_FLAG",)
 

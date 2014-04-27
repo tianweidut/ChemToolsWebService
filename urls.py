@@ -15,9 +15,9 @@ from django.conf import settings
 
 admin.autodiscover()
 
-handler500 = 'backend.errorviews.error500'
-handler403 = 'backend.errorviews.error403'
-handler404 = 'backend.errorviews.error404'
+handler500 = 'util.error_views.error500'
+handler403 = 'util.error_views.error403'
+handler404 = 'util.error_views.error404'
 
 urlpatterns = patterns('',
     url(
@@ -28,10 +28,6 @@ urlpatterns = patterns('',
     url(
         r'^admin/',
         include(admin.site.urls),
-    ),
-    url(
-        r'^api/',
-        include('api.urls'),
     ),
     url(
         r'^settings/',
@@ -52,10 +48,7 @@ urlpatterns = patterns('',
         direct_to_template, {'template': 'introduction/features.html'},
         name="features"
     ),
-    url(
-        r'',
-        include('gui.urls'),
-    ),
+    url(r'', include('chemistry.urls')),
 )
 
 urlpatterns += staticfiles_urlpatterns()

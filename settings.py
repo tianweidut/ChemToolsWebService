@@ -127,12 +127,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 
     # project
-    'gui',
-    'api',
-    'const',
-    'registration',
+    'chemistry',
     'users',
-    'calcore',
 )
 
 # Add support  to user profile

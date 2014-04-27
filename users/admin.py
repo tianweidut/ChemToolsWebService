@@ -1,16 +1,24 @@
-# -*- coding: UTF-8 -*-
-'''
-Created on 2012-11-5
-
-@author: tianwei
-'''
+#coding: utf-8
 
 from django.contrib import admin
-from users.models import *
+from users.models import (UserProfile, UserGrade,
+                          RegistrationProfile, LevelAccountCategory,
+                          LevelBillCategory, LevelGrageCategory)
 
-RegisterClass = (UserProfile,
-                 UserGrade,
-                 )
 
-for item in RegisterClass:
+class RegistrationAdmin(admin.ModelAdmin):
+    list_display = ('__unicode__', 'activation_key_expired')
+    search_fileds = ('user__username', 'user__first_name')
+
+
+UserClass = (UserProfile,
+             UserGrade,
+             RegistrationProfile,
+             RegistrationAdmin,
+             LevelAccountCategory,
+             LevelBillCategory,
+             LevelGrageCategory,
+             )
+
+for item in UserClass:
     admin.site.register(item)

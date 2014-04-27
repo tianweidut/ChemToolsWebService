@@ -8,4 +8,4 @@ unittest:
 	sh ./tools/unittest.sh
 
 web:
-	python manage.py server
+	python manage.py runserver
