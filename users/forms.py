@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from users.models import RegistrationProfile
 
-from util import loginfo
+from utils import loginfo
 
 
 attrs_dict = {'class': 'required'}

@@ -234,7 +234,3 @@ DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 #                        'LOCATION': 'cachedatabasetable',
 #                       }
 #         }
-FIXTURE_DIRS = (
-    os.path.join(SETTINGS_ROOT, 'users/fixtures/'),
-    os.path.join(SETTINGS_ROOT, 'const/fixtures/'),
-)

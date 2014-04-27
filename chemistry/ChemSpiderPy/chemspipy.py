@@ -10,8 +10,6 @@ https://github.com/cameronneylon/ChemSpiPy
 import urllib2
 from xml.etree import ElementTree as ET
 
-from util import logging
-
 # Input your necessary TOKEN
 TOKEN = 'a4a2b57a-28cc-4f92-9305-0b120d064e06'
 

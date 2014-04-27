@@ -13,9 +13,9 @@ from django.contrib.sites.models import get_current_site
 from django.db import models
 from django.core.mail import send_mail
 
-from util import loginfo
-from . import (LEVEL_1, LEVEL2_CHOICES, LEVEL3_CHOICES,
-               LEVEL_CHOICES)
+from utils import loginfo
+from users import (LEVEL_1, LEVEL2_CHOICES, LEVEL3_CHOICES,
+                   LEVEL_CHOICES)
 
 DEFAULT_CREATE_ID = "0000-0000"
 DEFAULT_ERROR_ID = "FFFF-FFFF"

@@ -12,7 +12,7 @@ from django.utils.hashcompat import md5_constructor as md5
 from django.core.mail import send_mail
 
 from chemistry.calcore.controllers.prediciton_model import PredictionModel
-from util import loginfo
+from utils import loginfo
 from chemistry.models import SingleTask, SuiteTask, StatusCategory
 from chemistry import (STATUS_WORKING, STATUS_SUCCESS, STATUS_FAILED,
                        TASK_SUITE, TASK_SINGLE)

@@ -6,7 +6,6 @@ import uuid
 from functools import wraps
 
 import pybel
-import xhtml2pdf.pisa as pisa
 import cStringIO as StringIO
 
 from django.shortcuts import get_object_or_404
@@ -15,17 +14,19 @@ from django.core.files import File
 from django.template.loader import get_template
 from django.template import Context
 from django.db.models import Q
+from django.utils.log import getLogger
 
 from users.models import UserProfile
-from util import loginfo
 from chemistry.models import (SingleTask, SuiteTask, StatusCategory,
                               ProcessedFile, ModelCategory, FileSourceCategory,
-                              ChemInfoLocal, SearchEngineModel, ORIGIN_SMILE)
+                              ChemInfoLocal, SearchEngineModel)
 from chemistry import (STATUS_SUCCESS, TASK_SUITE, TASK_SINGLE,
                        ORIGIN_DRAW, ORIGIN_UPLOAD,
                        STATUS_WORKING, MODEL_SPLITS)
 
 LOCK_EXPIRE = 60 * 5  # Lock expires in 5 minutes
+
+logger = getLogger(__name__)
 
 
 def suite_details_context(sid):
@@ -46,8 +47,8 @@ def task_details_context(pid):
     try:
         search_engine = SearchEngineModel.objects.get(
             smiles=singletask.file_obj.smiles)
-    except Exception as err:
-        loginfo(p=err)
+    except Exception:
+        logger.exception('failed to search model')
         search_engine = None
 
     re_context = {"singletask": singletask,
@@ -106,12 +107,14 @@ def generate_pdf(id, task_type=None):
         template = get_template("widgets/pdf/suite_details_pdf.html")
         context = Context(suite_details_context(sid=id))
     else:
-        loginfo(p=task_type, label="Cannot check the type")
+        logger.info(task_type, "Cannot check the type")
         return
 
     html = template.render(context).encode("UTF-8")
     html = StringIO.StringIO(html)
 
+    #FIXME: import new html2pdf lib
+    import xhtml2pdf.pisa as pisa
     try:
         name = str(uuid.uuid4()) + ".pdf"
         path = os.path.join(settings.SEARCH_IMAGE_PATH, name)
@@ -120,8 +123,8 @@ def generate_pdf(id, task_type=None):
                        link_callback=fetch_resources)
         f.close()
         print "finish pdf generate"
-    except Exception as err:
-        loginfo(p=err, label="cannot generate pdf")
+    except Exception:
+        logger.exception('failed to generate pdf')
 
     return path
 
@@ -291,9 +294,9 @@ def calculate_tasks(pid_list, smile, mol, models):
     """
     Calculate all tasks
     """
-    loginfo(p=pid_list, label="files")
-    loginfo(p=smile, label="smile")
-    loginfo(p=mol, label="mol")
+    logger.info('[files]: %s' % pid_list)
+    logger.info('[smiles]: %s' % smile)
+    logger.info('[mol]: %s' % mol)
 
     number = 0
     if len(pid_list) != 1 or pid_list[0] != "":
@@ -307,7 +310,6 @@ def calculate_tasks(pid_list, smile, mol, models):
 
     number = number * len(models)
 
-    loginfo(p=number, label="calculate_tasks")
     return number
 
 
@@ -351,7 +353,7 @@ def save_record(f, model_name, sid, source_type, smile=None, arguments=None):
         task.save()
         calculateTask.delay(task, model_name, arguments)
     else:
-        loginfo(p=source_type, label="Cannot recongize this source type")
+        logger.info('Cannot recongize this source type')
         return
 
     # TODO: call task query process function filename needs path
@@ -384,17 +386,12 @@ def start_files_task(files_list, model_name, sid, arguments=None):
     First, it shoud read files_list and convert them into MolFile
     """
     if len(files_list) == 1 and files_list[0] == "" or not files_list:
-
-        loginfo(p=files_list,
-                label="Sorry, we cannot calculate files")
         return False
 
     for fid in files_list:
         record = ProcessedFile.objects.get(fid=fid)
-        loginfo(p=record, label="files upload")
         save_record(record, model_name, sid, ORIGIN_UPLOAD, arguments)
 
-    loginfo(p=model_name, label="finish start files task")
     return True
 
 
@@ -405,14 +402,11 @@ def start_smile_task(smile, model_name, sid, arguments=None):
     into system-task query
     """
     if not smile:
-        loginfo(p=smile,
-                label="Sorry, we cannot calculate smiles")
         return False
 
     f = get_FileObj_by_smiles(smile)
     save_record(f, model_name, sid, ORIGIN_SMILE, smile, arguments)
 
-    loginfo(p=model_name, label="finish start smile task")
     return True
 
 
@@ -426,8 +420,6 @@ def start_moldraw_task(moldraw, model_name, sid, arguments=None):
     # TODO: maybe we should clear the first three lines which are chemwrite
     # info
     if not moldraw:
-        loginfo(p=moldraw,
-                label="Sorry, we cannot calculate draw mol files")
         return False
 
     name = str(uuid.uuid4()) + ".mol"
@@ -440,8 +432,6 @@ def start_moldraw_task(moldraw, model_name, sid, arguments=None):
 
     os.remove(path)
 
-    loginfo(p=model_name, label="finish start smile task")
-
     return True
 
 
@@ -449,9 +439,8 @@ def get_model_category(model_name):
     try:
         category = ModelCategory.objects.get(category=model_name).\
             origin_type.get_category_display()
-    except Exception as err:
-        loginfo(err)
-        loginfo(model_name)
+    except Exception:
+        logger.exception('failed to get model category')
         category = ""
 
     return category
@@ -517,8 +506,6 @@ def submit_calculate(user, smile=None, mol=None, notes=None,
     suite_task.email = get_email(email, user.email)
     suite_task.save()
 
-    loginfo(p="finish suite save")
-
     flag = False
     try:
         for m in models:
@@ -537,8 +524,8 @@ def submit_calculate(user, smile=None, mol=None, notes=None,
                 m['model'],
                 suite_task.sid,
                 m['temperature'])
-    except Exception as err:
-        loginfo(err)
+    except Exception:
+        logger.exception('failed to suite task')
         flag = False
 
     if flag:

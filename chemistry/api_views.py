@@ -6,9 +6,9 @@ from django.views.decorators.csrf import csrf_exempt
 
 from django.http import HttpResponseForbidden
 
-from util import make_json_response, basic_auth_api
-from chemstry.ChemSpiderPy.wrapper import search_cheminfo
-from util.file_operator import upload_save_process
+from utils import make_json_response, basic_auth_api
+from chemistry.ChemSpiderPy.wrapper import search_cheminfo
+from utils.file_operator import upload_save_process
 from chemistry.util import (singletask_details, suitetask_details,
                             submit_calculate, search_cheminfo_local)
 from chemistry.models import SuiteTask

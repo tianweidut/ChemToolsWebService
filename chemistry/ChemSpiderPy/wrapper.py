@@ -15,9 +15,9 @@ from django.db.models import Q
 from django.core.files import File
 
 from .chemspipy import find
-from util import loginfo
-from chemspipy.models import SearchEngineModel
-from chemspipy.util import simple_search_output_api
+from utils import loginfo
+from chemistry.models import SearchEngineModel
+from chemistry.util import simple_search_output_api
 
 
 def store_image(url, name):

@@ -17,12 +17,12 @@ from django.views.decorators.csrf import csrf_exempt
 from users.models import RegistrationProfile, UserProfile
 from users.forms import (RegistrationFormUniqueEmail, UserProfileForm,
                          PasswordForm)
-from util import basic_auth_api, make_json_response
+from utils import basic_auth_api, make_json_response
 
 
 @require_POST
 @csrf_exempt
-def login(request):
+def api_login(request):
     if not basic_auth_api(request):
         return HttpResponseForbidden()
 
