@@ -285,10 +285,37 @@ li.nav-li-username{
 	float: center;
 }
 
-#logo-img {
+#head-section {
   width: 1140px;
-  height: 180px;
-  line-height:180px;
-  text-align: center;
-  border: 1px solid;
+  height: 90px;
+  margin-top: 35px;
+  background: rgb(37, 183, 170);
+}
+
+#logo {
+  float: left;
+  height: 60px;
+  margin: 15px 45px;
+}
+
+#chem-assist {
+  float: right;
+  height: inherit;
+}
+
+#split-line {
+  background: rgb(114, 113, 113);
+  height: 4px;
+}
+
+ul.large-margin > li{
+  margin-left: 20px;
+}
+
+#homepage-carousel {
+  height: 400px;
+}
+
+.carousel-inner {
+  height: 100%;
 }
