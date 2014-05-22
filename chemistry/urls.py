@@ -1,9 +1,12 @@
 #coding: utf-8
 from django.conf.urls import patterns, url
 from chemistry import views, api_views
+from django.views.generic import TemplateView
+
 
 urlpatterns = patterns('',
-    url(r'^newtask/$', views.submit),
+    #url(r'^newtask/$', views.submit),
+    url(r'^newtask/$', TemplateView.as_view(template_name='newtask.html')),
     url(r'^history/$', views.history),
     url(r'^details/suite/(?P<sid>.{36})$', views.suitetask),
     url(r'^details/task/(?P<pid>.{36})$', views.singletask),

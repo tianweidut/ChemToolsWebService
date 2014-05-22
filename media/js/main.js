@@ -63,3 +63,19 @@ $(function(){
       }
   });
 });
+
+$(function () {
+    $('.tree li:has(ul)').addClass('parent_li').find(' > span');
+    $('.tree li.parent_li > span').on('click', function (e) {
+        var children = $(this).parent('li.parent_li').find(' > ul > li');
+        if (children.is(":visible")) {
+            children.hide();
+            $(this).find(' > i').addClass('glyphicon-plus-sign').removeClass('glyphicon-minus-sign');
+        } else {
+            children.show();
+            $(this).find(' > i').addClass('glyphicon-minus-sign').removeClass('glyphicon-plus-sign');
+        }
+        e.stopPropagation();
+    });
+});
+
