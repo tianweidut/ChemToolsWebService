@@ -1158,7 +1158,7 @@ label {
   font-size: 15px;
   line-height: 1.467;
   padding: 8px 12px;
-  height: 42px;
+  height: 32px;
   -webkit-appearance: none;
   border-radius: 6px;
   -webkit-box-shadow: none;
@@ -1364,7 +1364,7 @@ select[multiple].input-hg {
 }
 .form-group {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 }
 .form-horizontal .control-label,
 .form-horizontal .radio,

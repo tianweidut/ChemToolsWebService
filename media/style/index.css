@@ -352,8 +352,9 @@ ul.large-margin > li{
 } 
 
 .tree {
-    min-height:20px;
+    min-height:400px;
     margin-bottom:20px;
+    margin-left: -50px;
 }
 .tree li {
     list-style-type:none;
@@ -401,8 +402,12 @@ ul.large-margin > li{
 .tree li:last-child::before {
     height:30px
 }
-.tree li.parent_li>span:hover, .tree li.parent_li>span:hover+ul li span {
-    background:#eee;
-    border:1px solid #94a0b4;
-    color:#000
+
+.checkbox{
+  margin-bottom: 1px;
+  line-height: 8px;
+}
+
+.checkbox >span.icons{
+  line-height: 1px;
 }

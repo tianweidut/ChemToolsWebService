@@ -79,3 +79,16 @@ $(function () {
     });
 });
 
+
+$(function () {
+    $('.model-args').hide(); 
+
+    $('.checkbox').click(function(){
+      var model_args = $('#' + $(this).attr('model') + '_args'); 
+      if($(this).find('input[type=checkbox]').is(':checked')){
+        model_args.hide();
+      }else{
+        model_args.show();
+      }
+    });
+});
