@@ -2,25 +2,30 @@
 <link rel="stylesheet" href="{{ STATIC_URL }}style/jquery.fileupload-ui.css">
 {% load upload_tags %}
 <br/>
-<div class="" id="molfiles">
+<div id="molfiles">
     <form id="fileupload" method="post" action="." enctype="multipart/form-data">{% csrf_token %}
-        <div class="row fileupload-buttonbar" id="addinput">
-            <div class="span12">
-                <button class="btn btn-primary fileinput-button" style="height:50px">
-                    <i class="icon-plus icon-white"></i>
+        <div class="fileupload-buttonbar" id="addinput">
+            <div class="row">
+              <div class="col-md-3">
+                <a class="btn btn-primary fileinput-button  btn-lg btn-block ">
                     <input type="file" name="file" multiple >
-                    <span>Add files...</span>
-                </button>
-                <button type="submit" class="btn btn-success start" style="height:50px"  rel="fileupload_operation">
+                    <span>选择文件</span>
+                </a>
+              </div>
+              <div class="col-md-3">
+                <a type="submit" class="btn btn-success btn-lg btn-block start" rel="fileupload_operation">
                     <i class="icon-upload icon-white"></i>
-                    <span>Start upload</span>
-                </button>
-                <button type="button" class="btn btn-info" id="upload_update">
+                    <span>开始上传</span>
+                </a>
+              </div>
+              <div class="col-md-3">
+                <a type="button" class="btn btn-info  btn-lg btn-block " id="upload_update">
                     <i class="icon-refresh icon-white"></i>
-                    <span>Commit update</span>
-                </button>
+                    <span>确认提交</span>
+                </a>
+              </div>
             </div>
-            <div class="span5 fileupload-progress fade">
+            <div class="fileupload-progress fade">
                 <div class="progress progress-success progres-striped active">
                     <div class="bar" style="width:0%"></div>
                 </div>
@@ -43,11 +48,8 @@
 {% upload_js %}
 
 <!--Files Upload Tips-->
-<br/>
-<div class="alert alert-success" id="filesupload-tips" >
-	<button type="button" class="close" data-dismiss="alert">x</button>
-	<h3><strong>Files Upload tips!</strong></h3>
-	<br/>
+<div class="alert alert-warning" id="filesupload-tips" style="font-size:14px">
+	<p><strong>Files Upload tips!</strong></p>
 	<ul>
 		<li>The maximum file size for uploads in this demo is <strong> 50 MB</strong> "(default file size is unlimited)" </li>
 		<li>Only image files <strong> (MOL, SDF) </strong> are allowed in this demo (by default there is no file type restriction).</li>
