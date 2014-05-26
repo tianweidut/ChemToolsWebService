@@ -116,7 +116,7 @@ def active(request, activation_key,
 
 def register(request, success_url=None,
              form_class=RegistrationFormUniqueEmail, profile_callback=None,
-             template_name='registration/registration_form.html',
+             template_name='registration/register.html',
              extra_context=None):
     if request.method == "POST":
         form = form_class(data=request.POST)

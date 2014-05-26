@@ -168,7 +168,31 @@
     </div>
   </div>
 
-  <div class="col-md-8">2</div>
+  <div class="col-md-8">
+    <div class="tabbable">
+      <ul class="nav nav-pills tab-fix">
+        <li class="active" style="width:33%"><a href="#info-input-tab1" id="tab1" data-toggle="tab" class="btn btn-primary">模型搜索</a></li>
+        <li style="width:33%"><a href="#info-input-tab2" data-toggle="tab" class="btn btn-primary">分子绘图</a></li>
+        <li style="width:33%"><a href="#info-input-tab3" data-toggle="tab" class="btn btn-primary">文件上传</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="info-input-tab1">
+          {% include "widgets/info-search.html"%}
+        </div>
+        <div class="tab-pane" id="info-input-tab2">
+          {% include "widgets/chem-draw.html" %}
+        </div>
+        <div class="tab-pane " id="info-input-tab3">
+          {% include "widgets/file-upload.html" %}
+        </div>
+      </div><!--end table content-->
+    </div><!--end tabbable-->
+    <div id='split-line-narrow'></div>
+    <div>
+      <a href='#' class="btn btn-danger pull-right" style="margin-left:10px">提交计算</a>
+      <a href='#' class="btn btn-primary pull-right" style="margin-left:10px">输入预览</a>
+    </div>
+  </div>
 </div>
 
 {% endblock %}

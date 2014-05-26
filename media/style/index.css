@@ -411,3 +411,21 @@ ul.large-margin > li{
 .checkbox >span.icons{
   line-height: 1px;
 }
+
+.pagination {
+  margin-top: -1px;
+}
+
+.login-section {
+  width: 400px;
+  margin-bottom: 40px;
+}
+
+.form-group-large {
+  margin-bottom: 20px;
+  font-size: 17px;
+}
+
+.login-field {
+  height: 42px;
+}

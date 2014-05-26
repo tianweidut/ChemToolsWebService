@@ -1,23 +1,21 @@
-
 {% extends "base/base.html" %}
-{% load i18n %}
-
 {% block content %}
 
-<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/accounts_form.css" >
-
-<div class="container form-container">
-  <form class="form-signin" method="post" action="{% url auth_login %}?next={%url gui.views.submit %}">
-		<h2 class="form-signin-heading">Please sign in</h2>			
-		{% include 'base/_form.html' %}			
-		<button class="btn btn-large btn-primary" type="submit">Sign in</button>	
-		{% csrf_token %}
-	<br>
-	<br>
-	<p>{% trans "Forgot password" %}? <a href="{% url auth_password_reset %}">{% trans "Reset it" %}</a>!</p>
-	<p>{% trans "Not member" %}? <a href="{% url registration_register %}">{% trans "Register" %}</a>!</p>
-	</form>	
-
+<center>
+<div class="login-section">
+  <div class="login-form">
+    <div class="form-group form-group-large">
+      <input type="text" class="form-control login-field" placeholder="用户名" id="login-name">
+      <label class="login-field-icon fui-user" for="login-name"></label>
+    </div>
+    <div class="form-group  form-group-large">
+      <input type="password" class="form-control login-field" placeholder="密码" id="login-pass">
+      <label class="login-field-icon fui-lock" for="login-pass"></label>
+    </div>
+    <a class="btn btn-primary btn-lg btn-block" href="#">登入</a>
+    <a class="login-link" href="#">忘记密码?</a>
+  </div>
 </div>
+</center>
 
 {% endblock %}

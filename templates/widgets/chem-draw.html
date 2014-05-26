@@ -1,23 +1,6 @@
-<!-- chemistry structure draw, use chemwrite lib -->
-<br/>
-<!--Import the custom chemwrite -->
-<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}chemwriter/chemwriter.css" >
-<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}chemwriter/chemwriter-custom.css" >
-<script src="{{ STATIC_URL }}chemwriter/chemwriter.js"></script>
-
-<div class="container-fluid "> 
-			<!--structure draw-->
-			<div class="container draw-container">
-			    <div id="editor"></div>
-				<script>
-			  </script>
-			</div>
-      <!--Sumbit button-->
-      <br/>
-      <div >
-        <button class="btn btn-primary btn-large calculated-btn" id="draw_btn">Confirm</button>
-      </div>
-      <br/>
-      <br/>
-      <br/>
+<div class="draw-container">
+  <div id="editor" data-chemwriter-width="750" data-chemwriter-height="500"
+       data-chemwriter-ui="editor"
+       data-chemwriter-src=""></div>
 </div>
+<a class="btn btn-primary" style="width:90px" id="draw_btn">完成绘图</a>

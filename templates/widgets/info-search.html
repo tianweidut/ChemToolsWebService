@@ -1,34 +1,45 @@
 <br/>
-	<div class="input-append">
-    <input type="text" id="query_input"  class="span4 search-query" placeholder="cas,name,smiles...">
-		<button id="search_varify_btn" class="btn" rel="tooltip" data-placement="right" 
-		data-original-title = "varify your input, like name,
-		cas, smile and chinese">Search</button>
-		<button id="smile-direct" class="btn" rel="tooltip" data-placement="right" 
-		data-original-title = "use smiles directly">Smile direct!</button>
-	</div>
-<br/>
-<!-- tips for search -->
-<div class="alert alert-success" id="search-tips" >
-	<button type="button" class="close" data-dismiss="alert">x</button>
-	<h3><strong>Search tips!</strong></h3>
-	<br/>
-	<ul>
-		<li>Name: Lipitor, Ibuprofen </li>
-		<li>SMILES: S=C=NC, C11H13NO2</li>
-		<li>CAS: 92-15-9, 122-82-7</li>
-		<li>Chinese Name: 苯</li>
-	</ul>
-</div>
-<br/>
-<center>
-<div id="search-loading">
-  <img src="{{STATIC_URL}}images/loading.gif">
-</div>
-</center>
+<table class="table">
+  <tbody>
+    <tr>
+      <td width="15%">CAS号</td>
+      <td>
+        <div class="form-group">
+          <input type="text" class="form-control" id="query_input" style="width:100%">
+        </div>
+      </td>
+    </tr>
+
+    <tr>
+      <td>SMILES码</td>
+      <td>
+        <div class="form-group">
+          <input type="text" class="form-control" id="query_input" >
+        </div>
+      </td>
+    </tr>
+
+    <tr>
+      <td>中文名称</td>
+      <td>
+        <div class="form-group">
+          <input type="text" class="form-control" id="query_input" >
+        </div>
+      </td>
+    </tr>
+
+    <tr>
+      <td>英文名称</td>
+      <td>
+        <div class="form-group">
+          <input type="text" class="form-control" id="query_input" >
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<a class="btn btn-primary" style="width:90px;float:right">搜索</a>
 
 <!-- results -->
-<div class="accordion" id="search_result_panel">
-  <hr/>
-	{% include "widgets/search_result.html" %}
-</div>
+{% include "widgets/search_result.html" %}
