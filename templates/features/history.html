@@ -1,9 +1,5 @@
-{% extends "base/_content.html" %}
+{% extends "base/base.html" %}
 
-{% block calculate-content%}
-	<!--search item bar-->
-	{% include "widgets/search_item.html" %}
-	<hr/>
-	<!--list view-->
+{% block content %}
 	{% include "widgets/queue_list.html" %}
 {% endblock %}

@@ -28,10 +28,11 @@ def submit(request):
                            dict(models=models))
 
 
-@login_required
+#@login_required
 def history(request):
     #TODO: Add pagination
-    results = SuiteTask.objects.filter(user__user=request.user).order_by('-start_time')
+    #results = SuiteTask.objects.filter(user__user=request.user).order_by('-start_time')
+    results = SuiteTask.objects.all().order_by('-start_time')
 
     for r in results:
         r.models_str_list = get_models_selector(r.models_str)
@@ -39,7 +40,7 @@ def history(request):
         r.progress_value = "%0.2f" % (float(r.has_finished_tasks) / r.total_tasks * 100)
         r.is_finished = bool(r.total_tasks == r.has_finished_tasks)
 
-    return render(request, 'features/history.html',
+    return render(request, 'history.html',
                   dict(history_lists=results))
 
 

@@ -254,8 +254,9 @@ def get_models_selector(models_str):
     Out:
         a list, element is a two-tuple.
     """
-    colors = ("badge-success", "badge-warning", "badge-important",
-              "badge-info", "badge-inverse", " ")
+    colors = ("label-success", "label-warning",
+              "label-primary",
+              "label-info", "label-danger", "label-default")
     models_list = models_str.split(MODEL_SPLITS)
 
     result = []
