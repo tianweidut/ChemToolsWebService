@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ChemWriter</title>
+        <link href="{{STATIC_URL}}flat-ui/bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}chemwriter/chemwriter.css" >
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}chemwriter/chemwriter-custom.css" >
+
+        <script type='text/javascript' src="{{STATIC_URL}}flat-ui/js/jquery-1.8.3.min.js"></script>
+        <script src="{{ STATIC_URL }}chemwriter/chemwriter.js"></script>
+        <script>
+          $(function(){
+            var editor = chemwriter.loadEditor('editor', {
+              enableClipboard: true,
+              appletPath:      "{{ STATIC_URL }}chemwriter/chemwriter-util.jar"
+              });
+    
+          $('#draw_btn').click(function(){
+            var draw_mol = editor.getMolfile();
+            console.log(draw_mol);
+            $(this).text("Added!").addClass("btn-danger");
+          });
+        }); 
+        </script>
+    </head>
+    
+    <body>
+      <div id="editor" style="width:750px"></div>
+      <button class="btn btn-primary" style="width:90px" id="draw_btn">完成绘图</button>
+    </body>
+</html>

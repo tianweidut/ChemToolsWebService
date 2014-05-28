@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     url(r'^history/$', views.history),
     url(r'^details/suite/(?P<sid>.{36})$', views.suitetask),
     url(r'^details/task/(?P<pid>.{36})$', views.singletask),
+    url(r'^chemwriter/$', TemplateView.as_view(template_name='chemwriter.html')),
 
     url(r'^api/smile-search/$', api_views.smile_search),
     url(r'^api/mol-upload/$', api_views.mol_upload),
