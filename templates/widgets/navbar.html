@@ -24,8 +24,15 @@
       <li><a href='/'>软件帮助</a></li>
     </ul>
     <ul class='nav navbar-nav navbar-right'>
-      <li><a href='/accounts/login/'>登陆</a></li>
-      <li><a href='/accounts/register/'>注册</a></li>
+      {% if request.user.is_authenticated %}
+      <li><a href='/settings/profile/'>{{ request.user.username }}</a></li>
+      <li><a href='/accounts/logout/'>离开</a></li>
+      {% else %}
+        <li><a href='/accounts/login/'>登陆</a></li>
+        {% if request.path != "/" %}
+            <li><a href='/accounts/register/'>注册</a></li>
+        {% endif %}
+      {% endif %}
     </ul>
   </div>
 </div>

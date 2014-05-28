@@ -16,11 +16,13 @@ urlpatterns = patterns('',
 
     url(r'^accounts/active/(?P<activation_key>\w+)/$', active,
         name='registration_avtive'),
-    url(r'^accounts/login/$',
-        auth_views.login,
-        {'template_name': 'registration/login.html'},name='auth_login'),
-    url(r'^accounts/logout/$', auth_views.logout, {'template_name': 'index.html'},
+
+    url(r'^accounts/login/$', auth_views.login,
+        {'template_name': 'registration/login.html'}, name='auth_login'),
+    url(r'^accounts/logout/$', auth_views.logout,
+        {'template_name': 'index.html'},
         name='auth_logout'),
+
     url(r'^accounts/password/change/$', auth_views.password_change,
         name='auth_password_change'),
     url(r'^accounts/password/change/done/$', auth_views.password_change_done,

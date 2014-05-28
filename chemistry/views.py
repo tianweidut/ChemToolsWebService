@@ -28,11 +28,10 @@ def submit(request):
                            dict(models=models))
 
 
-#@login_required
+@login_required
 def history(request):
     #TODO: Add pagination
-    #results = SuiteTask.objects.filter(user__user=request.user).order_by('-start_time')
-    results = SuiteTask.objects.all().order_by('-start_time')
+    results = SuiteTask.objects.filter(user__user=request.user).order_by('-start_time')
 
     for r in results:
         r.models_str_list = get_models_selector(r.models_str)
@@ -49,7 +48,7 @@ def suitetask(request, sid=None):
     """
     Suitetask details view
     """
-    return render(request, 'features/details.html',
+    return render(request, 'suite_details.html',
                   suitetask_details(sid))
 
 
@@ -58,5 +57,5 @@ def singletask(request, pid=None):
     """
     Every singletask details view
     """
-    return render(request, 'widgets/task_details.html',
+    return render(request, 'task_details.html',
                   singletask_details(pid))
