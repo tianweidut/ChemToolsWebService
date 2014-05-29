@@ -60,16 +60,17 @@ $(function(){
 
 //chem structure draw
 $(function(){
-    var editor = chemwriter.loadEditor('editor', {
-			    enableClipboard: true,
-			    appletPath:      "{{ STATIC_URL }}chemwriter/chemwriter-util.jar"
-		});
-    
     $('#draw_btn').click(function(){
       Calculate.draw_mol = editor.getMolfile();
       $(this).text("Added!").addClass("btn-danger");
     });
 });
+
+function fetch_draw_data()
+{
+  Calculate.draw_mol = $("#chemwriter-frame").contents().find('#data').html();
+  console.log(Calculate.draw_mol);
+}
 
 
 $("#upload_update").click(function(){

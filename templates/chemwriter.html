@@ -17,7 +17,8 @@
     
           $('#draw_btn').click(function(){
             var draw_mol = editor.getMolfile();
-            console.log(draw_mol);
+            $('#data').text(draw_mol);
+            parent.fetch_draw_data();
             $(this).text("Added!").addClass("btn-danger");
           });
         }); 
@@ -26,6 +27,7 @@
     
     <body>
       <div id="editor" style="width:750px"></div>
+      <div id="data" hidden></div>
       <button class="btn btn-primary" style="width:90px" id="draw_btn">完成绘图</button>
     </body>
 </html>
