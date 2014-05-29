@@ -1,4 +1,3 @@
-
 {% extends "features/settings.html" %}
 
 {% block active_admin_content %}  
@@ -6,29 +5,28 @@ active
 {% endblock %}
 
 {% block settings_content %}
-	<div class="modal modal-fixed">
-		<div class="modal-header">
-			<h3><b>Change Password</b></h3>
-		</div>
-    <form method="post" action=".">
-      {% csrf_token %}
-		  <div class="modal-body">
-			   <label class="settings-label">Old Password</label>
-         {{ form.old_password }}
-          <span class="form-error help-inline">{{form.old_password.errors}}</span>
-    		 <br/>
-    		 <label class="settings-label">New Password</label>
-         {{ form.new_password }}
-          <span class="form-error help-inline">{{form.new_password.errors}}</span>
-    		 <br/>
-    		 <label class="settings-label">Confirm New Password</label>
-         {{ form.new_password2 }}
-          <span class="form-error help-inline">{{form.new_password2.errors}}</span>
-			 <br/>
-		  </div>
-		  <div class="modal-footer">
-			  <button type="submit" class="btn btn-primary">Update Password</button>
-		  </div>
-    </form>
-	</div>
+<center>
+<div class="login-section">
+  <form class="login-form" method="post" action=".">
+    {% csrf_token %}
+    <div class="form-group  form-group-large">
+      <input type="password" class="form-control login-field" placeholder="旧密码" id="id_old_password" name="old_password">
+      <label class="login-field-icon fui-lock" for="old_password"></label>
+      <span class="form-error help-inline">{{form.old_password.errors}}</span>
+    </div>
+    <div class="form-group  form-group-large">
+      <input type="password" class="form-control login-field" placeholder="新密码" id="id_new_password" name="new_password">
+      <label class="login-field-icon fui-lock" for="new_password"></label>
+      <span class="form-error help-inline">{{form.new_password.errors}}</span>
+    </div>
+    <div class="form-group  form-group-large">
+      <input type="password" class="form-control login-field" placeholder="再次确认" id="id_new_password2" name="new_password2">
+      <label class="login-field-icon fui-lock" for="new_password2"></label>
+      <span class="form-error help-inline">{{form.new_password2.errors}}</span>
+    </div>
+    <button class="btn btn-primary btn-lg btn-block" type="submit">更新密码</button>
+  </form>
+  </form>
+</div>
+</center>
 {% endblock %}

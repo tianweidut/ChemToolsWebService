@@ -5,49 +5,33 @@ active
 {% endblock %}
 
 {% block settings_content %}
-	<div class="modal modal-fixed">
-		<div class="modal-header">
-			<h3><b>User Profile</b></h3>
-		</div>
-    <form method="post" action=".">
-      {% csrf_token %}
-		  <div class="modal-body">
-			 <label class="settings-label">Name</label>
-          {{ form.name }} 
-          <span class="form-error help-inline">{{form.name.errors}}</span>
-    		 <br/>
-    		 <label class="settings-label">Email</label>
-         {{ form.email }}
-          <span class="form-error help-inline">{{form.email.errors}}</span>
-    		 <br/>
-    		 <label class="settings-label">Telephone</label>
-         {{ form.telephone }}
-          <span class="form-error help-inline">{{form.telephone.errors}}</span>
-    		 <br/>
-    		 <label class="settings-label">Company</label>
-         {{ form.company }}
-          <span class="form-error help-inline">{{form.company.errors}}</span>
-    		 <br/>
-    		 <label class="settings-label">Location</label>
-         {{ form.location }}
-          <span class="form-error help-inline">{{form.location.errors}}</span>
-    		 <br/>
-		  </div>
+<center>
+<div class="login-section">
+  <form class="login-form" method="post" action=".">
+    {% csrf_token %}
+    <div class="form-group form-group-large">
+      <input type="text" class="form-control login-field" disabled="disabled" placeholder="用户名" maxlength="254" id="id_name" name="name" value="{{form.name.value}}">
+      <label class="login-field-icon fui-user" for="name">用户名</label>
+      <span class="form-error help-inline">{{form.name.errors}}</span>
+    </div>
 
-	</div>
-	<div class="modal modal-fixed modal-fixed-another">
-		<div class="modal-header">
-			<h3><b>Machine Information</b></h3>
-		</div>
-		  <div class="modal-body">
-			   <label class="settings-label">Agent ID</label>
-         {{ form.agentid }}
-          <span class="form-error help-inline">{{form.agentid.errors}}</span>
-    		 <br/>
-      </div>
-      <div class="modal-footer">
-			  <button type="submit" class="btn btn-primary">Save changes</button>
-		  </div>
-    </form>
-	</div>
+    <div class="form-group form-group-large">
+      <input type="text" class="form-control login-field" maxlength="254" id="id_email" name="email" value="{{form.email.value}}">
+      <label class="login-field-icon fui-mail" for="email">邮箱</label>
+      <span class="form-error help-inline">{{form.email.errors}}</span>
+    </div>
+
+    <div class="form-group form-group-large">
+      <input type="text" class="form-control login-field" placeholder="工作单位" maxlength="254" id="id_company" name="company" value="{{form.company.value}}">
+      <label class="login-field-icon fui-location" for="company">工作单位</label>
+      <span class="form-error help-inline">{{form.company.errors}}</span>
+    </div>
+
+    <button class="btn btn-primary btn-lg btn-block" type="submit">更新资料</button>
+  </form>
+  </form>
+</div>
+</center>
+
+</div>
 {% endblock %}
