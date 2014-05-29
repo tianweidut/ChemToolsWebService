@@ -5,34 +5,34 @@
 {%endblock%}
 
 {%block input-details%}
-<div class="span4">
+<div class="col-xs-4">
   <fieldset>
-    <legend>Calculate Source</legend>
-      <div class="alert-info">Knowledge Search Engine</div> 
+    <legend>计算输入来源</legend>
+      <div class="alert-info">模型搜索</div> 
   </fieldset>
   <br/>
   <fieldset>
-    <legend>Specification</legend>
+    <legend>说明</legend>
     <blockquote>This is third submit method!</blockquote>
   </fieldset>
 </div><!--end left panel-->
-<div class="span4">
+<div class="col-xs-4">
   <fieldset>
-    <legend>Mol Files</legend>
+    <legend>mol 文件</legend>
     <table class="table table-hover">
       <thead>
       </thead>
       <tbody>
         <tr>
-          <td>Smiles</td>
+          <td>Smiles 编号</td>
           <td>{{search_engine.smiles}}</td>
         </tr>
         <tr>
-          <td>Common Name</td>
+          <td>通用名称</td>
           <td>{{search_engine.commonname}}</td>
         </tr>
         <tr>
-          <td>Molecular Formula</td>
+          <td>分子式</td>
           {%autoescape off%}
           <td>{{search_engine.mf}}</td>
           {%endautoescape%}

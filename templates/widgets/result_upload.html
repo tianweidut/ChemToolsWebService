@@ -1,23 +1,23 @@
 {%extends "base/base_results.html"%}
 
 {%block input-details%}
-<div class="span4">
+<div class="col-xs-4">
   <fieldset>
-    <legend>Calculate Source</legend>
-      <div class="alert-info">MOl File Upload!</div> 
+    <legend>计算输入来源</legend>
+      <div class="alert-info">mol 文件上传</div> 
   </fieldset>
   <br/>
   <fieldset>
-    <legend>Specification</legend>
+    <legend>说明</legend>
     <blockquote>This file is uploaded by batch method!</blockquote>
   </fieldset>
 </div><!--end left panel-->
-<div class="span3">
+<div class="col-xs-3">
   <fieldset>
-    <legend>Mol Files</legend>
+    <legend>mol 文件</legend>
     <table class="table table-hover">
       <thead>
-        <tr><td>Item</td><td>Value</td></tr>
+        <tr><td>类别</td><td>结果</td></tr>
       </thead>
       <tbody>
         <tr>
@@ -25,13 +25,13 @@
           <td>{{singletask.file_obj.smiles}}</td>
         </tr>
         <tr>
-          <td>Type</td>
+          <td>类型</td>
           <td>{{singletask.file_obj.file_type}}</td>
         </tr>
         <tr>
-          <td>Download</td>
+          <td></td>
           <td>
-            <a class="btn btn-primary" href="{{singletask.file_obj.file_obj.url}}">Got it!</a>
+            <a class="btn btn-primary" href="{{singletask.file_obj.file_obj.url}}">下载链接</a>
           </td>
         </tr>
       </tbody>

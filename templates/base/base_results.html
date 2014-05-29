@@ -1,9 +1,9 @@
 <!--This is commit results page from search-->
 <div class="container-fluid ">
-  <div class="row-fluid">
-    <div class="span4">
+  <div class="row">
+    <div class="col-xs-4">
       <fieldset>
-        <legend>Structure</legend>
+        <legend>分子结构图</legend>
         {%block picture-content%}
           {% if singletask.file_obj.image %}
             <img id="last_picture" src="{{singletask.file_obj.image.url}}" style="width: 120px; height: 120px;">		
