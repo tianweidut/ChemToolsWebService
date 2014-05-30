@@ -8,10 +8,12 @@
     <div class="form-group form-group-large">
       <input type="text" class="form-control login-field" placeholder="用户名" maxlength="254" id="id_username" name="username">
       <label class="login-field-icon fui-user" for="username"></label>
+      <span class="form-error help-inline">{{form.username.errors}}</span>
     </div>
     <div class="form-group  form-group-large">
       <input type="password" class="form-control login-field" placeholder="密码" id="id_password" name="password">
       <label class="login-field-icon fui-lock" for="password"></label>
+      <span class="form-error help-inline">{{form.password.errors}}</span>
     </div>
     <button class="btn btn-primary btn-lg btn-block" type="submit">登入</button>
     <a class="login-link" href="#">忘记密码?</a>

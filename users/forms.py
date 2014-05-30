@@ -151,11 +151,11 @@ class RegistrationForm(forms.Form):
 
     def save(self, request, profile_callback=None):
         new_user = RegistrationProfile.objects.create_inactive_user(
-                request,
-                username=self.cleaned_data['username'],
-                password=self.cleaned_data['password1'],
-                email=self.cleaned_data['email'],
-                profile_callback=profile_callback)
+                        request,
+                        username=self.cleaned_data['username'],
+                        email=self.cleaned_data['email'],
+                        password=self.cleaned_data['password1'],
+                        profile_callback=profile_callback)
 
         return new_user
 

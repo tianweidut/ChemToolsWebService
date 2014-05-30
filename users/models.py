@@ -170,8 +170,8 @@ class RegistrationManager(models.Manager):
         Create a ``RegistrationProfile`` for a given
         ``User``, and return the ``RegistrationProfile``.
         """
-        salt = sha1.new(str(random.random())).hexdigest()[:5]
-        activation_key = sha.new(salt+user.username).hexdigest()
+        salt = sha1(str(random.random())).hexdigest()[:5]
+        activation_key = sha1(salt+user.username).hexdigest()
 
         return self.create(user=user,
                            activation_key=activation_key)

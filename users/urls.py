@@ -35,6 +35,7 @@ urlpatterns = patterns('',
         name='auth_password_reset_complete'),
     url(r'^accounts/password/reset/done/$', auth_views.password_reset_done,
         name='auth_password_reset_done'),
+
     url(r'accounts/register/$', register, name='registration_register'),
     url(r'accounts/register/complete/$',
         TemplateView.as_view(template_name='registration/registration_complete.html'),
