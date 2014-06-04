@@ -5,7 +5,7 @@
       <td width="15%">CAS号</td>
       <td>
         <div class="form-group">
-          <input type="text" class="form-control" id="query_input" style="width:100%">
+          <input type="text" class="form-control" id="query_input_cas" style="width:100%">
         </div>
       </td>
     </tr>
@@ -14,7 +14,7 @@
       <td>SMILES码</td>
       <td>
         <div class="form-group">
-          <input type="text" class="form-control" id="query_input" >
+          <input type="text" class="form-control" id="query_input_smile" >
         </div>
       </td>
     </tr>
@@ -23,7 +23,7 @@
       <td>中文名称</td>
       <td>
         <div class="form-group">
-          <input type="text" class="form-control" id="query_input" >
+          <input type="text" class="form-control" id="query_input_common_name_ch" >
         </div>
       </td>
     </tr>
@@ -32,14 +32,49 @@
       <td>英文名称</td>
       <td>
         <div class="form-group">
-          <input type="text" class="form-control" id="query_input" >
+          <input type="text" class="form-control" id="query_input_common_name_en" >
         </div>
       </td>
     </tr>
   </tbody>
 </table>
 
-<a class="btn btn-primary" style="width:90px;float:right">搜索</a>
+<a id="search-btn" class="btn btn-primary" style="width:90px;float:right;margin-bottom:10px">
+  搜索
+  <span>
+    <img src="{{STATIC_URL}}images/loading.gif" id="search-loading">
+  </span>
+</a>
 
-<!-- results -->
-{% include "widgets/search_result.html" %}
+<!-- cas,name,chinese name, smiles search results-->
+<div id="search-result" style="margin-top: 80px; margin-left:auto;">
+    <table class="table table-hover" id="search-smile-content" style="width:100%; font-size:14px;">
+      <thead style="background: rgb(26, 188, 156); color:white">
+        <tr>
+          <th>CAS</th>
+          <th>Formula</th>
+          <th>CommonName</th>
+          <th class="smile">Smile</th>
+          <th>Alogp</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <center>
+    <div class="pagination pagination-sm" style="display:none">
+      <ul>
+        <li class="previous"><a href="#fakelink" class="fui-arrow-left"></a></li>
+        <li ><a>1</a></li>
+        <li><a>2</a></li>
+        <li><a>3</a></li>
+        <li><a>4</a></li>
+        <li><a>5</a></li>
+        <li class="next active"><a href="#fakelink" class="fui-arrow-right"></a></li>
+      </ul>
+    </div>
+    </center>
+</div>
+
+<p id="search-no-result">什么也没找到，换个搜索条件试试...</p>

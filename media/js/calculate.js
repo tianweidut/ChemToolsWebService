@@ -5,7 +5,8 @@ $(document).ready(function(){
   $("#mol_file_string_copy").hide();
 
   //search results
-  $('#search_result_panel').hide();
+  $('#search-result').hide();
+  $('#search-no-result').hide();
   $('#valid_results').hide();
   $('#unvalid_results').hide();
 
@@ -130,26 +131,32 @@ $("#smile-direct").click(function(){
   Calculate.smile = $("#query_input").val(); 
 });
 
-$('#search_varify_btn').click(function(){
-  var data = {"query":$("#query_input").val(),};
+$('#search-btn').click(function(){
+  var data = {"cas":$("#query_input_cas").val(),
+              "smile":$("#query_input_smile").val(),
+              "common_name_en":$("#query_input_common_name_en").val(),
+              "common_name_ch":$("#query_input_common_name_ch").val()}
+
   var url = "/api/smile-search/";
   
   $('#search-loading').show();
   
   $.post(url, data).done(function(content){
     var element = "#search-smile-content";
+    console.log(content);
     $("#search-loading").hide();
-    $("#search_result_panel").show();
 
     if(content.length !== 0){
+      $("#search-result").show();
+      $("#search-no-result").hide();
       $(element).find("tbody").html("");
       $.each(content, function(k,v){
         var row = "<tr class='search-content'><td>"+ v.cas +"</td><td>"+
                   v.formula + "</td><td>" +
                   v.commonname + "</td><td class='smile'>" +
-                  v.smile + "</td><td>" +
+                  v.smiles + "</td><td>" +
                   v.alogp + "</td>"+
-                  "<td><a class='btn btn-primary search-select'>Select</a></td></tr>";
+                  "<td><a class='btn btn-primary search-select'>选择</a></td></tr>";
         $(element).find("tbody").append(row);
       });
       
@@ -158,13 +165,17 @@ $('#search_varify_btn').click(function(){
         var smile = $(td).children(".smile").text();
 
         Calculate.smile = smile;
+        console.log(smile);
 
-        $(".search-content").removeClass("alert alert-error");
-        $(td).addClass("alert alert-error");
-        $("#smile-direct").removeClass("btn-danger");
+        $(".search-content").removeClass("danger");
+        $(".search-select").text('选择');
+        $(td).addClass("danger");
+        $(this).text('已选择');
+
       });
     }else{
-      $(element).text("No matching results!");
+      $("#search-result").hide();
+      $("#search-no-result").show();
     }
   });
 });

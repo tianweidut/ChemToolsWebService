@@ -239,9 +239,13 @@ def simple_search_output_api(func):
 
 @simple_search_output
 def search_cheminfo_local(query, start=0, limit=10):
-    q = Q(cas=query) | \
-        Q(smiles__contains=query) | \
-        Q(molecular_formula=query)
+    #TODO: 加入中文名称搜索
+    #Q(common_name_ch__contains=query['common_name_ch']) |
+    q = Q(cas=query['cas'].strip())
+    if query['smile']:
+        q |= Q(smiles__contains=query['smile'].strip())
+    if query['common_name_en']:
+        q |= Q(einecs_name__contains=query['common_name_en'].strip())
 
     results = ChemInfoLocal.objects.filter(q)[start:(start + limit)]
     return results

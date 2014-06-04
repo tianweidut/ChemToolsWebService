@@ -311,7 +311,9 @@ li.nav-li-username{
 #split-line-narrow {
   background: rgb(201, 201, 202);
   height: 2px;
+  margin-top:10px;
   margin-bottom: 10px;
+  clear:both;
 }
 
 ul.large-margin > li{
@@ -507,8 +509,8 @@ button.show-btn{
 
 
 #search-loading{
-  width:60px;
-  height:60px;
+  width:14px;
+  height:14px;
   text-align: center;
 }
 
@@ -524,4 +526,12 @@ table.table-search tr:hover td a.btn{
   display:inline-block;
 }
 
+#search-no-result {
+  font-size: 18px;
+  color: #e74c3c;
+}
 
+.search-select {
+  font-size: 12px;
+  padding: 3px 15px;
+}

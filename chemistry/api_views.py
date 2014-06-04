@@ -7,7 +7,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseForbidden
 
 from utils import make_json_response, basic_auth_api
-from chemistry.ChemSpiderPy.wrapper import search_cheminfo
 from utils.file_operator import upload_save_process
 from chemistry.util import (singletask_details, suitetask_details,
                             submit_calculate, search_cheminfo_local)
@@ -20,24 +19,19 @@ def smile_search(request):
     if not basic_auth_api(request):
         return HttpResponseForbidden()
 
-    query = request.POST.get('query', '')
+    query = dict(cas=request.POST.get('cas'),
+                 smile=request.POST.get('smile'),
+                 common_name_ch=request.POST.get('common_name_ch'),
+                 common_name_en=request.POST.get('common_name_en'))
+
+    #TODO: 未来开启分页
     start = int(request.POST.get('start', 0))
     limit = int(request.POST.get('limit', 10))
 
-    results_chemspider = search_cheminfo(query, start, limit)
-    results_local = search_cheminfo_local(query, start, limit)
-    search_results = results_local + results_chemspider
+    #TODO: 目前只是使用本地搜索，未来重新开启第三方search API
+    #results_chemspider = search_cheminfo(query, start, limit)
+    results = search_cheminfo_local(query, start, limit)
 
-    results = []
-    for r in search_results:
-        if not r:
-            continue
-        c = dict(cas=r['cas'],
-                 formula=r['formula'],
-                 commonname=r['commonname'],
-                 smile=r['smiles'],
-                 alogp=r['alogp'])
-        results.append(c)
     return make_json_response(results)
 
 
