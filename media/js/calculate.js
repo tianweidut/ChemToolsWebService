@@ -61,18 +61,14 @@ $(function(){
 
 //chem structure draw
 $(function(){
-    $('#draw_btn').click(function(){
-      Calculate.draw_mol = editor.getMolfile();
-      $(this).text("Added!").addClass("btn-danger");
-    });
+  $('#draw_btn').click(function(){
+    var chem_iframe = $("#chemwriter_iframe");
+    chemwriter_iframe.window.get_chem_draw_content();
+    Calculate.draw_mol = chem_iframe.contents().find('#data').html();
+    console.log(Calculate.draw_mol);
+    $(this).text("已添加").addClass("btn-danger");
+  });
 });
-
-function fetch_draw_data()
-{
-  Calculate.draw_mol = $("#chemwriter-frame").contents().find('#data').html();
-  console.log(Calculate.draw_mol);
-}
-
 
 $("#upload_update").click(function(){
   Calculate.files = [];
