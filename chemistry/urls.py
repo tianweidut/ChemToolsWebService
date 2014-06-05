@@ -5,8 +5,7 @@ from django.views.generic import TemplateView
 
 
 urlpatterns = patterns('',
-    #url(r'^newtask/$', views.submit),
-    url(r'^newtask/$', TemplateView.as_view(template_name='newtask.html')),
+    url(r'^newtask/$', views.submit),
     url(r'^history/$', views.history),
     url(r'^details/suite/(?P<sid>.{36})$', views.suitetask),
     url(r'^details/task/(?P<pid>.{36})$', views.singletask),

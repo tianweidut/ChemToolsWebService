@@ -82,7 +82,8 @@ $("#upload_update").click(function(){
     });
   }); 
   
-  $(this).text("Files Added!")
+  console.log(Calculate.files);
+  $(this).text("文件添加完毕!")
          .toggleClass("btn-danger").toggleClass("btn-info");
 
 });

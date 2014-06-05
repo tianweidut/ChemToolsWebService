@@ -1,6 +1,9 @@
+#coding: utf-8
+
 from django import template
 
 register = template.Library()
+
 
 @register.simple_tag
 def upload_js():
@@ -19,17 +22,18 @@ def upload_js():
             </td>
             <td class="start">{% if (!o.options.autoUpload) { %}
                 <button class="btn btn-success" rel="fileupload_operation">
-                    <i class="icon-upload icon-white"></i>
-                    <span>{%=locale.fileupload.start%}</span>
+                    <i class="glyphicon glyphicon-arrow-up icon-white"></i>
+                    <span>上传</span>
                 </button>
             {% } %}</td>
         {% } else { %}
             <td colspan="2"></td>
         {% } %}
         <td class="cancel">{% if (!i) { %}
-            <button class="btn btn-warning" rel="fileupload_operation">
-                <i class="icon-ban-circle icon-white"></i>
-                <span>{%=locale.fileupload.cancel%}</span>
+            <button class="btn btn-warning" rel="fileupload_operation"
+            style="height:40px">
+                <i class="glyphicon glyphicon-remove icon-white"></i>
+                <span>取消</span>
             </button>
         {% } %}</td>
     </tr>
@@ -52,10 +56,9 @@ def upload_js():
         {% } %}
         <td class="delete">
             <button class="btn btn-danger" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}" rel="fileupload_operation">
-                <i class="icon-trash icon-white"></i>
-                <span>{%=locale.fileupload.destroy%}</span>
+                <i class="glyphicon glyphicon-trash icon-white"></i>
+                <span>删除</span>
             </button>
-            <input type="checkbox" name="delete" value="1">
         </td>
     </tr>
 {% } %}

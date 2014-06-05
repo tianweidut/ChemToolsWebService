@@ -7,25 +7,15 @@ from django.views.decorators.csrf import csrf_exempt
 from utils.file_operator import upload_response
 from chemistry.util import (singletask_details, suitetask_details,
                             get_models_selector)
-from chemistry.models import SuiteTask, ModelCategory
+from chemistry.models import SuiteTask
 
 
 @csrf_exempt
 @login_required
 def submit(request):
-    """
-    Multi input form:
-       * basic info search view function
-         for STEP1 page and Search page
-       * multi files upload
-    """
-    models = {model.category: model.desc for model in ModelCategory.objects.all()}
-
     if request.method == "POST" and request.FILES:
         return upload_response(request)
-
-    return render(request, "features/newtask.html",
-                           dict(models=models))
+    return render(request, "newtask.html")
 
 
 @login_required

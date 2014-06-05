@@ -8,7 +8,8 @@ from django.conf import settings
 from users.models import UserProfile
 from chemistry import (FILE_CHOICES, MODEL_ORIGIN_CHOICES,
                        MODEL_CHOICES, STATUS_CHOICES, MOL_ORIGIN_CHOICES,
-                       ORIGIN_UNDEFINED, STATUS_UNDEFINED, STATUS_WORKING)
+                       ORIGIN_UNDEFINED, STATUS_UNDEFINED, STATUS_WORKING,
+                       ORIGIN_UPLOAD)
 
 
 def get_sid():

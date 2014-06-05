@@ -3,7 +3,8 @@
 {% load upload_tags %}
 <br/>
 <div id="molfiles">
-    <form id="fileupload" method="post" action="." enctype="multipart/form-data">{% csrf_token %}
+  <form id="fileupload" method="post" action="." enctype="multipart/form-data">
+    {% csrf_token %}
         <div class="fileupload-buttonbar" id="addinput">
             <div class="row">
               <div class="col-md-3">
@@ -15,7 +16,7 @@
               <div class="col-md-3">
                 <a type="submit" class="btn btn-success btn-lg btn-block start" rel="fileupload_operation">
                     <i class="icon-upload icon-white"></i>
-                    <span>开始上传</span>
+                    <span>批量上传</span>
                 </a>
               </div>
               <div class="col-md-3">
@@ -49,12 +50,11 @@
 
 <!--Files Upload Tips-->
 <div class="alert alert-warning" id="filesupload-tips" style="font-size:14px">
-	<p><strong>Files Upload tips!</strong></p>
-	<ul>
-		<li>The maximum file size for uploads in this demo is <strong> 50 MB</strong> "(default file size is unlimited)" </li>
-		<li>Only image files <strong> (MOL, SDF) </strong> are allowed in this demo (by default there is no file type restriction).</li>
-		<li>In TXT, CSV files, you can write cas, smiles, name etc.</li>
-		<li>You can drag & drop files from your desktop on this webpage with Google Chrome, Mozilla Firefox and Apple Safari.</li>
-	</ul>
+  <p><strong>计算文件上传说明!</strong></p>
+  <ul>
+    <li>单个文件体积最大不超过<strong> 50 MB</strong></li>
+    <li>目前仅支持<strong> (MOL, SDF) </strong>文件格式</li>
+    <li>Google Chrome, Mozilla Firefox and Apple Safari 浏览器支持直接拖拽文件上传.</li>
+  </ul>
 </div>
 
