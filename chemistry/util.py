@@ -243,7 +243,7 @@ def search_cheminfo_local(query, start=0, limit=10):
     #Q(common_name_ch__contains=query['common_name_ch']) |
     q = Q(cas=query['cas'].strip())
     if query['smile']:
-        q |= Q(smiles__contains=query['smile'].strip())
+        q |= Q(smiles=query['smile'].strip())
     if query['common_name_en']:
         q |= Q(einecs_name__contains=query['common_name_en'].strip())
 

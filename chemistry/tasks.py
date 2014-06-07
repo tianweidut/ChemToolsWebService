@@ -28,7 +28,6 @@ def add_counter(suite_id):
     finished_count = SingleTask.objects.filter(sid=suite_id)\
                                        .exclude(status=StatusCategory.objects.get(category=STATUS_WORKING))\
                                        .count()
-    print finished_count
     suite = SuiteTask.objects.get(sid=suite_id)
     if finished_count == suite.total_tasks:
         suite.has_finished_tasks = suite.total_tasks

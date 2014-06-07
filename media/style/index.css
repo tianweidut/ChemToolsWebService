@@ -349,6 +349,7 @@ ul.large-margin > li{
 }
 
 #footer {
+  margin-top: 30px;
   text-align: center;
   font-size: 12px;
 } 

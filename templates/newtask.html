@@ -6,7 +6,7 @@
     <div class="tree">
       <ul>
         <li>
-          <span>模型选择</span>
+          <span style="font-size:18px;">模型选择</span>
           <ul>
 
             <li>
@@ -189,8 +189,18 @@
     </div><!--end tabbable-->
     <div id='split-line-narrow'></div>
     <div>
+      <div class="form-group" style="margin-bottom:10px">
+        <label for="task_name">任务名称</label>
+        <input type="text" class="form-control" id="task_name_id" name="task_name" style="width:300px">
+      </div>
+      <div class="form-group">
+        <label for="task_desc">任务描述</label>
+        <textarea class="form-control" id="task_desc" style="height:100px"></textarea>
+      </div>
+    </div>
+    <div id='split-line-narrow'></div>
+    <div>
       <a href='#' class="btn btn-danger pull-right" style="margin-left:10px">提交计算</a>
-      <a href='#' class="btn btn-primary pull-right" style="margin-left:10px">输入预览</a>
     </div>
   </div>
 </div>
