@@ -6,7 +6,8 @@
     <div class="tree">
       <ul>
         <li>
-          <span style="font-size:18px;">模型选择</span>
+          <span style="font-size:18px;"></span>
+          <a class="btn btn-primary" style="width:248px">模型选择</a>
           <ul>
 
             <li>
@@ -17,10 +18,10 @@
                     <input type="checkbox" value="" id="check_model_1a" data-toggle="checkbox">
                     正辛醇/空气分配系
                   </label>
-                  <ul class="model-args" id='model_1a_args'>
+                  <ul class="model-args"  id='model_1a_args'>
                     <li>
                       <div class="form-group">
-                        <input  args_type='temp' model='model_1a' type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
+                        <input id="temperature_model_1a" type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
                       </div>
                     </li>
                   </ul>
@@ -30,10 +31,10 @@
                     <input type="checkbox" value="" id="check_model_1b" data-toggle="checkbox">
                     过冷液体蒸气压
                   </label>
-                  <ul class="model-args" id='model_1b_args'>
+                  <ul class="model-args"  id='model_1b_args'>
                     <li>
                       <div class="form-group">
-                        <input args_type='temp'  model='model_1b' type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
+                        <input id="temperature_model_1b" type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
                       </div>
                     </li>
                   </ul>
@@ -49,10 +50,10 @@
                     <input type="checkbox" value="" id="check_model_2a" data-toggle="checkbox">
                     生物富集因子
                   </label>
-                  <ul class="model-args" id='model_2a_args'>
+                  <ul class="model-args"  id='model_2a_args'>
                     <li>
                       <div class="form-group">
-                        <input args_type='temp' model='model_2a' type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
+                        <input id="temperature_model_2a" type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
                       </div>
                     </li>
                   </ul>
@@ -62,10 +63,10 @@
                     <input type="checkbox" value="" id="check_model_2b" data-toggle="checkbox">
                     土壤/沉积物吸附系数
                   </label>
-                  <ul class="model-args" id='model_2b_args'>
+                  <ul class="model-args"  id='model_2b_args'>
                     <li>
                       <div class="form-group">
-                        <input args_type='temp' model='model_2b' type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
+                        <input id="temperature_model_2b" type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
                       </div>
                     </li>
                   </ul>
@@ -78,7 +79,7 @@
                   <ul class="model-args" id='model_2c_args'>
                     <li>
                       <div class="form-group">
-                        <input  args_type='temp'  model='model_2c' type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
+                        <input id="temperature_model_2c" type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
                       </div>
                     </li>
                   </ul>
@@ -88,10 +89,10 @@
                     <input type="checkbox" value="" id="check_model_2d" data-toggle="checkbox">
                     气相羟基自由基反应速率常数
                   </label>
-                  <ul class="model-args" id='model_2d_args'>
+                  <ul class="model-args"  id='model_2d_args'>
                     <li>
                       <div class="form-group">
-                        <input args_type='temp'  model='model_2d' type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
+                        <input id="temperature_model_2d" type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
                       </div>
                     </li>
                   </ul>
@@ -101,10 +102,10 @@
                     <input type="checkbox" value="" id="check_model_2e" data-toggle="checkbox">
                     液相羟基自由基反应速率常数
                   </label>
-                  <ul class="model-args" id='model_2e_args'>
+                  <ul class="model-args"  id='model_2e_args'>
                     <li>
                       <div class="form-group">
-                        <input  args_type='temp'  model='model_2e' type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
+                        <input id="temperature_model_2e" type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
                       </div>
                     </li>
                   </ul>
@@ -114,10 +115,10 @@
                     <input type="checkbox" value="" id="check_model_2f" data-toggle="checkbox">
                     气相臭氧反应速率常数
                   </label>
-                  <ul class="model-args" id='model_2f_args'>
+                  <ul class="model-args"  id='model_2f_args'>
                     <li>
                       <div class="form-group">
-                        <input  args_type='temp'  model='model_2f' type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
+                        <input id="temperature_model_2f" type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
                       </div>
                     </li>
                   </ul>
@@ -129,14 +130,14 @@
               <span><i class='glyphicon glyphicon-minus-sign'></i> 生态毒性</span>
               <ul>
                 <li>
-                  <label class='checkbox' for='check_model_3a'>
+                  <label class='checkbox' for='check_model_3a' model='model_3a'>
                     <input type="checkbox" value="" id="check_model_3a" data-toggle="checkbox">
                     鱼类急性毒性
                   </label>
                   <ul class="model-args" id='model_3a_args'>
                     <li>
                       <div class="form-group">
-                        <input  args_type='temp' model='model_3a' type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
+                        <input id="temperature_model_3a" type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
                       </div>
                     </li>
                   </ul>
@@ -148,14 +149,14 @@
               <span><i class='glyphicon glyphicon-minus-sign'></i> 健康毒性</span>
               <ul>
                 <li>
-                  <label class='checkbox' for='check_model_4a'>
+                  <label class='checkbox' for='check_model_4a'  model='model_4a'>
                     <input type="checkbox" value="" id="check_model_4a" data-toggle="checkbox">
                     甲状腺素干扰效应
                   </label>
                   <ul class="model-args" id='model_4a_args'>
                     <li>
                       <div class="form-group">
-                        <input  args_type='temp'  model='model_4a' type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
+                        <input id="temperature_model_4a" type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
                       </div>
                     </li>
                   </ul>
@@ -190,17 +191,18 @@
     <div id='split-line-narrow'></div>
     <div>
       <div class="form-group" style="margin-bottom:10px">
-        <label for="task_name">任务名称</label>
-        <input type="text" class="form-control" id="task_name_id" name="task_name" style="width:300px">
+        <label for="task_name">任务名称(必填)</label>
+        <input type="text" class="form-control" id="task_name">
       </div>
       <div class="form-group">
-        <label for="task_desc">任务描述</label>
-        <textarea class="form-control" id="task_desc" style="height:100px"></textarea>
+        <label for="task_desc">任务描述(必填)</label>
+        <textarea class="form-control" id="task_notes" style="height:100px"></textarea>
       </div>
     </div>
     <div id='split-line-narrow'></div>
     <div>
-      <a href='#' class="btn btn-danger pull-right" style="margin-left:10px">提交计算</a>
+      <a href='#' class="btn btn-danger pull-right" style="margin-left:10px" id="calculate-submit-btn">提交计算</a>
+      <div id="calculate-submit-info" style="font-size:18px; color: #e74c3c"></div>
     </div>
   </div>
 </div>
@@ -224,16 +226,15 @@
   <!--JS for calculate sumbit content update and Ajax opteration-->
   <script>
     var Calculate = {}; 
-    Calculate.query = "";
+
     Calculate.smile = "";
-    Calculate.draw_mol = "";
-    Calculate.files = [];
+    Calculate.draw_mol_data = "";
+    Calculate.files_id_list = [];
 
     Calculate.models = {};
 
     Calculate.task_name = "";
-    Calculate.notes = "";
-    Calculate.email = "{{request.user.email}}";
+    Calculate.task_notes = "";
   </script>
   <script type='text/javascript' src="{{STATIC_URL}}js/calculate.js"></script>
 {% endblock %}
