@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate
 from django.utils.log import getLogger
 
 logger = getLogger('django')
+chemistry_logger = logger
 
 
 def loginfo(p="", label=""):

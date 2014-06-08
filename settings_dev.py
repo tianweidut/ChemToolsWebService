@@ -1,19 +1,18 @@
 #coding: utf-8
 from settings import *
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+TEMPLATE_DEBUG = DEBUG = True
 
-PRODUCTION_FLAG = "Development Version!"
+PRODUCTION_FLAG = "开发版!"
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'Chemistry',             # Or path to database file if using sqlite3.
-        'USER': 'eye',                       # Not used with sqlite3.
-        'PASSWORD': 'sauron',                   # Not used with sqlite3.
-        'HOST': 'dev-server',                           # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '3306',                           # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Chemistry',
+        'USER': 'eye',
+        'PASSWORD': 'sauron',
+        'HOST': 'dev-server',
+        'PORT': '3306',
     }
 }
 
@@ -33,6 +32,7 @@ CELERY_RESULT_BACKEND = 'redis://:root@redis-dev-server:6379/0'
 CELERY_RESULT_PORT = 6379
 CELERY_TASK_RESULT_EXPIRES = 3600
 CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
+CELERYD_HIJACK_ROOT_LOGGER = False
 
 #celery task queue
 import djcelery

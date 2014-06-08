@@ -167,10 +167,17 @@ LOGGING_OUTPUT_ENABLED = True
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
+    'root': {
+        'level': 'WARNING',
+        'handlers': ['sentry'],
+    },
     'formatters': {
         'verbose': {
             'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '[%(levelname)s] [%(asctime)s]: %(message)s'
         },
     },
     'handlers': {
@@ -180,13 +187,18 @@ LOGGING = {
         },
         'console': {
             'level': 'INFO',
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose'
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': 'chemistry.log',
+            'formatter': 'simple'
         },
         'mail_admins': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler'
-        }
+        },
+        'sentry': {
+            'level': 'WARNING',
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        },
     },
     'loggers': {
         'django': {
@@ -199,14 +211,24 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': False,
         },
-        'dajaxice': {
-            'handlers': ['console'],
-            'level': 'INFO',
-            'propagate': True,
-        },
         'django.db.backends': {
             'handlers': ['console'],
             'level': 'DEBUG',
+            'propagate': False,
+        },
+        'raven': {
+            'level': 'WARNING',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'sentry.errors': {
+            'level': 'WARNING',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'celery': {
+            'level': 'WARNING',
+            'handlers': ['sentry'],
             'propagate': False,
         },
     }
@@ -226,11 +248,3 @@ FILE_UPLOAD_HANDLERS = (
 )
 
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-
-# TODO: Add cache into website
-# CACHES = {
-#            'default': {
-#                        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-#                        'LOCATION': 'cachedatabasetable',
-#                       }
-#         }
