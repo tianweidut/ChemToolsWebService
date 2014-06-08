@@ -1,13 +1,11 @@
-# -* -coding: utf-8 -*- 
-'''
-Created on 2012-11-26
+# coding: utf-8
+import sys
+import os
+import shutil
 
-@author: songyang
-'''
-import sys, os, shutil, re
 sys.path.append("/usr/local/lib/")
 import pybel
-from calcore.config.settings import globalpath
+from chemistry.calcore.config.settings import globalpath
 from .Mopac import Mopac
 from .MolToGjfAndMop import Mol2GjfandMop
 from .GaussianOptimize import *

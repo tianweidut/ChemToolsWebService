@@ -9,7 +9,7 @@ import subprocess
 import shutil
 import os
 from .PathInit import ParseInitPath
-from calcore.config.settings import globalpath
+from chemistry.calcore.config.settings import globalpath
 
 
 class GaussianOptimize():

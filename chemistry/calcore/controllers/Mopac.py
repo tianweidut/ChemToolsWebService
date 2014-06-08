@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 #coding=utf-8
 from .PathInit import ParseInitPath
-from calcore.config.settings import globalpath
+from chemistry.calcore.config.settings import globalpath
 import subprocess
 import shutil
 import re
