@@ -9,3 +9,4 @@ hiredis
 celery-with-redis
 raven
 xhtml2pdf
+numpy
