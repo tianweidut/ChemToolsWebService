@@ -127,6 +127,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 
     # project
+    'djcelery',
     'chemistry',
     'users',
 )

@@ -1,8 +1,9 @@
 Django==1.6.3
 pillow
 djangocms-admin-style
-django-celery
+django-celery==3.1.9
 django-kombu
+kombu==3.0.13
 Celery
 redis
 hiredis
@@ -10,3 +11,4 @@ celery-with-redis
 raven
 xhtml2pdf
 numpy
+flower
