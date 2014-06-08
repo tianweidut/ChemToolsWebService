@@ -35,17 +35,11 @@ def history(request):
 
 @login_required
 def suitetask(request, sid=None):
-    """
-    Suitetask details view
-    """
     return render(request, 'suite_details.html',
                   suitetask_details(sid))
 
 
 @login_required
 def singletask(request, pid=None):
-    """
-    Every singletask details view
-    """
     return render(request, 'task_details.html',
                   singletask_details(pid))

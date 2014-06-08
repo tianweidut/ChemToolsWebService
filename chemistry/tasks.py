@@ -1,14 +1,13 @@
 # coding: UTF-8
 import os
 import datetime
+from hashlib import md5
 
 from celery.decorators import task
-
 from django.conf import settings
 from django.core.files import File
 from django.contrib.sites.models import Site
 from django.core.cache import cache
-from django.utils.hashcompat import md5_constructor as md5
 from django.core.mail import send_mail
 
 from chemistry.calcore.controllers.prediciton_model import PredictionModel
@@ -56,7 +55,7 @@ def add_counter_cache(suite_id):
     """
     Add counter by cache
     """
-    id = md5(suite_id).hexdigest()
+    id = md5.new(suite_id).hexdigest()
     lock_id = "%s-lock-%s" % ("add_counter", id)
 
     # cache.add fails if if the key already exists

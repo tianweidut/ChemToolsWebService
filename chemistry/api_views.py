@@ -1,9 +1,8 @@
-#coding: utf-8
+# coding: utf-8
 import json
 
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
-
 from django.http import HttpResponseForbidden
 
 from utils import make_json_response, basic_auth_api
@@ -24,11 +23,11 @@ def smile_search(request):
                  common_name_ch=request.POST.get('common_name_ch'),
                  common_name_en=request.POST.get('common_name_en'))
 
-    #TODO: 未来开启分页
+    # TODO: 开启分页
     start = int(request.POST.get('start', 0))
     limit = int(request.POST.get('limit', 10))
 
-    #TODO: 目前只是使用本地搜索，未来重新开启第三方search API
+    # TODO: 目前只是使用本地搜索，未来重新开启第三方search API
     #results_chemspider = search_cheminfo(query, start, limit)
     results = search_cheminfo_local(query, start, limit)
 
@@ -67,24 +66,26 @@ def task_submit(request):
         return HttpResponseForbidden()
 
     smile = request.POST.get('smile')
-    draw = request.POST.get('draw')
-    files = request.POST.get('files', [])
-    models = request.POST.get('models', [])
-    notes = request.POST.get('notes')
-    name = request.POST.get('name')
-    emails = request.POST.get('emails')
-
-    models = json.loads(models)
-    files = json.loads(files)
+    draw_mol_data = request.POST.get('draw_mol_data')
+    files_id_list = json.loads(request.POST.get('files_id_list', "[]"))
+    models = json.loads(request.POST.get('models', "[]"))
+    task_notes = request.POST.get('task_notes')
+    task_name = request.POST.get('task_name')
 
     try:
-        status, info, id = submit_calculate(request.user,
-            smile=smile, mol=draw, unique_names=files, models=models,
-            notes=notes, name=name, email=emails)
+        status, info, id = submit_calculate(
+                request.user,
+                smile=smile,
+                draw_mol_data=draw_mol_data,
+                files_id_list=files_id_list,
+                models=models,
+                task_notes=task_notes,
+                task_name=task_name)
     except Exception as err:
         status, info, id = False, str(err), None
 
-    return make_json_response(dict(status=status, info=info,
+    return make_json_response(dict(status=status,
+                                   info=info,
                                    id=id))
 
 
@@ -144,8 +145,8 @@ def history(request):
     start = int(request.POST.get('start', 0))
     limit = int(request.POST.get('limit', 30))
 
-    #Django queryset is lazy, like iterator
+    # Django queryset is lazy, like iterator
     results = SuiteTask.objects.filter(user__user=request.user)\
-                .order_by('-start_time')[start:(start+limit)]
+        .order_by('-start_time')[start:(start + limit)]
     data = dict(suitetask_lists=[r.sid for r in results])
     return make_json_response(data)

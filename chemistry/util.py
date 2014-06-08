@@ -1,6 +1,5 @@
 # coding: UTF-8
 import datetime
-import re
 import os
 import uuid
 from functools import wraps
@@ -14,19 +13,17 @@ from django.core.files import File
 from django.template.loader import get_template
 from django.template import Context
 from django.db.models import Q
-from django.utils.log import getLogger
 
 from users.models import UserProfile
 from chemistry.models import (SingleTask, SuiteTask, StatusCategory,
                               ProcessedFile, ModelCategory, FileSourceCategory,
                               ChemInfoLocal, SearchEngineModel)
 from chemistry import (STATUS_SUCCESS, TASK_SUITE, TASK_SINGLE,
-                       ORIGIN_DRAW, ORIGIN_UPLOAD,
+                       ORIGIN_DRAW, ORIGIN_UPLOAD, ORIGIN_SMILE,
                        STATUS_WORKING, MODEL_SPLITS)
+from utils import chemistry_logger
 
 LOCK_EXPIRE = 60 * 5  # Lock expires in 5 minutes
-
-logger = getLogger(__name__)
 
 
 def suite_details_context(sid):
@@ -48,7 +45,7 @@ def task_details_context(pid):
         search_engine = SearchEngineModel.objects.get(
             smiles=singletask.file_obj.smiles)
     except Exception:
-        logger.exception('failed to search model')
+        chemistry_logger.exception('failed to search model')
         search_engine = None
 
     re_context = {"singletask": singletask,
@@ -107,7 +104,7 @@ def generate_pdf(id, task_type=None):
         template = get_template("widgets/pdf/suite_details_pdf.html")
         context = Context(suite_details_context(sid=id))
     else:
-        logger.info(task_type, "Cannot check the type")
+        chemistry_logger.info(task_type, "Cannot check the type")
         return
 
     html = template.render(context).encode("UTF-8")
@@ -124,7 +121,7 @@ def generate_pdf(id, task_type=None):
         f.close()
         print "finish pdf generate"
     except Exception:
-        logger.exception('failed to generate pdf')
+        chemistry_logger.exception('failed to generate pdf')
 
     return path
 
@@ -139,15 +136,10 @@ def pdf_create_test():
     task_id_ch = "17673ac1-17dd-4f0d-958a-4ef44bba8a92"
     suite_id = "c933deb5-beda-4a41-84be-759a5795aca1"
 
-    print "search type for single task"
     generate_pdf(id=task_id_search, task_type=TASK_SINGLE)
-    print "draw type for single task"
     generate_pdf(id=task_id_draw, task_type=TASK_SINGLE)
-    print "upload type for single task"
     generate_pdf(id=task_id_upload, task_type=TASK_SINGLE)
-    print "not found this task id"
     generate_pdf(id=task_id_ch, task_type=TASK_SINGLE)
-    print "suite task id"
     generate_pdf(id=suite_id, task_type=TASK_SUITE)
 
 
@@ -158,7 +150,6 @@ def convert_smile_png(singletask):
     abpath = singletask.file_obj.file_obj.url
     fullpath = settings.SETTINGS_ROOT + abpath
 
-    print "convert_smile_png"
     mol = pybel.readfile("mol", fullpath).next()
     singletask.file_obj.smiles = ("%s" % mol).split("\t")[0]
 
@@ -171,8 +162,6 @@ def convert_smile_png(singletask):
     singletask.file_obj.save()
     singletask.save()
     f.close()
-    print singletask.file_obj.smiles
-    print singletask.file_obj.image
 
 
 def generate_smile_image(pid):
@@ -190,8 +179,6 @@ def generate_smile_image(pid):
         singletask.file_obj.save()
         singletask.save()
     else:
-        # other types only contains mol file
-        print "other input method"
         convert_smile_png(singletask)
 
 
@@ -199,7 +186,6 @@ def add_counter_core(suite_id):
     """
     core counter algorightm
     """
-    print "add counter"
     suite = SuiteTask.objects.get(sid=suite_id)
     if suite.has_finished_tasks < suite.total_tasks - 1:
         suite.has_finished_tasks = suite.has_finished_tasks + 1
@@ -296,12 +282,8 @@ def suitetask_details(sid):
 
 
 def calculate_tasks(pid_list, smile, mol, models):
-    """
-    Calculate all tasks
-    """
-    logger.info('[files]: %s' % pid_list)
-    logger.info('[smiles]: %s' % smile)
-    logger.info('[mol]: %s' % mol)
+    chemistry_logger.info('[file id list]: %s, [smile]: %s, [mol]: %s' %
+                          (pid_list, smile, mol))
 
     number = 0
     if len(pid_list) != 1 or pid_list[0] != "":
@@ -313,17 +295,11 @@ def calculate_tasks(pid_list, smile, mol, models):
     if number == 0:
         return 0
 
-    number = number * len(models)
-
-    return number
+    return number * len(models)
 
 
 def save_record(f, model_name, sid, source_type, smile=None, arguments=None):
-    """
-    Here, we use decoartor design pattern,
-    this function is the real function
-    """
-    from chemistry.task import calculateTask
+    from chemistry.tasks import calculateTask
     task = SingleTask()
     task.sid = SuiteTask.objects.get(sid=sid)
     task.pid = str(uuid.uuid4())
@@ -356,16 +332,16 @@ def save_record(f, model_name, sid, source_type, smile=None, arguments=None):
         obj.close()
         task.status = StatusCategory.objects.get(category=STATUS_WORKING)
         task.save()
-        calculateTask.delay(task, model_name, arguments)
+        #calculateTask.delay(task, model_name, arguments)
     else:
-        logger.info('Cannot recongize this source type')
+        chemistry_logger.info('Cannot recongize this source type')
         return
 
     # TODO: call task query process function filename needs path
     #global molpathtemp
 
 
-def get_FileObj_by_smiles(smile):
+def get_fileobj_by_smiles(smile):
     """
     convert smile into mol file
     Output: file path
@@ -409,7 +385,7 @@ def start_smile_task(smile, model_name, sid, arguments=None):
     if not smile:
         return False
 
-    f = get_FileObj_by_smiles(smile)
+    f = get_fileobj_by_smiles(smile)
     save_record(f, model_name, sid, ORIGIN_SMILE, smile, arguments)
 
     return True
@@ -445,7 +421,7 @@ def get_model_category(model_name):
         category = ModelCategory.objects.get(category=model_name).\
             origin_type.get_category_display()
     except Exception:
-        logger.exception('failed to get model category')
+        chemistry_logger.exception('failed to get model category')
         category = ""
 
     return category
@@ -470,29 +446,14 @@ def get_models_name(models):
     return (models_str, categorys_str)
 
 
-def get_email(email=None, backup_email=None):
-    if bool(re.match(r"^.+@([a-zA-Z0-9]+\.)+([a-zA-Z]{2,})$", email)):
-        return email
-    else:
-        # TODO: here, we should add email force-varify in registration page
-        return backup_email
-
-
-def submit_calculate(user, smile=None, mol=None, notes=None,
-                     name=None, email=None, unique_names=None,
-                     models=None):
-    """
-    real record operation
-    Out:
-        status, True or False
-        message: summit message
-    """
-
-    total_tasks = calculate_tasks(unique_names, smile, mol, models)
+def submit_calculate(user, smile=None, draw_mol_data=None,
+                     task_notes=None, task_name=None,
+                     files_id_list=None, models=None):
+    total_tasks = calculate_tasks(files_id_list, smile, draw_mol_data, models)
 
     if total_tasks == 0:
         status = False
-        info = "Please choice one model or input one search!"
+        info = "请至少选择一种输入方式和计算模型!"
         id = None
         return (status, info, id)
 
@@ -503,43 +464,30 @@ def submit_calculate(user, smile=None, mol=None, notes=None,
     suite_task.has_finished_tasks = 0
     suite_task.start_time = datetime.datetime.now()
     suite_task.end_time = datetime.datetime.now()
-    suite_task.name = name
-    suite_task.notes = notes
-    suite_task.models_str, suite_task.models_category_str = get_models_name(
-        models)
+    suite_task.name = task_name
+    suite_task.notes = task_notes
+    suite_task.models_str, suite_task.models_category_str = get_models_name(models)
     suite_task.status = StatusCategory.objects.get(category=STATUS_WORKING)
-    suite_task.email = get_email(email, user.email)
+    suite_task.email = user.email
     suite_task.save()
 
     flag = False
     try:
         for m in models:
-            flag = flag | start_smile_task(
-                smile,
-                m['model'],
-                suite_task.sid,
-                m['temperature'])
-            flag = flag | start_moldraw_task(
-                mol,
-                m['model'],
-                suite_task.sid,
-                m['temperature'])
-            flag = flag | start_files_task(
-                unique_names,
-                m['model'],
-                suite_task.sid,
-                m['temperature'])
+            flag = flag | start_smile_task(smile, m['model'], suite_task.sid, m['temperature'])
+            flag = flag | start_moldraw_task(draw_mol_data, m['model'], suite_task.sid, m['temperature'])
+            flag = flag | start_files_task(files_id_list, m['model'], suite_task.sid, m['temperature'])
     except Exception:
-        logger.exception('failed to suite task')
+        chemistry_logger.exception('failed to suite task')
         flag = False
 
     if flag:
         status = True
-        info = "Congratulations to you! calculated task has been submitted!"
+        info = "恭喜,计算任务已经提交!"
         id = suite_task.sid
     else:
         status = False
-        info = "No one tasks can be added into calculated task queue successful!"
+        info = "计算任务添加不成功，将重试或联系网站管理员!"
         suite_task.delete()
         id = None
 

@@ -116,7 +116,6 @@ $('#calculate-submit-btn').click(function(){
          };
 
   console.log(data);
-  return;
 
   var url = '/api/task-submit/';
 
