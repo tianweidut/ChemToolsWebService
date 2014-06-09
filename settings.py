@@ -1,4 +1,4 @@
-# Django settings for Rest project.
+#coding: utf-8
 
 import os
 from os.path import join
@@ -225,11 +225,6 @@ LOGGING = {
         'sentry.errors': {
             'level': 'WARNING',
             'handlers': ['console'],
-            'propagate': False,
-        },
-        'celery': {
-            'level': 'WARNING',
-            'handlers': ['sentry'],
             'propagate': False,
         },
     }

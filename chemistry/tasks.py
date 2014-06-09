@@ -20,6 +20,11 @@ from chemistry.util import (generate_smile_image, generate_pdf,
 
 
 @task()
+def add(x, y):
+    return x + y
+
+
+@task()
 def add_counter(suite_id):
     """
     use filter to get task numbers
