@@ -43,6 +43,7 @@
 
 
  * python manage.py runserver IP:PORT
+ * python manage.py celeryd -l INFO 
  * go web browser, visit: IP:PORT
 
 # License
