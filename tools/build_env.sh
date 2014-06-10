@@ -47,3 +47,15 @@ function setup_production_env()
 {
     echo '--'
 }
+
+
+function setup_dragon6()
+{
+    sudo cp -r ~/dragon6 /usr/share/
+    ifconfig eth0 down
+    ifconfig eth0 hw ether 00:E0:81:C9:29:18
+    ifconfig eth0 up``
+    sudo ln -s /usr/share/dragon6/dragon6shell /usr/bin/dragon6shell
+    sudo cp /usr/share/dragon6/drg6_LI_XUEHUA_academic.txt /usr/share/dragon6/drg_license.txt
+    dragon6shell -l
+}
