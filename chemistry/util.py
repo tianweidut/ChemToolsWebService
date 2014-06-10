@@ -23,19 +23,11 @@ from chemistry import (STATUS_SUCCESS, TASK_SUITE, TASK_SINGLE,
                        STATUS_WORKING, MODEL_SPLITS)
 from utils import chemistry_logger
 
-LOCK_EXPIRE = 60 * 5  # Lock expires in 5 minutes
 
 
 def suite_details_context(sid):
-    suitetask = get_object_or_404(SuiteTask, sid=sid)
-
-    suitetask = get_object_or_404(SuiteTask, sid=sid)
-    single_lists = SingleTask.objects.filter(sid=sid)
-
-    re_context = {"suitetask": suitetask,
-                  "single_lists": single_lists}
-
-    return re_context
+    return dict(suitetask=get_object_or_404(SuiteTask, sid=sid),
+                single_lists=SingleTask.objects.filter(sid=sid))
 
 
 def task_details_context(pid):
@@ -48,10 +40,8 @@ def task_details_context(pid):
         chemistry_logger.exception('failed to search model')
         search_engine = None
 
-    re_context = {"singletask": singletask,
-                  "search_engine": search_engine}
-
-    return re_context
+    return dict(singletask=singletask,
+                search_engine=search_engine)
 
 
 def fetch_resources(uri, rel):
@@ -182,23 +172,6 @@ def generate_smile_image(pid):
         convert_smile_png(singletask)
 
 
-def add_counter_core(suite_id):
-    """
-    core counter algorightm
-    """
-    suite = SuiteTask.objects.get(sid=suite_id)
-    if suite.has_finished_tasks < suite.total_tasks - 1:
-        suite.has_finished_tasks = suite.has_finished_tasks + 1
-        print "add:" + str(suite.has_finished_tasks)
-    else:
-        suite.has_finished_tasks = suite.total_tasks
-        print "Finished:" + str(suite.has_finished_tasks)
-        print suite.has_finished_tasks
-        suite.status_id = StatusCategory.objects.get(category=STATUS_SUCCESS)
-        # generate suite task report and send email
-    suite.save()
-
-
 def simple_search_output(func):
     @wraps(func)
     def _(*a, **kw):
@@ -298,12 +271,15 @@ def calculate_tasks(pid_list, smile, mol, models):
     return number * len(models)
 
 
+class ErrorCalculateType(Exception):
+    pass
+
+
 def save_record(f, model_name, sid, source_type, smile=None, arguments=None):
     from chemistry.tasks import calculateTask
     task = SingleTask()
     task.sid = SuiteTask.objects.get(sid=sid)
     task.pid = str(uuid.uuid4())
-    # TODO: add arguments into task
     task.model = ModelCategory.objects.get(category=model_name)
 
     if source_type == ORIGIN_UPLOAD:
@@ -312,17 +288,13 @@ def save_record(f, model_name, sid, source_type, smile=None, arguments=None):
         f.file_type = "mol"
         task.file_obj = f
         f.save()
-        task.status = StatusCategory.objects.get(category=STATUS_WORKING)
-        task.save()
-        calculateTask.delay(task, model_name)
-    elif source_type == ORIGIN_SMILE or source_type == ORIGIN_DRAW:
+    elif source_type in (ORIGIN_SMILE, ORIGIN_DRAW):
         # here, f is a file path
         processed_f = ProcessedFile()
         obj = File(open(f, "r"))
         processed_f.title = os.path.basename(obj.name)
         processed_f.file_type = source_type
-        processed_f.file_source = FileSourceCategory.objects.get(
-            category=source_type)
+        processed_f.file_source = FileSourceCategory.objects.get(category=source_type)
         processed_f.file_obj = obj
         if smile:
             processed_f.smiles = smile
@@ -330,15 +302,12 @@ def save_record(f, model_name, sid, source_type, smile=None, arguments=None):
         processed_f.save()
         task.file_obj = processed_f
         obj.close()
-        task.status = StatusCategory.objects.get(category=STATUS_WORKING)
-        task.save()
-        #calculateTask.delay(task, model_name, arguments)
     else:
-        chemistry_logger.info('Cannot recongize this source type')
-        return
+        raise ErrorCalculateType('Cannot recongize this source type')
 
-    # TODO: call task query process function filename needs path
-    #global molpathtemp
+    task.status = StatusCategory.objects.get(category=STATUS_WORKING)
+    task.save()
+    calculateTask.delay(task, model_name, arguments)
 
 
 def get_fileobj_by_smiles(smile):
@@ -398,8 +367,6 @@ def start_moldraw_task(moldraw, model_name, sid, arguments=None):
     into system-task query
     First it should write moldraw into a file and clear the useless lines
     """
-    # TODO: maybe we should clear the first three lines which are chemwrite
-    # info
     if not moldraw:
         return False
 
@@ -492,18 +459,3 @@ def submit_calculate(user, smile=None, draw_mol_data=None,
         id = None
 
     return (status, info, id)
-
-
-def get_model_name(name):
-    temp = {
-        "koa": "logKOA",
-        "rp": "logRP",
-        "koc": "logKOC",
-        "bcf": "logBCF",
-        "koh": "logKOH",
-        "koh_T": "logKOH_T",
-    }
-    if name in temp:
-        return temp.get(name)
-    else:
-        raise KeyError("We don't have this model")
