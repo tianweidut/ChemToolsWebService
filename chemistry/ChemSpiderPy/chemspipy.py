@@ -199,7 +199,6 @@ def find(query):
     searchurl = 'http://www.chemspider.com/Search.asmx/SimpleSearch?query='+query+'&token=' + TOKEN
     searchurl = searchurl.encode("utf-8")
     searchurl = urllib2.unquote(searchurl)
-    loginfo(p=searchurl)
     response = urllib2.urlopen(searchurl)
     tree = ET.parse(response)
     elem = tree.getroot()
