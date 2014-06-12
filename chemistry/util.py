@@ -416,6 +416,11 @@ def get_models_name(models):
 def submit_calculate(user, smile=None, draw_mol_data=None,
                      task_notes=None, task_name=None,
                      files_id_list=None, models=None):
+    chemistry_logger.info("smile: %s" % smile)
+    chemistry_logger.info("draw_mol_data: %s" % draw_mol_data)
+    chemistry_logger.info("files_id_list: %s" % files_id_list)
+    chemistry_logger.info("models: %s" % models)
+
     total_tasks = calculate_tasks(files_id_list, smile, draw_mol_data, models)
 
     if total_tasks == 0:
