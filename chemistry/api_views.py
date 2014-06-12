@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseForbidden
 
 from utils import make_json_response, basic_auth_api
-from utils.file_operator import upload_save_process
+from utils.file_operator import file_upload_save_process
 from chemistry.util import (singletask_details, suitetask_details,
                             submit_calculate, search_cheminfo_local)
 from chemistry.models import SuiteTask
@@ -42,7 +42,7 @@ def mol_upload(request):
 
     if request.method == "POST" and request.FILES:
         try:
-            f = upload_save_process(request)
+            f = file_upload_save_process(request)
         except Exception as err:
             data = dict(status=False,
                         info=str(err),

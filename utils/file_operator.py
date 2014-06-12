@@ -7,10 +7,7 @@ from django.core.files.uploadedfile import UploadedFile
 from chemistry.models import ProcessedFile
 
 
-def split_name(name, sep="."):
-    """
-        split type and name in a filename
-    """
+def split_file_name(name, sep="."):
     if sep in name:
         f, t = name.split(sep, 1)
     else:
@@ -19,16 +16,10 @@ def split_name(name, sep="."):
     return (f, t)
 
 
-def upload_save_process(request):
-    """
-        save file into local storage
-    """
+def file_upload_save_process(request):
     f = request.FILES["file"]
-    wrapper_f = UploadedFile(f)
-
-    name, filetype = split_name(wrapper_f.name)
-    #TODO: we maybe check file type here!
-
+    name, filetype = split_file_name(UploadedFile(f).name)
+    #TODO: we maybe check file type here
     obj = ProcessedFile()
     obj.title = name
     obj.file_type = filetype
@@ -38,18 +29,14 @@ def upload_save_process(request):
     return obj
 
 
-def upload_response(request):
-    """
-        use AJAX to process file upload
-    """
-    f = upload_save_process(request)
+def file_upload_response(request):
+    f = file_upload_save_process(request)
     data = [{'name': f.title,
-            'id': f.fid,
-            'type': f.file_type}]
+             'id': f.fid,
+             'type': f.file_type}]
 
     response = JSONResponse(data, {}, response_minetype(request))
     response["Content-Dispostion"] = "inline; filename=files.json"
-
     return response
 
 

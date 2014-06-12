@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
-from utils.file_operator import upload_response
+from utils.file_operator import file_upload_response
 from chemistry.util import (singletask_details, suitetask_details,
                             get_models_selector)
 from chemistry.models import SuiteTask
@@ -14,7 +14,7 @@ from chemistry.models import SuiteTask
 @login_required
 def submit(request):
     if request.method == "POST" and request.FILES:
-        return upload_response(request)
+        return file_upload_response(request)
     return render(request, "newtask.html")
 
 
