@@ -3,14 +3,6 @@ $(function(){
   $('#search-no-result').hide();
   $('#search-loading').hide();
   $("#calculate-submit-info").hide();
-
-  $("#task_name").change(function(){
-    Calculate.task_name = $(this).val();
-  });
-
-  $("#task_notes").change(function(){
-    Calculate.task_notes = $(this).val();
-  });
 });
 
 //model choice
@@ -84,6 +76,8 @@ $(function(){
 
 
 $('#calculate-submit-btn').click(function(){
+  Calculate.task_name = $("#task_name").val();
+  Calculate.task_notes = $("#task_notes").val();
   update_model();
 
   if (!(Calculate.smile || Calculate.draw_mol_data || Calculate.files)){
