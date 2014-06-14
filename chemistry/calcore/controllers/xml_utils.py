@@ -1,21 +1,22 @@
-# coding=utf-8
+# coding: utf-8
 import datetime
-from xml.dom.minidom import Document
+from xml.dom import minidom
 
 
-class write_xml():
-    def __init__(self):
-        self.doc = Document()
+class XMLWriter():
 
-    def set_tag(self, inputFilePath, OutputPath):
+    def __init__(self, input_fpath, output_fpath):
+        self.doc = minidom.Document()
+        self.set_tag(input_fpath, output_fpath)
+
+    def set_tag(self, input_fpath, output_fpath):
         self.tagDragon = self.doc.createElement("DRAGON")
         self.doc.appendChild(self.tagDragon)
-        self.tagDragon.setAttribute(
-            "generation_date", str(
-                datetime.datetime.now()))
+        self.tagDragon.setAttribute("generation_date", str(datetime.datetime.now()))
         self.tagDragon.setAttribute("script_version", "1")
         self.tagDragon.setAttribute("version", "6.0.22")
-# OPTIONS的参数
+
+        # OPTIONS的参数
         self.OPTIONS = self.doc.createElement("OPTIONS")
         self.Decimal_Separator = self.doc.createElement("Decimal_Separator")
         self.Decimal_Separator.setAttribute("value", ".")
@@ -67,8 +68,7 @@ class write_xml():
         self.SaveOnlyData.setAttribute("value", "false")
         self.OPTIONS.appendChild(self.SaveOnlyData)
 
-        self.SaveLabelsOnSeparateFile = self.doc.createElement(
-            "SaveLabelsOnSeparateFile  ")
+        self.SaveLabelsOnSeparateFile = self.doc.createElement("SaveLabelsOnSeparateFile  ")
         self.SaveLabelsOnSeparateFile.setAttribute("value", "false")
         self.OPTIONS.appendChild(self.SaveLabelsOnSeparateFile)
 
@@ -76,17 +76,15 @@ class write_xml():
         self.SaveFormatBlock.setAttribute("value", "%b - %n.txt")
         self.OPTIONS.appendChild(self.SaveFormatBlock)
 
-        self.SaveFormatSubBlock = self.doc.createElement(
-            "SaveFormatSubBlock  ")
+        self.SaveFormatSubBlock = self.doc.createElement("SaveFormatSubBlock  ")
         self.SaveFormatSubBlock.setAttribute("value", "%b-%s - %n - %m.txt")
         self.OPTIONS.appendChild(self.SaveFormatSubBlock)
 
         self.SaveExcludeMisVal = self.doc.createElement("SaveExcludeMisVal   ")
-        self.SaveExcludeMisVal .setAttribute("value", "false")
+        self.SaveExcludeMisVal.setAttribute("value", "false")
         self.OPTIONS.appendChild(self.SaveExcludeMisVal)
 
-        self.SaveExcludeAllMisVal = self.doc.createElement(
-            "SaveExcludeAllMisVal   ")
+        self.SaveExcludeAllMisVal = self.doc.createElement("SaveExcludeAllMisVal   ")
         self.SaveExcludeAllMisVal.setAttribute("value", "false")
         self.OPTIONS.appendChild(self.SaveExcludeAllMisVal)
 
@@ -94,23 +92,19 @@ class write_xml():
         self.SaveExcludeConst.setAttribute("value", "false")
         self.OPTIONS.appendChild(self.SaveExcludeConst)
 
-        self.SaveExcludeNearConst = self.doc.createElement(
-            "SaveExcludeNearConst    ")
+        self.SaveExcludeNearConst = self.doc.createElement("SaveExcludeNearConst    ")
         self.SaveExcludeNearConst.setAttribute("value", "false")
         self.OPTIONS.appendChild(self.SaveExcludeNearConst)
 
-        self.SaveExcludeStdDev = self.doc.createElement(
-            "SaveExcludeStdDev    ")
+        self.SaveExcludeStdDev = self.doc.createElement("SaveExcludeStdDev    ")
         self.SaveExcludeStdDev.setAttribute("value", "false")
         self.OPTIONS.appendChild(self.SaveExcludeStdDev)
 
-        self.SaveStdDevThreshold = self.doc.createElement(
-            "SaveStdDevThreshold    ")
+        self.SaveStdDevThreshold = self.doc.createElement("SaveStdDevThreshold    ")
         self.SaveStdDevThreshold.setAttribute("value", "0.0001")
         self.OPTIONS.appendChild(self.SaveStdDevThreshold)
 
-        self.SaveExcludeCorrelated = self.doc.createElement(
-            "SaveExcludeCorrelated ")
+        self.SaveExcludeCorrelated = self.doc.createElement("SaveExcludeCorrelated ")
         self.SaveExcludeCorrelated.setAttribute("value", "false")
         self.OPTIONS.appendChild(self.SaveExcludeCorrelated)
 
@@ -118,27 +112,23 @@ class write_xml():
         self.SaveCorrThreshold.setAttribute("value", "0.98")
         self.OPTIONS.appendChild(self.SaveExcludeConst)
 
-        self.SaveExclusionOptionsToVariables = self.doc.createElement(
-            "SaveExclusionOptionsToVariables ")
+        self.SaveExclusionOptionsToVariables = self.doc.createElement("SaveExclusionOptionsToVariables ")
         self.SaveExclusionOptionsToVariables .setAttribute("value", "false")
         self.OPTIONS.appendChild(self.SaveExclusionOptionsToVariables)
 
-        # 怎样设定？
-        self.SaveExcludeMisMolecules = self.doc.createElement(
-            "SaveExcludeMisMolecules ")
-        self.SaveExcludeMisMolecules .setAttribute("value", "false")
+        #TODO: 怎样设定？
+        self.SaveExcludeMisMolecules = self.doc.createElement("SaveExcludeMisMolecules ")
+        self.SaveExcludeMisMolecules.setAttribute("value", "false")
         self.OPTIONS.appendChild(self.SaveExcludeMisMolecules)
 
-        self.SaveExcludeRejectedMolecules = self.doc.createElement(
-            "SaveExcludeRejectedMolecules ")
-        self.SaveExcludeRejectedMolecules .setAttribute("value", "false")
+        self.SaveExcludeRejectedMolecules = self.doc.createElement("SaveExcludeRejectedMolecules ")
+        self.SaveExcludeRejectedMolecules.setAttribute("value", "false")
         self.OPTIONS.appendChild(self.SaveExcludeRejectedMolecules)
 
         # self.OPTIONS.appendChild(self.hello)
         self.tagDragon.appendChild(self.OPTIONS)
-#####################
 
-# descriptors的参数   参数设定完毕~~
+        # descriptors的参数
         self.DESCRIPTORS = self.doc.createElement("DESCRIPTORS")
         for numbers in range(1, 30):
             self.block = self.doc.createElement("block")
@@ -146,19 +136,20 @@ class write_xml():
             self.block.setAttribute("SelectAll", "true")
             self.DESCRIPTORS.appendChild(self.block)
         self.tagDragon.appendChild(self.DESCRIPTORS)
-# MOLIFILES的参数     参数设定完毕~~
+
+        # MOLIFILES的参数
         self.MOLFILES = self.doc.createElement("MOLFILES")
         self.molInput = self.doc.createElement("molInput")
         self.molInput.setAttribute("value", "file")
         self.MOLFILES.appendChild(self.molInput)
 
         self.molFile = self.doc.createElement("molFile ")
-        self.molFile.setAttribute("value", inputFilePath)
+        self.molFile.setAttribute("value", input_fpath)
         self.MOLFILES.appendChild(self.molFile)
 
         self.tagDragon.appendChild(self.MOLFILES)
-####################################
-# OUTPUT的参数
+
+        # OUTPUT的参数
         self.OUTPUT = self.doc.createElement("OUTPUT")
 
         self.SaveStdOut = self.doc.createElement("SaveStdOut")
@@ -183,7 +174,7 @@ class write_xml():
 
         # 生成结果的保存路径
         self.SaveFilePath = self.doc.createElement("SaveFilePath")
-        self.SaveFilePath .setAttribute("value", OutputPath)
+        self.SaveFilePath.setAttribute("value", output_fpath)
         self.OUTPUT.appendChild(self.SaveFilePath)
 
         self.logMode = self.doc.createElement("logMode ")
@@ -191,32 +182,15 @@ class write_xml():
         self.OUTPUT.appendChild(self.logMode)
 
         self.logFile = self.doc.createElement("logFile ")
-        self.logFile .setAttribute("value", "[file]")
+        self.logFile.setAttribute("value", "[file]")
         self.OUTPUT.appendChild(self.logFile)
         self.tagDragon.appendChild(self.OUTPUT)
-###################################################################
 
-# EXTERNAL参数
-        #self.EXTERNAL = self.doc.createElement("EXTERNAL")
-        #self.fileName = self.doc.createElement("fileName  ")
-        # self.fileName.setAttribute("value","[VALUE]")
-        #self.EXTERNAL.appendChild(self.fileName  )
-
-        #self.delimiter= self.doc.createElement("delimiter ")
-
-        # self.delimiter.setAttribute("value","[VALUE]")
-        #self.EXTERNAL.appendChild(self.delimiter )
-
-        #self.consecutiveDelimiter = self.doc.createElement("consecutiveDelimiter ")
-        #self.consecutiveDelimiter .setAttribute("value","true")
-        #self.EXTERNAL.appendChild(self.consecutiveDelimiter )
-
-        #self.MissingValue = self.doc.createElement("MissingValue ")
-        #self.MissingValue .setAttribute("value","[VALUE]")
-        #self.EXTERNAL.appendChild(self.MissingValue )
-        # self.tagDragon.appendChild(self.EXTERNAL)
-        f = open(OutputPath, "w")
-        self.doc.writexml(f, "\t", "\t", "\n", "utf-8")
+        with open(output_fpath, "w") as f:
+            self.doc.writexml(f, "\t", "\t", "\n", "utf-8")
 
     def display(self):
         print self.doc.toprettyxml(indent="     ")
+
+    def get_content(self):
+        return self.doc.toprettyxml(indent="     ")

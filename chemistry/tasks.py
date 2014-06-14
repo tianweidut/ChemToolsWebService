@@ -8,7 +8,7 @@ from django.core.files import File
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 
-from chemistry.calcore.controllers.prediciton_model import PredictionModel
+from chemistry.calcore.controllers.prediciton_model import prediction_model_calculate
 from chemistry.models import SingleTask, SuiteTask, StatusCategory
 from chemistry import (STATUS_WORKING, STATUS_SUCCESS, STATUS_FAILED,
                        TASK_SUITE, TASK_SINGLE)
@@ -16,6 +16,7 @@ from chemistry.util import generate_smile_image, generate_pdf
 from utils import chemistry_logger
 
 LOCK_EXPIRE = 60 * 5  # Lock expires in 5 minutes
+DEFAULT_TEMPERATURE_ARGS = 25  # 默认摄氏温度
 
 
 def get_model_name(name):
@@ -95,38 +96,26 @@ def send_email_task(email, sid):
 
 
 @task()
-def calculateTask(task, model_name, arguments=None):
-    chemistry_logger.info('generate smile image')
+def calculateTask(task, model):
     generate_smile_image(task.pid)
 
-    chemistry_logger.info('models calculating')
-    para = dict.fromkeys(['smilestring', 'filename', 'cas'], "")
-    fullpath = os.path.join(settings.SETTINGS_ROOT, task.file_obj.file_obj.path)
-
-    if task.file_obj.file_type == 'mol':
-        para['filename'] = os.path.basename(fullpath)
-    else:
-        para['smilestring'] = task.file_obj.smiles.encode('utf-8')
-
-    chemistry_logger.info('paras :%s' % para)
-
     suite = task.sid
-    try:
-        #FIXME: fix temperature
-        if arguments == 'none' or not arguments:
-            arguments = '25'
+    map_model_name = get_model_name(model['model'])
+    mol_fpath = os.path.join(settings.SETTINGS_ROOT, task.file_obj.file_obj.path)
+    smile = task.file_obj.smiles.encode('utf-8') if task.file_obj.file_type != 'mol' else ''
 
-        pm = PredictionModel([get_model_name(model_name)],
-                             para,
-                             os.path.dirname(fullpath),
-                             float(arguments.encode('utf-8')))
+    try:
+        chemistry_logger.info('models calculating')
+        temperature = float(model.get('temperature', DEFAULT_TEMPERATURE_ARGS))
+        # 重构入口
+        predict_results = prediction_model_calculate(map_model_name, smile,
+                                                     mol_fpath, temperature)
 
         if task.file_obj.file_type == 'mol':
-            name = para['filename'].split(".")[0]
+            name = os.path.basename(mol_fpath).split('.')[0]
         else:
-            name = para['smilestring']
-        map_model_name = get_model_name(model_name)
-        result = pm.predict_results[name][map_model_name]
+            name = smile
+        result = predict_results[name][map_model_name]
     except KeyError:
         chemistry_logger.exception('still cannot support this model')
         result = 0

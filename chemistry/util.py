@@ -18,11 +18,10 @@ from users.models import UserProfile
 from chemistry.models import (SingleTask, SuiteTask, StatusCategory,
                               ProcessedFile, ModelCategory, FileSourceCategory,
                               ChemInfoLocal, SearchEngineModel)
-from chemistry import (STATUS_SUCCESS, TASK_SUITE, TASK_SINGLE,
+from chemistry import (TASK_SUITE, TASK_SINGLE,
                        ORIGIN_DRAW, ORIGIN_UPLOAD, ORIGIN_SMILE,
                        STATUS_WORKING, MODEL_SPLITS)
 from utils import chemistry_logger
-
 
 
 def suite_details_context(sid):
@@ -82,11 +81,7 @@ def fetch_resources(uri, rel):
 
 
 def generate_pdf(id, task_type=None):
-    """
-    generate result in pdf format
-    Output:
-        file full path
-    """
+    """generate result in pdf format"""
     if task_type == TASK_SINGLE:
         template = get_template("widgets/pdf/task_details_pdf.html")
         context = Context(task_details_context(pid=id))
@@ -117,9 +112,7 @@ def generate_pdf(id, task_type=None):
 
 
 def pdf_create_test():
-    """
-    pdf test create
-    """
+    """pdf test create"""
     task_id_search = "06b4c9a5-3a01-4bb4-a07c-d574d293d7e5"
     task_id_draw = "0a72a6ba-63f0-41db-a04f-f71c292f6db8"
     task_id_upload = "1142ae41-9497-4771-9c1c-d4dfcece994a"
@@ -134,9 +127,7 @@ def pdf_create_test():
 
 
 def convert_smile_png(singletask):
-    """
-    convert mol into smile and png
-    """
+    """convert mol into smile and png"""
     abpath = singletask.file_obj.file_obj.url
     fullpath = settings.SETTINGS_ROOT + abpath
 
@@ -155,9 +146,8 @@ def convert_smile_png(singletask):
 
 
 def generate_smile_image(pid):
-    """
-    generate smile and image for task
-    """
+    """generate smile and image for task"""
+    chemistry_logger.info('generate smile image')
     singletask = SingleTask.objects.get(pid=pid)
     filetype = singletask.file_obj.file_source.category
 
@@ -211,19 +201,12 @@ def search_cheminfo_local(query, start=0, limit=10):
 
 
 def get_models_selector(models_str):
-    """
-    get models name and color flag
-
-    Out:
-        a list, element is a two-tuple.
-    """
-    colors = ("label-success", "label-warning",
-              "label-primary",
+    """get models name and color flag"""
+    colors = ("label-success", "label-warning", "label-primary",
               "label-info", "label-danger", "label-default")
+
     models_list = models_str.split(MODEL_SPLITS)
-
     result = []
-
     for i in range(0, len(models_list)):
         e = {}
         e["color"] = colors[i % len(colors)]
@@ -254,19 +237,10 @@ def suitetask_details(sid):
                 single_lists=single_lists)
 
 
-def calculate_tasks(pid_list, smile, mol, models):
-    chemistry_logger.info('[file id list]: %s, [smile]: %s, [mol]: %s' %
-                          (pid_list, smile, mol))
-
-    number = 0
-    if len(pid_list) != 1 or pid_list[0] != "":
-        number = len(pid_list)
-
-    number = number + (1 if smile else 0)
-    number = number + (1 if mol else 0)
-
-    if number == 0:
-        return 0
+def calculate_tasks(files_id_list, smile, mol_data, models):
+    number = len(files_id_list)
+    number += 1 if smile else 0
+    number += 1 if mol_data else 0
 
     return number * len(models)
 
@@ -275,12 +249,12 @@ class ErrorCalculateType(Exception):
     pass
 
 
-def save_record(f, model_name, sid, source_type, smile=None, arguments=None):
+def save_record(f, model, sid, source_type, smile=None):
     from chemistry.tasks import calculateTask
     task = SingleTask()
     task.sid = SuiteTask.objects.get(sid=sid)
     task.pid = str(uuid.uuid4())
-    task.model = ModelCategory.objects.get(category=model_name)
+    task.model = ModelCategory.objects.get(category=model['model'])
 
     if source_type == ORIGIN_UPLOAD:
         # here, f is ProcessedFile record instance
@@ -307,10 +281,11 @@ def save_record(f, model_name, sid, source_type, smile=None, arguments=None):
 
     task.status = StatusCategory.objects.get(category=STATUS_WORKING)
     task.save()
-    calculateTask.delay(task, model_name, arguments)
+
+    calculateTask.delay(task, model)
 
 
-def get_fileobj_by_smiles(smile):
+def get_fileobj_by_smile(smile):
     """
     convert smile into mol file
     Output: file path
@@ -325,62 +300,45 @@ def get_fileobj_by_smiles(smile):
     mol.make3D()
     mol.write('mol', name_path, overwrite=True)
 
+    #TODO: 直接写入redis中
     return name_path
 
 
-def start_files_task(files_list, model_name, sid, arguments=None):
-    """
-    start a group task from files list
-    It will write a record into SingleTask and send this task
-    into system-task query.
-    First, it shoud read files_list and convert them into MolFile
-    """
-    if len(files_list) == 1 and files_list[0] == "" or not files_list:
-        return False
+def start_files_task(files_id_list, model, sid):
+    if not files_id_list or not isinstance(files_id_list, list):
+        return
 
-    for fid in files_list:
-        record = ProcessedFile.objects.get(fid=fid)
-        save_record(record, model_name, sid, ORIGIN_UPLOAD, arguments)
+    for fid in files_id_list:
+        if not fid:
+            continue
 
-    return True
+        #根据id，获取前端页面上传的文件model
+        f_record = ProcessedFile.objects.get(fid=fid)
+        save_record(f_record, model, sid, ORIGIN_UPLOAD)
 
 
-def start_smile_task(smile, model_name, sid, arguments=None):
-    """
-    start a group task from smile string
-    It will write a record into SingleTask and send this task
-    into system-task query
-    """
+def start_smile_task(smile, model, sid):
     if not smile:
-        return False
+        return
 
-    f = get_fileobj_by_smiles(smile)
-    save_record(f, model_name, sid, ORIGIN_SMILE, smile, arguments)
+    # 根据smile码计算mol文件，返回文件路径
+    f = get_fileobj_by_smile(smile)
+    save_record(f, model, sid, ORIGIN_SMILE, smile)
 
-    return True
 
-
-def start_moldraw_task(moldraw, model_name, sid, arguments=None):
-    """
-    start a group task from mol string
-    It will write a record into SingleTask and send this task
-    into system-task query
-    First it should write moldraw into a file and clear the useless lines
-    """
+def start_moldraw_task(moldraw, model, sid):
     if not moldraw:
-        return False
+        return
 
+    #TODO: 直接写入redis中
     name = str(uuid.uuid4()) + ".mol"
     path = os.path.join(settings.MOL_CONVERT_PATH, name)
     f = File(open(path, "w"))
     f.write(moldraw)
     f.close()
 
-    save_record(path, model_name, sid, ORIGIN_DRAW, arguments)
-
-    os.remove(path)
-
-    return True
+    # 根据前端绘图产生的mol数据，写入本地文件，想后端传入文件路径
+    save_record(path, model, sid, ORIGIN_DRAW)
 
 
 def get_model_category(model_name):
@@ -421,18 +379,18 @@ def submit_calculate(user, smile=None, draw_mol_data=None,
     chemistry_logger.info("files_id_list: %s" % files_id_list)
     chemistry_logger.info("models: %s" % models)
 
-    total_tasks = calculate_tasks(files_id_list, smile, draw_mol_data, models)
+    tasks_num = calculate_tasks(files_id_list, smile, draw_mol_data, models)
 
-    if total_tasks == 0:
+    if tasks_num == 0:
         status = False
         info = "请至少选择一种输入方式和计算模型!"
         id = None
         return (status, info, id)
 
     suite_task = SuiteTask()
-    suite_task.sid = str(uuid.uuid4())
+    suite_task.sid = sid = str(uuid.uuid4())
     suite_task.user = UserProfile.objects.get(user=user)
-    suite_task.total_tasks = int(total_tasks)
+    suite_task.total_tasks = tasks_num
     suite_task.has_finished_tasks = 0
     suite_task.start_time = datetime.datetime.now()
     suite_task.end_time = datetime.datetime.now()
@@ -443,24 +401,20 @@ def submit_calculate(user, smile=None, draw_mol_data=None,
     suite_task.email = user.email
     suite_task.save()
 
-    flag = False
     try:
-        for m in models:
-            flag = flag | start_smile_task(smile, m['model'], suite_task.sid, m['temperature'])
-            flag = flag | start_moldraw_task(draw_mol_data, m['model'], suite_task.sid, m['temperature'])
-            flag = flag | start_files_task(files_id_list, m['model'], suite_task.sid, m['temperature'])
+        for model in models:
+            start_smile_task(smile, model, sid)
+            start_moldraw_task(draw_mol_data, model, sid)
+            start_files_task(files_id_list, model, sid)
     except Exception:
         chemistry_logger.exception('failed to suite task')
-        flag = False
-
-    if flag:
-        status = True
-        info = "恭喜,计算任务已经提交!"
-        id = suite_task.sid
-    else:
         status = False
         info = "计算任务添加不成功，将重试或联系网站管理员!"
         suite_task.delete()
         id = None
+    else:
+        status = True
+        info = "恭喜,计算任务已经提交!"
+        id = sid
 
     return (status, info, id)

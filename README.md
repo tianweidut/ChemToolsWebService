@@ -30,6 +30,7 @@
 
  * Calculated software
   * sudo apt-get install python-openbabel -y
+  * sudo apt-get install openbabel -y
   * some other software should be installed manually
   * sudo apt-get install ia32-libs -y  #32-bit lib for 64-bit machine
   * Generate mol PONG
