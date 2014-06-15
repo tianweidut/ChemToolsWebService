@@ -133,6 +133,7 @@ INSTALLED_APPS = (
     'users',
 )
 
+
 # Add support  to user profile
 ACCOUNT_ACTIVATION_DAYS = 30
 LOGIN_REDIRECT_URL = '/'

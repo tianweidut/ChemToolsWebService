@@ -54,7 +54,9 @@ def basic_auth_api(request):
 
 
 def is_client(request):
-    return 'Python' in request.META.get('HTTP_USER_AGENT', '')
+    ua = request.META.get('HTTP_USER_AGENT', '') 
+    chemistry_logger.info(ua)
+    return 'python' in ua.lower() or 'main' in ua.lower() 
 
 
 def get_real_now():
