@@ -4,7 +4,7 @@ import shutil
 import os
 from os.path import join, exists
 
-from chemistry.calcore.config import CALCULATE_CMD_TYPE, CALCULATE_DATA_PATH
+from .config import CALCULATE_CMD_TYPE, CALCULATE_DATA_PATH
 from utils import chemistry_logger
 
 

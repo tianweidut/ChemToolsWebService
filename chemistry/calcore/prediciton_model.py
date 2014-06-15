@@ -1,6 +1,7 @@
 # coding: utf-8
-from .Dragon import Dragon
 from numpy import matrix, linalg
+
+from .dragon import DragonModel
 from .train_matrix import kocX, koh_TX
 
 
@@ -16,7 +17,7 @@ class PredictionModel(object):
         if self.T == 0 and model_name in ('logKOA', 'logKOH_T'):
             raise Exception('The T of KOA or KOH_T can not be 0')
 
-        self.dragon_model = Dragon(model_name, smile, mol_fpath)
+        self.dragon_model = DragonModel(model_name, smile, mol_fpath)
         self.dragon_model.mol2drs()
 
         self.predict_result["invalidnums"] = self.dragon_model.invalidnums

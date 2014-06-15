@@ -2,13 +2,13 @@
 from os.path import join
 import subprocess
 import re
-from chemistry.calcore.config import CALCULATE_CMD_TYPE, CALCULATE_DATA_PATH
+from .config import CALCULATE_CMD_TYPE, CALCULATE_DATA_PATH
 from .xml_utils import XMLWriter
 from .converters import SmileToMol
 
 
 # 调用不同的分子计算符软件进行分子描述符计算参数分别为DRAGON,GAUSSIAN,MOPAC
-class Dragon(SmileToMol):
+class DragonModel():
 
     def __init__(self, model_name, smile=None, molfile=None):
         self.mode_name = model_name

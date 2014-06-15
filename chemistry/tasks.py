@@ -8,7 +8,7 @@ from django.core.files import File
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 
-from chemistry.calcore.controllers.prediciton_model import prediction_model_calculate
+from chemistry.calcore.prediciton_model import prediction_model_calculate
 from chemistry.models import SingleTask, SuiteTask, StatusCategory
 from chemistry import (STATUS_WORKING, STATUS_SUCCESS, STATUS_FAILED,
                        TASK_SUITE, TASK_SINGLE)
