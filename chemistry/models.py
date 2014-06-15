@@ -91,11 +91,11 @@ class ProcessedFile(models.Model):
                            primary_key=True, default=get_sid)
     title = models.CharField(max_length=500, blank=False)
     file_type = models.CharField(max_length=100, blank=False)
-    file_obj = models.FileField(upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
+    file_obj = models.FileField(upload_to=settings.PROCESS_FILE_PATH)
     file_source = models.ForeignKey(FileSourceCategory,
                                     default=lambda: FileSourceCategory.objects.get(category=ORIGIN_UPLOAD))
     image = models.FileField(blank=True, null=True,
-                             upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
+                             upload_to=settings.PROCESS_FILE_PATH)
     smiles = models.CharField(max_length=2000, blank=True, null=True)
 
     class Meta:
@@ -127,7 +127,7 @@ class SuiteTask(models.Model):
     models_str = models.CharField(max_length=2000, blank=True)
     models_category_str = models.CharField(max_length=200, blank=True)
     result_pdf = models.FileField(blank=True, null=True,
-                                  upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
+                                  upload_to=settings.PROCESS_FILE_PATH)
     email = models.EmailField(blank=True, null=True)
 
     class Meta:
@@ -159,7 +159,7 @@ class SingleTask(models.Model):
 
     file_obj = models.ForeignKey(ProcessedFile, blank=False)
     result_pdf = models.FileField(blank=True, null=True,
-                                  upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
+                                  upload_to=settings.PROCESS_FILE_PATH)
 
     class Meta:
         verbose_name = "Single Task"
@@ -186,7 +186,7 @@ class SearchEngineModel(models.Model):
     averagemass = models.CharField(max_length=200, blank=False, null=True)
     monoisotopicmass = models.CharField(max_length=200, blank=False, null=True)
     search_query = models.CharField(max_length=2000, blank=False, null=True)
-    image = models.FileField(upload_to=settings.PROCESS_FILE_PATH+"/%Y/%m/%d")
+    image = models.FileField(upload_to=settings.PROCESS_FILE_PATH)
 
     class Meta:
         verbose_name = "Search Engine"

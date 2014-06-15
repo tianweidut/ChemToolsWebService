@@ -156,6 +156,7 @@ TMP_FILE_PATH = join(SETTINGS_ROOT, 'tmp/')
 
 # calculated task original file
 PROCESS_FILE_PATH = join("tmp", "process_file")
+MOL_ABSTRACT_FILE_PATH = join(MEDIA_ROOT, PROCESS_FILE_PATH)
 
 # Search Image Path
 SEARCH_IMAGE_PATH_RE = join("tmp", "search-image")
