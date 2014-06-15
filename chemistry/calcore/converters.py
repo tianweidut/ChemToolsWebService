@@ -1,292 +1,145 @@
 # coding: utf-8
 import os
+from os.path import join, exists
+import subprocess
 import shutil
 import pybel
-from chemistry.calcore.config import globalpath
-from .Mopac import Mopac
-from .GaussianOptimize import *
+from .config import CALCULATE_DATA_PATH
+from .mopac import MopacModel
+from .gaussian_optimize import GaussianOptimizeModel
+from utils import chemistry_logger
+from django.conf.settings import MOL_ABSTRACT_FILE_PATH
 
 
-class SmileToMol():
-
-    '''
-    to transfer from smile numbers to mol file:
-    input parameter is a string,and multi_smiles is splited by ','
-    such as [number1,number2,number3]
-    '''
-
-    def __init__(self, smilenum=None, molfile=None,
-                 modeltype=None):
-
-        print "in the SmileToMol-init"
+class Converter():
+    def __init__(self, smiles=None, molfiles=None, modeltype=None):
         self.__invalid_smile = []
-        self.__opt_smilenum = []
-        self.__unopt_smilenum = []
         self.__smilenum_list = []
         self.__molfile = []
         self.modeltype = modeltype
-        self.molpath = os.path.dirname(molfile)
-        self.molusemopac = True
-        if smilenum == "":
-            #raise Exception,"error input with 0 valid smilenum"
-            pass
-        else:
-            self.__smilenum_list = smilenum.split(',')
-        if molfile == "":
-            pass
-        else:
-            self.__molfile = molfile.split(',')
-        # for test
-        for smilenum in self.__smilenum_list:
-            self.__unopt_smilenum.append(smilenum)
-        self.__smilenum_list = self.__unopt_smilenum
-        print "end SmileToMol-init"
 
-    def smile2_3d(self, smilenum):
-        print "in SmileToMol-smile2_3d "
-        mymol = pybel.readstring('smi', smilenum)
+        # smiles 可以传入list，也可以传入以comma作为分隔符的smiles字符串
+        if isinstance(smiles, list):
+            self.__smilenum_list = [s for s in smiles]
+        elif isinstance(smiles, basestring):
+            self.__smilenum_list = smiles.split(',')
+
+        # molfies 传递的地址是完整路径
+        if isinstance(molfiles, list):
+            self.__molfile = [f for f in molfiles]
+        elif isinstance(molfiles, basestring):
+            self.__molfile = molfiles.split(',')
+
+    def smile2_3d(self, smile):
+        mymol = pybel.readstring('smi', smile)
         if self.modeltype == 3:
             mymol.addh()
         mymol.make3D()
-        revisedsmi = self.format_filename(smilenum)
-        tmpstring = self.molpath.encode('utf-8') + '/' + revisedsmi + '.mol'
-        mymol.write('mol', tmpstring, overwrite=True)
-        print "end SmileToMol-smile2_3d"
+        name = self.format_filename(smile)
+        mol_fpath = join(MOL_ABSTRACT_FILE_PATH, '%s.mol' % name)
+        mymol.write('mol', mol_fpath, overwrite=True)
+        return mol_fpath
 
-    def mop2mopac_folder(self):
-        # deal with smile numbers
-        print "in the SmileToMol-mop2mopac_folder"
-        for smilenum in self.__unopt_smilenum:
-            # 1:smile number to mop
-            revisedsmi = self.format_filename(smilenum)
-            dst = globalpath + 'formopac/' + revisedsmi
-            if not os.path.exists(dst):
-                os.makedirs(dst)
-            real_dst = os.path.join(dst, revisedsmi + '.mop')
-            print real_dst
-            if os.path.exists(real_dst):
-                os.remove(real_dst)
+    def iter_smiles_files(self, src_list, src_type):
+        for element in src_list:
+            if src_type == 'smile':
+                name = self.format_filename(element)
+            elif src_type == 'file':
+                name = os.path.basename(element).split('.')[0]
             else:
-                print "old mop file deleted"
-            try:
-                cmd = 'obabel -:\"' + smilenum + \
-                    '\" -omop -O\"' + real_dst + '\"' + " --gen3D"
-                subprocess.Popen(cmd, shell=True).wait()
-                print "smi->mop", cmd
-            except:
-                self.__invalid_smile.append(smilenum)
-                print "input smilenum invalide ", smilenum
-                continue
-            lines = open(real_dst, "rb").readlines()
-            lines[0] = 'EF GNORM=0.0001 MMOK GEO-OK PM3\n'
-            lines[1] = real_dst + "\n"
-            f = open(real_dst, "wb")
-            f.writelines(lines)
-            f.close()
+                raise Exception('No support %s' % src_type)
 
-            print "Mol2GjfandMop-mop close"
-            # 3:mop file into formopac folder
+            dragon_dpath = join(CALCULATE_DATA_PATH.DRAGON, name)
+            mopac_dpath = join(CALCULATE_DATA_PATH.MOPAC, name)
+            mop_fpath = join(mopac_dpath, '%s.mop' % name)
 
-        # to remove invalide smilenum from self.__unopt_smilenum
-        for num in self.__invalid_smile:
-            self.__unopt_smilenum.remove(num)
-        # deal with input mol file
-        for mol in self.__molfile:
-            # molusemopac=False
-            if self.molusemopac:
-                mol_without_ext = mol.split('.')[0]
-                Mol2GjfandMop(self.molpath + '/' + mol, mop=True)
-                dst = globalpath + 'formopac/' + mol_without_ext
-                if not os.path.exists(dst):
-                    os.makedirs(dst)
-                real_dst = os.path.join(dst, mol_without_ext + '.mop')
-                if os.path.exists(real_dst):
-                    os.remove(self.molpath + '/' + mol_without_ext + '.mop')
-                else:
-                    shutil.move(
-                        self.molpath +
-                        '/' +
-                        mol_without_ext +
-                        '.mop',
-                        globalpath +
-                        'formopac/' +
-                        mol_without_ext)
-            else:
-                mol_without_ext = mol.split('.')[0]
-                dst = globalpath + 'fordragon/' + mol_without_ext
-                if not os.path.exists(dst):
-                    os.makedirs(dst)
-                real_dst = os.path.join(self.molpath, mol_without_ext + '.mol')
-                if os.path.exists(real_dst):
-                    if os.path.exists(dst + '/' + mol_without_ext + '.mol'):
-                        self.delete_file_folder(
-                            dst +
-                            '/' +
-                            mol_without_ext +
-                            '.mol')
-                    shutil.move(
-                        self.molpath +
-                        '/' +
-                        mol_without_ext +
-                        '.mol',
-                        dst)
-                else:
-                    raise Exception("molpath have no mol!")
-                ###############################################################
-        print "end SmileToMol-mop2mopac_folder"
+            if not os.path.exists(dragon_dpath):
+                os.makedirs(dragon_dpath)
 
-    def gjf2gaussian_folder(self):
-        #######################################################################
-        # deal with smile numbers
-        print "in the SmileToMol-gjf2gaussian_folder"
-        print self.__unopt_smilenum
-        for smilenum in self.__unopt_smilenum:
-            # 1:smile number to 3d structure
-            # print smilenum
-            try:
-                self.smile2_3d(smilenum)
-            except:
-                self.__invalid_smile.append(smilenum)
-                print "input smilenum invalide ", smilenum
-                continue
+            if not exists(mopac_dpath):
+                os.makedirs(mopac_dpath)
 
-            revisedsmi = self.format_filename(smilenum)
-
-            dst = globalpath + 'forgaussian/' + revisedsmi
-            dsd = globalpath + 'fordragon/' + revisedsmi
-            if os.path.exists(dst):
-                self.delete_file_folder(dst)
-            if os.path.exists(dsd):
-                self.delete_file_folder(dsd)
-            # 2:mol to gjf file
-            Mol2GjfandMop(
-                self.molpath +
-                '/' +
-                revisedsmi +
-                '.mol',
-                self.modeltype,
-                gjf=True)
-            # 3:mop file into formopac folder
-
-            if not os.path.exists(dst):
-                os.makedirs(dst)
-            real_dst = os.path.join(dst, revisedsmi + '.gjf')
-            print real_dst
-            if os.path.exists(real_dst):
-                os.remove(self.molpath + '/' + revisedsmi + '.gjf')  # ----添加
-                # if os.path.exists(self.molpath+'/'+revisedsmi+'.chk'):
-                    # os.remove(self.molpath+'/'+revisedsmi+'.chk')
-                # if os.path.exists(self.molpath+'/'+revisedsmi+'.mol'):
-                    # os.remove(self.molpath+'/'+revisedsmi+'.mol')
-                # os.remove(self.molpath+'/'+revisedsmi+'.chk')
-                # os.remove(real_dst)
-                # print "remove real_dst"
-            else:
-                shutil.move(
-                    self.molpath +
-                    '/' +
-                    revisedsmi +
-                    '.gjf',
-                    globalpath +
-                    'forgaussian/' +
-                    revisedsmi)
-                # if os.path.exists(self.molpath+'/'+revisedsmi+'.chk'):
-                    # os.remove(self.molpath+'/'+revisedsmi+'.chk')
-        # to remove invalide smilenum from self.__unopt_smilenum
-        for num in self.__invalid_smile:
-            self.__unopt_smilenum.remove(num)
-            ###################################################################
-            ###################################################################
-        # deal with input mol file
-        for mol in self.__molfile:
-            # Mol2GjfandMop(self.molpath+'/'+mol,gjf=True)
-            mol_without_ext = mol.split('.')[0]
-            dst = globalpath + 'fordragon/' + mol_without_ext
-            print mol_without_ext
-            print dst
-            if not os.path.exists(dst):
-                os.makedirs(dst)
-            real_dst = os.path.join(dst, mol_without_ext + '.mol')
-            if os.path.exists(real_dst):
-                os.remove(self.molpath + '/' + mol_without_ext + '.mol')
-            else:
-                shutil.move(
-                    self.molpath +
-                    '/' +
-                    mol_without_ext +
-                    '.mol',
-                    globalpath +
-                    'fordragon/' +
-                    mol_without_ext)
-            # if os.path.exists(self.molpath+'/'+revisedsmi+'.chk'):
-               # os.remove(self.molpath+'/'+revisedsmi+'.chk')
-                ###############################################################
-        print "end SmileToMol-gjf2gaussian_folder"
+            yield (element, name, dragon_dpath, mopac_dpath, mop_fpath)
 
     def mol2dragon_folder(self):
-        # mol2mopac_folder here is to put mop file into mopac folder
-        # so as to  optimize mol file with Mopac
-        print "in the mol2dragon_folder"
-        self.mop2mopac_folder()
-        mopfile = []
-        for smilenum in self.__smilenum_list:
-            revisedsmi = self.format_filename(smilenum)
-            # delete mol file in current folder and move it to dragon
-            # dictionary
-            dst = globalpath + 'fordragon/' + revisedsmi + '/'
-            if not os.path.exists(dst):
-                os.makedirs(dst)
-            print os.path.exists(self.molpath + '/' + revisedsmi + '.mol')
-            if os.path.exists(self.molpath + '/' + revisedsmi + '.mol'):
-                shutil.move(self.molpath + '/' + revisedsmi + '.mol', dst)
-            mopfile.append(revisedsmi + '.mop')
-            ###################################################################
-        if self.molusemopac:
-            for mol in self.__molfile:
-                mol_without_ext = mol.split('.')[0]
-                # delete mol file in current folder and move it to dragon
-                # dictionary
-                dst = globalpath + 'fordragon/' + mol_without_ext + '/'
-                if not os.path.exists(dst):
-                    os.makedirs(dst)
-                if not os.path.exists(dst + mol):
-                    shutil.move(self.molpath + '/' + mol, dst)
-                mopfile.append(mol_without_ext + '.mop')
-        mop = Mopac(mopfile)
-        mop.opt4dragon()
-        print "end mol2dragon_folder"
+        mop_fname_set = set()
+
+        for element in self.iter_smiles_files(self.__smilenum_list, 'smile'):
+            smile, name, dragon_dpath, mopac_dpath, mop_fpath = element
+            mol_fpath = join(MOL_ABSTRACT_FILE_PATH, '%s.mol' % name)
+            try:
+                # '-:smi' 可以直接对smile进行转化
+                cmd = 'obabel -:"%s" -o mop -O "%s" --gen3D' % (smile,
+                                                                mop_fpath)
+                chemistry_logger.debug('mop2mopac, smi->mop: %s' % cmd)
+                subprocess.Popen(cmd, shell=True).wait()
+            except:
+                self.__invalid_smile.append(smile)
+                continue
+
+            # 修改smi->mop文件的头部
+            lines = []
+            with open(mop_fpath, 'rb') as f:
+                lines = f.readlines()
+                lines[0] = 'EF GNORM=0.0001 MMOK GEO-OK PM3\n'
+                lines[1] = mopac_dpath + "\n"
+
+            with open(mop_fpath, 'wb') as f:
+                f.writelines(lines)
+
+            shutil.copy(mol_fpath, dragon_dpath)
+            mop_fname_set.add('%s.mop' % name)
+
+        for element in self.iter_smiles_files(self.__molfile, 'file'):
+            mol_fpath, name, dragon_dpath, mopac_dpath, mop_fpath = element
+
+            shutil.move(mol_fpath, dragon_dpath)
+            shutil.move(mop_fpath, dragon_dpath)
+            mop_fname_set.add('%s.mop' % name)
+
+        # 使用mopac对dragon结果进行优化
+        try:
+            mop = MopacModel(mop_fname_set)
+            mop.opt4dragon()
+        except Exception:
+            chemistry_logger.exception('Failed to mopac optimize for dragon')
 
     def mol2gjf2dragon_folder(self):
-        self.gjf2gaussian_folder()
-        gaussianfile = []
-        revisedsmi = ""
-        for smilenum in self.__smilenum_list:
-            revisedsmi = self.format_filename(smilenum)
-            # delete mol file in current folder and move it to dragon
-            # dictionary
-            dst = globalpath + 'fordragon/' + revisedsmi + '/'
-            if not os.path.exists(dst):
-                os.makedirs(dst)
-            if not os.path.exists(dst + revisedsmi + '.mol'):
-                shutil.move(self.molpath + '/' + revisedsmi + '.mol', dst)
-            gaussianfile.append(revisedsmi + '.gjf')
+        gaussian_files_set = set()
 
-        if gaussianfile:
-            gjf = GaussianOptimize(gaussianfile)
+        for element in self.iter_smiles_files(self.__smilenum_list, 'smile'):
+            smile, name, dragon_dpath, mopac_dpath, mop_fpath = element
+            gaussian_dpath = join(CALCULATE_DATA_PATH.GAUSSIAN, name)
+
+            # smile-> mol
+            try:
+                mol_fpath = self.smile2_3d(smile)
+            except Exception:
+                self.__invalid_smile.append(smile)
+                chemistry_logger.exception('Failed to convert smile %s to 3D structure' % smile)
+                continue
+
+            # mol -> gjf file
+            gjf_fpath = mol2gjf(mol_fpath, self.modeltype)
+
+            shutil.copy(mol_fpath, dragon_dpath)
+            shutil.copy(gjf_fpath, gaussian_dpath)
+            gaussian_files_set.add('%s.gjf' % name)
+
+        for element in self.iter_smiles_files(self.__molfile, 'file'):
+            mol_fpath, name, dragon_dpath, mopac_dpath, mop_fpath = element
+
+            shutil.move(mol_fpath, dragon_dpath)
+            gaussian_files_set.add('%s.gjf' % name)
+
+        try:
+            gjf = GaussianOptimizeModel(gaussian_files_set)
             gjf.gjf4dragon()
-        if os.path.exists(self.molpath + '/' + revisedsmi + '.chk'):
-            os.remove(self.molpath + '/' + revisedsmi + '.chk')
-        print "end mol2gjf2dragon_folder"
+        except Exception:
+            chemistry_logger.exception('Failed to gaussian optimize for dragon')
 
     def format_filename(self, filename):
-        # if there exists '\' or '/' in filename ,substitute them with '#' and '$'
         return filename.replace('\\', '#').replace('/', '$')
-
-    def get_unopt_smilelist(self):
-        return self.__unopt_smilenum
-
-    def get_opt_smilelist(self):
-        return self.__opt_smilenum
 
     def get_invalid_smile(self):
         return self.__invalid_smile
@@ -297,109 +150,103 @@ class SmileToMol():
     def get_molfile(self):
         return self.__molfile
 
-    def delete_file_folder(self, src):
-        if os.path.isfile(src):
+
+def mol2mop(fpath):
+    fname = os.path.basename(fpath)
+    fname_no_ext = fname.split('.')[0]
+    content = []
+    with open(fpath, 'f') as f:
+        for line in f.readlines():
             try:
-                os.remove(src)
-            except:
-                raise Exception('can not delete ' + src)
-        elif os.path.isdir(src):
-            for item in os.listdir(src):
-                itemsrc = os.path.join(src, item)
-                self.delete_file_folder(itemsrc)
+                values = line.split()
+                if 'A' < values[3] < 'Z':
+                    content.append(' %s %s %s %s\n' % (values[3], values[0],
+                                                        values[1], values[2]))
+            except Exception:
+                chemistry_logger.exception('failed to resolve mol2mop line: %s' % line)
+
+    mop_list = []
+    mop_list.append('EF GNORM=0.0001 MMOK GEO-OK PM3\n')
+    mop_list.append('\n\r\n')
+    mop_list.extend(content)
+    mop_fpath = join(MOL_ABSTRACT_FILE_PATH, '%s.mop' % fname_no_ext)
+
+    # FIXME：多个人同时写一个名的文件会存在问题
+    with open(mop_fpath, 'w') as f:
+        f.writelines(tuple(mop_list))
+
+    return mop_fpath
+
+
+def mol2gjf(fpath, modeltype):
+    if modeltype == 3:
+        element = dict.fromkeys([
+            'H', 'C', 'N', 'O', 'F', 'P', 'S', 'Cl',
+            'Se', 'Br', 'I', 'Si', 'Hg', 'Pb'], 0)
+
+    fname = os.path.basename(fpath)
+    fname_no_ext = fname.split('.')[0]
+
+    content = []
+
+    with open(fpath, 'r') as f:
+        for line in f.readlines():
             try:
-                os.rmdir(src)
-            except:
-                raise Exception('can not delete ' + src)
-'''
-sm = SmileToMol('cab,cc,cd,ce,ccc')
-sm.optimize_mol()
-sm.mol2tdragon_dictionary()
-print sm.get_invalid_smile()
-print sm.get_smilenum_list()
-'''
+                values = line.split()
+                if 'A' < values[3] < 'Z':
+                    content.append(' %s %s %s %s\n' % (values[3], values[0],
+                                                       values[1], values[2]))
+                    if modeltype == 3:
+                        element[values[3]] = 1
 
+            except Exception:
+                chemistry_logger.exception('failed to resolve mol2gjf line: %s' % line)
 
-def Mol2GjfandMop(file, modeltype=None,gjf=False, mop=False):
-    #to gain input file name such as i.gif
-    print "in the Mol2GjfandMop"
-    print modeltype
-    if modeltype==3:
-        element=dict.fromkeys(['H','C','N','O','F','P','S','Cl','Se','Br','I','Si','Hg','Pb'],0)
-    #print element
-    Inputfilename=file.split('/')[-1]
-    #to gain input file name without extension such as i.gif
-    InputfilenameWithoutExt=Inputfilename.split('.')[0]
-    OritationList=[]
-    print file
-    f=open(file,'r')
-    lines=f.readlines()
-    f.close()
-    for lineNum in range(0 , len(lines)):
-        try:
-            List=list(lines[lineNum].split())
-            if(List[3]>'A'and List[3]<'Z'):     
-                OritationList.append(' '+List[3]+'             '+List[0]+'    '+List[1]+'    '+List[2]+'\n')
-                if modeltype==3:
-                    element[List[3]]=1
-                    #print List[3]
-                    #print element[List[3]]
-        except:
-            continue                                       
-    if gjf == True:
-        print "gjf=true"
-        GjfList=[]   
-        GjfList.append('%chk='+InputfilenameWithoutExt+'.chk\n')
-        GjfList.append('%nproc=2\n')
-        GjfList.append('%mem=2GB\n')
-        if modeltype==3:
-            if (element['I']|element['Si']|element['Hg']|element['Pb'])==1:
-                GjfList.append('#p opt freq b3lyp/genecp scf=tight int=ultrafine\n')
-                #print "to do B"
-            else:
-                GjfList.append('#p opt freq b3lyp/6-311+G(d,p) scf=tight int=ultrafine\n')
-        elif modeltype==2:
-            GjfList.append('#p opt freq b3lyp/6-31+g(d,p) SCRF=(IEFPCM,SOLVENT=WATER)\n')
-        GjfList.append('\n')
-        GjfList.append('Title Card Required\n')
-        GjfList.append('\n')
-        GjfList.append('0 1\n')
-        GjfList.extend(OritationList)
-        GjfList.append('\n')
-        tempC=""
-        tempHg=""
-        if modeltype==3 and (element['I']|element['Si']|element['Hg']|element['Pb'])==1:
-            templist=('I','Si','Hg','Pb')
-            for temp in templist:
-                if element[temp]==1:
-                    tempHg=tempHg+temp+" "
-                    element[temp]=0
+    gjf_list = []
+    gjf_list.append('%chk=%s.chk\n' % fname_no_ext)
+    gjf_list.append('%nproc=2\n')
+    gjf_list.append('%mem=2GB\n')
 
-            for key in element:
-                if element[key]==1:
-                    tempC=tempC+key+" "
-            GjfList.append(tempC+'0\n')
-            GjfList.append('6-31+g(d,p)\n')
-            GjfList.append('****\n')
-            GjfList.append(tempHg+'0\n')
-            GjfList.append('LANL2DZ\n')
-            GjfList.append('****\n\n')
-            GjfList.append(tempHg+'0\n')
-            GjfList.append('LANL2DZ\n\n')
+    if modeltype == 3:
+        element_op = (element['I'] | element['Si'] | element['Hg'] |
+                      element['Pb']) == 1
+        if element_op:
+            gjf_list.append('#p opt freq b3lyp/genecp scf=tight int=ultrafine\n')
+        else:
+            gjf_list.append('#p opt freq b3lyp/6-311+G(d,p) scf=tight int=ultrafine\n')
+    elif modeltype == 2:
+        gjf_list.append('#p opt freq b3lyp/6-31+g(d,p) SCRF=(IEFPCM,SOLVENT=WATER)\n')
 
-        f=open(file.split('.')[0]+'.gjf','w')
-        f.writelines(tuple(GjfList))
-        f.close()
-        print "Mol2GjfandMop-gjf close"
-    if mop == True:
-        print "mop=True"
-        MopList=[]
-        MopList.append('EF GNORM=0.0001 MMOK GEO-OK PM3\n')
-        #MopList.append('opt freq b3lyp/6-31+g(d,p) SCRF=(IEFPCM,SOLVENT=WATER)\n')
-        MopList.append('\n\r\n')
-        MopList.extend(OritationList)
-        f=open(file.split('.')[0]+'.mop','w')
-        f.writelines(tuple(MopList))
-        f.close()
-        print "Mol2GjfandMop-mop close"
-#Mol2GjfandMop('/home/est863/workspace/863program/src/controllers/C(Cl)(Cl)(Cl)C.mol', mop = True)
+    gjf_list.append('\n')
+    gjf_list.append('Title Card Required\n')
+    gjf_list.append('\n')
+    gjf_list.append('0 1\n')
+    gjf_list.extend(content)
+    gjf_list.append('\n')
+
+    if modeltype == 3 and element_op:
+        tempC = ""
+        tempHg = ""
+        for t in ('I', 'Si', 'Hg', 'Pb'):
+            if element[t] == 1:
+                element[t] = 0
+                tempHg += "%s " % t
+
+        for key in element:
+            if element[key] == 1:
+                tempC += "%s " % key
+
+        gjf_list.append('%s 0\n' % tempC)
+        gjf_list.append('6-31+g(d,p)\n')
+        gjf_list.append('****\n')
+        gjf_list.append('%s 0\n' % tempHg)
+        gjf_list.append('LANL2DZ\n')
+        gjf_list.append('****\n\n')
+        gjf_list.append('%s 0\n' % tempHg)
+        gjf_list.append('LANL2DZ\n\n')
+
+    gjf_fpath = join(MOL_ABSTRACT_FILE_PATH, '%s.gjf' % fname_no_ext)
+    with open(gjf_fpath, 'w') as f:
+        f.writelines(tuple(gjf_list))
+
+    return gjf_fpath

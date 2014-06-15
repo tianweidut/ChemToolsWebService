@@ -4,12 +4,12 @@ from os.path import dirname, abspath, join
 from collections import namedtuple
 
 CONFIG_DIR = dirname(abspath(__file__))
-globalpath = dirname(CONFIG_DIR)
+CALCORE_DIR = dirname(CONFIG_DIR)
 GAUSSIAN_DATA_PATH = join(CONFIG_DIR, 'forgaussian')
-DRAGON_PATH = join(globalpath, 'fordragon')
-MOPAC_PATH = join(globalpath, 'formopac')
-GAUSSIAN_PATH = join(globalpath, 'forgaussian')
-TESTDATA_PATH = join(globalpath, 'tests', 'data')
+DRAGON_PATH = join(CALCORE_DIR, 'fordragon')
+MOPAC_PATH = join(CALCORE_DIR, 'formopac')
+GAUSSIAN_PATH = join(CALCORE_DIR, 'forgaussian')
+TESTDATA_PATH = join(CALCORE_DIR, 'tests', 'data')
 
 CALCULATE_SOFTWARE_TYPE = namedtuple("CALCULATE_SOFTWARE_TYPE",
         ['DRAGON', 'MOPAC', 'GAUSSIAN'])('DRAGON', 'MOPAC', 'GAUSSIAN')

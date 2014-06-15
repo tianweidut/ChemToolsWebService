@@ -1,10 +1,11 @@
 # coding: utf-8
-from os.path import join
+from os.path import join, basename
 import subprocess
 import re
 from .config import CALCULATE_CMD_TYPE, CALCULATE_DATA_PATH
 from .xml_utils import XMLWriter
-from .converters import SmileToMol
+from .converters import Converter
+from utils import chemistry_logger
 
 
 # 调用不同的分子计算符软件进行分子描述符计算参数分别为DRAGON,GAUSSIAN,MOPAC
@@ -14,24 +15,24 @@ class DragonModel():
         self.mode_name = model_name
         self.model_type = self.get_model_type(model_name)
 
-        sm = SmileToMol(smile, molfile, self.model_type)
-
+        converter = Converter(smile, molfile, self.model_type)
         if self.model_type == 1:
-            sm.mol2dragon_folder()
-        elif self.model_type == 2 or self.model_type == 3:
-            sm.mol2gjf2dragon_folder()
+            converter.mol2dragon_folder()
+        elif self.model_type in (2, 3):
+            converter.mol2gjf2dragon_folder()
 
-        self.files_list = sm.get_smilenum_list()
-        for mol in sm.get_molfile():
-            self.files_list.append(mol.split('.')[0])
-
-        self.invalidnums = sm.get_invalid_smile()
+        self.invalidnums = converter.get_invalid_smile()
+        self.names_set = set(i for i in converter.get_smilenum_list())
+        # get_molfile 返回的是文件绝对路径列表
+        for fpath in converter.get_molfile():
+            name = basename(fpath).split('.')[0]
+            self.names_set.add(name)
 
     def format_filename(self, name):
         return name.replace('\\', '#').replace('/', '$')
 
     def iter_files(self):
-        for raw_name in self.files_list:
+        for raw_name in self.names_set:
             fname = self.format_filename(raw_name)
             fpath = join(CALCULATE_DATA_PATH.DRAGON, fname)
             fname_mol = fname + ".mol"
@@ -57,6 +58,7 @@ class DragonModel():
             XMLWriter(input_fpath, output_fpath)
             # dragon6shell -s *.drs to get the result
             cmd = "%s '%s'" % (CALCULATE_CMD_TYPE.DRAGON, output_fpath)
+            chemistry_logger.debug('mol2drs cmd %s' % cmd)
             subprocess.Popen(cmd, shell=True).wait()
 
     def extractparameter(self, parameters=None):
@@ -86,7 +88,7 @@ class DragonModel():
                     except:
                         print key, temp_dic[i], valueline[temp_dic[key]]
 
-            if self.modeltype == 3:
+            if self.model_type == 3:
                 f_log = join(CALCULATE_DATA_PATH.GAUSSIAN, raw_name,
                              raw_name + '.log')
                 f = open(f_log, 'r')
