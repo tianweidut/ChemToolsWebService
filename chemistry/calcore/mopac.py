@@ -8,7 +8,7 @@ from .config import CALCULATE_CMD_TYPE, CALCULATE_DATA_PATH
 from utils import chemistry_logger
 
 
-class Mopac():
+class MopacModel():
     def __init__(self, mop_fname_list):
         self.mop_fname_list_no_ext = []
 
