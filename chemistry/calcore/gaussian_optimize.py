@@ -1,60 +1,44 @@
-#! /usr/bin/env python
-#coding=utf-8
-'''
-Created on 2013-7-4
-
-@author:sunch
-'''
+# coding: utf-8
 import subprocess
 import shutil
 import os
-from .PathInit import ParseInitPath
-from chemistry.calcore.config.settings import globalpath
+from os.path import join, exists
+from .config import CALCULATE_CMD_TYPE, CALCULATE_DATA_PATH
+from utils import chemistry_logger
 
 
-class GaussianOptimize():
-    '''
-    Optimize .gjf to .log to mol
-    '''
-    def __init__(self,filename):
-        print "in GaussianOptimize-init"
-        self.parse = ParseInitPath(globalpath+'config/InitPath.xml')
-        self.commandpath=self.parse.get_xml_data(globalpath+'config/InitPath.xml','GAUSSIAN')
-        self.filename=filename
-        self.filename_without_ext=[]
-        self.gjffilepath=[]
-        self.gjffilename=[]
-        for inputfilename in self.filename:
-            filename_without_ext=inputfilename.split('.')[0]
-            self.filename_without_ext.append(filename_without_ext)
+class GaussianOptimizeModel():
+    '''Optimize .gjf --> .log --> .mol'''
+    def __init__(self, gjf_fname_list):
+        self.gjf_fname_list_no_ext = []
 
-        try:
-            os.mkdir(globalpath+'forgaussian/'+filename_without_ext)
-        except:
-            print 'can not mkdir in forgaussian'
-        gjffilepath=globalpath+'forgaussian/'+filename_without_ext+'/'
-        self.gjffilepath.append(gjffilepath)
-        try:
-            shutil.move(filename,gjffilepath+inputfilename)
-        except:
-            print "can not move gjffile"
-        self.gjffilename.append(filename_without_ext+'.gjf')
-        print self.gjffilepath
-        print self.filename_without_ext
-        print "end GaussianOptimize-init"
-        
+        for fname in gjf_fname_list:
+            name = fname.split('.')[0]
+            self.gjf_fname_list_no_ext.append(name)
+
+            dpath = join(CALCULATE_DATA_PATH.GAUSSIAN, name)
+
+            if not exists(dpath):
+                os.mkdir(dpath)
+
+            try:
+                shutil.move(fname, join(dpath, fname))
+            except Exception:
+                chemistry_logger.exception('Failed to shutil %s' % fname)
+
     def gjf4dragon(self):
-        print self.filename
-        print len(self.filename)
-        for i in range(0,len(self.filename)):
-            dragonpath=globalpath+'fordragon/'+self.filename_without_ext[i]+'/'+self.filename_without_ext[i]+'.mol'
-            cmd=self.commandpath+"'"+self.gjffilepath[i]+self.filename[i]+"'"
-            print "g09 gjf->.log"
-            subprocess.Popen(cmd,shell=True).wait()
-            print "end g09;.log->mol" 
-            cmd='obabel -ig09 '+self.gjffilepath[i]+self.filename_without_ext[i]+'.log '+' -omol -O '+dragonpath
-            subprocess.Popen(cmd,shell=True).wait()
-            print "end obenbel;mol"
+        for name in self.gjf_fname_list_no_ext:
+            mol_path = join(CALCULATE_DATA_PATH.DRAGON, name,
+                            '%s.mol' % name)
+            gjf_path = join(CALCULATE_DATA_PATH.GAUSSIAN, name,
+                            '%s.gjf' % name)
+            log_path = join(CALCULATE_DATA_PATH.GAUSSIAN, name,
+                            '%s.log' % name)
 
-            
+            cmd = '%s "%s"' % (CALCULATE_CMD_TYPE.GAUSSIAN, gjf_path)
+            chemistry_logger.debug('gif4dragon part2 cmd: %s' % cmd)
+            subprocess.Popen(cmd, shell=True).wait()
 
+            cmd = 'obabel -ig09 "%s" -omol -O "%s"' % (log_path, mol_path)
+            chemistry_logger.debug('gif4dragon part2 cmd: %s' % cmd)
+            subprocess.Popen(cmd, shell=True).wait()
