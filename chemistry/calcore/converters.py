@@ -8,7 +8,7 @@ from .config import CALCULATE_DATA_PATH
 from .mopac import MopacModel
 from .gaussian_optimize import GaussianOptimizeModel
 from utils import chemistry_logger
-from django.conf.settings import MOL_ABSTRACT_FILE_PATH
+from django.conf import settings
 
 
 class Converter():
@@ -36,7 +36,7 @@ class Converter():
             mymol.addh()
         mymol.make3D()
         name = self.format_filename(smile)
-        mol_fpath = join(MOL_ABSTRACT_FILE_PATH, '%s.mol' % name)
+        mol_fpath = join(settings.MOL_ABSTRACT_FILE_PATH, '%s.mol' % name)
         mymol.write('mol', mol_fpath, overwrite=True)
         return mol_fpath
 
@@ -66,7 +66,7 @@ class Converter():
 
         for element in self.iter_smiles_files(self.__smilenum_list, 'smile'):
             smile, name, dragon_dpath, mopac_dpath, mop_fpath = element
-            mol_fpath = join(MOL_ABSTRACT_FILE_PATH, '%s.mol' % name)
+            mol_fpath = join(settings.MOL_ABSTRACT_FILE_PATH, '%s.mol' % name)
             try:
                 # '-:smi' 可以直接对smile进行转化
                 cmd = 'obabel -:"%s" -o mop -O "%s" --gen3D' % (smile,
@@ -169,7 +169,7 @@ def mol2mop(fpath):
     mop_list.append('EF GNORM=0.0001 MMOK GEO-OK PM3\n')
     mop_list.append('\n\r\n')
     mop_list.extend(content)
-    mop_fpath = join(MOL_ABSTRACT_FILE_PATH, '%s.mop' % fname_no_ext)
+    mop_fpath = join(settings.MOL_ABSTRACT_FILE_PATH, '%s.mop' % fname_no_ext)
 
     # FIXME：多个人同时写一个名的文件会存在问题
     with open(mop_fpath, 'w') as f:
@@ -245,7 +245,7 @@ def mol2gjf(fpath, modeltype):
         gjf_list.append('%s 0\n' % tempHg)
         gjf_list.append('LANL2DZ\n\n')
 
-    gjf_fpath = join(MOL_ABSTRACT_FILE_PATH, '%s.gjf' % fname_no_ext)
+    gjf_fpath = join(settings.MOL_ABSTRACT_FILE_PATH, '%s.gjf' % fname_no_ext)
     with open(gjf_fpath, 'w') as f:
         f.writelines(tuple(gjf_list))
 
