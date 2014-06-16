@@ -25,6 +25,16 @@ function init_database()
     cd -
 }
 
+function dump_database()
+{
+    echo '------dump database-------------'
+    cd tools/data/
+    mysqldump -ueye -psauron Chemistry > init_data_for_dev.sql
+    tar -zcvf init_data_for_dev.sql.tar.gz init_data_for_dev.sql
+    rm -rf init_data_for_dev.sql
+    cd -
+}
+
 function install_deps_for_calculate()
 {
     echo '------install deps for calculate----------'
