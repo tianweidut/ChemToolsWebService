@@ -2,21 +2,7 @@
 {% load i18n %}
 
 {% block content %}
-
-<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/accounts_form.css" >
-
-<div class="container form-container">
-  {% if account %}
-
-  <p>{% trans "Account successfully activated" %}</p>
-
-  <p><a href="{% url auth_login %}">{% trans "Log in" %}</a></p>
-
-  {% else %}
-
-  <p>{% trans "Account activation failed" %}</p>
-
-  {% endif %}
-
+<div class="alert alert-success">
+  <p>{% trans "恭喜你完成激活，请登录" %}</p>
 </div>
 {% endblock %}
