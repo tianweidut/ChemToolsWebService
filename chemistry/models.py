@@ -6,7 +6,7 @@ from django.db import models
 from django.conf import settings
 
 from users.models import UserProfile
-from chemistry import (FILE_CHOICES, MODEL_ORIGIN_CHOICES,
+from chemistry import (MODEL_ORIGIN_CHOICES,
                        MODEL_CHOICES, STATUS_CHOICES, MOL_ORIGIN_CHOICES,
                        ORIGIN_UNDEFINED, STATUS_UNDEFINED, STATUS_WORKING,
                        ORIGIN_UPLOAD)
@@ -16,27 +16,14 @@ def get_sid():
     return str(uuid.uuid4())
 
 
-class PresentationCategory(models.Model):
-    category = models.CharField(max_length=30, blank=False, unique=True,
-                                choices=FILE_CHOICES,
-                                verbose_name=u"Attachment File Type")
-
-    class Meta:
-        verbose_name = "Attachment File Types"
-        verbose_name_plural = "Attachment File Types"
-
-    def __unicode__(self):
-        return self.get_category_display()
-
-
 class ModelTypeCategory(models.Model):
     category = models.CharField(max_length=30, blank=False, unique=True,
                                 choices=MODEL_ORIGIN_CHOICES,
                                 verbose_name=u"Calculate Model Type")
 
     class Meta:
-        verbose_name = "Calculate Model Type"
-        verbose_name_plural = "Calculate Model Type"
+        verbose_name = "计算模型类别"
+        verbose_name_plural = "计算模型类别"
 
     def __unicode__(self):
         return self.get_category_display()
@@ -50,8 +37,8 @@ class ModelCategory(models.Model):
     desc = models.TextField(blank=True)
 
     class Meta:
-        verbose_name = "Calculate Model"
-        verbose_name_plural = "Calculate Model"
+        verbose_name = "计算模型"
+        verbose_name_plural = "计算模型"
 
     def __unicode__(self):
         return self.get_category_display()
@@ -63,8 +50,8 @@ class StatusCategory(models.Model):
                                 verbose_name=u"calculate status")
 
     class Meta:
-        verbose_name = "Calculate Status"
-        verbose_name_plural = "Calculate Status"
+        verbose_name = "计算状态"
+        verbose_name_plural = "计算状态"
 
     def __unicode__(self):
         return self.category
@@ -76,8 +63,8 @@ class FileSourceCategory(models.Model):
                                 default=ORIGIN_UNDEFINED)
 
     class meta:
-        verbose_name = "file source"
-        verbose_name_plural = "file source"
+        verbose_name = "文件来源"
+        verbose_name_plural = "文件来源"
 
     def __unicode__(self):
         return self.get_category_display()
@@ -99,8 +86,8 @@ class ProcessedFile(models.Model):
     smiles = models.CharField(max_length=2000, blank=True, null=True)
 
     class Meta:
-        verbose_name = "Processed File"
-        verbose_name_plural = "Processed File"
+        verbose_name = "上传文件"
+        verbose_name_plural = "上传文件"
 
     def __unicode__(self):
         return self.title
@@ -131,8 +118,8 @@ class SuiteTask(models.Model):
     email = models.EmailField(blank=True, null=True)
 
     class Meta:
-        verbose_name = "Suite Task"
-        verbose_name_plural = "Suite Task"
+        verbose_name = "组计算任务"
+        verbose_name_plural = "组计算任务"
 
     def __unicode__(self):
         return self.sid
@@ -162,8 +149,8 @@ class SingleTask(models.Model):
                                   upload_to=settings.PROCESS_FILE_PATH)
 
     class Meta:
-        verbose_name = "Single Task"
-        verbose_name_plural = "Single Task"
+        verbose_name = "单个计算任务"
+        verbose_name_plural = "单个计算任务"
 
     def __unicode__(self):
         return self.sid.name
@@ -189,8 +176,8 @@ class SearchEngineModel(models.Model):
     image = models.FileField(upload_to=settings.PROCESS_FILE_PATH)
 
     class Meta:
-        verbose_name = "Search Engine"
-        verbose_name_plural = "Search Engine"
+        verbose_name = "第三方搜索数据"
+        verbose_name_plural = "第三方搜索数据"
 
     def __unicode__(self):
         return self.commonname
@@ -220,8 +207,8 @@ class ChemInfoLocal(models.Model):
     image = models.FileField(upload_to=settings.SEARCH_IMAGE_PATH, blank=True)
 
     class Meta:
-        verbose_name = "Chemistry Info Local"
-        verbose_name_plural = "Chemistry Info Local"
+        verbose_name = "欧盟既有化学品数据库"
+        verbose_name_plural = "欧盟既有化学品数据库"
 
     def __unicode__(self):
         return self.cas

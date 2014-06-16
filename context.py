@@ -45,7 +45,6 @@ def userinfo_context(request):
                                              status__category=STATUS_WORKING).count()
         context["data_context"] = {}
         context["data_context"]["query_num"] = query_num
-        context["data_context"]["remain_num"] = profile.user_grade.total_num - finished_num
 
     except:
         pass

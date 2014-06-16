@@ -81,20 +81,6 @@ def admin_account(request):
     return render(request, "widgets/settings/admin.html", data)
 
 
-@login_required
-@csrf.csrf_protect
-def billing(request):
-    data = {}
-    return render(request, "widgets/settings/billing.html", data)
-
-
-@login_required
-@csrf.csrf_protect
-def payments(request):
-    data = {}
-    return render(request, "widgets/settings/payments.html", data)
-
-
 def active(request, activation_key,
            template_name='registration/activate.html',
            extra_context=None):

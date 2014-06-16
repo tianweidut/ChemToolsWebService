@@ -2,15 +2,13 @@
 from django.conf.urls import patterns, url
 from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView
-from users.views import (profile, admin_account, billing, payments,
+from users.views import (profile, admin_account,
                          active, register, api_login)
 
 
 urlpatterns = patterns('',
     url(r'^settings/profile/$', profile, name="settings_profile"),
     url(r'^settings/admin/$', admin_account, name="settings_admin_account"),
-    url(r'^settings/billing/$', billing, name="settings_billing"),
-    url(r'^settings/payments/$', payments, name="settings_payments"),
 
     url(r'^api/login/$', api_login),
 

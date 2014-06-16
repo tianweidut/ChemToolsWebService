@@ -14,74 +14,13 @@ from django.db import models
 from django.core.mail import send_mail
 
 from utils import loginfo
-from users import (LEVEL_1, LEVEL2_CHOICES, LEVEL3_CHOICES,
-                   LEVEL_CHOICES)
 
 DEFAULT_CREATE_ID = "0000-0000"
 DEFAULT_ERROR_ID = "FFFF-FFFF"
 SHA1_RE = re.compile('^[a-f0-9]{40}$')  # Activation Key
 
 
-class LevelGrageCategory(models.Model):
-    category = models.CharField(max_length=30, blank=False, unique=True,
-                                choices=LEVEL2_CHOICES,
-                                verbose_name=u"Level grade")
-
-    class Meta:
-        verbose_name = "Level grage"
-        verbose_name_plural = "Levle grade"
-
-    def __unicode__(self):
-        return self.get_category_display()
-
-
-class LevelAccountCategory(models.Model):
-    category = models.CharField(max_length=30, blank=False, unique=True,
-                                choices=LEVEL_CHOICES,
-                                verbose_name=u"Level account")
-
-    class Meta:
-        verbose_name = "Level account"
-        verbose_name_plural = "Levle account"
-
-    def __unicode__(self):
-        return self.get_category_display()
-
-
-class LevelBillCategory(models.Model):
-    category = models.CharField(max_length=30, blank=False, unique=True,
-                                choices=LEVEL3_CHOICES,
-                                verbose_name=u"level bill")
-
-    class meta:
-        verbose_name = "level bill"
-        verbose_name_plural = "levle bill"
-
-    def __unicode__(self):
-        return self.get_category_display()
-
-
-class UserGrade(models.Model):
-    """
-    User Grade
-    """
-    grade = models.ForeignKey(LevelGrageCategory,
-                              verbose_name="Level Grade")
-    account = models.ForeignKey(LevelAccountCategory,
-                                verbose_name="Level account")
-    bill = models.ForeignKey(LevelBillCategory,
-                             verbose_name="Level bill")
-    total_num = models.IntegerField(blank=False, verbose_name="total numbers")
-
-    def __unicode__(self):
-        return '%s' % (self.grade)
-
-
 class UserProfile(models.Model):
-    """
-    User Profile Extend
-    The Administrator can modified them in admin.page
-    """
     user = models.ForeignKey(User, unique=True)
     agentID = models.CharField(max_length=40,
                                default=lambda: str(uuid.uuid4()),
@@ -89,7 +28,10 @@ class UserProfile(models.Model):
     workunit = models.CharField(max_length=2000, blank=True)
     address = models.CharField(max_length=2000, blank=True)
     telephone = models.CharField(max_length=100, blank=True)
-    user_grade = models.ForeignKey(UserGrade)
+
+    class meta:
+        verbose_name = u"用户信息"
+        verbose_name_plural = u"用户信息"
 
     def __unicode__(self):
         return '%s' % (self.user)
@@ -134,9 +76,7 @@ class RegistrationManager(models.Manager):
         new_user.save()
 
         try:
-            free_grade = UserGrade.objects.get(grade__category=LEVEL_1)
-            new_profile = UserProfile.objects.create(user=new_user,
-                                                     user_grade=free_grade)
+            new_profile = UserProfile.objects.create(user=new_user)
             new_profile.save()
         except Exception, err:
             #TODO: later, we should process the object is empty, as the same
@@ -201,8 +141,8 @@ class RegistrationProfile(models.Model):
     objects = RegistrationManager()
 
     class Meta:
-        verbose_name = _('registration profile')
-        verbose_name_plural = _('registration profiles')
+        verbose_name = u'注册信息'
+        verbose_name_plural = u'注册信息'
 
     def __unicode__(self):
         return u"Registration information for %s" % self.user
@@ -218,4 +158,3 @@ class RegistrationProfile(models.Model):
                (self.user.date_joined + expiration_date <= datetime.datetime.now())
 
     activation_key_expired.boolean = True
-
