@@ -55,9 +55,9 @@
       <td>状态</td>
       <td>模型</td>
       <td>类别</td>
+      <td>来源</td>
       <td>温度</td>
       <td>结果</td>
-      <td>时间</td>
       <td></td>
     </tr>
   </thead>
@@ -66,18 +66,18 @@
     <tr>
       <td>
         {% if single.status.category == "success" %}
-          <p class="label label-success">Success</p>
+          <p class="label label-success">计算成功</p>
         {% elif single.status.category == "failed" %}
-          <p class="label label-important">Failed</p>
+          <p class="label label-important">计算失败</p>
         {% else %}
-          <p class="label label-info">Calculating</p>
+          <p class="label label-info">正在计算</p>
         {%endif%}
       </td>
       <td>{{single.model|upper}}</td>
       <td>{{single.model.origin_type}}</td>
+      <td>{{single.file_obj.file_source}}</td>
       <td>{{single.temperature}}</td>
       <td>{{single.results}}</td>
-      <td>{{single.calculate_mol.upload_time|date:"m-d H:m"}}</td>
       <td>
         <a class="btn btn-primary" href="{% url 'chemistry.views.singletask' single.pid %}">细节</a>
       </td>

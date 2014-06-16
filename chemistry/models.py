@@ -47,14 +47,14 @@ class ModelCategory(models.Model):
 class StatusCategory(models.Model):
     category = models.CharField(max_length=30, blank=False, unique=True,
                                 choices=STATUS_CHOICES,
-                                verbose_name=u"calculate status")
+                                verbose_name=u"计算状态")
 
     class Meta:
         verbose_name = "计算状态"
         verbose_name_plural = "计算状态"
 
     def __unicode__(self):
-        return self.category
+        return self.get_category_display()
 
 
 class FileSourceCategory(models.Model):
