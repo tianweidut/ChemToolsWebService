@@ -19,6 +19,7 @@ MODEL_PPK = "ppk"
 MODEL_DFS = "dfs"
 MODEL_RP = "rp"
 MODEL_BDG = 'bdg'
+MODEL_O3 = 'o3'
 
 MODEL_CHOICES = (
     (MODEL_KOA, "正辛醇/空气分配系数"),
@@ -33,6 +34,7 @@ MODEL_CHOICES = (
     (MODEL_KOH, "气相羟基自由基反应速率常数"),
     (MODEL_KOH_T, "气相羟基自由基反应速率常数"),
     (MODEL_BDG, "生物降解性"),
+    (MODEL_O3, "臭氧模型"),
 )
 
 MODEL_EN_PHY = "en_physiochemical"

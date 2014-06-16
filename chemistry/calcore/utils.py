@@ -23,7 +23,8 @@ class CalcoreCmd(object):
         #FIXME: 运行时候加锁
         if not self.check_output_exists():
             chemistry_logger.info('[CalcoreCmd]%s(%s->%s)', self.cmd, self.input, self.output)
-            check_call(self.cmd, shell=True)
+            s= check_call(self.cmd, shell=True)
+            chemistry_logger.info(s)
 
     def check_output_exists(self):
         #FIXME: 增加race condition 检测
@@ -250,7 +251,7 @@ def fetch_ehomo(name, model):
 
     if not os.path.exists(path):
         chemistry_logger.error('Cannot fetch HOMO %s' % path)
-        return path
+        return 0.0
 
     ret = []
 

@@ -22,7 +22,7 @@ DEFAULT_TEMPERATURE_ARGS = 25  # 默认摄氏温度
 
 
 def has_temperature(model_name):
-    return model_name.lower() in ('koh_t', 'koa', 'pl')
+    return model_name.lower() in ('koh_t', 'koa', 'pl', 'o3')
 
 
 def get_model_name(name):
@@ -38,6 +38,7 @@ def get_model_name(name):
         "koh_t": "logKOH_T",
         "pl": "logPL",
         "bdg": "logBDG",
+        "o3": "logO3",
     }
 
     model = model_map.get(name)

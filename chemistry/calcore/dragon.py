@@ -15,9 +15,11 @@ class DragonModel():
 
         converter = Converter(smile, molfile, self.model_name)
         #FIXME: 使用常量
-        if self.model_name in ('logKOA', 'logRP', 'logPL', 'logBDG'):
+        if self.model_name in ('logKOA', 'logRP', 'logPL', 'logBDG', 'logO3'):
+            #mopac
             converter.mol2dragon_folder()
         elif self.model_name in ('logKOC', 'logBCF', 'logKOH', 'logKOH_T'):
+            #GAUSSIAN
             converter.mol2gjf2dragon_folder()
 
         self.names_set = set(i for i in converter.get_smilenum_list())
