@@ -11,13 +11,13 @@ DATABASES = {
         'NAME': 'Chemistry',
         'USER': 'eye',
         'PASSWORD': 'sauron',
-        'HOST': 'dev-server',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
     }
 }
 
 
-BROKER_URL = "redis://redis-dev-server:6379/0"
+BROKER_URL = "redis://127.0.0.1:6379/0"
 BROKER_BACKEND = "redis"
 BROKER_PORT = 6379
 
