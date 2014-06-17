@@ -81,7 +81,14 @@ class Converter():
             lines = []
             with open(mop_fpath, 'rb') as f:
                 lines = f.readlines()
-                lines[0] = 'EF GNORM=0.0001 MMOK GEO-OK PM3\n'
+                if self.modeltype == 1:
+                    lines[0] = 'EF GNORM=0.0001 MMOK GEO-OK PM3\n'
+                elif self.modeltype == 4:
+                    lines[0] = 'EF GNORM=0.01 MMOK GEO-OK PM6 MULLIK POLAR\n'
+                elif self.modeltype == 5:
+                    lines[0] = 'EF GNORM=0.1 MMOK GEO-OK PM5\n'
+                else:
+                    lines[0] = 'no keywords'
                 lines[1] = mopac_dpath + "\n"
 
             with open(mop_fpath, 'wb') as f:

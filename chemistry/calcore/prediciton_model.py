@@ -1,5 +1,6 @@
 # coding: utf-8
 from numpy import matrix, linalg
+import math
 
 from .dragon import DragonModel
 from .train_matrix import kocX, koh_TX
@@ -31,6 +32,8 @@ class PredictionModel(object):
             "logBCF": self.logBCF(),
             "logKOH": self.logKOH(),
             "logKOH_T": self.logKOH_T(),
+            "logPL": self.logPL(),
+            "logBDG": self.logBDG(),
         }[modelname]
 
     def logKOA(self):
@@ -198,6 +201,45 @@ class PredictionModel(object):
                      abstract_value[smilenum]['MLOGP2']
                      ]])
         self.Williams(kocX, x)
+
+    def logBDG(self):
+        abstract_value = self.dragon_model.extractparameter([
+            "nN", "nHM", "O%", "MATS1e", "GATS1p", "GATS7p", "GGI1", "GGI2",
+            "nCq", "nCrt", "C-040", "H-048", "H-051", "O-059"])
+
+        for smilenum in abstract_value.keys():
+            if smilenum not in self.predict_result:
+                self.predict_result[smilenum] = {}
+                x = 1.9025 + \
+                    1.0457 * abstract_value[smilenum]['nN'] + \
+                    0.6662 * abstract_value[smilenum]['nHM'] - \
+                    0.1078 * abstract_value[smilenum]['O%'] + \
+                    2.8362 * abstract_value[smilenum]['MATS1e'] - \
+                    2.0019 * abstract_value[smilenum]['GATS1p'] - \
+                    0.7015 * abstract_value[smilenum]['GATS7p'] + \
+                    0.1131 * abstract_value[smilenum]['GGI1'] + \
+                    0.7023 * abstract_value[smilenum]['GGI2'] + \
+                    2.7793 * abstract_value[smilenum]['nCq'] + \
+                    1.035 * abstract_value[smilenum]['nCrt'] - \
+                    0.777 * abstract_value[smilenum]['C-040'] - \
+                    0.7091 * abstract_value[smilenum]['H-048'] - \
+                    0.1553 * abstract_value[smilenum]['H-051'] + \
+                    0.955 * abstract_value[smilenum]['O-059']
+                self.predict_result[smilenum]['logBDG'] = 1 / (1 + math.exp(-x))
+
+    def logPL(self):
+        abstract_value = self.dragon_model.extractparameter([
+            "nHDon", "X1sol", "nROH", "u", "GATS1v"])
+        for smilenum in abstract_value.keys():
+            if smilenum not in self.predict_result:
+                self.predict_result[smilenum] = {}
+            self.predict_result[smilenum]['logPL'] = 13.33 - \
+                2571.0 * (1 / self.T) - \
+                0.5061 * abstract_value[smilenum]['nHDon'] - \
+                0.6896 * abstract_value[smilenum]['X1sol'] + \
+                0.8014 * abstract_value[smilenum]['GATS1v'] - \
+                0.1363 * abstract_value[smilenum]['u'] - \
+                0.6094 * abstract_value[smilenum]['nROH']
 
     def Williams(self, X, x):
         self.hx = 3 * (X.shape[1] + 1.0) / X.shape[0]

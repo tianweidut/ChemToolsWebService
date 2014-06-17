@@ -16,7 +16,8 @@ class DragonModel():
         self.model_type = self.get_model_type(model_name)
 
         converter = Converter(smile, molfile, self.model_type)
-        if self.model_type == 1:
+        #FIXME: 使用常量
+        if self.model_type in (1, 4, 5):
             converter.mol2dragon_folder()
         elif self.model_type in (2, 3):
             converter.mol2gjf2dragon_folder()
@@ -48,6 +49,10 @@ class DragonModel():
             model_type = 2
         elif model_name in ("logKOH", "logKOH_T"):
             model_type = 3
+        elif model_name == "logPL":
+            model_type = 4
+        elif model_name == "logBDG":
+            model_type = 5
         else:
             model_type = 0
 
@@ -90,7 +95,7 @@ class DragonModel():
 
             if self.model_type == 3:
                 f_log = join(CALCULATE_DATA_PATH.GAUSSIAN, raw_name,
-                             raw_name + '.log')
+                             '%s.log' % raw_name)
                 f = open(f_log, 'r')
                 lines = f.readlines()
                 f.close()
@@ -110,4 +115,26 @@ class DragonModel():
                         EHOMO = lines[lineNum - 1].split(' ')[-1]
                         para_dic[raw_name]["EHOMO"] = float(EHOMO)
                         break
+            elif self.model_type == 4:
+                f_out = join(CALCULATE_DATA_PATH.MOPAC, raw_name,
+                             '%.out' % raw_name)
+                f = open(f_out, 'r')
+                lines = f.readlines()
+                f.close()
+
+                regex = '.*ATOM NO\..*TYPE.*CHARGE.*No\.'
+                j = 1
+                for lineNum in range(len(lines)):
+                    if re.match(regex, lines[lineNum]):
+                        while(not re.match('.*DIPOLE.*', lines[lineNum])):
+                            List = lines[lineNum+j].split()
+                            while(1):
+                                try:
+                                    List.remove('')
+                                except:
+                                    break
+                            j = j + 1
+                        para_dic[raw_name]["u"] = lines[lineNum+j+3].split()[-1]
+                        break
+
         return para_dic
