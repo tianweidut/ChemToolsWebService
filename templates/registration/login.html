@@ -16,7 +16,7 @@
       <span class="form-error help-inline">{{form.password.errors}}</span>
     </div>
     <button class="btn btn-primary btn-lg btn-block" type="submit">登入</button>
-    <a class="login-link" href="#">忘记密码?</a>
+    <a class="login-link" href="{% url 'auth_password_reset' %}">忘记密码?</a>
   </form>
 </div>
 </center>
