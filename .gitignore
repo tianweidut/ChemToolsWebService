@@ -11,6 +11,7 @@ celerytest/
 *.rdb
 deploy/*.xls
 .DS_Store
+VENV/*
 
 static/*
 

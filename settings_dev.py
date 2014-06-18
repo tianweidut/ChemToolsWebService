@@ -3,7 +3,7 @@ from settings import *
 
 TEMPLATE_DEBUG = DEBUG = True
 
-PRODUCTION_FLAG = "开发版!"
+PRODUCTION_FLAG = "开发版"
 
 DATABASES = {
     'default': {
