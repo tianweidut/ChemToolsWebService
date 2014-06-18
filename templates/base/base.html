@@ -1,40 +1,52 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-  <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
     <meta charset="utf-8">
-    <title>Chemistry Tools</title>
+    <title>CPTP 化学品预测毒理学平台</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
     {% block meta_description %}
     <meta name="description" content="" />
     {% endblock %}
-    <meta name="keywords" content="" />
-    <meta name="author" content="tianwei" >
 
     <!-- CSS Config. -->
     {% block before_css %}{% endblock  %}
     {% include "meta/html_head_stylesheets.html" %}
+    {% block forestyle %}{% endblock %}
 
     <!-- JavaScript Config. -->
-    {% block forestyle %}{% endblock %}
     {% include "meta/html_head_javascript.html" %}
     {% block forejs %}{% endblock %}
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.min.js"></script>
+    <![endif]-->
   </head>
-    <body >
-      <div class="github-fork-ribbon-wrapper right">
-        <div class="github-fork-ribbon">
-          <a href="/">{{settings.PRODUCTION_FLAG}}</a>
-        </div>
+
+  <body >
+    <div class="github-fork-ribbon-wrapper right">
+      <div class="github-fork-ribbon">
+        <a href="/">{{settings.PRODUCTION_FLAG}}</a>
       </div>
-		  {# navigator bar#}
-		  {% include "widgets/navbar.html" %}
-		
+    </div>
+    
+    <div class="container">
+      {# navigator bar#}
+      {% include "widgets/navbar.html" %}
+
       {# Main-Content Section #}
+
       {% block content %}{% endblock %}
 
       {# Footer Section #}
       {% include "widgets/footer.html" %}
-      {% include "meta/bottom_scripts.html" %}
-      {% block endjs %}{% endblock %}    
-	</body>
+    </div>
+    {% include "meta/bottom_scripts.html" %}
+    {% block endjs %}{% endblock %}    
+  </body>
+
 </html>

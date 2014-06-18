@@ -1,69 +1,44 @@
-#coding: utf-8
-"""
-    Author: tianwei
-    Email: liutianweidlut@gmail.com
-    Description: main settings of Chemistry Tools Site
-    Created: 2012-10-22
-    Modified: 2013-05-13
-"""
+# coding: utf-8
 
 from django.conf.urls import patterns, include, url
-from django.views.generic.simple import direct_to_template
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
+from django.views.generic import TemplateView
 
 admin.autodiscover()
 
-handler500 = 'backend.errorviews.error500'
-handler403 = 'backend.errorviews.error403'
-handler404 = 'backend.errorviews.error404'
+handler500 = 'utils.error_views.error500'
+handler403 = 'utils.error_views.error403'
+handler404 = 'utils.error_views.error404'
 
 urlpatterns = patterns('',
-    url(
-        r'^$',
-        direct_to_template, {'template': 'home/index.html'},
-        name='index'
-    ),
-    url(
-        r'^admin/',
-        include(admin.site.urls),
-    ),
-    url(
-        r'^api/',
-        include('api.urls'),
-    ),
-    url(
-        r'^settings/',
-        include('users.urls'),
-    ),
-    url(
-        r'^accounts/',
-        include('registration.urls'),
-        name="accounts"
-    ),
-    url(
-        '^download/$',
-        direct_to_template, {'template': 'introduction/download.html'},
-        name="download"
-    ),
-    url(
-        r'^features/$',
-        direct_to_template, {'template': 'introduction/features.html'},
-        name="features"
-    ),
-    url(
-        r'',
-        include('gui.urls'),
-    ),
-)
+                       url(
+                           r'^$',
+                           TemplateView.as_view(template_name='index.html'),
+                           name='index'
+                       ),
+                       url(r'^admin/', include(admin.site.urls)),
+                       url(r'', include('users.urls')),
+                       url(r'', include('chemistry.urls')),
+                       url(
+                           '^download/$',
+                           TemplateView.as_view(template_name='download.html'),
+                           name="download"
+                       ),
+                       url(
+                           r'^features/$',
+                           TemplateView.as_view(template_name='features.html'),
+                           name="features"
+                       ),
+                       )
 
 urlpatterns += staticfiles_urlpatterns()
 
 # for develop to serve user-upload content in MEDIA_ROOT
 if settings.DEBUG:
     urlpatterns += patterns('',
-            url(r'media/(?P<path>.*)$',
-                'django.views.static.serve',
-                {'document_root': settings.MEDIA_ROOT}),
-                )
+                            url(r'media/(?P<path>.*)$',
+                                'django.views.static.serve',
+                                {'document_root': settings.MEDIA_ROOT}),
+                            )

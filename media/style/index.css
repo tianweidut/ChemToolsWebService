@@ -284,3 +284,256 @@ li.nav-li{
 li.nav-li-username{
 	float: center;
 }
+
+#head-section {
+  width: 1140px;
+  height: 90px;
+  margin-top: 35px;
+  background: #1abc9c;
+}
+
+#logo {
+  float: left;
+  height: 60px;
+  margin: 15px 45px;
+}
+
+#chem-assist {
+  float: right;
+  height: inherit;
+}
+
+#split-line {
+  background: rgb(114, 113, 113);
+  height: 4px;
+}
+
+#split-line-narrow {
+  background: rgb(201, 201, 202);
+  height: 2px;
+  margin-top:10px;
+  margin-bottom: 10px;
+  clear:both;
+}
+
+ul.large-margin > li{
+  margin-left: 20px;
+}
+
+#homepage-carousel {
+  height: 400px;
+  margin-bottom: 10px;
+}
+
+.carousel-inner {
+  height: 100%;
+}
+
+.section-title {
+  margin: 30px 0 5px 0;
+  font-size: 22px; 
+  font-weight: bold;
+  color: rgb(37, 183, 170);
+}
+
+.bottom-img {
+  float: right;
+  width: 260px;
+  height: 200px;
+  display: inline;
+  margin-left: 10px;
+}
+
+.intro-text {
+  font-size: 16px;
+}
+
+#footer {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 12px;
+} 
+
+.tree {
+    min-height:400px;
+    margin-bottom:20px;
+    margin-left: -50px;
+    margin-top: -12px;
+}
+.tree li {
+    list-style-type:none;
+    font-size: 14px;
+    font-weight: bold;
+    color: rgb(0, 70, 130);
+    margin:0;
+    padding:13px 5px 0 5px;
+    position:relative
+}
+.tree li::before, .tree li::after {
+    content:'';
+    left:-20px;
+    position:absolute;
+    right:auto
+}
+.tree li::before {
+    border-left:1px solid #999;
+    bottom:50px;
+    height:100%;
+    top:0;
+    width:1px
+    color: rgb(0, 70, 130);
+}
+.tree li::after {
+    border-top:1px solid #999;
+    height:20px;
+    top:25px;
+    width:25px
+}
+.tree li span {
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    display:inline-block;
+    padding:3px 8px;
+    text-decoration:none
+}
+
+.tree li.parent_li>span {
+    cursor:pointer
+}
+.tree>ul>li::before, .tree>ul>li::after {
+    border:0
+}
+.tree li:last-child::before {
+    height:30px
+}
+
+.checkbox{
+  margin-bottom: 1px;
+  line-height: 8px;
+}
+
+.checkbox >span.icons{
+  line-height: 1px;
+}
+
+.pagination {
+  margin-top: -1px;
+}
+
+.login-section {
+  width: 400px;
+  margin-bottom: 40px;
+}
+
+.form-group-large {
+  margin-bottom: 20px;
+  font-size: 17px;
+}
+
+.login-field {
+  height: 42px;
+}
+
+ul.tasklist{
+  display:block;
+  list-style-type: disc;
+  list-style:none;
+}
+
+ul.tasklist > li {
+  margin-left: -28px;
+}
+
+
+p.task-introduction{
+  font-size: 14px;
+  margin-left: 56px;
+}
+
+p.task-date{
+  font-size: 11px;
+  margin-left: 56px;
+  color: #999999;
+}
+
+ul.model-label{
+  margin-left: 10px;
+  list-style-type: disc;
+  list-style:none;
+}
+
+ul.model-label > span{
+  margin-left: 8px;
+}
+
+div.task-progress-bar{
+	margin-left: 56px;
+	margin-top: 10px;
+	margin-right: 5px;
+}
+
+p.progress-value{
+	margin-top: 10px;
+	margin-left: 5px;
+	font-weight: bold;
+}
+
+
+div.modal-fixed-another{
+	margin-top:75px;
+}
+
+label.settings-label{
+	font-weight:bold;
+}
+
+#result_tabs{
+  margin-left: 80px;
+}
+
+span.form-error{
+  color:red;
+}
+
+button.calculated-btn{
+  width: 500px;
+  height: 50px;
+  font-size: 14px;
+	font-weight:bold;
+}
+
+button.show-btn{
+  width: 200px;
+  height: 50px;
+  font-size: 14px;
+	font-weight:bold;
+}
+
+
+#search-loading{
+  width:14px;
+  height:14px;
+  text-align: center;
+}
+
+button#upload_update {
+  width:500px;
+  height:50px;
+}
+table.table-search tr td a.btn{
+  display:none;
+
+}
+table.table-search tr:hover td a.btn{
+  display:inline-block;
+}
+
+#search-no-result {
+  font-size: 18px;
+  color: #e74c3c;
+}
+
+.search-select {
+  font-size: 12px;
+  padding: 3px 15px;
+}

@@ -1,117 +1,115 @@
-$(document).ready(function(){
-  $('#response_type_copy > p').hide();
-  $('[rel="modified_choice"]').hide();
-  $('[rel=label-choice]').hide();
-  $("#mol_file_string_copy").hide();
-
-  //search results
-  $('#search_result_panel').hide();
-  $('#valid_results').hide();
-  $('#unvalid_results').hide();
-
+$(function(){
+  $('#search-result').hide();
+  $('#search-no-result').hide();
   $('#search-loading').hide();
-  $("div#commit_content").hide();
   $("#calculate-submit-info").hide();
 });
 
-
-$(function(){
-  $("#commit_email").change(function(){
-    Calculate.email = $(this).val();
-  });
-  $("#commit_name").change(function(){
-    Calculate.task_name = $(this).val();
-  });
-  $("#commit_notes").change(function(){
-    Calculate.notes = $(this).val();
-  });
-});
-
 //model choice
-$(function(){
-  $("[rel='button-switch']").click(function(){
-    var checked="#label_id_" + $(this).attr("model");
- 
-    if($(checked).attr("visible") === "false"){
-        $(this).text("undo this choice").toggleClass("btn-danger");
-        $(checked).attr("visible", "true").show();
-    }else{
-        $(this).text("Choice This Model!").toggleClass("btn-danger");
-        $(checked).attr("visible", "false").hide();
-    }
-  });
-
-  $("#model-choice-all").click(function(){
-    $("[rel=button-switch]").each(function(){
-      var checked="#label_id_" + $(this).attr("model");
-      $(this).text("undo this choice").addClass("btn-danger");
-      $(checked).attr("visible", "true").show();
-    });
-  });
-
-  $("#model-cancel-all").click(function(){
-    $("[rel=button-switch]").each(function(){
-      var checked="#label_id_" + $(this).attr("model");
-      $(this).text("Choice This Model!").removeClass("btn-danger");
-      $(checked).attr("visible", "false").hide();
-    });
-  });
-});
-
-//chem structure draw
-$(function(){
-    var editor = chemwriter.loadEditor('editor', {
-			    enableClipboard: true,
-			    appletPath:      "{{ STATIC_URL }}chemwriter/chemwriter-util.jar"
-		});
-    
-    $('#draw_btn').click(function(){
-      Calculate.draw_mol = editor.getMolfile();
-      $(this).text("Added!").addClass("btn-danger");
-    });
-});
-
-
-$("#upload_update").click(function(){
-  Calculate.files = [];
-
-  $("#files_table tr").each(function(trindex, tritem){
-    $(tritem).find("td").each(function(tdindex, tditem){
-      if($(tditem).attr("class") === "name")
-        {
-          Calculate.files[trindex] = $(tditem).children().attr("fid"); 
+$(function () {
+    $('.model-args').hide(); 
+    $('.tree li:has(ul)').addClass('parent_li').find(' > span');
+    $('.tree li.parent_li > span').on('click', function (e) {
+        var children = $(this).parent('li.parent_li').find(' > ul > li');
+        if (children.is(":visible")) {
+            children.hide();
+            $(this).find(' > i').addClass('glyphicon-plus-sign').removeClass('glyphicon-minus-sign');
+        } else {
+            children.show();
+            $(this).find(' > i').addClass('glyphicon-minus-sign').removeClass('glyphicon-plus-sign');
         }
+        e.stopPropagation();
     });
-  }); 
-  
-  $(this).text("Files Added!")
-         .toggleClass("btn-danger").toggleClass("btn-info");
 
+    $('.checkbox').click(function(){
+      var model_args = $('#' + $(this).attr('model') + '_args'); 
+      if($(this).find('input[type=checkbox]').is(':checked')){
+        model_args.hide();
+      }else{
+        model_args.show();
+      }
+    });
 });
 
 function update_model(){
   Calculate.models = [];
-  $("[rel=button-switch]").each(function(){
+  $(".checkbox").each(function(){
     var model = $(this).attr("model");
-    var checked="#label_id_" + model; 
-    var temp = "#temperature_" + model;
-    if($(checked).attr("visible") === "true"){
-      Calculate.models.push({'model':model, 'temperature':$(temp).val()});
-    }
+    var temperature = "#temperature_" + model;
+
+    if($(this).find('input[type=checkbox]').is(':checked')){
+      var data = {'model':model,
+                 'temperature':$(temperature).val()}; 
+      Calculate.models.push(data);
+    }    
   });
 }
 
-$('#commit-saved-btn').click(function(){
+//chem structure draw
+$(function(){
+  $('#draw_btn').click(function(){
+    var chem_iframe = $("#chemwriter_iframe");
+    chemwriter_iframe.window.get_chem_draw_content();
+    Calculate.draw_mol_data = chem_iframe.contents().find('#data').html();
+    console.log(Calculate.draw_mol);
+    $(this).text("已添加").addClass("btn-danger");
+  });
+
+  $("#upload_update").click(function(){
+    Calculate.files = [];
+
+    $("#files_table tr").each(function(trindex, tritem){
+      $(tritem).find("td").each(function(tdindex, tditem){
+        if($(tditem).attr("class") === "name")
+          {
+            Calculate.files[trindex] = $(tditem).children().attr("fid"); 
+          }
+      });
+    }); 
+  
+    console.log(Calculate.files);
+    $(this).text("文件添加完毕!")
+           .toggleClass("btn-danger").toggleClass("btn-info");
+
+  });
+});
+
+
+$('#calculate-submit-btn').click(function(){
+  Calculate.task_name = $("#task_name").val();
+  Calculate.task_notes = $("#task_notes").val();
   update_model();
+
+  if (!(Calculate.smile || Calculate.draw_mol_data || Calculate.files)){
+      $("#calculate-submit-info").show().text("至少选择一种输入方式!");
+      return;
+  }
+
+  if (Calculate.task_name.length == 0){
+      $("#calculate-submit-info").show().text("请输入计算任务名称!");
+      return;
+  }
+
+  if (Calculate.task_notes == 0){
+      $("#calculate-submit-info").show().text("请输入计算任务描述!");
+      return;
+  }
+
+  if (Calculate.models.length == 0){
+      $("#calculate-submit-info").show().text("请至少选择一种计算模型!");
+      return;
+  }
+
   var data = {
           "smile":Calculate.smile,
-          "draw":Calculate.draw_mol,
-          "notes":Calculate.notes,
-          "name":Calculate.task_name,
-          "emails":Calculate.email,
-          "files":JSON.stringify(Calculate.files),
+          "draw_mol_data":Calculate.draw_mol_data,
+          "task_notes":Calculate.task_notes,
+          "task_name":Calculate.task_name,
+          "files_id_list":JSON.stringify(Calculate.files),
           "models":JSON.stringify(Calculate.models),
          };
+
+  console.log(data);
 
   var url = '/api/task-submit/';
 
@@ -124,13 +122,12 @@ $('#commit-saved-btn').click(function(){
   });
 });
 
-$("#smile-direct").click(function(){
-  $(this).addClass("btn-danger");
-  Calculate.smile = $("#query_input").val(); 
-});
+$('#search-btn').click(function(){
+  var data = {"cas":$("#query_input_cas").val(),
+              "smile":$("#query_input_smile").val(),
+              "common_name_en":$("#query_input_common_name_en").val(),
+              "common_name_ch":$("#query_input_common_name_ch").val()}
 
-$('#search_varify_btn').click(function(){
-  var data = {"query":$("#query_input").val(),};
   var url = "/api/smile-search/";
   
   $('#search-loading').show();
@@ -138,17 +135,18 @@ $('#search_varify_btn').click(function(){
   $.post(url, data).done(function(content){
     var element = "#search-smile-content";
     $("#search-loading").hide();
-    $("#search_result_panel").show();
 
     if(content.length !== 0){
+      $("#search-result").show();
+      $("#search-no-result").hide();
       $(element).find("tbody").html("");
       $.each(content, function(k,v){
         var row = "<tr class='search-content'><td>"+ v.cas +"</td><td>"+
                   v.formula + "</td><td>" +
                   v.commonname + "</td><td class='smile'>" +
-                  v.smile + "</td><td>" +
+                  v.smiles + "</td><td>" +
                   v.alogp + "</td>"+
-                  "<td><a class='btn btn-primary search-select'>Select</a></td></tr>";
+                  "<td><a class='btn btn-primary search-select'>选择</a></td></tr>";
         $(element).find("tbody").append(row);
       });
       
@@ -157,74 +155,17 @@ $('#search_varify_btn').click(function(){
         var smile = $(td).children(".smile").text();
 
         Calculate.smile = smile;
+        console.log(smile);
 
-        $(".search-content").removeClass("alert alert-error");
-        $(td).addClass("alert alert-error");
-        $("#smile-direct").removeClass("btn-danger");
+        $(".search-content").removeClass("danger");
+        $(".search-select").text('选择');
+        $(td).addClass("danger");
+        $(this).text('已选择');
+
       });
     }else{
-      $(element).text("No matching results!");
+      $("#search-result").hide();
+      $("#search-no-result").show();
     }
   });
 });
-
-$("#commit-show-btn").click(function(){
-  if($(this).attr("visible")==="false")
-    {
-      $("div#commit_content").hide();
-      $(this).text("Show")
-             .toggleClass("btn-primary")
-             .toggleClass("btn-info")
-             .attr("visible","true"); 
-    }
-  else
-    {
-      update_model();
-      update_pre();
-      $("div#commit_content").show();
-      $(this).text("Hide")
-             .toggleClass("btn-primary")
-             .toggleClass("btn-info")
-             .attr("visible","false"); 
-    }
-});
-
-function update_info(){
-  Calculate.query = $("#query_input").val();
-}
-
-function update_pre(){
-  $("#calculate-pre").html("");
-  var row = "<tr><td colspan='2'><p class='alert'>Inputs</p></td></tr>";
-
-  if(Calculate.query){
-    row += "<tr><td>Query</td><td>"+
-           Calculate.query+"</td></tr>";
-    row += "<tr><td>Smiles</td><td>"+
-           Calculate.smiles+"</td></tr>";
-  }
-
-  if(Calculate.draw_mol){
-    row += "<tr><td>Chem Structure</td>"+
-           "<td>Draw Structure has been added!</td></tr>";
-  }
-
-  if(Calculate.files){
-    row += "<tr><td>Upload Files</td>"+
-           "<td>Upload "+ Calculate.files.length +" mol files</td></tr>";
-  }
-
-  row += "<tr><td colspan='2'><p class='alert'>Models</p></td></tr>"; 
-  if(Calculate.models){
-    $.each(Calculate.models, function(k,v){
-      row += "<tr><td>"+v.model+"</td><td>"+v.temperature+"(temperature)</td></tr>";  
-    });
-  }
-
-  row += "<tr><td colspan='2'><p class='alert'>Meta</p></td></tr>"; 
-  row += "<tr><td>Task Name</td><td>" +Calculate.task_name+"</td></tr>";
-  row += "<tr><td>Notify Email</td><td>"+Calculate.email+"</td></tr>";
-  row += "<tr><td>Notes</td><td>"+Calculate.notes+"</td></tr>";
-
-  $("#calculate-pre").append(row);
-}

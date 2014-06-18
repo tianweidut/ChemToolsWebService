@@ -1,15 +1,9 @@
-"""
-    Author:tianwei
-    Email: liutianweidlut@gmail.com
-    Desc: settings context processor for templates, 
-          then we can use 
-"""
-
+#coding: utf-8
 from django.conf import settings
 
-from users.models import UserGrade, UserProfile
-from calcore.models import *
-from const import STATUS_SUCCESS
+from users.models import UserProfile
+from chemistry import STATUS_SUCCESS
+from chemistry.models import SuiteTask
 
 all_required = ("PRODUCTION_FLAG",)
 
@@ -51,7 +45,6 @@ def userinfo_context(request):
                                              status__category=STATUS_WORKING).count()
         context["data_context"] = {}
         context["data_context"]["query_num"] = query_num
-        context["data_context"]["remain_num"] = profile.user_grade.total_num - finished_num
 
     except:
         pass

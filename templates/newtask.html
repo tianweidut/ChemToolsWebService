@@ -1,0 +1,240 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-4">
+    <div class="tree">
+      <ul>
+        <li>
+          <span style="font-size:18px;"></span>
+          <a class="btn btn-primary" style="width:248px">模型选择</a>
+          <ul>
+
+            <li>
+              <span><i class='glyphicon glyphicon-minus-sign'></i> 理化属性</span>
+              <ul>
+                <li>
+                  <label class='checkbox' for='check_model_koa' model='koa'>
+                    <input type="checkbox" value="" id="check_model_koa" data-toggle="checkbox">
+                    正辛醇/空气分配系(KOA)
+                  </label>
+                  <ul class="model-args"  id='koa_args'>
+                    <li>
+                      <div class="form-group">
+                        <input id="temperature_koa" type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <label class='checkbox' for='check_model_pl'  model='pl'>
+                    <input type="checkbox" value="" id="check_model_pl" data-toggle="checkbox">
+                    过冷液体蒸气压(PL)
+                  </label>
+                  <ul class="model-args"  id='pl_args'>
+                    <li>
+                      <div class="form-group">
+                        <input id="temperature_pl" type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            
+            <li>
+              <span><i class='glyphicon glyphicon-minus-sign'></i> 迁移转化</span>
+              <ul>
+                <li>
+                  <label class='checkbox' for='check_model_bcf'  model='bcf'>
+                    <input type="checkbox" value="" id="check_model_bcf" data-toggle="checkbox">
+                    生物富集因子(BCF)
+                  </label>
+                  <ul class="model-args"  id='bcf_args'>
+                    <li>
+                      <div class="form-group">
+                        <input id="temperature_bcf" type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <label class='checkbox' for='check_model_koc'  model='koc'>
+                    <input type="checkbox" value="" id="check_model_koc" data-toggle="checkbox">
+                    土壤/沉积物吸附系数(KOC)
+                  </label>
+                  <ul class="model-args"  id='koc_args'>
+                    <li>
+                      <div class="form-group">
+                        <input id="temperature_koc" type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <label class='checkbox' for='check_model_bdg'  model='bdg'>
+                    <input type="checkbox" value="" id="check_model_bdg" data-toggle="checkbox">
+                    生物降解性(BDG)
+                  </label>
+                  <ul class="model-args" id='bdg_args'>
+                    <li>
+                      <div class="form-group">
+                        <input id="temperature_bdg" type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <label class='checkbox' for='check_model_koh'  model='koh'>
+                    <input type="checkbox" value="" id="check_model_koh" data-toggle="checkbox">
+                    气相羟基自由基反应速率常数(KOH)
+                  </label>
+                  <ul class="model-args"  id='koh_args'>
+                    <li>
+                      <div class="form-group">
+                        <input id="temperature_koh" type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <label class='checkbox' for='check_model_2e'  model='2e'>
+                    <input type="checkbox" value="" id="check_model_2e" data-toggle="checkbox">
+                    液相羟基自由基反应速率常数
+                  </label>
+                  <ul class="model-args"  id='2e_args'>
+                    <li>
+                      <div class="form-group">
+                        <input id="temperature_2e" type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <label class='checkbox' for='check_model_2f'  model='2f'>
+                    <input type="checkbox" value="" id="check_model_2f" data-toggle="checkbox">
+                    气相臭氧反应速率常数
+                  </label>
+                  <ul class="model-args"  id='2f_args'>
+                    <li>
+                      <div class="form-group">
+                        <input id="temperature_2f" type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+
+            <li>
+              <span><i class='glyphicon glyphicon-minus-sign'></i> 生态毒性</span>
+              <ul>
+                <li>
+                  <label class='checkbox' for='check_model_3a' model='3a'>
+                    <input type="checkbox" value="" id="check_model_3a" data-toggle="checkbox">
+                    鱼类急性毒性
+                  </label>
+                  <ul class="model-args" id='3a_args'>
+                    <li>
+                      <div class="form-group">
+                        <input id="temperature_3a" type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+
+            <li>
+              <span><i class='glyphicon glyphicon-minus-sign'></i> 健康毒性</span>
+              <ul>
+                <li>
+                  <label class='checkbox' for='check_model_rp'  model='rp'>
+                    <input type="checkbox" value="" id="check_model_rp" data-toggle="checkbox">
+                    甲状腺素干扰效应(RP)
+                  </label>
+                  <ul class="model-args" id='rp_args'>
+                    <li>
+                      <div class="form-group">
+                        <input id="temperature_rp" type="text" placeholder="温度(摄氏度)" class="form-control" style='width:60%'>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="tabbable">
+      <ul class="nav nav-pills tab-fix">
+        <li class="active" style="width:33%"><a href="#info-input-tab1" id="tab1" data-toggle="tab" class="btn btn-primary">模型搜索</a></li>
+        <li style="width:33%"><a href="#info-input-tab2" data-toggle="tab" class="btn btn-primary">分子绘图</a></li>
+        <li style="width:33%"><a href="#info-input-tab3" data-toggle="tab" class="btn btn-primary">文件上传</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="info-input-tab1">
+          {% include "widgets/info-search.html"%}
+        </div>
+        <div class="tab-pane" id="info-input-tab2">
+          {% include "widgets/chem-draw.html" %}
+        </div>
+        <div class="tab-pane " id="info-input-tab3">
+          {% include "widgets/file-upload.html" %}
+        </div>
+      </div><!--end table content-->
+    </div><!--end tabbable-->
+    <div id='split-line-narrow'></div>
+    <div>
+      <div class="form-group" style="margin-bottom:10px">
+        <label for="task_name">任务名称(必填)</label>
+        <input type="text" class="form-control" id="task_name">
+      </div>
+      <div class="form-group">
+        <label for="task_desc">任务描述(必填)</label>
+        <textarea class="form-control" id="task_notes" style="height:100px"></textarea>
+      </div>
+    </div>
+    <div id='split-line-narrow'></div>
+    <div>
+      <a href='#' class="btn btn-danger pull-right" style="margin-left:10px" id="calculate-submit-btn">提交计算</a>
+      <div id="calculate-submit-info" style="font-size:18px; color: #e74c3c"></div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block endjs%}
+  <!--external scripts for files upload-->
+  <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/jquery.ui.widget.js"></script>
+  <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/tmpl.min.js"></script>
+  <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/load-image.min.js"></script>
+  <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/canvas-to-blob.min.js"></script>
+  <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/jquery.iframe-transport.js"></script>
+  <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/jquery.fileupload.js"></script>
+  <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/jquery.fileupload-fp.js"></script>
+  <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/jquery.fileupload-ui.js"></script>
+  <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/locale.js"></script>
+  <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/main.js"></script>
+  <script type='text/javascript' src="{{ STATIC_URL }}js/filesupload/csrf.js"></script>
+
+  <!--JS for calculate sumbit content update and Ajax opteration-->
+  <script>
+    var Calculate = {}; 
+
+    Calculate.smile = "";
+    Calculate.draw_mol_data = "";
+    Calculate.files_id_list = [];
+
+    Calculate.models = {};
+
+    Calculate.task_name = "";
+    Calculate.task_notes = "";
+  </script>
+  <script type='text/javascript' src="{{STATIC_URL}}js/calculate.js"></script>
+{% endblock %}

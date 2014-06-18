@@ -1,24 +1,23 @@
 {%extends "base/base_results.html"%}
 
-
 {%block input-details%}
-<div class="span4">
+<div class="col-xs-4">
   <fieldset>
-    <legend>Calculate Source</legend>
-      <div class="alert-info">Drawing by your hands!</div> 
+    <legend>计算输入来源</legend>
+      <div class="alert-info">分子结构绘制</div> 
   </fieldset>
   <br/>
   <fieldset>
-    <legend>Specification</legend>
+    <legend>说明</legend>
     <blockquote>This file is created by Draw Engineer!</blockquote>
   </fieldset>
 </div><!--end left panel-->
-<div class="span3">
+<div class="col-xs-3">
   <fieldset>
-    <legend>Mol Files</legend>
+    <legend>mol 文件</legend>
     <table class="table table-hover">
       <thead>
-        <tr><td>Item</td><td>Value</td></tr>
+        <tr><td>类别</td><td>结果</td></tr>
       </thead>
       <tbody>
         <tr>
@@ -26,7 +25,7 @@
           <td>{{singletask.file_obj.smiles}}</td>
         </tr>
         <tr>
-          <td>Type</td>
+          <td>类型</td>
           <td>{{singletask.file_obj.file_type}}</td>
         </tr>
         <tr>

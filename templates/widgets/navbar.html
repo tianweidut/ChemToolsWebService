@@ -1,56 +1,36 @@
-    <!-- NAVBAR
-    ================================================== -->
-    <div class="navbar-wrapper">
-      <!-- Wrap the .navbar in .container to center it within the absolutely positioned parent. -->
-      <div class="container">
+<!--logo section-->
+<div id='head-section'>
+  <img src="{{STATIC_URL}}/images/logo.png" id='logo'>
+  <img src="{{STATIC_URL}}/images/chem-assist.png" id='chem-assist'>
+</div>
 
-        <div class="navbar navbar-inverse">
-          <div class="navbar-inner">
-            <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-              <span class="icon-bar"></span>
-            </a>
-            <!-- <a class="brand" href="/">Chemistry Calculate</a>-->
-            <a class="brand" href="/" class="self_titlefont">chemical predictive toxicology platform</a>
-            <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
-            <div class="nav-collapse collapse">
-              <ul class="nav">
-                <li class="active"><a href="/" class="self_titlefont">Home</a></li>
-                <li><a href="/features" class="self_titlefont">About</a></li>
-              </ul>
-      		  <ul class="nav pull-right  ">
-      		  	{% if request.user.is_authenticated %}
-      		  		<li class="nav-li"><a href="/settings/profile" ><i class="icon-user icon-white"> </i></a></li>
-      		  		<li class="nav-li-username"><a href="/settings/profile">{{ request.user.username }}</a></li>
-      		  		<li class="nav-li">
-      		  		<a href="/newtask" id="newtask" rel="tooltip" data-placement="bottom" 
-      		  			data-original-title = "new calculate task">
-      		  				<i class="icon-plus-sign icon-white"> </i></a></li>
-      		  		<li class="nav-li"><a href="/history" id="history" rel="tooltip" data-placement="bottom" 
-      		  			data-original-title = "Tasks history">
-      		  				<i class="i icon-th-list icon-white"> </i></a></li>
-      		  		<li class="nav-li">
-      		  		<a href="/" id="bootcamp" rel="tooltip" data-placement="bottom" 
-      		  			data-original-title = "Data statistics for calculate task">
-      		  				<i class="icon-eye-open icon-white"> </i></a></li>
-      		  		<li class="nav-li"><a href="/accounts/logout" rel="tooltip" data-placement="bottom" 
-      		  			data-original-title = "Logout">
-      		  			<i class="icon-share icon-white"> </i></a></li>
-      		  	{% else %}
-      		  		{% if request.path != "/" %}
-      		  		<li ><a href="/accounts/register" class="self_titlefont" >Join us</a></li>
-      		  		{% endif %}
-      		  		<li ><a href="/accounts/login" class="self_titlefont">Sign in</a></li>
-      		  	{% endif %}
-      		  	
-      		  </ul>
-            </div><!--/.nav-collapse -->
-          </div><!-- /.navbar-inner -->
-        </div><!-- /.navbar -->
+<div id='split-line'></div>
 
-      </div> <!-- /.container -->
-    </div><!-- /.navbar-wrapper -->
-    
-
-
-
+<div class='navbar navbar-embossed' role='navigation'>
+  <div class='collapse navbar-collapse' id='nav-bar-section'>
+    <ul class='nav navbar-nav navbar-left large-margin'>
+      <li><a href='/'>首页</a></li>
+      <li class='dropdown'>
+        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>
+          预测计算 <b class="caret"></b>
+        </a>
+        <span class="dropdown-arrow"></span>
+        <ul class='dropdown-menu'>
+          <li><a href='/newtask'>新建计算</a></li>
+          <li><a href='/history'>任务列表</a></li>
+        </ul>
+      </li>
+      <li><a href='/'>平台愿景</a></li>
+      <li><a href='/'>软件帮助</a></li>
+    </ul>
+    <ul class='nav navbar-nav navbar-right'>
+      {% if request.user.is_authenticated %}
+      <li><a href='/settings/profile/'>{{ request.user.username }}</a></li>
+      <li><a href='/accounts/logout/'>离开</a></li>
+      {% else %}
+        <li><a href='/accounts/login/'>登陆</a></li>
+        <li><a href='/accounts/register/'>注册</a></li>
+      {% endif %}
+    </ul>
+  </div>
+</div>

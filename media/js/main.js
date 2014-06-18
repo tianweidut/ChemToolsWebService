@@ -1,37 +1,8 @@
-/**
- * @author tianwei
- */
-
-$(function(){
-  $("[rel=tooltip]").tooltip();
-  $('#myCarousel').carousel();
-});
-
-
-$(function () {
-  $('#MyWizard').on('changed', function(e, data) {
-		console.log('changed');
-	});
-	$('#MyWizard').on('finished', function(e, data) {
-		console.log('finished');
-	});
-	$('#btnWizardPrev').on('click', function() {
-		$('#MyWizard').wizard('previous');
-	});
-	$('#btnWizardNext').on('click', function() {
-		$('#MyWizard').wizard('next','foo');
-	});
-	$('#btnWizardStep').on('click', function() {
-		var item = $('#MyWizard').wizard('selectedItem');
-	});
-});
-
-
 $(function(){ 
-  $('ul li a.filter').click(
+  $('a.filter').click(
     function(){
-      $("ul li a.filter").parent().removeClass('active');
-      $(this).parent().attr('class','active');
+      $("a.filter").removeClass('btn-danger');
+      $(this).addClass('btn-danger');
       
       var success_queue = 'ul.tasklist > li.success';
       var failed_queue = 'ul.tasklist > li.failed';

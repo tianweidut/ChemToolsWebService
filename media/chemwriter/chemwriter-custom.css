@@ -4,24 +4,34 @@
 */
 
 .chemwriter .editor {
-  width: 900px; height: 400px;
+  width: 750px; height: 400px;
   position: relative;
-  background-color: #aaaaaa;
+  background-color: #ECF0F1;
   font-family: Verdana, Arial, sans-serif;
   cursor: default;
-  border: 3px solid #aaaaaa;
+  border: 3px solid #ECF0F1;
   border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius:5px;
+  display:blocked;
 }
 .chemwriter .painter {
   width: 200px; height: 200px;
   position: relative;
-  border: 1px solid #aaaaaa;
+  border: 1px solid #ECF0F1;
   border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
+  display:blocked;
+}
+
+.chemwriter .editor .dock {
+  cursor: default;
+  background-color: #ECF0F1;
+  text-align: left;
+  border-left: 1px solid #ECF0F1;
+  padding-left: 2px;
+  padding-top: 2px;
 }
 
 div.draw-container{
-	width: auto; 
-	margin: 0 auto 1em auto; 
-  text-align:center;
-  float:center;
+  width: 100%;
+  margin: 10px 0;
+  display:blocked;
 }

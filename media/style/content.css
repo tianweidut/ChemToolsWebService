@@ -296,44 +296,6 @@ label.model-choice{
    font-weight:bold;
 }
 
-ul.tasklist{
-	display:block;
-	list-style-type: disc;
-	list-style:none;
-}
-
-p.task-introduction{
-	font-size: 14px;
-	margin-left: 56px;
-}
-
-p.task-date{
-	font-size: 11px;
-	margin-left: 56px;
-	color: #999999;
-}
-
-ul.model-label{
-	margin-left: 56px;
-	list-style-type: disc;
-	list-style:none;
-}
-ul.model-label > span{
-	margin-left: 8px;
-}
-
-div.task-progress-bar{
-	margin-left: 56px;
-	margin-top: 10px;
-	margin-right: 5px;
-}
-
-p.progress-value{
-	margin-top: 10px;
-	margin-left: 5px;
-	font-weight: bold;
-}
-
 div.container-center{
 	text-align: center;
 }
@@ -344,53 +306,4 @@ div.modal-fixed{
 	left:0%;
 	position: relative;
 	z-index: 0;
-}
-
-div.modal-fixed-another{
-	margin-top:75px;
-}
-
-label.settings-label{
-	font-weight:bold;
-}
-
-#result_tabs{
-  margin-left: 80px;
-}
-
-span.form-error{
-  color:red;
-}
-
-button.calculated-btn{
-  width: 500px;
-  height: 50px;
-  font-size: 14px;
-	font-weight:bold;
-}
-
-button.show-btn{
-  width: 200px;
-  height: 50px;
-  font-size: 14px;
-	font-weight:bold;
-}
-
-
-#search-loading{
-  width:60px;
-  height:60px;
-  text-align: center;
-}
-
-button#upload_update {
-  width:500px;
-  height:50px;
-}
-table.table-search tr td a.btn{
-  display:none;
-
-}
-table.table-search tr:hover td a.btn{
-  display:inline-block;
 }

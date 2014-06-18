@@ -1,4 +1,3 @@
-<!--head-->
 {%if singletask.file_obj.file_source.category == "smiles"%}
   {%include "widgets/result_smiles.html"%}
 {%elif singletask.file_obj.file_source.category == "drawing"%}
@@ -9,18 +8,15 @@
   {%include "widgets/result_other.html"%}
 {%endif%} 
 
-<!--Model Info-->
 <div class="container-fluid ">
   <fieldset>
-    <legend>Model Choice</legend>
+    <legend>计算模型</legend>
 <table class="table table-hover ">
   <thead>
     <tr>
-      <td>Model</td>
-      <td>Category</td>
-      <td>Temperature</td>
-      <td>Humidity</td>
-      <td>Others</td>
+      <td>模型名称</td>
+      <td>模型类别</td>
+      <td>温度参数</td>
     </tr>
   </thead>
   <tbody>
@@ -28,22 +24,19 @@
       <td>{{singletask.model|upper}}</td>
       <td>{{singletask.model.origin_type}}</td>
       <td>{{singletask.temperature}}</td>
-      <td>{{singletask.humidity}}</td>
-      <td>{{singletask.others}}</td>
     </tr>
   </tbody>
 </table><!--end table-->
 </fieldset>  
 </div>
-<br/>
 <div class="container-fluid">
   <fieldset>
-    <legend>Results</legend>
+    <legend>计算结果</legend>
     <table class="table table-hover">
       <thead>
         <tr>
-          <td>Calculate Value</td>
-          <td>Calculate Record</td>
+          <td>计算结果</td>
+          <td>计算状态</td>
         </tr>
       </thead>
       <tbody>
@@ -55,10 +48,9 @@
     </table>
   </fieldset>
 </div>
-<br/>
 <div class="container-fluid">
   <fieldset>
-    <legend>Notes</legend>
+    <legend>备注</legend>
     <blockquote id="commit_notes_copy">{{singletask.sid.notes}}</blockquote>
     </table>
   </fieldset>  

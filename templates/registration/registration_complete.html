@@ -1,11 +1,8 @@
 {% extends "base/base.html" %}
 {% load i18n %}
 
-
 {% block content %}
-<link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}style/accounts_form.css" >
-
-<div class="container form-container">
-<p>{% trans "You are now registered. Activation email sent." %}</p>
+<div class="alert alert-success">
+  <p>{% trans "恭喜你完成注册，请到邮箱激活，谢谢" %}</p>
 </div>
 {% endblock %}

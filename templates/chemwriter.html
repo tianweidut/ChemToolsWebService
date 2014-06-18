@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ChemWriter</title>
+        <link href="{{STATIC_URL}}flat-ui/bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}chemwriter/chemwriter.css" >
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ STATIC_URL }}chemwriter/chemwriter-custom.css" >
+
+        <script type='text/javascript' src="{{STATIC_URL}}flat-ui/js/jquery-1.8.3.min.js"></script>
+        <script src="{{ STATIC_URL }}chemwriter/chemwriter.js"></script>
+        <script>
+          var editor;
+          $(function(){
+            editor = chemwriter.loadEditor('editor', {
+              enableClipboard: true,
+              appletPath:      "{{ STATIC_URL }}chemwriter/chemwriter-util.jar"
+              });
+          }); 
+            function get_chem_draw_content(){
+              var draw_mol = editor.getMolfile();
+              $('#data').text(draw_mol);
+            }
+        </script>
+    </head>
+    
+    <body>
+      <div id="editor" style="width:750px"></div>
+      <div id="data" hidden></div>
+    </body>
+</html>

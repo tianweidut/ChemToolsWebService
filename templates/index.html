@@ -1,0 +1,61 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+<div id='homepage-carousel' class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+    <li data-target="#homepage-carousel" data-slide-to="0" class="active"></li>
+    <li data-target="#homepage-carousel" data-slide-to="1"></li>
+    <li data-target="#homepage-carousel" data-slide-to="2"></li>
+    <li data-target="#homepage-carousel" data-slide-to="3"></li>
+  </ol>
+
+  <div class="carousel-inner">
+    <div class="item active">
+      <img class='carousel-img' src="{{STATIC_URL}}/images/carousel-image1.png">
+    </div>
+    <div class="item">
+      <img class='carousel-img' src="{{STATIC_URL}}/images/carousel-image2.png">
+    </div>
+    <div class="item">
+      <img class='carousel-img' src="{{STATIC_URL}}/images/carousel-image3.png">
+    </div>
+    <div class="item">
+      <img class='carousel-img' src="{{STATIC_URL}}/images/carousel-image4.png">
+    </div>
+  </div>
+
+  <!--TODO: 使用设计提供的prev和next按钮-->
+  <!--a class="left" href="#homepage-carousel" data-slide="prev">
+    <span class="fui-arrow-left"></span>
+  </a>
+  <a class="right" href="#homepage-carousel" data-slide="next">
+    <span class="fui-arrow-right"></span>
+  </a-->
+</div>
+
+<p class='section-title'>
+  <span class="fui-radio-unchecked"></span>
+   &nbsp;&nbsp; 关于CPTP
+</p>
+
+<div id='split-line-narrow'></div>
+
+<div class="row" style='margin-bottom: 40px'>
+  <div class="col-md-6">
+    <p class='intro-text'>定量构效关系（QSAR）是预测（计算）毒理学模型的一种类型。
+      2007年经济合作与发展组织(OECD)发布了QSAR模型的构建、验证和应用方面的系列性导则。
+      该预测系统集成的QSAR模型是由大连理工大学预测毒理学研究团队构建，所有模型都依据OECD导则进行了验证和表征。
+      用户可以通过该系统高通量地预测有机化学品的物理化学性质、环境行为参数和毒理学参数。
+      基于这些参数，用户可以有效的评价化学品的环境暴露、危害性和风险，
+      快速筛选出具有高度关注特性如环境持久性、生物蓄积性和毒性的化学品。
+    </p>
+  </div>
+  <div class="col-md-6">
+    <img class='bottom-img' src="{{STATIC_URL}}/images/homepage-bottom2.png">
+    <img class='bottom-img' src="{{STATIC_URL}}/images/homepage-bottom1.png">
+  </div>
+</div>
+
+<div id='split-line-narrow'></div>
+
+{% endblock %}

@@ -1,14 +1,8 @@
 #!/usr/bin/env python
-
-from django.core.management import execute_manager
-
-try:
-    import settings_dev
-except ImportError, err:
-    import sys
-    sys.stderr.write("Manage import Error\n")
-    sys.stderr.write(str(err)+"\n")
-    sys.exit(1)
+import os
+import sys
 
 if __name__ == "__main__":
-    execute_manager(settings_dev)
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings_dev")
+    from django.core.management import execute_from_command_line
+    execute_from_command_line(sys.argv)
