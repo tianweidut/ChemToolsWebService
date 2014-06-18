@@ -3,7 +3,7 @@ from settings import *
 
 TEMPLATE_DEBUG = DEBUG = False
 
-PRODUCTION_FLAG = "预览版!"
+PRODUCTION_FLAG = "预览版"
 
 DATABASES = {
     'default': {
@@ -11,7 +11,7 @@ DATABASES = {
         'NAME': 'Chemistry',
         'USER': 'root',
         'PASSWORD': 'root',
-        'HOST': 'production-server',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
     }
 }

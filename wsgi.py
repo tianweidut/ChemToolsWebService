@@ -18,9 +18,7 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
-sys.path.append('/home/est863/mysites/')
-
-os.environ['DJANGO_SETTINGS_MODULE'] = 'ChemToolsWebService.settings_production'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings_production'
 # This application object is used by any WSGI server configured to use this
 # file. This includes Django's development server, if the WSGI_APPLICATION
 # setting points here.
