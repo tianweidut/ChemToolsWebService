@@ -8,6 +8,7 @@ elif [[ $1 == 'production' ]]; then
     setup_production_env
 elif [[ $1 == 'setup_database' ]]; then 
     init_database 
+fi
 
 
 function build_virtualenv()
