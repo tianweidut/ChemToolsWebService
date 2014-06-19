@@ -89,6 +89,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',
 )
 
 ROOT_URLCONF = 'urls'
@@ -125,6 +126,7 @@ INSTALLED_APPS = (
     # Enhanced Admin
     'djangocms_admin_style',
     'django.contrib.admin',
+    'raven.contrib.django.raven_compat',
 
     # project
     'djcelery',
@@ -245,3 +247,9 @@ FILE_UPLOAD_HANDLERS = (
 )
 
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+# Set your DSN value
+SENTRY_AUTO_LOG_STACKS = True
+RAVEN_CONFIG = {
+    'dsn': 'http://a98c9c1f6b9740e1b424a073e610751e:7e006e2a5787459f8aff0fd8ebb91652@202.118.73.59:19000/2',
+    }
