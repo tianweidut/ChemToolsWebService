@@ -16,20 +16,6 @@ DATABASES = {
     }
 }
 
-# Set your DSN value
-SENTRY_AUTO_LOG_STACKS = True
-RAVEN_CONFIG = {
-    'dsn': 'http://a98c9c1f6b9740e1b424a073e610751e:7e006e2a5787459f8aff0fd8ebb91652@202.118.73.59:19000/2',
-    }
-
-# Add raven to the list of installed apps
-INSTALLED_APPS = INSTALLED_APPS + (
-    'raven.contrib.django.raven_compat')
-
-MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + (
-    'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',
-    )
-
 #celery task queue
 BROKER_URL = "redis://redis-production-server:6379/0"
 BROKER_BACKEND = "redis"
