@@ -22,7 +22,7 @@ function init_database()
     echo '------init database-------------'
     cd tools/data/
     tar -zxvf init_data_for_dev.sql.tar.gz init_data_for_dev.sql
-    mysql -ueye -psauron "create database Chemistry CHARACTER SET utf8;" 
+    echo "create database Chemistry CHARACTER SET utf8;" | mysql -ueye -psauron  
     mysql -ueye -psauron Chemistry < init_data_for_dev.sql
     rm -rf init_data_for_dev.sql
     cd -

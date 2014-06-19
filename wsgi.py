@@ -17,6 +17,7 @@ import os
 import sys
 
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+sys.path.append('/var/chemistry/code/')
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings_production'
 # This application object is used by any WSGI server configured to use this
