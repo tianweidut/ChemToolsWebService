@@ -4,7 +4,8 @@ import math
 from collections import defaultdict
 
 from .dragon import DragonModel
-from chemistry.calcore.utils import fetch_polarizability, convert_stand_t, fetch_ehomo
+from chemistry.calcore.utils import (fetch_polarizability, convert_stand_t,
+    fetch_ehomo, fetch_ehomo_by_mopac)
 from utils import chemistry_logger
 
 
@@ -102,9 +103,7 @@ class PredictionModel(object):
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = defaultdict(dict)
 
-            abstract_value[smilenum]['EHOMO'] = fetch_ehomo(smilenum, 'logO3')
-            for k,v in abstract_value[smilenum].items():
-                chemistry_logger.info('%s:%s' % (k,v))
+            abstract_value[smilenum]['EHOMO'] = fetch_ehomo_by_mopac(smilenum, 'logO3')
 
             value = 2.549 + \
                 1.534 * abstract_value[smilenum]['EHOMO'] - \

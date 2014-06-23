@@ -11,6 +11,7 @@ from chemistry.calcore import config
 
 P_RE = re.compile(r'.*Isotropic polarizability.*')
 EHOMO_RE = re.compile(r'.*Alpha  occ. eigenvalues.*')
+EHOMO_MOPAC_RE = re.compile(r'.*HOMO LUMO.*')
 
 
 class CalcoreCmd(object):
@@ -268,6 +269,28 @@ def fetch_ehomo(name, model):
 
     return v
 
+
+
+def fetch_ehomo_by_mopac(name, model):
+    path = os.path.join(config.MOPAC_PATH, model, name, '%s.out' % name)
+    if not os.path.exists(path):
+        chemistry_logger.error('Cannot fetch HOMO %s by mopac' % path)
+        return 0.0
+
+    with open(path, 'r') as f:
+        for line in f.readlines():
+            if EHOMO_MOPAC_RE.search(line):
+                try:
+                    v = line.split('=')[1].strip().strip('\t').split()[0]
+                    v = float(v)
+                except:
+                    chemistry_logger.exception('Cannot get EHOMO value %s ' % line)
+                    v = 0.0
+                finally:
+                    return v
+
+    chemistry_logger.error('%s no HOMO' % path)
+    return 0.0
 
 
 def convert_stand_t(t):
