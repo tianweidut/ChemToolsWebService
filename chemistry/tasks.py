@@ -97,7 +97,7 @@ def send_email_task(email, sid):
 
 @task()
 def calculateTask(task, model):
-    generate_smile_image(task.pid)
+    generate_smile_image(task)
 
     suite = task.sid
     map_model_name = get_model_name(model['model'])

@@ -29,18 +29,15 @@
     run this command: python manage.py syncdb --settings=settings_production 
 
  * Calculated software
-  * sudo apt-get install python-openbabel -y
-  * sudo apt-get install openbabel -y
-  * some other software should be installed manually
+  * sudo apt-get install python-openbabel openbabel python-cairo bkchem -y
   * sudo apt-get install ia32-libs -y  #32-bit lib for 64-bit machine
   * Generate mol PONG
-    * sudo apt-get install bkchem
     * oasa:
       * wget http://bkchem.zirael.org/download/oasa-0.13.1.tar.gz
       * tar -zxcf oasa*.tar.gz
       * sudo python setup.py build & install
     * PIL
-      * sudo apt-get install python-tk idle python-pmw python-imaging
+      * sudo apt-get install python-tk idle python-pmw python-imaging -y
 
 
  * python manage.py runserver IP:PORT
