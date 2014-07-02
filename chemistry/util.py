@@ -126,40 +126,22 @@ def pdf_create_test():
     generate_pdf(id=suite_id, task_type=TASK_SUITE)
 
 
-def convert_smile_png(singletask):
-    """convert mol into smile and png"""
-    abpath = singletask.file_obj.file_obj.url
-    fullpath = settings.SETTINGS_ROOT + abpath
-
-    mol = pybel.readfile("mol", fullpath).next()
+def generate_smile_image(singletask):
+    """generate smile and image for task"""
+    chemistry_logger.info('generate smile image %s' % singletask.pid)
+    fpath = settings.SETTINGS_ROOT + singletask.file_obj.file_obj.url
+    mol = pybel.readfile("mol", fpath).next()
     singletask.file_obj.smiles = ("%s" % mol).split("\t")[0]
 
-    picname = str(uuid.uuid4()) + ".png"
-    picpath = os.path.join(settings.SEARCH_IMAGE_PATH, picname)
-    mol.draw(show=False, filename=picpath)
+    pname = str(uuid.uuid4()) + ".png"
+    ppath = os.path.join(settings.SEARCH_IMAGE_PATH, pname)
+    mol.draw(show=False, filename=ppath)
 
-    f = File(open(picpath, "r"))
+    f = File(open(ppath, "r"))
     singletask.file_obj.image = f
     singletask.file_obj.save()
     singletask.save()
     f.close()
-
-
-def generate_smile_image(pid):
-    """generate smile and image for task"""
-    chemistry_logger.info('generate smile image')
-    singletask = SingleTask.objects.get(pid=pid)
-    filetype = singletask.file_obj.file_source.category
-
-    if filetype == ORIGIN_SMILE:
-        # this type has already have image and smiles in local search machine,
-        # only copy them
-        singletask.file_obj.image = SearchEngineModel.objects.get(
-            smiles=singletask.file_obj.smiles).image
-        singletask.file_obj.save()
-        singletask.save()
-    else:
-        convert_smile_png(singletask)
 
 
 def simple_search_output(func):
