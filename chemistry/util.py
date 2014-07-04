@@ -126,7 +126,7 @@ def pdf_create_test():
     generate_pdf(id=suite_id, task_type=TASK_SUITE)
 
 
-def generate_smile_image(singletask):
+def generate_mol_image(singletask):
     """generate smile and image for task"""
     chemistry_logger.info('generate smile image %s' % singletask.pid)
     fpath = settings.SETTINGS_ROOT + singletask.file_obj.file_obj.url

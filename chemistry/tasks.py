@@ -12,7 +12,7 @@ from chemistry.calcore.prediciton_model import prediction_model_calculate
 from chemistry.models import SingleTask, SuiteTask, StatusCategory
 from chemistry import (STATUS_WORKING, STATUS_SUCCESS, STATUS_FAILED,
                        TASK_SUITE, TASK_SINGLE)
-from chemistry.util import generate_smile_image, generate_pdf
+from chemistry.util import generate_mol_image, generate_pdf
 from utils import chemistry_logger
 
 LOCK_EXPIRE = 60 * 5  # Lock expires in 5 minutes
@@ -97,7 +97,7 @@ def send_email_task(email, sid):
 
 @task()
 def calculateTask(task, model):
-    generate_smile_image(task)
+    generate_mol_image(task)
 
     suite = task.sid
     map_model_name = get_model_name(model['model'])
