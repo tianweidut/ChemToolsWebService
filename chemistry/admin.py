@@ -3,7 +3,7 @@ from django.contrib import admin
 from chemistry.models import (ModelCategory,
                               ModelTypeCategory, StatusCategory,
                               FileSourceCategory, SuiteTask, SingleTask,
-                              ProcessedFile, SearchEngineModel, ChemInfoLocal)
+                              ProcessedFile, ChemInfoLocal)
 
 RegisterClass = (
                  ModelCategory,
@@ -13,7 +13,6 @@ RegisterClass = (
                  SuiteTask,
                  SingleTask,
                  ProcessedFile,
-                 SearchEngineModel,
                  ChemInfoLocal,
                  )
 

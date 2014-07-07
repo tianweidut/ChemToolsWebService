@@ -102,6 +102,7 @@ $('#calculate-submit-btn').click(function(){
 
   var data = {
           "smile":Calculate.smile,
+          "local_search_id":Calculate.local_search_id,
           "draw_mol_data":Calculate.draw_mol_data,
           "task_notes":Calculate.task_notes,
           "task_name":Calculate.task_name,
@@ -143,7 +144,7 @@ $('#search-btn').click(function(){
       $.each(content, function(k,v){
         var row = "<tr class='search-content'><td>"+ v.cas +"</td><td>"+
                   v.formula + "</td><td>" +
-                  v.commonname + "</td><td class='smile'>" +
+                  v.commonname + "</td><td class='smile' local_search_id='"+ v.id +"'>" +
                   v.smiles + "</td><td>" +
                   v.alogp + "</td>"+
                   "<td><a class='btn btn-primary search-select'>选择</a></td></tr>";
@@ -153,9 +154,12 @@ $('#search-btn').click(function(){
       $(".search-select").click(function(){
         var td = this.parentNode.parentNode;
         var smile = $(td).children(".smile").text();
+        var local_search_id = $(td).children(".smile").attr('local_search_id'); 
 
         Calculate.smile = smile;
+        Calculate.local_search_id = local_search_id;
         console.log(smile);
+        console.log(local_search_id);
 
         $(".search-content").removeClass("danger");
         $(".search-select").text('选择');

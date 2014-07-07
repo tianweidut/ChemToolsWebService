@@ -71,6 +71,7 @@ def task_submit(request):
     models = json.loads(request.POST.get('models', "[]"))
     task_notes = request.POST.get('task_notes')
     task_name = request.POST.get('task_name')
+    local_search_id = int(request.POST.get('local_search_id', 0))
 
     try:
         status, info, id = submit_calculate(
@@ -80,7 +81,8 @@ def task_submit(request):
                 files_id_list=files_id_list,
                 models=models,
                 task_notes=task_notes,
-                task_name=task_name)
+                task_name=task_name,
+                local_search_id=local_search_id)
     except Exception as err:
         status, info, id = False, str(err), None
 
