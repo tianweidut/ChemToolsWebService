@@ -20,6 +20,9 @@ DEFAULT_TEMPERATURE_ARGS = 25  # 默认摄氏温度
 
 
 def get_model_name(name):
+    # 模型对应接口：
+    # 前端:templates/newtask.html, model name (src)
+    # 后端:chemistry/calcore/prediciton_model.py, models_computation (dest)
     model_map = {
         "koa": "logKOA",
         "rp": "logRP",
@@ -27,6 +30,8 @@ def get_model_name(name):
         "bcf": "logBCF",
         "koh": "logKOH",
         "koh_T": "logKOH_T",
+        "pl": "logPL",
+        "bdg": "logBDG",
     }
 
     model = model_map.get(name)
@@ -97,16 +102,17 @@ def send_email_task(email, sid):
 
 @task()
 def calculateTask(task, model):
-    generate_mol_image(task)
-
-    suite = task.sid
-    map_model_name = get_model_name(model['model'])
-    mol_fpath = os.path.join(settings.SETTINGS_ROOT, task.file_obj.file_obj.path)
-    smile = task.file_obj.smiles.encode('utf-8') if task.file_obj.file_type != 'mol' else ''
-
     try:
-        chemistry_logger.info('models calculating')
+        generate_mol_image(task)
+        suite = task.sid
+        map_model_name = get_model_name(model['model'])
+        mol_fpath = os.path.join(settings.SETTINGS_ROOT, task.file_obj.file_obj.path)
+        smile = task.file_obj.smiles.encode('utf-8') if task.file_obj.file_type != 'mol' else ''
+
         temperature = float(model.get('temperature', DEFAULT_TEMPERATURE_ARGS))
+        chemistry_logger.info('PredictionModel calculating: model name(%s),'
+                              'smile(%s) mol path(%s) temperature(%s)',
+                              map_model_name, smile, mol_fpath, temperature)
         # 重构入口
         predict_results = prediction_model_calculate(map_model_name, smile,
                                                      mol_fpath, temperature)
@@ -136,17 +142,16 @@ def calculateTask(task, model):
 
     suite.save()
 
-    chemistry_logger.info("calculate task result")
     task.end_time = datetime.datetime.now()
     task.results = result
 
     try:
         file_path = generate_pdf(id=task.pid, task_type=TASK_SINGLE)
         task.result_pdf = File(open(file_path, "rb"))
+        task.save()
     except Exception:
         chemistry_logger.exception("failed to generate pdf")
 
-    task.save()
     add_counter.delay(suite.sid)
 
     return result

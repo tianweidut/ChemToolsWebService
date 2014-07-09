@@ -66,15 +66,3 @@ class TaskSubmitTest(TestCase):
         num = calculate_tasks([], self.smile,
                               self.mol_data, self.models)
         eq_(num, 2)
-
-
-class PredictionModelTest(TestCase):
-    pass
-'''
-para ={
-    "smilestring":"c1ccccc1C(=O)c1cc(c(cc1O)OC)S(=O)(=O)O,c1(ccc(cc1)OC)/C=C/C(=O)OCCOCC",
-    "filename"   :"",
-    "cas"        :"",
-       }
-pm = PredictionModel(["logKOA", "logRP"], para)
-'''

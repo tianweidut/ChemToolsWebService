@@ -41,7 +41,7 @@ def single_task_context(pid):
     try:
         single_task = SingleTask.objects.get(pid=pid)
         local_search_id = single_task.file_obj.local_search_id
-        if local_search_id:
+        if local_search_id and isinstance(local_search_id, int):
             local_search = ChemInfoLocal.objects.get(local_search_id)
         else:
             local_search = None
