@@ -246,7 +246,6 @@ class PredictionModel(object):
         self.hi = (x * linalg.inv(X.T * X) * x.T)[0, 0]
 
 
-def prediction_model_calculate(model_name, smile, mol_fpath, model_args):
-    temperature = float(model_args.get('temperature', 25))
+def prediction_model_calculate(model_name, smile, mol_fpath, temperature):
     pm = PredictionModel(model_name, smile, mol_fpath, T=temperature)
     return pm.predict_result

@@ -9,7 +9,7 @@
       {%if singletask.status.category == "success"%}
         <image src="/static/images/save256.png" style="width: 140px; height: 140px;" ></image>
       {%elif singletask.status.category == "failed"%}
-		    <image src="/static/images/close-bug256.png" style="width: 140px; height: 140px;" ></image>
+        <image src="/static/images/close-bug256.png" style="width: 140px; height: 140px;" ></image>
       {%else%}
         <image src="/static/images/reload256.png" style="width: 140px; height: 140px;" ></image>
       {%endif%}
@@ -17,7 +17,16 @@
     <div class="col-xs-5">
       <p>组任务名称:{{singletask.sid.name}}</p>
       <p>开始时间:{{singletask.sid.start_time|date:"Y-m-d H:m"}}</p>
-      <p>状态: {{singletask.status}}</p>
+      <p>状态: 
+        {%if singletask.status.category == "success"%}
+          <span class="label label-success">计算成功</span>
+        {%elif singletask.status.category == "failed"%}       
+        <span class="label label-danger" title="{{singletask.result_state}}">计算失败</span>
+        {%else%}
+          <span class="label label-info">正在计算</span>
+        {%endif%}
+      </p>
+      <p>备注: {{singletask.sid.notes}}</p>
     </div>
     {%if singletask.status.category == "success"%}
     <div class="col-xs-4">
@@ -31,5 +40,88 @@
 <h5>任务细节</h5>
 <hr/>
 
-{%include "widgets/task_commits.html"%}
+
+<div class="container-fluid ">
+  <div class="row">
+    <div class="col-xs-2">
+      <legend>分子结构图</legend>
+      {% if singletask.file_obj.image %}
+        <img id="last_picture" src="{{singletask.file_obj.image.url}}" style="width: 120px; height: 120px;">
+      {% endif %}
+    </div>
+
+    <div class="col-xs-5">
+      <legend>输入数据</legend>
+      <table class="table table-hover ">
+        <tbody>
+          <tr>
+            <td>输入来源</td> 
+            {%if singletask.file_obj.file_source.category == "smiles"%}
+              <td>综合搜索</td> 
+            {%elif singletask.file_obj.file_source.category == "drawing"%}
+              <td>分子结构绘制</td> 
+            {%elif singletask.file_obj.file_source.category == "upload"%}
+              <td>MOL文件上传</td> 
+            {%endif%} 
+          </tr>
+
+          <tr>
+            <td>Smiles码</td>
+            <td>{{singletask.file_obj.smiles}}</td>
+          </tr>
+
+          {%if singletask.file_obj.file_source.category == "smiles"%}
+          <tr>
+            <td>通用名称</td>
+            <td>{{search_engine.einecs_name}}</td>
+          </tr>
+          <tr>
+            <td>分子式</td>
+            {%autoescape off%}
+            <td>{{search_engine.molecular_formula}}</td>
+            {%endautoescape%}
+          </tr>
+          {%endif%} 
+
+          <tr>
+            <td>MOL文件</td>
+            <td>
+              <a href="{{singletask.file_obj.file_obj.url}}" target="_blank" >下载链接</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-xs-5">
+      <legend>计算模型</legend>
+      <table class="table table-hover ">
+        <tbody>
+          <tr><td>模型名称</td>
+              <td>{{singletask.model|upper}}</td>
+          </tr>
+
+          <tr>
+              <td>模型类别</td>
+              <td>{{singletask.model.origin_type}}</td>
+          </tr>
+
+          <tr>
+              <td>温度参数</td>
+              <td>{{singletask.temperature}}</td>
+          </tr>
+          <tr>
+              <td>计算结果</td>
+              <td>{{singletask.results}}</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+
+
 {% endblock %}

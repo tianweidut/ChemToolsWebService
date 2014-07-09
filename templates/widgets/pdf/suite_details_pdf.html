@@ -5,11 +5,11 @@
   <h3>Overview</h3>
 </div> 
 <blockquote id="commit_notes_copy">
-    <p>{{suitetask.status}}</p>
-    <p>Start Time: {{suitetask.start_time|date:"Y-m-d H:m"}}</p>
-    <p>End Time: {{suitetask.end_time|date:"Y-m-d H:m"}}</p>
-    <p>Total Tasks:{{suitetask.total_tasks}}</p>
-    <p>Finished Tasks:{{suitetask.has_finished_tasks}}</p>
+    <p>{{suite_task.status}}</p>
+    <p>Start Time: {{suite_task.start_time|date:"Y-m-d H:m"}}</p>
+    <p>End Time: {{suite_task.end_time|date:"Y-m-d H:m"}}</p>
+    <p>Total Tasks:{{suite_task.total_tasks}}</p>
+    <p>Finished Tasks:{{suite_task.has_finished_tasks}}</p>
 </blockquote>
 <br/>
 <div class="page-header">
@@ -23,34 +23,28 @@
       <td>Model</td>
       <td>Category</td>
       <td>Temperature</td>
-      <td>Humidity</td>
-      <td>Others</td>
       <td>Results</td>
-      <td>Time</td>
     </tr>
   </thead>
   <tbody>
-    {%for single in single_lists%}
+    {%for s in single_task_lists%}
     <tr>
       <td>
-        {% if single.status.category == "success" %}
-          <p class="label label-success">Success</p>
-        {% elif single.status.category == "failed" %}
+        {% if s.status.category == "success" %}
+          <p class="label label-success">Succeed</p>
+        {% elif s.status.category == "failed" %}
           <p class="label label-important">Failed</p>
         {% else %}
           <p class="label label-info">Calculating</p>
         {%endif%}
       </td>
-      <td>{{single.model|upper}}</td>
-      <td>{{single.model.origin_type}}</td>
-      <td>{{single.temperature}}</td>
-      <td>{{single.humidity}}</td>
-      <td>{{single.others}}</td>
-      <td>{{single.results}}</td>
-      <td>{{single.start_time|date:"m-d H:m"}}</td>
+      <td>{{s.model|upper}}</td>
+      <td>{{s.model.origin_type}}</td>
+      <td>{{s.temperature}}</td>
+      <td>{{s.results}}</td>
     </tr>
     {%endfor%}
   </tbody>
-</table><!--end table--> 
+</table>
 </blockquote>
 {% endblock %}

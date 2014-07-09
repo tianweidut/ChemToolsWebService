@@ -71,32 +71,29 @@ class FileSourceCategory(models.Model):
 
 
 class ProcessedFile(models.Model):
-    """
-    File Storage
-    """
+    """上传及计算文件对象"""
     fid = models.CharField(max_length=50, unique=True, blank=False,
                            primary_key=True, default=get_sid)
     title = models.CharField(max_length=500, blank=False)
     file_type = models.CharField(max_length=100, blank=False)
     file_obj = models.FileField(upload_to=settings.PROCESS_FILE_PATH)
     file_source = models.ForeignKey(FileSourceCategory,
-                                    default=lambda: FileSourceCategory.objects.get(category=ORIGIN_UPLOAD))
+            default=lambda: FileSourceCategory.objects.get(category=ORIGIN_UPLOAD))
     image = models.FileField(blank=True, null=True,
                              upload_to=settings.PROCESS_FILE_PATH)
     smiles = models.CharField(max_length=2000, blank=True, null=True)
+    local_search_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        verbose_name = "上传文件"
-        verbose_name_plural = "上传文件"
+        verbose_name = "计算文件"
+        verbose_name_plural = "计算文件"
 
     def __unicode__(self):
         return self.title
 
 
 class SuiteTask(models.Model):
-    """
-    A group of task, which defined the one calculate submit
-    """
+    """组计算任务"""
     sid = models.CharField(unique=True, blank=False, max_length=50,
                            verbose_name="id", primary_key=True,
                            default=get_sid)
@@ -126,9 +123,7 @@ class SuiteTask(models.Model):
 
 
 class SingleTask(models.Model):
-    """
-    Every specific task
-    """
+    """单个计算任务"""
     sid = models.ForeignKey(SuiteTask, blank=False)
     pid = models.CharField(max_length=50, unique=True, blank=False,
                            primary_key=True, default=get_sid)
@@ -156,37 +151,8 @@ class SingleTask(models.Model):
         return self.sid.name
 
 
-class SearchEngineModel(models.Model):
-    """
-    Search Engineer by Chemspider
-    """
-    nid = models.CharField(max_length=50, unique=True, blank=False,
-                           primary_key=True, default=get_sid)
-    commonname = models.CharField(max_length=2000, blank=False, null=True)
-    smiles = models.CharField(max_length=1000, blank=False, null=True)
-    inchi = models.CharField(max_length=1000, blank=False, null=True)
-    inchikey = models.CharField(max_length=1000, blank=False, null=True)
-    mf = models.CharField(max_length=2000, blank=False, null=True)
-    molecularweight = models.CharField(max_length=200, blank=False, null=True)
-    alogp = models.CharField(max_length=200, blank=False, null=True)
-    xlogp = models.CharField(max_length=200, blank=False, null=True)
-    averagemass = models.CharField(max_length=200, blank=False, null=True)
-    monoisotopicmass = models.CharField(max_length=200, blank=False, null=True)
-    search_query = models.CharField(max_length=2000, blank=False, null=True)
-    image = models.FileField(upload_to=settings.PROCESS_FILE_PATH)
-
-    class Meta:
-        verbose_name = "第三方搜索数据"
-        verbose_name_plural = "第三方搜索数据"
-
-    def __unicode__(self):
-        return self.commonname
-
-
 class ChemInfoLocal(models.Model):
-    """
-    Chemistry database for locally search
-    """
+    """Chemistry database for locally search"""
     cas = models.CharField(max_length=200, blank=False, unique=True)
     einecs = models.CharField(max_length=2000, blank=False)
     einecs_name = models.CharField(max_length=2000, blank=False)
