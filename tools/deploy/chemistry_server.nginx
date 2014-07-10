@@ -27,7 +27,7 @@ http {
     server {
         listen   80;
         server_name 202.118.73.59;
-        root /var/chemistry/code/static/;
+        root /var/chemistry/code;
 
         client_max_body_size 500m;
         keepalive_timeout 5;
@@ -46,17 +46,13 @@ http {
 
         }
 
-        location /static {
-            alias /var/chemistry/code/static/; 
+        location ~ ^/static {
+            root /var/chemistry/code/; 
+            break;
         }
 
         location ~.*\.(gif|jpg|png|ico|jpeg|bmp|swf|doc|pdf|docx|mol|sdf|csv|xls|xlsx)$ {
             expires 7d;
-        }
-
-        location /media {
-            root /var/chemistry/code/static/; 
-            break;
         }
 
         location ~.*\.(css|js)$ {
