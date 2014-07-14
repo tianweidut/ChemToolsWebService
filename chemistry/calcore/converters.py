@@ -64,6 +64,7 @@ class Converter():
     def mol2dragon_folder(self):
         mop_fname_set = set()
 
+        # STEP: 将smile码经过obabel转化，生成mop文件，并放在指定目录中
         for element in self.iter_smiles_files(self.__smilenum_list, 'smile'):
             smile, name, dragon_dpath, mopac_dpath, mop_fpath = element
             mol_fpath = join(settings.MOL_ABSTRACT_FILE_PATH, '%s.mol' % name)
@@ -93,15 +94,13 @@ class Converter():
 
             with open(mop_fpath, 'wb') as f:
                 f.writelines(lines)
-
-            shutil.copy(mol_fpath, dragon_dpath)
             mop_fname_set.add('%s.mop' % name)
 
         for element in self.iter_smiles_files(self.__molfile, 'file'):
-            mol_fpath, name, dragon_dpath, mopac_dpath, mop_fpath = element
+            mol_fpath, name, dragon_dpath, mopac_dpath, _ = element
+            mop_fpath = mol2mop(mol_fpath)
+            shutil.copy(mop_fpath, mopac_dpath)
 
-            shutil.move(mol_fpath, dragon_dpath)
-            shutil.move(mop_fpath, dragon_dpath)
             mop_fname_set.add('%s.mop' % name)
 
         # 使用mopac对dragon结果进行优化
@@ -136,7 +135,7 @@ class Converter():
         for element in self.iter_smiles_files(self.__molfile, 'file'):
             mol_fpath, name, dragon_dpath, mopac_dpath, mop_fpath = element
 
-            shutil.move(mol_fpath, dragon_dpath)
+            shutil.copy(mol_fpath, dragon_dpath)
             gaussian_files_set.add('%s.gjf' % name)
 
         try:
@@ -162,13 +161,13 @@ def mol2mop(fpath):
     fname = os.path.basename(fpath)
     fname_no_ext = fname.split('.')[0]
     content = []
-    with open(fpath, 'f') as f:
+    with open(fpath, 'r') as f:
         for line in f.readlines():
             try:
                 values = line.split()
                 if 'A' < values[3] < 'Z':
                     content.append(' %s %s %s %s\n' % (values[3], values[0],
-                                                        values[1], values[2]))
+                                                       values[1], values[2]))
             except Exception:
                 chemistry_logger.exception('failed to resolve mol2mop line: %s' % line)
 
