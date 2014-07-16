@@ -1,8 +1,6 @@
 # coding: utf-8
 import subprocess
-import shutil
-import os
-from os.path import join, exists
+from os.path import join
 
 from .config import CALCULATE_CMD_TYPE, CALCULATE_DATA_PATH
 from utils import chemistry_logger
@@ -15,16 +13,6 @@ class MopacModel():
         for fname in mop_fname_list:
             name = fname.split('.')[0]
             self.mop_fname_list_no_ext.append(name)
-
-            dpath = join(CALCULATE_DATA_PATH.MOPAC, name)
-
-            if not exists(dpath):
-                os.mkdir(dpath)
-
-            try:
-                shutil.move(fname, join(dpath, fname))
-            except Exception:
-                chemistry_logger.exception('Failed to shutil %s' % fname)
 
     def opt4dragon(self):
         for name in self.mop_fname_list_no_ext:

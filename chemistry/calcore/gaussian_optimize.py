@@ -22,7 +22,7 @@ class GaussianOptimizeModel():
                 os.mkdir(dpath)
 
             try:
-                shutil.move(fname, join(dpath, fname))
+                shutil.copy(fname, join(dpath, fname))
             except Exception:
                 chemistry_logger.exception('Failed to shutil %s' % fname)
 

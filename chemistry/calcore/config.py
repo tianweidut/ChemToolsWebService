@@ -6,10 +6,10 @@ from collections import namedtuple
 CONFIG_DIR = dirname(abspath(__file__))
 CALCORE_DIR = dirname(CONFIG_DIR)
 GAUSSIAN_DATA_PATH = join(CONFIG_DIR, 'forgaussian')
-DRAGON_PATH = join(CALCORE_DIR, 'fordragon')
-MOPAC_PATH = join(CALCORE_DIR, 'formopac')
-GAUSSIAN_PATH = join(CALCORE_DIR, 'forgaussian')
-TESTDATA_PATH = join(CALCORE_DIR, 'tests', 'data')
+DRAGON_PATH = join(CONFIG_DIR, 'fordragon')
+MOPAC_PATH = join(CONFIG_DIR, 'formopac')
+GAUSSIAN_PATH = join(CONFIG_DIR, 'forgaussian')
+TESTDATA_PATH = join(CONFIG_DIR, 'tests', 'data')
 
 CALCULATE_SOFTWARE_TYPE = namedtuple("CALCULATE_SOFTWARE_TYPE",
         ['DRAGON', 'MOPAC', 'GAUSSIAN'])('DRAGON', 'MOPAC', 'GAUSSIAN')
