@@ -26,9 +26,9 @@ class Converter():
 
         # molfies 传递的地址是完整路径
         if isinstance(molfiles, list):
-            self.__molfile = [f for f in molfiles]
+            self.__molfile = [f for f in molfiles if exists(f)]
         elif isinstance(molfiles, basestring):
-            self.__molfile = molfiles.split(',')
+            self.__molfile = [f for f in molfiles.split(',') if exists(f)]
 
     def smile2_3d(self, smile):
         mymol = pybel.readstring('smi', smile)
@@ -67,7 +67,6 @@ class Converter():
         # STEP: 将smile码经过obabel转化，生成mop文件，并放在指定目录中
         for element in self.iter_smiles_files(self.__smilenum_list, 'smile'):
             smile, name, dragon_dpath, mopac_dpath, mop_fpath = element
-            mol_fpath = join(settings.MOL_ABSTRACT_FILE_PATH, '%s.mol' % name)
             try:
                 # '-:smi' 可以直接对smile进行转化
                 cmd = 'obabel -:"%s" -o mop -O "%s" --gen3D' % (smile,
@@ -103,7 +102,7 @@ class Converter():
 
             mop_fname_set.add('%s.mop' % name)
 
-        # 使用mopac对dragon结果进行优化
+        # 使用mopac对dragon结果进行优化(输入转化生成的mop文件)
         try:
             mop = MopacModel(mop_fname_set)
             mop.opt4dragon()

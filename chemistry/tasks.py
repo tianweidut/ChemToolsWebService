@@ -106,8 +106,10 @@ def calculateTask(task, model):
         generate_mol_image(task)
         suite = task.sid
         map_model_name = get_model_name(model['model'])
-        mol_fpath = os.path.join(settings.SETTINGS_ROOT, task.file_obj.file_obj.path)
         smile = task.file_obj.smiles.encode('utf-8') if task.file_obj.file_type != 'mol' else ''
+
+        # smile, mol_fpath 输入只选择一种方式(优先smile)
+        mol_fpath = os.path.join(settings.SETTINGS_ROOT, task.file_obj.file_obj.path) if not smile else None
 
         temperature = float(model.get('temperature', DEFAULT_TEMPERATURE_ARGS))
         chemistry_logger.info('PredictionModel calculating: model name(%s),'
