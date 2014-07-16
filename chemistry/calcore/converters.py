@@ -26,9 +26,9 @@ class Converter():
 
         # molfies 传递的地址是完整路径
         if isinstance(molfiles, list):
-            self.__molfile = [f for f in molfiles]
+            self.__molfile = [f for f in molfiles if exists(f)]
         elif isinstance(molfiles, basestring):
-            self.__molfile = molfiles.split(',')
+            self.__molfile = [f for f in molfiles.split(',') if exists(f)]
 
     def smile2_3d(self, smile):
         mymol = pybel.readstring('smi', smile)
