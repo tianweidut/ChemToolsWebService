@@ -236,12 +236,14 @@ class ErrorCalculateType(Exception):
 
 
 def save_record(f, model, sid, source_type, smile=None, local_search_id=None):
-    from chemistry.tasks import calculateTask
+    from chemistry.tasks import calculateTask, DEFAULT_TEMPERATURE_ARGS
     task = SingleTask()
     task.sid = SuiteTask.objects.get(sid=sid)
     task.pid = str(uuid.uuid4())
     task.model = ModelCategory.objects.get(category=model['model'])
-    task.temperature = float(model['temperature'])
+
+    temperature = model.get('temperature')
+    task.temperature = float(temperature) if temperature else DEFAULT_TEMPERATURE_ARGS
 
     if source_type == ORIGIN_UPLOAD:
         # here, f is ProcessedFile record instance
