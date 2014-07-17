@@ -12,11 +12,11 @@ from django.conf import settings
 
 
 class Converter():
-    def __init__(self, smiles=None, molfiles=None, modeltype=None):
+    def __init__(self, smiles=None, molfiles=None, model_name=None):
         self.__invalid_smile = []
         self.__smilenum_list = []
         self.__molfile = []
-        self.modeltype = modeltype
+        self.model_name = model_name
 
         # smiles 可以传入list，也可以传入以comma作为分隔符的smiles字符串
         if isinstance(smiles, list):
@@ -32,7 +32,7 @@ class Converter():
 
     def smile2_3d(self, smile):
         mymol = pybel.readstring('smi', smile)
-        if self.modeltype == 3:
+        if self.model_name == 'logPL':
             mymol.addh()
         mymol.make3D()
         name = self.format_filename(smile)
@@ -81,11 +81,11 @@ class Converter():
             lines = []
             with open(mop_fpath, 'rb') as f:
                 lines = f.readlines()
-                if self.modeltype == 1:
+                if self.model_name in ('logKOA', 'logRP'):
                     lines[0] = 'EF GNORM=0.0001 MMOK GEO-OK PM3\n'
-                elif self.modeltype == 4:
+                elif self.model_name in ('logPL',):
                     lines[0] = 'EF GNORM=0.01 MMOK GEO-OK PM6 MULLIK POLAR\n'
-                elif self.modeltype == 5:
+                elif self.model_name in ('logBDG',):
                     lines[0] = 'EF GNORM=0.1 MMOK GEO-OK PM5\n'
                 else:
                     lines[0] = 'no keywords'
@@ -125,7 +125,7 @@ class Converter():
                 continue
 
             # mol -> gjf file
-            gjf_fpath = mol2gjf(mol_fpath, self.modeltype)
+            gjf_fpath = mol2gjf(mol_fpath, self.model_name)
 
             shutil.copy(mol_fpath, dragon_dpath)
             shutil.copy(gjf_fpath, gaussian_dpath)
@@ -183,8 +183,8 @@ def mol2mop(fpath):
     return mop_fpath
 
 
-def mol2gjf(fpath, modeltype):
-    if modeltype == 3:
+def mol2gjf(fpath, model_name):
+    if model_name in ('logKOH', 'logKOH_T'):
         element = dict.fromkeys([
             'H', 'C', 'N', 'O', 'F', 'P', 'S', 'Cl',
             'Se', 'Br', 'I', 'Si', 'Hg', 'Pb'], 0)
@@ -201,7 +201,7 @@ def mol2gjf(fpath, modeltype):
                 if 'A' < values[3] < 'Z':
                     content.append(' %s %s %s %s\n' % (values[3], values[0],
                                                        values[1], values[2]))
-                    if modeltype == 3:
+                    if model_name in ('logKOH', 'logKOH_T'):
                         element[values[3]] = 1
 
             except Exception:
@@ -212,14 +212,14 @@ def mol2gjf(fpath, modeltype):
     gjf_list.append('%nproc=2\n')
     gjf_list.append('%mem=2GB\n')
 
-    if modeltype == 3:
+    if model_name in ('logKOH', 'logKOH_T'):
         element_op = (element['I'] | element['Si'] | element['Hg'] |
                       element['Pb']) == 1
         if element_op:
             gjf_list.append('#p opt freq b3lyp/genecp scf=tight int=ultrafine\n')
         else:
             gjf_list.append('#p opt freq b3lyp/6-311+G(d,p) scf=tight int=ultrafine\n')
-    elif modeltype == 2:
+    elif model_name in ("logKOC", "logBCF"):
         gjf_list.append('#p opt freq b3lyp/6-31+g(d,p) SCRF=(IEFPCM,SOLVENT=WATER)\n')
 
     gjf_list.append('\n')
@@ -229,7 +229,7 @@ def mol2gjf(fpath, modeltype):
     gjf_list.extend(content)
     gjf_list.append('\n')
 
-    if modeltype == 3 and element_op:
+    if model_name in ('logKOH', 'logKOH_T') and element_op:
         tempC = ""
         tempHg = ""
         for t in ('I', 'Si', 'Hg', 'Pb'):

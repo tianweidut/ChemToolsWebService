@@ -12,14 +12,13 @@ from utils import chemistry_logger
 class DragonModel():
 
     def __init__(self, model_name, smile=None, molfile=None):
-        self.mode_name = model_name
-        self.model_type = self.get_model_type(model_name)
+        self.model_name = model_name
 
-        converter = Converter(smile, molfile, self.model_type)
+        converter = Converter(smile, molfile, self.model_name)
         #FIXME: 使用常量
-        if self.model_type in (1, 4, 5):
+        if self.model_name in ('logKOA', 'logRP', 'logPL', 'logBDG'):
             converter.mol2dragon_folder()
-        elif self.model_type in (2, 3):
+        elif self.model_name in ('logKOC', 'logBCF', 'logKOH', 'logKOH_T'):
             converter.mol2gjf2dragon_folder()
 
         self.invalidnums = converter.get_invalid_smile()
@@ -41,22 +40,6 @@ class DragonModel():
             input_fpath = join(fpath, fname_mol)
             output_fpath = join(fpath, fname_drs)
             yield raw_name, fname, input_fpath, output_fpath
-
-    def get_model_type(self, model_name):
-        if model_name in ("logKOA", "logRP"):
-            model_type = 1
-        elif model_name in ("logKOC", "logBCF"):
-            model_type = 2
-        elif model_name in ("logKOH", "logKOH_T"):
-            model_type = 3
-        elif model_name == "logPL":
-            model_type = 4
-        elif model_name == "logBDG":
-            model_type = 5
-        else:
-            model_type = 0
-
-        return model_type
 
     def mol2drs(self):
         for raw_name, fname, input_fpath, output_fpath in self.iter_files():
@@ -93,7 +76,7 @@ class DragonModel():
                     except:
                         print key, temp_dic[i], valueline[temp_dic[key]]
 
-            if self.model_type == 3:
+            if self.model_name in ('logKOH', 'logKOH_T'):
                 f_log = join(CALCULATE_DATA_PATH.GAUSSIAN, raw_name,
                              '%s.log' % raw_name)
                 f = open(f_log, 'r')
@@ -115,7 +98,7 @@ class DragonModel():
                         EHOMO = lines[lineNum - 1].split(' ')[-1]
                         para_dic[raw_name]["EHOMO"] = float(EHOMO)
                         break
-            elif self.model_type == 4:
+            elif self.model_name in ('logPL',):
                 f_out = join(CALCULATE_DATA_PATH.MOPAC, raw_name,
                              '%.out' % raw_name)
                 f = open(f_out, 'r')
