@@ -7,7 +7,16 @@ def calcore_validate():
     model = 'logKOA'
     smile = 'COc1ccccc1NC(=O)CC(=O)C'
     mol_path = ''
-    temperature = 25
+    temperature = 10.0
+
+    r = prediction_model_calculate(model, smile, mol_path, temperature)
+    print r
+
+
+def calcore_validate_model(model):
+    smile = 'COc1ccccc1NC(=O)CC(=O)C'
+    mol_path = ''
+    temperature = 10.0
 
     r = prediction_model_calculate(model, smile, mol_path, temperature)
     print r
