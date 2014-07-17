@@ -98,6 +98,10 @@ class Converter():
         for element in self.iter_smiles_files(self.__molfile, 'file'):
             mol_fpath, name, dragon_dpath, mopac_dpath, _ = element
             mop_fpath = mol2mop(mol_fpath)
+
+            if not os.path.exists(mopac_dpath):
+                os.makedirs(mopac_dpath)
+
             shutil.copy(mop_fpath, mopac_dpath)
 
             mop_fname_set.add('%s.mop' % name)
@@ -127,6 +131,12 @@ class Converter():
             # mol -> gjf file
             gjf_fpath = mol2gjf(mol_fpath, self.model_name)
 
+            if not os.path.exists(dragon_dpath):
+                os.makedirs(dragon_dpath)
+
+            if not os.path.exists(gaussian_dpath):
+                os.makedirs(gaussian_dpath)
+
             shutil.copy(mol_fpath, dragon_dpath)
             shutil.copy(gjf_fpath, gaussian_dpath)
             gaussian_files_set.add('%s.gjf' % name)
@@ -134,12 +144,17 @@ class Converter():
         for element in self.iter_smiles_files(self.__molfile, 'file'):
             mol_fpath, name, dragon_dpath, mopac_dpath, mop_fpath = element
 
+            if not os.path.exists(dragon_dpath):
+                os.makedirs(dragon_dpath)
+
             shutil.copy(mol_fpath, dragon_dpath)
             gaussian_files_set.add('%s.gjf' % name)
 
         try:
+            #FIXME: gaussian 计算很慢吗?
             gjf = GaussianOptimizeModel(gaussian_files_set)
             gjf.gjf4dragon()
+            pass
         except Exception:
             chemistry_logger.exception('Failed to gaussian optimize for dragon')
 
@@ -208,7 +223,7 @@ def mol2gjf(fpath, model_name):
                 chemistry_logger.exception('failed to resolve mol2gjf line: %s' % line)
 
     gjf_list = []
-    gjf_list.append('%chk=%s.chk\n' % fname_no_ext)
+    gjf_list.append('%%chk=%s.chk\n' % fname_no_ext)
     gjf_list.append('%nproc=2\n')
     gjf_list.append('%mem=2GB\n')
 
