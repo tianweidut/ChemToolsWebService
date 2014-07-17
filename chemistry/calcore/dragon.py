@@ -100,7 +100,7 @@ class DragonModel():
                         break
             elif self.model_name in ('logPL',):
                 f_out = join(CALCULATE_DATA_PATH.MOPAC, raw_name,
-                             '%.out' % raw_name)
+                             '%s.out' % raw_name)
                 f = open(f_out, 'r')
                 lines = f.readlines()
                 f.close()

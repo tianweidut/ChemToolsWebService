@@ -27,15 +27,15 @@ class PredictionModel(object):
 
     def models_computation(self, modelname):
         {
-            "logKOA": self.logKOA(),
-            "logRP": self.logRP(),
-            "logKOC": self.logKOC(),
-            "logBCF": self.logBCF(),
-            "logKOH": self.logKOH(),
-            "logKOH_T": self.logKOH_T(),
-            "logPL": self.logPL(),
-            "logBDG": self.logBDG(),
-        }[modelname]
+            "logKOA": self.logKOA,
+            "logRP": self.logRP,
+            "logKOC": self.logKOC,
+            "logBCF": self.logBCF,
+            "logKOH": self.logKOH,
+            "logKOH_T": self.logKOH_T,
+            "logPL": self.logPL,
+            "logBDG": self.logBDG,
+        }[modelname]()
 
     def logKOA(self):
         abstract_value = self.dragon_model.extractparameter([
