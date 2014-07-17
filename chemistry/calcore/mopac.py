@@ -24,7 +24,7 @@ class MopacModel():
                             '%s.out' % name)
 
             cmd = '%s "%s"' % (CALCULATE_CMD_TYPE.MOPAC, mop_path)
-            chemistry_logger.debug('opt4dragon part1 cmd: %s' % cmd)
+            chemistry_logger.info('opt4dragon part1 cmd: %s' % cmd)
             subprocess.Popen(cmd, shell=True).wait()
 
             # get the optimized orientation in out file and replace counterpart
@@ -33,5 +33,5 @@ class MopacModel():
 
             cmd = 'obabel -imoo "%s" -omol -O "%s" --gen3D' % (out_path,
                                                                mol_path)
-            chemistry_logger.debug('opt4dragon part2 cmd: %s' % cmd)
+            chemistry_logger.info('opt4dragon part2 cmd: %s' % cmd)
             subprocess.Popen(cmd, shell=True).wait()

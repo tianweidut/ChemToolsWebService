@@ -71,7 +71,7 @@ class Converter():
                 # '-:smi' 可以直接对smile进行转化
                 cmd = 'obabel -:"%s" -o mop -O "%s" --gen3D' % (smile,
                                                                 mop_fpath)
-                chemistry_logger.debug('mop2mopac, smi->mop: %s' % cmd)
+                chemistry_logger.info('mop2mopac, smi->mop: %s' % cmd)
                 subprocess.Popen(cmd, shell=True).wait()
             except:
                 self.__invalid_smile.append(smile)

@@ -63,7 +63,7 @@ class DragonModel():
             XMLWriter(input_fpath, output_fpath)
             # dragon6shell -s *.drs to get the result
             cmd = "%s '%s'" % (CALCULATE_CMD_TYPE.DRAGON, output_fpath)
-            chemistry_logger.debug('mol2drs cmd %s' % cmd)
+            chemistry_logger.info('mol2drs cmd %s' % cmd)
             subprocess.Popen(cmd, shell=True).wait()
 
     def extractparameter(self, parameters=None):

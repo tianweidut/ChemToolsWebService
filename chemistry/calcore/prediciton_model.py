@@ -4,6 +4,7 @@ import math
 
 from .dragon import DragonModel
 from .train_matrix import kocX, koh_TX
+from utils import chemistry_logger
 
 
 class PredictionModel(object):
@@ -248,4 +249,5 @@ class PredictionModel(object):
 
 def prediction_model_calculate(model_name, smile, mol_fpath, temperature):
     pm = PredictionModel(model_name, smile, mol_fpath, T=temperature)
+    chemistry_logger.info("pm result:%s", pm.predict_result)
     return pm.predict_result
