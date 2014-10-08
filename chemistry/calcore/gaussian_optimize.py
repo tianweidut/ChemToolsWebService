@@ -13,18 +13,7 @@ class GaussianOptimizeModel():
         self.gjf_fname_list_no_ext = []
 
         for fname in gjf_fname_list:
-            name = fname.split('.')[0]
-            self.gjf_fname_list_no_ext.append(name)
-
-            dpath = join(CALCULATE_DATA_PATH.GAUSSIAN, name)
-
-            if not exists(dpath):
-                os.mkdir(dpath)
-
-            try:
-                shutil.copy(fname, join(dpath, fname))
-            except Exception:
-                chemistry_logger.exception('Failed to shutil %s' % fname)
+            self.gjf_fname_list_no_ext.append(fname.split('.')[0])
 
     def gjf4dragon(self):
         for name in self.gjf_fname_list_no_ext:
@@ -36,9 +25,9 @@ class GaussianOptimizeModel():
                             '%s.log' % name)
 
             cmd = '%s "%s"' % (CALCULATE_CMD_TYPE.GAUSSIAN, gjf_path)
-            chemistry_logger.debug('gif4dragon part2 cmd: %s' % cmd)
+            chemistry_logger.info('gif4dragon part1 cmd: %s' % cmd)
             subprocess.Popen(cmd, shell=True).wait()
 
             cmd = 'obabel -ig09 "%s" -omol -O "%s"' % (log_path, mol_path)
-            chemistry_logger.debug('gif4dragon part2 cmd: %s' % cmd)
+            chemistry_logger.info('gif4dragon part2 cmd: %s' % cmd)
             subprocess.Popen(cmd, shell=True).wait()

@@ -266,6 +266,8 @@ def mol2gjf(fpath, model_name):
         gjf_list.append('LANL2DZ\n\n')
 
     gjf_fpath = join(settings.MOL_ABSTRACT_FILE_PATH, '%s.gjf' % fname_no_ext)
+    chemistry_logger.info('mol->gjf gjf path: %s' % gjf_fpath)
+    chemistry_logger.info('mol->gjf, content: %s' % gjf_list)
     with open(gjf_fpath, 'w') as f:
         f.writelines(tuple(gjf_list))
 
