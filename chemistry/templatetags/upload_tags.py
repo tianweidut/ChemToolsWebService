@@ -21,7 +21,7 @@ def upload_js():
                 <div class="progress progress-success progress-striped active"><div class="bar" style="width:0%;"></div></div>
             </td>
             <td class="start">{% if (!o.options.autoUpload) { %}
-                <button class="btn btn-success" rel="fileupload_operation">
+                <button class="btn btn-primary" rel="fileupload_operation">
                     <i class="glyphicon glyphicon-arrow-up icon-white"></i>
                     <span>上传</span>
                 </button>
@@ -30,7 +30,7 @@ def upload_js():
             <td colspan="2"></td>
         {% } %}
         <td class="cancel">{% if (!i) { %}
-            <button class="btn btn-warning" rel="fileupload_operation"
+            <button class="btn " rel="fileupload_operation"
             style="height:40px">
                 <i class="glyphicon glyphicon-remove icon-white"></i>
                 <span>取消</span>
