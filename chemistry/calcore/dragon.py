@@ -1,6 +1,6 @@
 # coding: utf-8
 from os.path import join, basename
-import subprocess
+from subprocess import check_call
 import re
 from .config import CALCULATE_CMD_TYPE, CALCULATE_DATA_PATH
 from .xml_utils import XMLWriter
@@ -47,7 +47,7 @@ class DragonModel():
             # dragon6shell -s *.drs to get the result
             cmd = "%s '%s'" % (CALCULATE_CMD_TYPE.DRAGON, output_fpath)
             chemistry_logger.info('mol2drs cmd %s' % cmd)
-            subprocess.Popen(cmd, shell=True).wait()
+            check_call(cmd, shell=True)
 
     def extractparameter(self, parameters=None):
         '''从drs文件中将对应参数名列表中对应的描述符名称的值提取出来，返回的是一个字典'''
@@ -106,18 +106,14 @@ class DragonModel():
                 f.close()
 
                 regex = '.*ATOM NO\..*TYPE.*CHARGE.*No\.'
-                j = 1
+                j = 0
                 for lineNum in range(len(lines)):
                     if re.match(regex, lines[lineNum]):
-                        while(not re.match('.*DIPOLE.*', lines[lineNum])):
-                            List = lines[lineNum+j].split()
-                            while(1):
-                                try:
-                                    List.remove('')
-                                except:
-                                    break
+                        chemistry_logger.info('PL out %s' % lines[lineNum])
+                        while(not re.match('.*DIPOLE.*', lines[lineNum+j])):
                             j = j + 1
-                        para_dic[raw_name]["u"] = lines[lineNum+j+3].split()[-1]
+                        chemistry_logger.info('PL out2 %s' % lines[lineNum+j+3])
+                        para_dic[raw_name]["u"] = float(lines[lineNum+j+3].split()[-1])
                         break
 
         return para_dic
