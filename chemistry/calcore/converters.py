@@ -1,7 +1,7 @@
 # coding: utf-8
 import os
 from os.path import join, exists
-import subprocess
+from subprocess import check_call
 import shutil
 import pybel
 from .config import CALCULATE_DATA_PATH
@@ -72,7 +72,7 @@ class Converter():
                 cmd = 'obabel -:"%s" -o mop -O "%s" --gen3D' % (smile,
                                                                 mop_fpath)
                 chemistry_logger.info('mop2mopac, smi->mop: %s' % cmd)
-                subprocess.Popen(cmd, shell=True).wait()
+                check_call(cmd, shell=True)
             except:
                 self.__invalid_smile.append(smile)
                 continue

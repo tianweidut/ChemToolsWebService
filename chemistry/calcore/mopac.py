@@ -1,5 +1,5 @@
 # coding: utf-8
-import subprocess
+from subprocess import check_call
 from os.path import join
 
 from .config import CALCULATE_CMD_TYPE, CALCULATE_DATA_PATH
@@ -25,7 +25,7 @@ class MopacModel():
 
             cmd = '%s "%s"' % (CALCULATE_CMD_TYPE.MOPAC, mop_path)
             chemistry_logger.info('opt4dragon part1 cmd: %s' % cmd)
-            subprocess.Popen(cmd, shell=True).wait()
+            check_call(cmd, shell=True)
 
             # get the optimized orientation in out file and replace counterpart
             # in mol file with it now orientation_info
@@ -34,4 +34,4 @@ class MopacModel():
             cmd = 'obabel -imoo "%s" -omol -O "%s" --gen3D' % (out_path,
                                                                mol_path)
             chemistry_logger.info('opt4dragon part2 cmd: %s' % cmd)
-            subprocess.Popen(cmd, shell=True).wait()
+            check_call(cmd, shell=True)

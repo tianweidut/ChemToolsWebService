@@ -1,5 +1,5 @@
 # coding: utf-8
-import subprocess
+from subprocess import check_call
 import shutil
 import os
 from os.path import join, exists
@@ -26,8 +26,8 @@ class GaussianOptimizeModel():
 
             cmd = '%s "%s"' % (CALCULATE_CMD_TYPE.GAUSSIAN, gjf_path)
             chemistry_logger.info('gif4dragon part1 cmd: %s' % cmd)
-            subprocess.Popen(cmd, shell=True).wait()
+            check_call(cmd, shell=True)
 
             cmd = 'obabel -ig09 "%s" -omol -O "%s"' % (log_path, mol_path)
             chemistry_logger.info('gif4dragon part2 cmd: %s' % cmd)
-            subprocess.Popen(cmd, shell=True).wait()
+            check_call(cmd, shell=True)
