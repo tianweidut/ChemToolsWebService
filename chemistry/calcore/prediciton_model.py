@@ -38,6 +38,7 @@ class PredictionModel(object):
         }[modelname]()
 
     def logKOA(self):
+        #KOA 有温度参数
         abstract_value = self.dragon_model.extractparameter([
             "X1sol", "Mor13v", "HATS5v", "RDF035m", "Mor15u",
             "RDF090m", "H-050", "nRCOOR", "R5v", "T(O..Cl)",
@@ -62,6 +63,7 @@ class PredictionModel(object):
                 1040.0 / self.T
 
     def logRP(self):
+        #RP 无温度参数
         abstract_value = self.dragon_model.extractparameter([
             "TDB05v", "Hypnotic-80"])
 
@@ -74,6 +76,7 @@ class PredictionModel(object):
                 abstract_value[smilenum]['Hypnotic-80']
 
     def logBCF(self):
+        #BCF 无温度参数
         abstract_value = self.dragon_model.extractparameter([
             "MLOGP2", "F02[C-Cl]", "nROH", "P-117", "Mor25m",
             "N%", "X4v", "O-058", "LLS_01", "H4v", "SM12_AEA(dm)", "O-057"])
@@ -96,6 +99,7 @@ class PredictionModel(object):
                 0.269 * abstract_value[smilenum]['O-057']
 
     def logKOH(self):
+        # KOH 298K预测模型, 无温度参数
         abstract_value = self.dragon_model.extractparameter([
             "EHOMO", "AMW", "NdsCH", "Mor14i", "nR=Cp",
             "nP", "nRCHO", "X%", "SpMaxA_AEA(dm)", "C-020",
@@ -119,6 +123,7 @@ class PredictionModel(object):
                 0.1410 * abstract_value[smilenum]['CATS2D_03_DL']
 
     def logKOH_T(self):
+        # KOH 温度依附性模型, 有温度参数
         abstract_value = self.dragon_model.extractparameter([
             "EHOMO", "X%", "Mor29u", "NdsCH", "GATS1e", "X3A", "SdsCH",
             "BIC1", "RDF015m", "SpMin8_Bh(p)", "nR=Cp", "NssssC", "F02[F-Br]"])
@@ -160,6 +165,7 @@ class PredictionModel(object):
         self.Williams(koh_TX, x)
 
     def logKOC(self):
+        # KOC 使用g09，无温度参数
         abstract_value = self.dragon_model.extractparameter([
             "MLOGP2", "WiA_Dt", "H_D/Dt", "nHM", "O-061", "HATS4v",
             "P-117", "nR=CRX", "F05[N-O]", "B08[Br-Br]", "R3e+",
@@ -204,6 +210,7 @@ class PredictionModel(object):
         self.Williams(kocX, x)
 
     def logBDG(self):
+        # BDG 无温度参数
         abstract_value = self.dragon_model.extractparameter([
             "nN", "nHM", "O%", "MATS1e", "GATS1p", "GATS7p", "GGI1", "GGI2",
             "nCq", "nCrt", "C-040", "H-048", "H-051", "O-059"])
@@ -229,6 +236,7 @@ class PredictionModel(object):
                 self.predict_result[smilenum]['logBDG'] = 1 / (1 + math.exp(-x))
 
     def logPL(self):
+        #PL 模型，有温度参数
         abstract_value = self.dragon_model.extractparameter([
             "nHDon", "X1sol", "nROH", "u", "GATS1v"])
         for smilenum in abstract_value.keys():

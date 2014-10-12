@@ -19,6 +19,10 @@ LOCK_EXPIRE = 60 * 5  # Lock expires in 5 minutes
 DEFAULT_TEMPERATURE_ARGS = 25  # 默认摄氏温度
 
 
+def has_temperature(model_name):
+    return model_name.lower() in ('koh_t', 'koa', 'pl')
+
+
 def get_model_name(name):
     # 模型对应接口：
     # 前端:templates/newtask.html, model name (src)
