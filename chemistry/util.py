@@ -200,7 +200,10 @@ def get_models_selector(models_str):
 
 
 def singletask_details(pid):
+    from chemistry.tasks import has_temperature
     single_task = get_object_or_404(SingleTask, pid=pid)
+    if not has_temperature(single_task.model.desc):
+        single_task.temperature = '--'
     try:
         local_search_id = single_task.file_obj.local_search_id
         if local_search_id:
@@ -216,8 +219,13 @@ def singletask_details(pid):
 
 
 def suitetask_details(sid):
+    from chemistry.tasks import has_temperature
     suitetask = get_object_or_404(SuiteTask, sid=sid)
     single_lists = SingleTask.objects.filter(sid=sid)
+
+    for s in single_lists:
+        if not has_temperature(s.model.desc):
+            s.temperature = '--'
 
     return dict(suitetask=suitetask,
                 single_lists=single_lists)
