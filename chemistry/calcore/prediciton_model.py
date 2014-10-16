@@ -10,10 +10,8 @@ from utils import chemistry_logger
 class PredictionModel(object):
     def __init__(self, model_name=None,
                  smile=None, mol_fpath=None,
-                 T=None, hi=None, hx=None):
+                 T=None):
         self.predict_result = {}
-        self.hi = hi
-        self.hx = hx
         self.T = T
 
         if self.T == 0 and model_name in ('logKOA', 'logKOH_T'):
@@ -48,7 +46,7 @@ class PredictionModel(object):
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = {}
 
-            self.predict_result[smilenum]['logKOA'] = -3.03 + \
+            self.predict_result[smilenum]['logKOA']['value'] = -3.03 + \
                 313.0 * abstract_value[smilenum]['X1sol'] / self.T - \
                 85.7 * abstract_value[smilenum]['Mor13v'] / self.T + \
                 432.0 * abstract_value[smilenum]['H-050'] / self.T - \
@@ -71,7 +69,7 @@ class PredictionModel(object):
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = {}
 
-            self.predict_result[smilenum]['logRP'] = -11.857 + 18.968 * \
+            self.predict_result[smilenum]['logRP']['value'] = -11.857 + 18.968 * \
                 abstract_value[smilenum]['TDB05v'] + 1.480 * \
                 abstract_value[smilenum]['Hypnotic-80']
 
@@ -84,7 +82,7 @@ class PredictionModel(object):
         for smilenum in abstract_value:
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = {}
-            self.predict_result[smilenum]['logBCF'] = 2.137 + \
+            self.predict_result[smilenum]['logBCF']['value'] = 2.137 + \
                 0.061 * abstract_value[smilenum]['MLOGP2'] + \
                 0.034 * abstract_value[smilenum]['F02[C-Cl]'] - \
                 0.312 * abstract_value[smilenum]['nROH'] - \
@@ -108,7 +106,7 @@ class PredictionModel(object):
         for smilenum in abstract_value:
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = {}
-            self.predict_result[smilenum]['logKOH'] = -6.511 + \
+            self.predict_result[smilenum]['logKOH']['value'] = -6.511 + \
                 15.85 * abstract_value[smilenum]['EHOMO'] - \
                 0.03800 * abstract_value[smilenum]['AMW'] + \
                 0.1300 * abstract_value[smilenum]['NdsCH'] + \
@@ -131,7 +129,8 @@ class PredictionModel(object):
         for smilenum in abstract_value:
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = {}
-            self.predict_result[smilenum]['logKOH_T'] = -8.613 - \
+
+            self.predict_result[smilenum]['logKOH_T']['value'] = -8.613 - \
                 0.02100 * abstract_value[smilenum]['X%'] + \
                 14.38 * abstract_value[smilenum]['EHOMO'] - \
                 0.6430 * abstract_value[smilenum]['Mor29u'] + \
@@ -147,22 +146,23 @@ class PredictionModel(object):
                 0.1980 * abstract_value[smilenum]['NssssC'] - \
                 0.5080 * abstract_value[smilenum]['F02[F-Br]']
 
-        x = matrix([[abstract_value[smilenum]['X%'],
-                     abstract_value[smilenum]['EHOMO'],
-                     abstract_value[smilenum]['Mor29u'],
-                     abstract_value[smilenum]['NdsCH'],
-                     abstract_value[smilenum]['GATS1e'],
-                     abstract_value[smilenum]['X3A'],
-                     1.0 / self.T,
-                     abstract_value[smilenum]['SdsCH'],
-                     abstract_value[smilenum]['nR=Cp'],
-                     abstract_value[smilenum]['F02[F-Br]'],
-                     abstract_value[smilenum]['RDF015m'],
-                     abstract_value[smilenum]['BIC1'],
-                     abstract_value[smilenum]['SpMin8_Bh(p)'],
-                     abstract_value[smilenum]['NssssC']
-                     ]])
-        self.Williams(koh_TX, x)
+            x = matrix([[abstract_value[smilenum]['X%'],
+                         abstract_value[smilenum]['EHOMO'],
+                         abstract_value[smilenum]['Mor29u'],
+                         abstract_value[smilenum]['NdsCH'],
+                         abstract_value[smilenum]['GATS1e'],
+                         abstract_value[smilenum]['X3A'],
+                         1.0 / self.T,
+                         abstract_value[smilenum]['SdsCH'],
+                         abstract_value[smilenum]['nR=Cp'],
+                         abstract_value[smilenum]['F02[F-Br]'],
+                         abstract_value[smilenum]['RDF015m'],
+                         abstract_value[smilenum]['BIC1'],
+                         abstract_value[smilenum]['SpMin8_Bh(p)'],
+                         abstract_value[smilenum]['NssssC']
+                         ]])
+            williams = self.get_williams(koh_TX, x)
+            self.predict_result[smilenum]['logKOH_T'].update(williams)
 
     def logKOC(self):
         # KOC 使用g09，无温度参数
@@ -174,7 +174,7 @@ class PredictionModel(object):
         for smilenum in abstract_value:
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = {}
-            self.predict_result[smilenum]['logKOC'] = 0.546 + \
+            self.predict_result[smilenum]['logKOC']['value'] = 0.546 + \
                 0.063 * abstract_value[smilenum]['MLOGP2'] + \
                 0.332 * abstract_value[smilenum]['WiA_Dt'] + \
                 0.260 * abstract_value[smilenum]['nHM'] - \
@@ -191,23 +191,24 @@ class PredictionModel(object):
                 0.220 * abstract_value[smilenum]['F02[S-S]'] + \
                 0.627 * abstract_value[smilenum]['nRCN']
 
-        x = matrix([[abstract_value[smilenum]['nHM'],
-                     abstract_value[smilenum]['WiA_Dt'],
-                     abstract_value[smilenum]['H_D/Dt'],
-                     abstract_value[smilenum]['HATS4v'],
-                     abstract_value[smilenum]['R3e+'],
-                     abstract_value[smilenum]['nRCN'],
-                     abstract_value[smilenum]['nR=CRX'],
-                     abstract_value[smilenum]['O-061'],
-                     abstract_value[smilenum]['P-117'],
-                     abstract_value[smilenum]['CATS2D_05_NL'],
-                     abstract_value[smilenum]['B03[N-S]'],
-                     abstract_value[smilenum]['B08[Br-Br]'],
-                     abstract_value[smilenum]['F02[S-S]'],
-                     abstract_value[smilenum]['F05[N-O]'],
-                     abstract_value[smilenum]['MLOGP2']
-                     ]])
-        self.Williams(kocX, x)
+            x = matrix([[abstract_value[smilenum]['nHM'],
+                         abstract_value[smilenum]['WiA_Dt'],
+                         abstract_value[smilenum]['H_D/Dt'],
+                         abstract_value[smilenum]['HATS4v'],
+                         abstract_value[smilenum]['R3e+'],
+                         abstract_value[smilenum]['nRCN'],
+                         abstract_value[smilenum]['nR=CRX'],
+                         abstract_value[smilenum]['O-061'],
+                         abstract_value[smilenum]['P-117'],
+                         abstract_value[smilenum]['CATS2D_05_NL'],
+                         abstract_value[smilenum]['B03[N-S]'],
+                         abstract_value[smilenum]['B08[Br-Br]'],
+                         abstract_value[smilenum]['F02[S-S]'],
+                         abstract_value[smilenum]['F05[N-O]'],
+                         abstract_value[smilenum]['MLOGP2']
+                         ]])
+            williams = self.get_williams(kocX, x)
+            self.predict_result[smilenum]['logKOC'].update(williams)
 
     def logBDG(self):
         # BDG 无温度参数
@@ -233,7 +234,7 @@ class PredictionModel(object):
                     0.7091 * abstract_value[smilenum]['H-048'] - \
                     0.1553 * abstract_value[smilenum]['H-051'] + \
                     0.955 * abstract_value[smilenum]['O-059']
-                self.predict_result[smilenum]['logBDG'] = 1 / (1 + math.exp(-x))
+                self.predict_result[smilenum]['logBDG']['value'] = 1 / (1 + math.exp(-x))
 
     def logPL(self):
         #PL 模型，有温度参数
@@ -242,7 +243,7 @@ class PredictionModel(object):
         for smilenum in abstract_value.keys():
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = {}
-            self.predict_result[smilenum]['logPL'] = 13.33 - \
+            self.predict_result[smilenum]['logPL']['value'] = 13.33 - \
                 2571.0 * (1 / self.T) - \
                 0.5061 * abstract_value[smilenum]['nHDon'] - \
                 0.6896 * abstract_value[smilenum]['X1sol'] + \
@@ -250,9 +251,9 @@ class PredictionModel(object):
                 0.1363 * abstract_value[smilenum]['u'] - \
                 0.6094 * abstract_value[smilenum]['nROH']
 
-    def Williams(self, X, x):
-        self.hx = 3 * (X.shape[1] + 1.0) / X.shape[0]
-        self.hi = (x * linalg.inv(X.T * X) * x.T)[0, 0]
+    def get_williams(self, X, x):
+        return dict(hx=3 * (X.shape[1] + 1.0) / X.shape[0],
+                    hi=(x * linalg.inv(X.T * X) * x.T)[0, 0])
 
 
 def prediction_model_calculate(model_name, smile, mol_fpath, temperature):

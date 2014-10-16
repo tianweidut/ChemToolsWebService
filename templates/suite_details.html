@@ -58,6 +58,7 @@
       <td>来源</td>
       <td>温度</td>
       <td>结果</td>
+      <td>应用域</td>
       <td></td>
     </tr>
   </thead>
@@ -77,7 +78,15 @@
       <td>{{single.model.origin_type}}</td>
       <td>{{single.file_obj.file_source}}</td>
       <td>{{single.temperature}}</td>
-      <td>{{single.results}}</td>
+      <td>{{single.result_value}}</td>
+      <td>
+      {% if single.hi == None and single.hx == None %}
+        <p class="label label-default">未知</p>
+      {% elif single.hi <= single.hx %}
+        <p class="label label-success">应用域内</p>
+      {% else %}
+        <p class="label label-danger">应用域外</p>
+      {% endif %}
       <td>
         <a class="btn btn-primary" href="{% url 'chemistry.views.singletask' single.pid %}">细节</a>
       </td>

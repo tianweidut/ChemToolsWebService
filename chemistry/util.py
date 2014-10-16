@@ -1,6 +1,7 @@
 # coding: UTF-8
 import os
 import uuid
+import json
 from functools import wraps
 
 import pybel
@@ -204,6 +205,7 @@ def singletask_details(pid):
     single_task = get_object_or_404(SingleTask, pid=pid)
     if not has_temperature(single_task.model.desc):
         single_task.temperature = '--'
+    single_task.result_value, single_task.hi, single_task.hx = get_singletask_area(single_task.results)
     try:
         local_search_id = single_task.file_obj.local_search_id
         if local_search_id:
@@ -226,9 +228,20 @@ def suitetask_details(sid):
     for s in single_lists:
         if not has_temperature(s.model.desc):
             s.temperature = '--'
+        s.result_value, s.hi, s.hx = get_singletask_area(s.results)
 
     return dict(suitetask=suitetask,
                 single_lists=single_lists)
+
+
+def get_singletask_area(data):
+    data = json.loads(data)
+    if not data:
+        data = {}
+    elif isinstance(data, basestring):
+        data = {'value': data}
+
+    return (data.get('value', '--'), data.get('hi'), data.get('hx'))
 
 
 def calculate_tasks(files_id_list, smile, mol_data, models):
