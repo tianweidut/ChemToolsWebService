@@ -1,5 +1,6 @@
 # coding: UTF-8
 import os
+import json
 import datetime
 
 from celery.decorators import task
@@ -130,13 +131,13 @@ def calculateTask(task, model):
         result = predict_results[name][map_model_name]
     except KeyError:
         chemistry_logger.exception('still cannot support this model')
-        result = 0
+        result = None
         task.result_state = "We don't support this model now"
-        task.status = StatusCategory.objects.get(category=STATUS_SUCCESS)
-        suite.status_id = StatusCategory.objects.get(category=STATUS_WORKING)
+        task.status = StatusCategory.objects.get(category=STATUS_FAILED)
+        suite.status_id = StatusCategory.objects.get(category=STATUS_FAILED)
     except Exception as e:
         chemistry_logger.exception('failed to submit task to prediction model')
-        result = -10000
+        result = None
         task.result_state = str(e)
         task.status = StatusCategory.objects.get(category=STATUS_FAILED)
         suite.status_id = StatusCategory.objects.get(category=STATUS_FAILED)
@@ -149,7 +150,7 @@ def calculateTask(task, model):
     suite.save()
 
     task.end_time = datetime.datetime.now()
-    task.results = result
+    task.results = json.dumps(result)
 
     try:
         file_path = generate_pdf(id=task.pid, task_type=TASK_SINGLE)

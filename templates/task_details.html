@@ -112,7 +112,18 @@
           </tr>
           <tr>
               <td>计算结果</td>
-              <td>{{singletask.results}}</td>
+              <td>
+                <span>
+                  {{singletask.result_value}}
+                  {% if single.hi == None and single.hx == None %}
+                      <p class="label label-default">应用域未知</p>
+                  {% elif single.hi <= single.hx %}
+                      <p class="label label-success">应用域内</p>
+                  {% else %}
+                      <p class="label label-danger">应用域外</p>
+                  {% endif %}
+                </span>
+              </td>
           </tr>
           {% if singletask.model.desc == 'BDG'%}
           <tr>
