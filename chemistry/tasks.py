@@ -34,7 +34,7 @@ def get_model_name(name):
         "koc": "logKOC",
         "bcf": "logBCF",
         "koh": "logKOH",
-        "koh_T": "logKOH_T",
+        "koh_t": "logKOH_T",
         "pl": "logPL",
         "bdg": "logBDG",
     }
