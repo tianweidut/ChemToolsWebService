@@ -238,7 +238,7 @@ def get_singletask_area(data):
     data = json.loads(data)
     if not data:
         data = {}
-    elif isinstance(data, basestring):
+    elif not isinstance(data, dict):
         data = {'value': data}
 
     return (data.get('value', '--'), data.get('hi'), data.get('hx'))
