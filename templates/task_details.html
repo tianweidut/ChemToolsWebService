@@ -115,9 +115,9 @@
               <td>
                 <span>
                   {{singletask.result_value}}
-                  {% if single.hi == None and single.hx == None %}
+                  {% if singletask.hi == None and singletask.hx == None %}
                       <p class="label label-default">应用域未知</p>
-                  {% elif single.hi <= single.hx %}
+                  {% elif singletask.hi <= singletask.hx %}
                       <p class="label label-success">应用域内</p>
                   {% else %}
                       <p class="label label-danger">应用域外</p>

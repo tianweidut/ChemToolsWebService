@@ -235,10 +235,12 @@ def suitetask_details(sid):
 
 
 def get_singletask_area(data):
-    data = json.loads(data)
-    if not data:
+    try:
+        data = json.loads(data)
+    except:
         data = {}
-    elif not isinstance(data, dict):
+
+    if not isinstance(data, dict):
         data = {'value': data}
 
     return (data.get('value', '--'), data.get('hi'), data.get('hx'))

@@ -1,6 +1,7 @@
 # coding: utf-8
 from numpy import matrix, linalg
 import math
+from collections import defaultdict
 
 from .dragon import DragonModel
 from .train_matrix import kocX, koh_TX
@@ -44,7 +45,7 @@ class PredictionModel(object):
 
         for smilenum in abstract_value:
             if smilenum not in self.predict_result:
-                self.predict_result[smilenum] = {}
+                self.predict_result[smilenum] = defaultdict(dict)
 
             self.predict_result[smilenum]['logKOA']['value'] = -3.03 + \
                 313.0 * abstract_value[smilenum]['X1sol'] / self.T - \
@@ -67,7 +68,7 @@ class PredictionModel(object):
 
         for smilenum in abstract_value.keys():
             if smilenum not in self.predict_result:
-                self.predict_result[smilenum] = {}
+                self.predict_result[smilenum] = defaultdict(dict)
 
             self.predict_result[smilenum]['logRP']['value'] = -11.857 + 18.968 * \
                 abstract_value[smilenum]['TDB05v'] + 1.480 * \
@@ -81,7 +82,7 @@ class PredictionModel(object):
 
         for smilenum in abstract_value:
             if smilenum not in self.predict_result:
-                self.predict_result[smilenum] = {}
+                self.predict_result[smilenum] = defaultdict(dict)
             self.predict_result[smilenum]['logBCF']['value'] = 2.137 + \
                 0.061 * abstract_value[smilenum]['MLOGP2'] + \
                 0.034 * abstract_value[smilenum]['F02[C-Cl]'] - \
@@ -105,7 +106,7 @@ class PredictionModel(object):
 
         for smilenum in abstract_value:
             if smilenum not in self.predict_result:
-                self.predict_result[smilenum] = {}
+                self.predict_result[smilenum] = defaultdict(dict)
             self.predict_result[smilenum]['logKOH']['value'] = -6.511 + \
                 15.85 * abstract_value[smilenum]['EHOMO'] - \
                 0.03800 * abstract_value[smilenum]['AMW'] + \
@@ -128,7 +129,7 @@ class PredictionModel(object):
 
         for smilenum in abstract_value:
             if smilenum not in self.predict_result:
-                self.predict_result[smilenum] = {}
+                self.predict_result[smilenum] = defaultdict(dict)
 
             self.predict_result[smilenum]['logKOH_T']['value'] = -8.613 - \
                 0.02100 * abstract_value[smilenum]['X%'] + \
@@ -173,7 +174,7 @@ class PredictionModel(object):
 
         for smilenum in abstract_value:
             if smilenum not in self.predict_result:
-                self.predict_result[smilenum] = {}
+                self.predict_result[smilenum] = defaultdict(dict)
             self.predict_result[smilenum]['logKOC']['value'] = 0.546 + \
                 0.063 * abstract_value[smilenum]['MLOGP2'] + \
                 0.332 * abstract_value[smilenum]['WiA_Dt'] + \
@@ -218,7 +219,7 @@ class PredictionModel(object):
 
         for smilenum in abstract_value.keys():
             if smilenum not in self.predict_result:
-                self.predict_result[smilenum] = {}
+                self.predict_result[smilenum] = defaultdict(dict)
                 x = 1.9025 + \
                     1.0457 * abstract_value[smilenum]['nN'] + \
                     0.6662 * abstract_value[smilenum]['nHM'] - \
@@ -242,7 +243,7 @@ class PredictionModel(object):
             "nHDon", "X1sol", "nROH", "u", "GATS1v"])
         for smilenum in abstract_value.keys():
             if smilenum not in self.predict_result:
-                self.predict_result[smilenum] = {}
+                self.predict_result[smilenum] = defaultdict(dict)
             self.predict_result[smilenum]['logPL']['value'] = 13.33 - \
                 2571.0 * (1 / self.T) - \
                 0.5061 * abstract_value[smilenum]['nHDon'] - \

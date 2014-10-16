@@ -129,6 +129,7 @@ def calculateTask(task, model):
         else:
             name = smile
         result = predict_results[name][map_model_name]
+        chemistry_logger.info('result %s' % result)
     except KeyError:
         chemistry_logger.exception('still cannot support this model')
         result = None
