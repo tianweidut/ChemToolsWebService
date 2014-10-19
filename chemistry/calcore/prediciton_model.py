@@ -63,16 +63,34 @@ class PredictionModel(object):
 
     def logRP(self):
         #RP 无温度参数
-        abstract_value = self.dragon_model.extractparameter([
-            "TDB05v", "Hypnotic-80"])
+        ab = self.dragon_model.extractparameter([
+            'nN', 'nCar', 'nArOH', 'nArCOOH', 'nROH',
+            'nRCOOH', 'nSO2OH', 'nSOOH', 'nArX', 'nX',
+            'H2s', 'Mor07m', 'R8v+', 'CIC3', 'Eig15_EA(dm)',
+            'H7m', 'RTs+'])
 
-        for smilenum in abstract_value.keys():
-            if smilenum not in self.predict_result:
-                self.predict_result[smilenum] = defaultdict(dict)
+        for s in ab.keys():
+            if s not in self.predict_result:
+                self.predict_result[s] = defaultdict(dict)
 
-            self.predict_result[smilenum]['logRP']['value'] = -11.857 + 18.968 * \
-                abstract_value[smilenum]['TDB05v'] + 1.480 * \
-                abstract_value[smilenum]['Hypnotic-80']
+            cap_v = ab[s]['nROH'] + ab[s]['nRCOOH'] + ab[s]['nSO2OH'] + ab[s]['nSOOH']
+
+            if ((ab[s]['nCar'] == 0 and cap_v == 0 and ab[s]['nX'] >= 0) or
+                    (ab[s]['nCar'] == 0 and cap_v > 0)):
+                # 模型2
+                self.predict_result[s]['logRP']['value'] = -4.279 + \
+                    3.891 * 0.01 * ab[s]['H2s'] - \
+                    1.961 * 0.1 * ab[s]['Mor07m'] + \
+                    5.476 * 10 * ab[s]['R8v+']
+            else:
+                # 模型1
+                self.predict_result[s]['logRP']['value'] = -3.181 + \
+                    2.515 * ab[s]['nArOH'] - \
+                    8.990 * 0.1 * ab[s]['CIC3'] + \
+                    3.463 * ab[s]['Eig15_EA(dm)'] + \
+                    2.723 * 0.1 * ab[s]['H7m'] + \
+                    6.901 * 0.1 * ab[s]['RTs+']
+            self.predict_result[s]['logRP']['nN'] = ab[s]['nN']
 
     def logBCF(self):
         #BCF 无温度参数
