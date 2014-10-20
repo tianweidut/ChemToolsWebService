@@ -83,7 +83,7 @@ def render_calculate_result_as_html(sid):
     return t.render(c)
 
 
-#@task()
+@task()
 def send_email_task(observers, sid):
     subject = "计算结果结果邮件-化学品预测毒理学平台"
     if isinstance(observers, basestring):
