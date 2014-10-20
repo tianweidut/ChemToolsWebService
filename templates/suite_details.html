@@ -35,12 +35,6 @@
       <p>已完成任务数:{{suitetask.has_finished_tasks}}</p>
     </div>
     
-    {%if singletask.total_tasks == singletask.has_finished_tasks and suitetask.result_pdf %}
-      <div class="col-xs-3">
-        <h4>结果报告</h4>
-        <a href="{{suitetask.result_pdf.url}}" target="_blank"><image src="/static/images/pdf256.png" style="width: 70px; height: 70px;"></a>
-      </div>
-    {%endif%}
 </div>
 <br/>
 

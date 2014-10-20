@@ -1,0 +1,54 @@
+<div style="width:50em;">
+  <h3>任务名称:<a href="http://{{domain}}/details/suite/{{suitetask.sid}}">{{suitetask.name}}</a></h3>
+  <p>任务总数:{{suitetask.total_tasks}}</p>
+  <p>时间: {{suitetask.start_time|date:"Y-m-d H:m"}} ~ {{suitetask.end_time|date:"Y-m-d H:m"}}</p>
+  <hr/>
+  
+  <h3>任务细节</h3>
+  <table class="table" style="width:100%">
+    <thead>
+      <tr>
+        <td>状态</td>
+        <td>模型</td>
+        <td>类别</td>
+        <td>来源</td>
+        <td>温度</td>
+        <td>结果</td>
+        <td>应用域</td>
+        <td></td>
+      </tr>
+    </thead>
+    <tbody>
+      {%for single in single_lists%}
+      <tr>
+        <td>
+          {% if single.status.category == "success" %}
+            <p class="label label-success">计算成功</p>
+          {% elif single.status.category == "failed" %}
+            <p class="label label-danger">计算失败</p>
+          {% else %}
+            <p class="label label-info">正在计算</p>
+          {%endif%}
+        </td>
+        <td>{{single.model|upper}}({{single.model.desc|upper}})</td>
+        <td>{{single.model.origin_type}}</td>
+        <td>{{single.file_obj.file_source}}</td>
+        <td>{{single.temperature}}</td>
+        <td>{{single.result_value}}</td>
+        <td>
+        {% if single.hi == None and single.hx == None %}
+          <p class="label label-default">未知</p>
+        {% elif single.hi <= single.hx %}
+          <p class="label label-success">应用域内</p>
+        {% else %}
+          <p class="label label-danger">应用域外</p>
+        {% endif %}
+        <td>
+          <a href="http://{{domain}}/details/task/{{single.pid}}">细节</a>
+        </td>
+      </tr>
+    {%endfor%}
+    </tbody>
+  </table>
+  <p>更多内容，请访问: http://{{domain}}/details/suite/{{suitetask.sid}}</p>
+</div>
