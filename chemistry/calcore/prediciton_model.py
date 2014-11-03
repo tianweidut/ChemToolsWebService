@@ -4,7 +4,6 @@ import math
 from collections import defaultdict
 
 from .dragon import DragonModel
-from .train_matrix import kocX, koh_TX
 from utils import chemistry_logger
 
 
@@ -37,11 +36,15 @@ class PredictionModel(object):
         }[modelname]()
 
     def logKOA(self):
+        from .matrix.koa import koaX
+
         #KOA 有温度参数
+        #X1sol Mor13v H050 R5v TO..Cl HATS5v RDF035m RCl nCOOR Mor15u RDF90m 1/T
         abstract_value = self.dragon_model.extractparameter([
-            "X1sol", "Mor13v", "HATS5v", "RDF035m", "Mor15u",
-            "RDF090m", "H-050", "nRCOOR", "R5v", "T(O..Cl)",
-            "RCI", "nRCOOR"])
+            "X1sol", "Mor13v", "H-050", "R5v",
+            "T(O..Cl)", "HATS5v", "RDF035m",
+            "RCI", "nCOOR", "Mor15u",
+            "RDF090m"])
 
         for smilenum in abstract_value:
             if smilenum not in self.predict_result:
@@ -56,13 +59,34 @@ class PredictionModel(object):
                 125.0 * abstract_value[smilenum]['HATS5v'] / self.T - \
                 13.3 * abstract_value[smilenum]['RDF035m'] / self.T - \
                 61.1 * abstract_value[smilenum]['RCI'] / self.T - \
-                37.6 * abstract_value[smilenum]['nRCOOR'] / self.T + \
+                37.6 * abstract_value[smilenum]['nCOOR'] / self.T + \
                 156.0 * abstract_value[smilenum]['Mor15u'] / self.T -\
                 5.49 * abstract_value[smilenum]['RDF090m'] / self.T + \
                 1040.0 / self.T
 
+            x = matrix([[abstract_value[smilenum]['X1sol'],
+                         abstract_value[smilenum]['Mor13v'],
+                         abstract_value[smilenum]['H-050'],
+                         abstract_value[smilenum]['R5v'],
+                         abstract_value[smilenum]['T(O..Cl)'],
+                         abstract_value[smilenum]['HATS5v'],
+                         abstract_value[smilenum]['RDF035m'],
+                         abstract_value[smilenum]['RCI'],
+                         abstract_value[smilenum]['nCOOR'],
+                         abstract_value[smilenum]['Mor15u'],
+                         abstract_value[smilenum]['RDF090m'],
+                         1.0 / self.T,
+                         ]])
+            williams = self.get_williams(koaX, x)
+            self.predict_result[smilenum]['logKOA'].update(williams)
+
     def logRP(self):
         #RP 无温度参数
+        from .matrix.rp1 import rp1X
+        #rp1: CAS nArOH CIC3 Eig15_EA(dm) H7m RTs+
+        from .matrix.rp2 import rp2X
+        #rp2: CAS H2s Mor07m R8v+
+
         ab = self.dragon_model.extractparameter([
             'nN', 'nCar', 'nArOH', 'nArCOOH', 'nROH',
             'nRCOOH', 'nSO2OH', 'nSOOH', 'nArX', 'nX',
@@ -82,6 +106,10 @@ class PredictionModel(object):
                     3.891 * 0.01 * ab[s]['H2s'] - \
                     1.961 * 0.1 * ab[s]['Mor07m'] + \
                     5.476 * 10 * ab[s]['R8v+']
+                x = matrix([[ab[s]['H2s'],
+                             ab[s]['Mor07m'],
+                             ab[s]['R8v+']]])
+                williams = self.get_williams(rp2X, x)
             else:
                 # 模型1
                 self.predict_result[s]['logRP']['value'] = -3.181 + \
@@ -90,13 +118,24 @@ class PredictionModel(object):
                     3.463 * ab[s]['Eig15_EA(dm)'] + \
                     2.723 * 0.1 * ab[s]['H7m'] + \
                     6.901 * 0.1 * ab[s]['RTs+']
+                x = matrix([[ab[s]['nArOH'],
+                             ab[s]['CIC3'],
+                             ab[s]['Eig15_EA(dm)'],
+                             ab[s]['H7m'],
+                             ab[s]['RTs+']]])
+                williams = self.get_williams(rp1X, x)
+
             self.predict_result[s]['logRP']['nN'] = ab[s]['nN']
+            self.predict_result[s]['logKOA'].update(williams)
 
     def logBCF(self):
+        from .matrix.bcf import bcfX
         #BCF 无温度参数
+        #CAS NO. MLOGP2 F02[C-Cl] nROH P-117 Mor25m N% X4v O-058 LLS_01 H4v SM12_AEA(dm) O-057
         abstract_value = self.dragon_model.extractparameter([
-            "MLOGP2", "F02[C-Cl]", "nROH", "P-117", "Mor25m",
-            "N%", "X4v", "O-058", "LLS_01", "H4v", "SM12_AEA(dm)", "O-057"])
+            "MLOGP2", "F02[C-Cl]", "nROH",
+            "P-117", "Mor25m", "N%", "X4v",
+            "O-058", "LLS_01", "H4v", "SM12_AEA(dm)", "O-057"])
 
         for smilenum in abstract_value:
             if smilenum not in self.predict_result:
@@ -115,11 +154,28 @@ class PredictionModel(object):
                 0.071 * abstract_value[smilenum]['SM12_AEA(dm)'] - \
                 0.269 * abstract_value[smilenum]['O-057']
 
+            x = matrix([[abstract_value[smilenum]['MLOGP2'],
+                         abstract_value[smilenum]['F02[C-Cl]'],
+                         abstract_value[smilenum]['nROH'],
+                         abstract_value[smilenum]['P-117'],
+                         abstract_value[smilenum]['Mor25m'],
+                         abstract_value[smilenum]['N%'],
+                         abstract_value[smilenum]['X4v'],
+                         abstract_value[smilenum]['O-058'],
+                         abstract_value[smilenum]['LLS_01'],
+                         abstract_value[smilenum]['H4v'],
+                         abstract_value[smilenum]['SM12_AEA(dm)'],
+                         abstract_value[smilenum]['O-057']]])
+            williams = self.get_williams(bcfX, x)
+            self.predict_result[smilenum]['logBCF'].update(williams)
+
     def logKOH(self):
+        from .matrix.koh_298k import koh_298kX
         # KOH 298K预测模型, 无温度参数
+        #CAS-Number EHOMO AMW NdsCH Mor14i nP nR=Cp X% nRCHO C-020 SpMaxA_AEA(dm) nCbH CATS2D_03_DL
         abstract_value = self.dragon_model.extractparameter([
-            "EHOMO", "AMW", "NdsCH", "Mor14i", "nR=Cp",
-            "nP", "nRCHO", "X%", "SpMaxA_AEA(dm)", "C-020",
+            "EHOMO", "AMW", "NdsCH", "Mor14i", "nP", "nR=Cp",
+            "X%", "nRCHO", "C-020", "SpMaxA_AEA(dm)",
             "nCbH", "CATS2D_03_DL"])
 
         for smilenum in abstract_value:
@@ -130,20 +186,37 @@ class PredictionModel(object):
                 0.03800 * abstract_value[smilenum]['AMW'] + \
                 0.1300 * abstract_value[smilenum]['NdsCH'] + \
                 0.1630 * abstract_value[smilenum]['Mor14i'] + \
-                0.3170 * abstract_value[smilenum]['nR=Cp'] + \
                 0.7790 * abstract_value[smilenum]['nP'] + \
-                0.3930 * abstract_value[smilenum]['nRCHO'] - \
+                0.3170 * abstract_value[smilenum]['nR=Cp'] + \
                 0.01900 * abstract_value[smilenum]['X%'] - \
-                0.4550 * abstract_value[smilenum]['SpMaxA_AEA(dm)'] + \
+                0.3930 * abstract_value[smilenum]['nRCHO'] - \
                 0.5890 * abstract_value[smilenum]['C-020'] - \
+                0.4550 * abstract_value[smilenum]['SpMaxA_AEA(dm)'] + \
                 0.05600 * abstract_value[smilenum]['nCbH'] + \
                 0.1410 * abstract_value[smilenum]['CATS2D_03_DL']
 
+            x = matrix([[abstract_value[smilenum]['EHOMO'],
+                         abstract_value[smilenum]['AMW'],
+                         abstract_value[smilenum]['NdsCH'],
+                         abstract_value[smilenum]['Mor14i'],
+                         abstract_value[smilenum]['nP'],
+                         abstract_value[smilenum]['nR=Cp'],
+                         abstract_value[smilenum]['X%'],
+                         abstract_value[smilenum]['nRCHO'],
+                         abstract_value[smilenum]['C-020'],
+                         abstract_value[smilenum]['SpMaxA_AEA(dm)'],
+                         abstract_value[smilenum]['nCbH'],
+                         abstract_value[smilenum]['CATS2D_03_DL']]])
+            williams = self.get_williams(koh_298kX, x)
+            self.predict_result[smilenum]['logKOH'].update(williams)
+
     def logKOH_T(self):
+        from .matrix.koh import kohX
         # KOH 温度依附性模型, 有温度参数
+        #CAS-Number X% EHOMO Mor29u NdsCH GATS1e X3A 1/T SdsCH nR=Cp F02[F-Br] RDF015m BIC1 SpMin8_Bh(p) NssssC
         abstract_value = self.dragon_model.extractparameter([
-            "EHOMO", "X%", "Mor29u", "NdsCH", "GATS1e", "X3A", "SdsCH",
-            "BIC1", "RDF015m", "SpMin8_Bh(p)", "nR=Cp", "NssssC", "F02[F-Br]"])
+            "X%", "EHOMO", "Mor29u", "NdsCH", "GATS1e", "X3A", "SdsCH",
+            "nR=Cp", "F02[F-Br]", "RDF015m", "BIC1", "SpMin8_Bh(p)", "NssssC"])
 
         for smilenum in abstract_value:
             if smilenum not in self.predict_result:
@@ -180,57 +253,48 @@ class PredictionModel(object):
                          abstract_value[smilenum]['SpMin8_Bh(p)'],
                          abstract_value[smilenum]['NssssC']
                          ]])
-            williams = self.get_williams(koh_TX, x)
+            williams = self.get_williams(kohX, x)
             self.predict_result[smilenum]['logKOH_T'].update(williams)
 
     def logKOC(self):
+        from .matrix.koc import kocX
         # KOC 使用g09，无温度参数
+        #CAS No. nN ATSC8v SpMaxA_G/D Mor16u nROH O-058 P-117 MLOGP2 Molecular Polarizability
         abstract_value = self.dragon_model.extractparameter([
-            "MLOGP2", "WiA_Dt", "H_D/Dt", "nHM", "O-061", "HATS4v",
-            "P-117", "nR=CRX", "F05[N-O]", "B08[Br-Br]", "R3e+",
-            "B03[N-S]", "CATS2D_05_NL", "F02[S-S]", "nRCN"])
+            "nN", "ATSC8v", "SpMaxA_G/D", "Mor16u", "nROH",
+            "O-058", "P-117", "MLOGP2", "α"])
 
         for smilenum in abstract_value:
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = defaultdict(dict)
-            self.predict_result[smilenum]['logKOC']['value'] = 0.546 + \
-                0.063 * abstract_value[smilenum]['MLOGP2'] + \
-                0.332 * abstract_value[smilenum]['WiA_Dt'] + \
-                0.260 * abstract_value[smilenum]['nHM'] - \
-                0.002 * abstract_value[smilenum]['H_D/Dt'] + \
-                0.338 * abstract_value[smilenum]['O-061'] - \
-                1.037 * abstract_value[smilenum]['HATS4v'] - \
-                0.803 * abstract_value[smilenum]['P-117'] + \
-                1.011 * abstract_value[smilenum]['nR=CRX'] - \
-                0.123 * abstract_value[smilenum]['F05[N-O]'] + \
-                1.185 * abstract_value[smilenum]['B08[Br-Br]'] - \
-                1.868 * abstract_value[smilenum]['R3e+'] - \
-                0.537 * abstract_value[smilenum]['B03[N-S]'] - \
-                0.227 * abstract_value[smilenum]['CATS2D_05_NL'] + \
-                0.220 * abstract_value[smilenum]['F02[S-S]'] + \
-                0.627 * abstract_value[smilenum]['nRCN']
+            self.predict_result[smilenum]['logKOC']['value'] = -1.612 + \
+                0.039 * abstract_value[smilenum]['MLOGP2'] +\
+                0.010 * abstract_value[smilenum]["α"] -\
+                0.342 * abstract_value[smilenum]['O-058'] -\
+                0.069 * abstract_value[smilenum]['ATSC8v'] -\
+                0.123 * abstract_value[smilenum]['nN'] -\
+                0.368 * abstract_value[smilenum]['nROH'] -\
+                0.473 * abstract_value[smilenum]['P-117'] +\
+                2.335 * abstract_value[smilenum]['SpMaxA_G/D'] +\
+                0.302 * abstract_value[smilenum]['Mor16u']
 
-            x = matrix([[abstract_value[smilenum]['nHM'],
-                         abstract_value[smilenum]['WiA_Dt'],
-                         abstract_value[smilenum]['H_D/Dt'],
-                         abstract_value[smilenum]['HATS4v'],
-                         abstract_value[smilenum]['R3e+'],
-                         abstract_value[smilenum]['nRCN'],
-                         abstract_value[smilenum]['nR=CRX'],
-                         abstract_value[smilenum]['O-061'],
+            x = matrix([[abstract_value[smilenum]['nN'],
+                         abstract_value[smilenum]['ATSC8v'],
+                         abstract_value[smilenum]['SpMaxA_G/D'],
+                         abstract_value[smilenum]['Mor16u'],
+                         abstract_value[smilenum]['nROH'],
+                         abstract_value[smilenum]['O-058'],
                          abstract_value[smilenum]['P-117'],
-                         abstract_value[smilenum]['CATS2D_05_NL'],
-                         abstract_value[smilenum]['B03[N-S]'],
-                         abstract_value[smilenum]['B08[Br-Br]'],
-                         abstract_value[smilenum]['F02[S-S]'],
-                         abstract_value[smilenum]['F05[N-O]'],
-                         abstract_value[smilenum]['MLOGP2']
-                         ]])
+                         abstract_value[smilenum]['MLOGP2'],
+                         abstract_value[smilenum]["α"]]])
+
             williams = self.get_williams(kocX, x)
             self.predict_result[smilenum]['logKOC'].update(williams)
 
     def logBDG(self):
+        from .matrix.bdg import bdgX
         # BDG 无温度参数
+        #CAS nN nHM O% MATS1e GATS1p GATS7p GGI1 GGI2 nCq nCrt C-040 H-048 H-051 O-059
         abstract_value = self.dragon_model.extractparameter([
             "nN", "nHM", "O%", "MATS1e", "GATS1p", "GATS7p", "GGI1", "GGI2",
             "nCq", "nCrt", "C-040", "H-048", "H-051", "O-059"])
@@ -255,10 +319,30 @@ class PredictionModel(object):
                     0.955 * abstract_value[smilenum]['O-059']
                 self.predict_result[smilenum]['logBDG']['value'] = 1 / (1 + math.exp(-x))
 
+            x = matrix([[abstract_value[smilenum]['nN'],
+                         abstract_value[smilenum]['nHM'],
+                         abstract_value[smilenum]['O%'],
+                         abstract_value[smilenum]['MATS1e'],
+                         abstract_value[smilenum]['GATS1p'],
+                         abstract_value[smilenum]['GATS7p'],
+                         abstract_value[smilenum]['GGI1'],
+                         abstract_value[smilenum]['GGI2'],
+                         abstract_value[smilenum]['nCq'],
+                         abstract_value[smilenum]['nCrt'],
+                         abstract_value[smilenum]['C-040'],
+                         abstract_value[smilenum]['H-048'],
+                         abstract_value[smilenum]['H-051'],
+                         abstract_value[smilenum]['O-059']]])
+
+            williams = self.get_williams(bdgX, x)
+            self.predict_result[smilenum]['logBDG'].update(williams)
+
     def logPL(self):
+        from .matrix.pl import plX
         #PL 模型，有温度参数
+        #CAS-Number 1/T nHDon X1sol GATS1v μ nROH
         abstract_value = self.dragon_model.extractparameter([
-            "nHDon", "X1sol", "nROH", "u", "GATS1v"])
+            "nHDon", "X1sol", "GATS1v", "u", "nROH"])
         for smilenum in abstract_value.keys():
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = defaultdict(dict)
@@ -269,6 +353,14 @@ class PredictionModel(object):
                 0.8014 * abstract_value[smilenum]['GATS1v'] - \
                 0.1363 * abstract_value[smilenum]['u'] - \
                 0.6094 * abstract_value[smilenum]['nROH']
+
+            x = matrix([[abstract_value[smilenum]['nHDon'],
+                         abstract_value[smilenum]['X1sol'],
+                         abstract_value[smilenum]['GATS1v'],
+                         abstract_value[smilenum]['u'],
+                         abstract_value[smilenum]['nROH']]])
+            williams = self.get_williams(plX, x)
+            self.predict_result[smilenum]['logPL'].update(williams)
 
     def get_williams(self, X, x):
         return dict(hx=3 * (X.shape[1] + 1.0) / X.shape[0],
