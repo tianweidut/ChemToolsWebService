@@ -66,7 +66,7 @@ def add_counter(suite_id):
         suite.status_id = StatusCategory.objects.get(category=STATUS_SUCCESS)
 
         # send email
-        send_email_task.delay(email=suite.email, sid=suite.sid)
+        send_email_task.delay(suite.email, suite.sid)
         suite.end_time = datetime.datetime.now()
     else:
         suite.has_finished_tasks = finished_count
@@ -122,7 +122,7 @@ def calculateTask(task, model):
         else:
             name = smile
         result = predict_results[name][map_model_name]
-        chemistry_logger.info('result %s' % result)
+        chemistry_logger.info('[task]result %s' % result)
     except KeyError:
         chemistry_logger.exception('still cannot support this model')
         result = None
@@ -141,10 +141,11 @@ def calculateTask(task, model):
         task.status = StatusCategory.objects.get(category=STATUS_SUCCESS)
         suite.status_id = StatusCategory.objects.get(category=STATUS_WORKING)
 
-    suite.save()
-
     task.end_time = datetime.datetime.now()
     task.results = json.dumps(result)
+
+    suite.save()
+    task.save()
 
     add_counter.delay(suite.sid)
 

@@ -126,7 +126,8 @@ class PredictionModel(object):
                 williams = self.get_williams(rp1X, x)
 
             self.predict_result[s]['logRP']['nN'] = ab[s]['nN']
-            self.predict_result[s]['logKOA'].update(williams)
+            self.predict_result[s]['logRP'].update(williams)
+
 
     def logBCF(self):
         from .matrix.bcf import bcfX
@@ -342,7 +343,7 @@ class PredictionModel(object):
         #PL 模型，有温度参数
         #CAS-Number 1/T nHDon X1sol GATS1v μ nROH
         abstract_value = self.dragon_model.extractparameter([
-            "nHDon", "X1sol", "GATS1v", "u", "nROH"])
+            "nHDon", "X1sol", "GATS1v", "μ ", "nROH"])
         for smilenum in abstract_value.keys():
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = defaultdict(dict)
@@ -351,13 +352,14 @@ class PredictionModel(object):
                 0.5061 * abstract_value[smilenum]['nHDon'] - \
                 0.6896 * abstract_value[smilenum]['X1sol'] + \
                 0.8014 * abstract_value[smilenum]['GATS1v'] - \
-                0.1363 * abstract_value[smilenum]['u'] - \
+                0.1363 * abstract_value[smilenum]['μ '] - \
                 0.6094 * abstract_value[smilenum]['nROH']
 
-            x = matrix([[abstract_value[smilenum]['nHDon'],
+            x = matrix([[(1 / self.T),
+                         abstract_value[smilenum]['nHDon'],
                          abstract_value[smilenum]['X1sol'],
                          abstract_value[smilenum]['GATS1v'],
-                         abstract_value[smilenum]['u'],
+                         abstract_value[smilenum]['μ '],
                          abstract_value[smilenum]['nROH']]])
             williams = self.get_williams(plX, x)
             self.predict_result[smilenum]['logPL'].update(williams)
