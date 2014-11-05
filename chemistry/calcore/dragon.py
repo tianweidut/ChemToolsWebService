@@ -34,7 +34,7 @@ class DragonModel():
     def iter_files(self):
         for raw_name in self.names_set:
             fname = self.format_filename(raw_name)
-            fpath = join(CALCULATE_DATA_PATH.DRAGON, fname)
+            fpath = join(CALCULATE_DATA_PATH.DRAGON, self.model_name, fname)
             fname_mol = fname + ".mol"
             fname_drs = fname + ".drs"
             input_fpath = join(fpath, fname_mol)
@@ -77,7 +77,7 @@ class DragonModel():
                         print key, temp_dic[i], valueline[temp_dic[key]]
 
             if self.model_name in ('logKOH', 'logKOH_T'):
-                f_log = join(CALCULATE_DATA_PATH.GAUSSIAN, raw_name,
+                f_log = join(CALCULATE_DATA_PATH.GAUSSIAN, self.model_name, raw_name,
                              '%s.log' % raw_name)
                 f = open(f_log, 'r')
                 lines = f.readlines()
@@ -99,7 +99,7 @@ class DragonModel():
                         para_dic[raw_name]["EHOMO"] = float(EHOMO)
                         break
             elif self.model_name in ('logPL',):
-                f_out = join(CALCULATE_DATA_PATH.MOPAC, raw_name,
+                f_out = join(CALCULATE_DATA_PATH.MOPAC, self.model_name, raw_name,
                              '%s.out' % raw_name)
                 f = open(f_out, 'r')
                 lines = f.readlines()

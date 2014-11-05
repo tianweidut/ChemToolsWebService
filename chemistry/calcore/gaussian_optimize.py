@@ -1,8 +1,6 @@
 # coding: utf-8
 from subprocess import check_call
-import shutil
-import os
-from os.path import join, exists
+from os.path import join
 from .config import CALCULATE_CMD_TYPE, CALCULATE_DATA_PATH
 from utils import chemistry_logger
 
@@ -15,13 +13,13 @@ class GaussianOptimizeModel():
         for fname in gjf_fname_list:
             self.gjf_fname_list_no_ext.append(fname.split('.')[0])
 
-    def gjf4dragon(self):
+    def gjf4dragon(self, model_name):
         for name in self.gjf_fname_list_no_ext:
-            mol_path = join(CALCULATE_DATA_PATH.DRAGON, name,
+            mol_path = join(CALCULATE_DATA_PATH.DRAGON, model_name, name,
                             '%s.mol' % name)
-            gjf_path = join(CALCULATE_DATA_PATH.GAUSSIAN, name,
+            gjf_path = join(CALCULATE_DATA_PATH.GAUSSIAN, model_name, name,
                             '%s.gjf' % name)
-            log_path = join(CALCULATE_DATA_PATH.GAUSSIAN, name,
+            log_path = join(CALCULATE_DATA_PATH.GAUSSIAN, model_name, name,
                             '%s.log' % name)
 
             cmd = '%s "%s"' % (CALCULATE_CMD_TYPE.GAUSSIAN, gjf_path)

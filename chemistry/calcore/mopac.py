@@ -14,13 +14,13 @@ class MopacModel():
             name = fname.split('.')[0]
             self.mop_fname_list_no_ext.append(name)
 
-    def opt4dragon(self):
+    def opt4dragon(self, model_name):
         for name in self.mop_fname_list_no_ext:
-            mol_path = join(CALCULATE_DATA_PATH.DRAGON, name,
+            mol_path = join(CALCULATE_DATA_PATH.DRAGON, model_name, name,
                             '%s.mol' % name)
-            mop_path = join(CALCULATE_DATA_PATH.MOPAC, name,
+            mop_path = join(CALCULATE_DATA_PATH.MOPAC, model_name, name,
                             '%s.mop' % name)
-            out_path = join(CALCULATE_DATA_PATH.MOPAC, name,
+            out_path = join(CALCULATE_DATA_PATH.MOPAC, model_name, name,
                             '%s.out' % name)
 
             cmd = '%s "%s"' % (CALCULATE_CMD_TYPE.MOPAC, mop_path)

@@ -49,8 +49,8 @@ class Converter():
             else:
                 raise Exception('No support %s' % src_type)
 
-            dragon_dpath = join(CALCULATE_DATA_PATH.DRAGON, name)
-            mopac_dpath = join(CALCULATE_DATA_PATH.MOPAC, name)
+            dragon_dpath = join(CALCULATE_DATA_PATH.DRAGON, self.model_name, name)
+            mopac_dpath = join(CALCULATE_DATA_PATH.MOPAC, self.model_name, name)
             mop_fpath = join(mopac_dpath, '%s.mop' % name)
 
             if not os.path.exists(dragon_dpath):
@@ -111,7 +111,7 @@ class Converter():
         # 使用mopac对dragon结果进行优化(输入转化生成的mop文件)
         try:
             mop = MopacModel(mop_fname_set)
-            mop.opt4dragon()
+            mop.opt4dragon(self.model_name)
         except Exception:
             chemistry_logger.exception('Failed to mopac optimize for dragon')
 
@@ -120,7 +120,7 @@ class Converter():
 
         for element in self.iter_smiles_files(self.__smilenum_list, 'smile'):
             smile, name, dragon_dpath, mopac_dpath, mop_fpath = element
-            gaussian_dpath = join(CALCULATE_DATA_PATH.GAUSSIAN, name)
+            gaussian_dpath = join(CALCULATE_DATA_PATH.GAUSSIAN, self.model_name, name)
 
             # smile-> mol
             try:
@@ -155,7 +155,7 @@ class Converter():
         try:
             #FIXME: gaussian 计算很慢吗?
             gjf = GaussianOptimizeModel(gaussian_files_set)
-            gjf.gjf4dragon()
+            gjf.gjf4dragon(self.model_name)
             pass
         except Exception:
             chemistry_logger.exception('Failed to gaussian optimize for dragon')
