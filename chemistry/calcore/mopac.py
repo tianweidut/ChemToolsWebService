@@ -1,9 +1,9 @@
 # coding: utf-8
-from subprocess import check_call
 from os.path import join
 
 from .config import CALCULATE_CMD_TYPE, CALCULATE_DATA_PATH
 from utils import chemistry_logger
+from chemistry.calcore.utils import CalcoreCmd
 
 
 class MopacModel():
@@ -25,13 +25,10 @@ class MopacModel():
 
             cmd = '%s "%s"' % (CALCULATE_CMD_TYPE.MOPAC, mop_path)
             chemistry_logger.info('opt4dragon part1 cmd: %s' % cmd)
-            check_call(cmd, shell=True)
-
-            # get the optimized orientation in out file and replace counterpart
-            # in mol file with it now orientation_info
-            # is filed with optimized orientationn
+            # 此处输出是.out文件
+            CalcoreCmd(cmd, output=out_path).run()
 
             cmd = 'obabel -imoo "%s" -omol -O "%s" --gen3D' % (out_path,
                                                                mol_path)
             chemistry_logger.info('opt4dragon part2 cmd: %s' % cmd)
-            check_call(cmd, shell=True)
+            CalcoreCmd(cmd, output=mol_path).run()

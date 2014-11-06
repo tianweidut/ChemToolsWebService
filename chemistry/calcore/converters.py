@@ -1,7 +1,6 @@
 # coding: utf-8
 import os
 from os.path import join, exists
-from subprocess import check_call
 import shutil
 import pybel
 from .config import CALCULATE_DATA_PATH
@@ -9,11 +8,11 @@ from .mopac import MopacModel
 from .gaussian_optimize import GaussianOptimizeModel
 from utils import chemistry_logger
 from django.conf import settings
+from chemistry.calcore.utils import CalcoreCmd
 
 
 class Converter():
     def __init__(self, smiles=None, molfiles=None, model_name=None):
-        self.__invalid_smile = []
         self.__smilenum_list = []
         self.__molfile = []
         self.model_name = model_name
@@ -67,15 +66,12 @@ class Converter():
         # STEP: 将smile码经过obabel转化，生成mop文件，并放在指定目录中
         for element in self.iter_smiles_files(self.__smilenum_list, 'smile'):
             smile, name, dragon_dpath, mopac_dpath, mop_fpath = element
-            try:
-                # '-:smi' 可以直接对smile进行转化
-                cmd = 'obabel -:"%s" -o mop -O "%s" --gen3D' % (smile,
-                                                                mop_fpath)
-                chemistry_logger.info('mop2mopac, smi->mop: %s' % cmd)
-                check_call(cmd, shell=True)
-            except:
-                self.__invalid_smile.append(smile)
-                continue
+            # '-:smi' 可以直接对smile进行转化
+            cmd = 'obabel -:"%s" -o mop -O "%s" --gen3D' % (smile,
+                                                            mop_fpath)
+
+            chemistry_logger.info('mop2mopac, smi->mop: %s' % cmd)
+            CalcoreCmd(cmd, output=mop_fpath).run()
 
             # 修改smi->mop文件的头部
             lines = []
@@ -123,12 +119,7 @@ class Converter():
             gaussian_dpath = join(CALCULATE_DATA_PATH.GAUSSIAN, self.model_name, name)
 
             # smile-> mol
-            try:
-                mol_fpath = self.smile2_3d(smile)
-            except Exception:
-                self.__invalid_smile.append(smile)
-                chemistry_logger.exception('Failed to convert smile %s to 3D structure' % smile)
-                continue
+            mol_fpath = self.smile2_3d(smile)
 
             # mol -> gjf file
             gjf_fpath = mol2gjf(mol_fpath, self.model_name)
@@ -152,19 +143,13 @@ class Converter():
             shutil.copy(mol_fpath, dragon_dpath)
             gaussian_files_set.add('%s.gjf' % name)
 
-        try:
-            #FIXME: gaussian 计算很慢吗?
-            gjf = GaussianOptimizeModel(gaussian_files_set)
-            gjf.gjf4dragon(self.model_name)
-            pass
-        except Exception:
-            chemistry_logger.exception('Failed to gaussian optimize for dragon')
+        #FIXME: gaussian 计算很慢吗?
+        chemistry_logger.info('GaussianOptimizeModel gjf4dragon')
+        gjf = GaussianOptimizeModel(gaussian_files_set)
+        gjf.gjf4dragon(self.model_name)
 
     def format_filename(self, filename):
         return filename.replace('\\', '#').replace('/', '$')
-
-    def get_invalid_smile(self):
-        return self.__invalid_smile
 
     def get_smilenum_list(self):
         return self.__smilenum_list

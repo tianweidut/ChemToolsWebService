@@ -27,7 +27,7 @@ def has_temperature(model_name):
 def get_model_name(name):
     # 模型对应接口：
     # 前端:templates/newtask.html, model name (src)
-    # 后端:chemistry/calcore/prediciton_model.py, models_computation (dest)
+    # 后端:chemistry/calcore/prediciton_model.py, calculate(dest)
     model_map = {
         "koa": "logKOA",
         "rp": "logRP",
@@ -113,7 +113,7 @@ def calculateTask(task, model):
         chemistry_logger.info('PredictionModel calculating: model name(%s),'
                               'smile(%s) mol path(%s) temperature(%s)',
                               map_model_name, smile, mol_fpath, temperature)
-        # 重构入口
+        # 后台模型计算入口
         predict_results = prediction_model_calculate(map_model_name, smile,
                                                      mol_fpath, temperature)
 

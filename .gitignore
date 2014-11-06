@@ -18,6 +18,7 @@ static/*
 chemistry/calcore/fordragon
 chemistry/calcore/forgaussian
 chemistry/calcore/formopac
+chemistry/calcore/data/f*
 
 .settings/*
 .pydevproject

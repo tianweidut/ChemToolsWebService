@@ -1,8 +1,8 @@
 # coding: utf-8
-from subprocess import check_call
 from os.path import join
 from .config import CALCULATE_CMD_TYPE, CALCULATE_DATA_PATH
 from utils import chemistry_logger
+from chemistry.calcore.utils import CalcoreCmd
 
 
 class GaussianOptimizeModel():
@@ -24,8 +24,9 @@ class GaussianOptimizeModel():
 
             cmd = '%s "%s"' % (CALCULATE_CMD_TYPE.GAUSSIAN, gjf_path)
             chemistry_logger.info('gif4dragon part1 cmd: %s' % cmd)
-            check_call(cmd, shell=True)
+            # 此处需要注意g09输出是.log文件
+            CalcoreCmd(cmd, output=log_path).run()
 
             cmd = 'obabel -ig09 "%s" -omol -O "%s"' % (log_path, mol_path)
             chemistry_logger.info('gif4dragon part2 cmd: %s' % cmd)
-            check_call(cmd, shell=True)
+            CalcoreCmd(cmd, output=mol_path).run()
