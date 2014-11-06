@@ -1,9 +1,8 @@
 # coding: utf-8
 from os.path import join, basename
-from subprocess import check_call
 import re
 from .config import CALCULATE_CMD_TYPE, CALCULATE_DATA_PATH
-from .xml_utils import XMLWriter
+from chemistry.calcore.utils import XMLWriter, CalcoreCmd
 from .converters import Converter
 from utils import chemistry_logger
 
@@ -21,12 +20,13 @@ class DragonModel():
         elif self.model_name in ('logKOC', 'logBCF', 'logKOH', 'logKOH_T'):
             converter.mol2gjf2dragon_folder()
 
-        self.invalidnums = converter.get_invalid_smile()
         self.names_set = set(i for i in converter.get_smilenum_list())
         # get_molfile 返回的是文件绝对路径列表
         for fpath in converter.get_molfile():
             name = basename(fpath).split('.')[0]
             self.names_set.add(name)
+
+        self.mol2drs()
 
     def format_filename(self, name):
         return name.replace('\\', '#').replace('/', '$')
@@ -47,7 +47,7 @@ class DragonModel():
             # dragon6shell -s *.drs to get the result
             cmd = "%s '%s'" % (CALCULATE_CMD_TYPE.DRAGON, output_fpath)
             chemistry_logger.info('mol2drs cmd %s' % cmd)
-            check_call(cmd, shell=True)
+            CalcoreCmd(cmd, output=output_fpath).run()
 
     def extractparameter(self, parameters=None):
         '''从drs文件中将对应参数名列表中对应的描述符名称的值提取出来，返回的是一个字典'''
@@ -110,10 +110,10 @@ class DragonModel():
                 for lineNum in range(len(lines)):
                     if re.match(regex, lines[lineNum]):
                         chemistry_logger.info('PL out %s' % lines[lineNum])
-                        while(not re.match('.*DIPOLE.*', lines[lineNum+j])):
+                        while(not re.match('.*DIPOLE.*', lines[lineNum + j])):
                             j = j + 1
-                        chemistry_logger.info('PL out2 %s' % lines[lineNum+j+3])
-                        para_dic[raw_name]["u"] = float(lines[lineNum+j+3].split()[-1])
+                        chemistry_logger.info('PL out2 %s' % lines[lineNum + j + 3])
+                        para_dic[raw_name]["u"] = float(lines[lineNum + j + 3].split()[-1])
                         break
 
         return para_dic

@@ -1,8 +1,8 @@
 # coding: utf-8
 import os
-from nose.tools import eq_, ok_
+from nose.tools import ok_
 from django.test import TestCase
-from chemistry.calcore.controllers.xml_utils import XMLWriter
+from chemistry.calcore.utils import XMLWriter
 
 
 class XMLWriterTest(TestCase):

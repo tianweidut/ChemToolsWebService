@@ -1,6 +1,27 @@
 # coding: utf-8
+from __future__ import absolute_import
+import os
 import datetime
 from xml.dom import minidom
+from subprocess import check_call
+from utils import chemistry_logger
+
+
+class CalcoreCmd(object):
+    def __init__(self, cmd, input=None, output=None):
+        self.cmd = cmd
+        self.input = input
+        self.output = output
+
+    def run(self):
+        #FIXME: 运行时候加锁
+        if not self.check_output_exists():
+            chemistry_logger.info('[CalcoreCmd]%s(%s->%s)', self.cmd, self.input, self.output)
+            check_call(self.cmd, shell=True)
+
+    def check_output_exists(self):
+        #FIXME: 增加race condition 检测
+        return self.output and os.path.exists(self.output)
 
 
 class XMLWriter():

@@ -18,12 +18,8 @@ class PredictionModel(object):
             raise Exception('The T of KOA or KOH_T can not be 0')
 
         self.dragon_model = DragonModel(model_name, smile, mol_fpath)
-        self.dragon_model.mol2drs()
 
-        self.predict_result["invalidnums"] = self.dragon_model.invalidnums
-        self.models_computation(model_name)
-
-    def models_computation(self, modelname):
+    def calculate(self, modelname):
         {
             "logKOA": self.logKOA,
             "logRP": self.logRP,
@@ -127,7 +123,6 @@ class PredictionModel(object):
 
             self.predict_result[s]['logRP']['nN'] = ab[s]['nN']
             self.predict_result[s]['logRP'].update(williams)
-
 
     def logBCF(self):
         from .matrix.bcf import bcfX
@@ -371,5 +366,6 @@ class PredictionModel(object):
 
 def prediction_model_calculate(model_name, smile, mol_fpath, temperature):
     pm = PredictionModel(model_name, smile, mol_fpath, T=temperature)
+    pm.calculate(model_name)
     chemistry_logger.info("pm result:%s", pm.predict_result)
     return pm.predict_result
