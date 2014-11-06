@@ -105,11 +105,8 @@ class Converter():
             mop_fname_set.add('%s.mop' % name)
 
         # 使用mopac对dragon结果进行优化(输入转化生成的mop文件)
-        try:
-            mop = MopacModel(mop_fname_set)
-            mop.opt4dragon(self.model_name)
-        except Exception:
-            chemistry_logger.exception('Failed to mopac optimize for dragon')
+        mop = MopacModel(mop_fname_set)
+        mop.opt4dragon(self.model_name)
 
     def mol2gjf2dragon_folder(self):
         gaussian_files_set = set()
@@ -170,7 +167,7 @@ def mol2mop(fpath):
                     content.append(' %s %s %s %s\n' % (values[3], values[0],
                                                        values[1], values[2]))
             except Exception:
-                chemistry_logger.exception('failed to resolve mol2mop line: %s' % line)
+                pass
 
     mop_list = []
     mop_list.append('EF GNORM=0.0001 MMOK GEO-OK PM3\n')
@@ -207,7 +204,7 @@ def mol2gjf(fpath, model_name):
                         element[values[3]] = 1
 
             except Exception:
-                chemistry_logger.exception('failed to resolve mol2gjf line: %s' % line)
+                pass
 
     gjf_list = []
     gjf_list.append('%%chk=%s.chk\n' % fname_no_ext)
