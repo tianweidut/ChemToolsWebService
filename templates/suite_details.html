@@ -50,6 +50,7 @@
       <td>模型</td>
       <td>类别</td>
       <td>来源</td>
+      <td>输入</td>
       <td>温度</td>
       <td>结果</td>
       <td>应用域</td>
@@ -71,6 +72,13 @@
       <td>{{single.model|upper}}({{single.model.desc|upper}})</td>
       <td>{{single.model.origin_type}}</td>
       <td>{{single.file_obj.file_source}}</td>
+
+      {%if single.file_obj.file_source.category == "smiles"%}
+        <td>{{single.file_obj.smiles}}</td>
+      {%else%}
+        <a href="{{single.file_obj.file_obj.url}}" target="_blank" >mol文件</a>
+      {%endif%} 
+      
       <td>{{single.temperature}}</td>
       <td>{{single.result_value}}</td>
       <td>
