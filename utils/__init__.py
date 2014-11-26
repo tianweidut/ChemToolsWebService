@@ -45,7 +45,11 @@ def basic_auth_api(request):
                     if user and not user.is_anonymous():
                         request.user = user
                         return True
-                except Exception as err:
+                except Exception:
                     pass
 
     return False
+
+
+def is_client(request):
+    return 'Python' in request.META.get('HTTP_USER_AGENT', '')

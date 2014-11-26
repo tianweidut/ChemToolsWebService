@@ -1,6 +1,8 @@
 {% extends "base/base.html" %}
 
 {% block content %}
+
+{%if not is_client %}
 <div class="btn-group pull-right">
   <a href="#" class="btn btn-primary filter" rel="all">全部</a>
   <a href="#" class="btn btn-primary filter" rel="success">成功</a>
@@ -10,6 +12,7 @@
 
 <br/>
 <hr/>
+{%endif%}
 
 <!--Task list-->
 <ul class="tasklist">

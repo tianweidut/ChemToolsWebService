@@ -1,6 +1,8 @@
 {% extends "base/base.html" %}
 
 {% block content %}
+
+{%if not is_client%}
 <div id='homepage-carousel' class="carousel slide" data-ride="carousel">
   <ol class="carousel-indicators">
     <li data-target="#homepage-carousel" data-slide-to="0" class="active"></li>
@@ -23,15 +25,8 @@
       <img class='carousel-img' src="{{STATIC_URL}}/images/carousel-image4.png">
     </div>
   </div>
-
-  <!--TODO: 使用设计提供的prev和next按钮-->
-  <!--a class="left" href="#homepage-carousel" data-slide="prev">
-    <span class="fui-arrow-left"></span>
-  </a>
-  <a class="right" href="#homepage-carousel" data-slide="next">
-    <span class="fui-arrow-right"></span>
-  </a-->
 </div>
+{%endif%}
 
 <p class='section-title'>
   <span class="fui-radio-unchecked"></span>

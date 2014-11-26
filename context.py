@@ -4,8 +4,15 @@ from django.conf import settings
 from users.models import UserProfile
 from chemistry import STATUS_SUCCESS
 from chemistry.models import SuiteTask
+from utils import is_client
 
 all_required = ("PRODUCTION_FLAG",)
+
+
+def client_settings(request):
+    context = dict(is_client=is_client(request))
+
+    return context
 
 
 def application_settings(request):

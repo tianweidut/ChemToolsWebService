@@ -2,7 +2,7 @@
 {% block content %}
 
 <center>
-<div class="login-section">
+<div class="login-section {%if is_client%}login-section-client{%endif%}">
   <form class="login-form" method="post" action="{% url 'auth_login' %}?next=/newtask/">
     {% csrf_token %}
     <div class="form-group form-group-large">
