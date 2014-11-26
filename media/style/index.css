@@ -421,8 +421,13 @@ ul.large-margin > li{
 }
 
 .login-section {
+  margin-top:75px;
   width: 400px;
   margin-bottom: 40px;
+}
+
+.login-section-client {
+  margin-top:175px;
 }
 
 .form-group-large {

@@ -2,9 +2,12 @@
 <html lang="en">
 
   <head>
-    <meta charset="utf-8">
     <title>CPTP 化学品预测毒理学平台</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {%if is_client%}
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {%else%}
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    {%endif%}
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     {% block meta_description %}
@@ -26,18 +29,22 @@
       <script src="js/respond.min.js"></script>
     <![endif]-->
   </head>
-
+ <!-- style="background:#ECF0F1"-->
   <body >
     <div class="container">
-      {# navigator bar#}
-      {% include "widgets/navbar.html" %}
+      {% if not is_client %}
+        {# navigator bar#}
+        {% include "widgets/navbar.html" %}
+      {% endif %}
 
       {# Main-Content Section #}
 
       {% block content %}{% endblock %}
 
-      {# Footer Section #}
-      {% include "widgets/footer.html" %}
+      {% if not is_client %}
+        {# Footer Section #}
+        {% include "widgets/footer.html" %}
+      {% endif %}
     </div>
     {% include "meta/bottom_scripts.html" %}
     {% block endjs %}{% endblock %}    

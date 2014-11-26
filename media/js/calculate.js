@@ -33,16 +33,22 @@ $(function () {
 
 function update_model(){
   Calculate.models = [];
-  $(".checkbox").each(function(){
-    var model = $(this).attr("model");
-    var temperature = "#temperature_" + model;
+  var data = {};
+  if(is_client === 'True'){
+    data = {'model': $('#model-select-client').val(),
+            'temperature': $('#temperature-client').val()}
+  }else{
+    $(".checkbox").each(function(){
+      var model = $(this).attr("model");
+      var temperature = "#temperature_" + model;
 
-    if($(this).find('input[type=checkbox]').is(':checked')){
-      var data = {'model':model,
-                 'temperature':$(temperature).val()}; 
-      Calculate.models.push(data);
-    }    
+      if($(this).find('input[type=checkbox]').is(':checked')){
+        data = {'model':model,
+                'temperature':$(temperature).val()}; 
+      }    
   });
+ }
+  Calculate.models.push(data);
 }
 
 //chem structure draw

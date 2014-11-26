@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
+from utils import is_client
 from utils.file_operator import file_upload_response
 from chemistry.util import (singletask_details, suitetask_details,
                             get_models_selector)

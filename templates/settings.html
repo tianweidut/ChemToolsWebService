@@ -1,6 +1,8 @@
 {% extends "base/base.html" %}
 
 {% block content %}
+
+{%if not is_client %}
 <div class="container" style="height:400px;">
   <div class = "row"> 
     <div class="col-xs-3 bs-docs-sidebar">
@@ -22,10 +24,15 @@
     </div>
       <!--right panel-->
       <div class="col-xs-8">
+{%else%}
+      <div class="login-section-client">
+{%endif%}
         {% block settings_content %}
         {% endblock %}
       </div> 
+{%if not is_client %}
   </div>
 </div>
+{%endif%}
 
 {% endblock %}
