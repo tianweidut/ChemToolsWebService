@@ -22,7 +22,7 @@ $(function () {
     $("#fileupload").fileupload({
       option:{
         maxFileSize: 5000000,
-        acceptFileTypes: /(\.|\/)(mol|sdf)$/i,
+        acceptFileTypes: /(\.|\/)(mol|sdf|smi|cas)$/i,
       }
     });
 

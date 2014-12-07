@@ -51,7 +51,7 @@ http {
             break;
         }
 
-        location ~.*\.(gif|jpg|png|ico|jpeg|bmp|swf|doc|pdf|docx|mol|sdf|csv|xls|xlsx)$ {
+        location ~.*\.(gif|jpg|png|ico|jpeg|bmp|swf|doc|pdf|docx|mol|sdf|cas|smi|csv|xls|xlsx)$ {
             expires 7d;
         }
 
