@@ -19,7 +19,6 @@ def split_file_name(name, sep="."):
 def file_upload_save_process(request):
     f = request.FILES["file"]
     name, filetype = split_file_name(UploadedFile(f).name)
-    #TODO: we maybe check file type here
     obj = ProcessedFile()
     obj.title = name
     obj.file_type = filetype

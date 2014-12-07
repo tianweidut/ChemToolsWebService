@@ -2,16 +2,15 @@
 import os
 import uuid
 import json
+import datetime
 from functools import wraps
+from os.path import join
 
 import pybel
-import cStringIO as StringIO
 
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 from django.core.files import File
-from django.template.loader import get_template
-from django.template import Context
 from django.db.models import Q
 
 from users.models import UserProfile
@@ -20,8 +19,9 @@ from chemistry.models import (SingleTask, SuiteTask, StatusCategory,
                               ChemInfoLocal)
 from chemistry import (TASK_SUITE, TASK_SINGLE,
                        ORIGIN_DRAW, ORIGIN_UPLOAD, ORIGIN_SMILE,
-                       STATUS_WORKING, MODEL_SPLITS)
+                       STATUS_WORKING, MODEL_SPLITS, STATUS_FAILED)
 from utils import chemistry_logger
+from celery.decorators import task
 
 
 def suite_task_context(sid):
@@ -89,51 +89,6 @@ def fetch_resources(uri, rel):
                 raise Exception("Cannot import MEDIA_ROOT or STATIC_ROOT")
 
     return path
-
-
-def generate_pdf(id, task_type=None):
-    """generate result in pdf format"""
-    if task_type == TASK_SINGLE:
-        template = get_template("widgets/pdf/task_details_pdf.html")
-        context = Context(single_task_context(id))
-    elif task_type == TASK_SUITE:
-        template = get_template("widgets/pdf/suite_details_pdf.html")
-        context = Context(suite_task_context(id))
-    else:
-        chemistry_logger.info(task_type, "Cannot check the type")
-        return
-
-    html = template.render(context).encode("UTF-8")
-    html = StringIO.StringIO(html)
-
-    #FIXME: import new html2pdf lib
-    import xhtml2pdf.pisa as pisa
-    try:
-        path = os.path.join(settings.SEARCH_IMAGE_PATH, "%s.pdf" % uuid.uuid4())
-        f = open(path, "w")
-        pisa.CreatePDF(html, dest=f, encoding="UTF-8",
-                       link_callback=fetch_resources)
-        f.close()
-    except Exception:
-        chemistry_logger.exception('failed to generate pdf')
-        path = None
-
-    return path
-
-
-def pdf_create_test():
-    """pdf test create"""
-    task_id_search = "06b4c9a5-3a01-4bb4-a07c-d574d293d7e5"
-    task_id_draw = "0a72a6ba-63f0-41db-a04f-f71c292f6db8"
-    task_id_upload = "1142ae41-9497-4771-9c1c-d4dfcece994a"
-    task_id_ch = "17673ac1-17dd-4f0d-958a-4ef44bba8a92"
-    suite_id = "c933deb5-beda-4a41-84be-759a5795aca1"
-
-    generate_pdf(id=task_id_search, task_type=TASK_SINGLE)
-    generate_pdf(id=task_id_draw, task_type=TASK_SINGLE)
-    generate_pdf(id=task_id_upload, task_type=TASK_SINGLE)
-    generate_pdf(id=task_id_ch, task_type=TASK_SINGLE)
-    generate_pdf(id=suite_id, task_type=TASK_SUITE)
 
 
 def generate_mol_image(singletask):
@@ -300,7 +255,7 @@ def save_record(f, model, sid, source_type, smile=None, local_search_id=None):
     calculateTask.delay(task, model)
 
 
-def start_files_task(files_id_list, model, sid):
+def handle_files_task(files_id_list, model, sid):
     if not files_id_list or not isinstance(files_id_list, list):
         return
 
@@ -310,10 +265,45 @@ def start_files_task(files_id_list, model, sid):
 
         #根据id，获取前端页面上传的文件model
         f_record = ProcessedFile.objects.get(fid=fid)
-        save_record(f_record, model, sid, ORIGIN_UPLOAD)
+        if f_record.file_type.lower() in ('mol', 'sdf'):
+            save_record(f_record, model, sid, ORIGIN_UPLOAD)
+        elif f_record.file_type.lower() in ('smi', 'cas'):
+            handle_batch_file_task(f_record, sid, model)
 
 
-def start_smile_task(smile, model, sid, local_search_id):
+def handle_batch_file_task(f_record, sid, model):
+    # 只添加成功的任务，对失败的输入直接过滤掉
+    cnt = 0
+    path = join(settings.SETTINGS_ROOT, f_record.file_obj.path)
+    with open(path, 'r') as f:
+        for line in f.readlines():
+            line = line.strip().strip('\n')
+            try:
+                # TODO: 需要检测是否符合格式
+                if f_record.file_type.lower() == 'cas':
+                    smile = get_smile_by_cas(line)
+                else:
+                    smile = line
+
+                handle_smile_task(smile, model, sid)
+            except:
+                chemistry_logger.error('failed to submit %s' % line)
+            else:
+                cnt += 1
+        else:
+            s = SuiteTask.objects.get(sid=sid)
+            s.total_tasks = s.total_tasks + cnt - 1
+            s.save()
+            chemistry_logger.info('update tasks cnt %s', s.total_tasks)
+
+
+def get_smile_by_cas(cas):
+    cas = cas.lstrip('0')
+    result = ChemInfoLocal.objects.get(cas=cas)
+    return result.smiles
+
+
+def handle_smile_task(smile, model, sid, local_search_id=None):
     if not smile:
         return
 
@@ -330,7 +320,7 @@ def start_smile_task(smile, model, sid, local_search_id):
     save_record(fpath, model, sid, ORIGIN_SMILE, smile, local_search_id)
 
 
-def start_moldraw_task(moldraw, model, sid):
+def handle_moldraw_task(moldraw, model, sid):
     if not moldraw:
         return
 
@@ -371,10 +361,11 @@ def parse_models(models):
     return (models_str, categorys_str)
 
 
-def submit_calculate(user, smile=None, draw_mol_data=None,
-                     task_notes=None, task_name=None,
-                     files_id_list=None, models=None,
-                     local_search_id=None):
+def submit_calculate_task(user, smile=None, draw_mol_data=None,
+                          task_notes=None, task_name=None,
+                          files_id_list=None, models=None,
+                          local_search_id=None):
+
     chemistry_logger.info("smile: %s" % smile)
     chemistry_logger.info("draw_mol_data: %s" % draw_mol_data)
     chemistry_logger.info("files_id_list: %s" % files_id_list)
@@ -388,27 +379,24 @@ def submit_calculate(user, smile=None, draw_mol_data=None,
         id = None
         return (status, info, id)
 
-    # 创建组任务
-    suite_task = SuiteTask()
-    suite_task.sid = id = str(uuid.uuid4())
-    suite_task.user = UserProfile.objects.get(user=user)
-    suite_task.total_tasks = tasks_num
-    suite_task.has_finished_tasks = 0
-    suite_task.name = task_name
-    suite_task.notes = task_notes
-    suite_task.models_str, suite_task.models_category_str = parse_models(models)
-    suite_task.status = StatusCategory.objects.get(category=STATUS_WORKING)
-    suite_task.email = user.email
-    suite_task.save()
-
     try:
-        for model in models:
-            start_smile_task(smile, model, id, local_search_id)
-            start_moldraw_task(draw_mol_data, model, id)
-            start_files_task(files_id_list, model, id)
-    except Exception:
+        s = SuiteTask()
+        s.sid = id = str(uuid.uuid4())
+        s.user = UserProfile.objects.get(user=user)
+        s.total_tasks = tasks_num
+        s.has_finished_tasks = 0
+        s.name = task_name
+        s.notes = task_notes
+        s.models_str, s.models_category_str = parse_models(models)
+        s.status = StatusCategory.objects.get(category=STATUS_WORKING)
+        s.email = user.email
+        s.save()
+
+        generate_calculate_task.delay(models, smile, draw_mol_data,
+                                      files_id_list, id, local_search_id)
+    except:
         chemistry_logger.exception('failed to generate suite_task')
-        suite_task.delete()
+        s.delete()
         status = False
         info = "计算任务添加不成功，将重试或联系网站管理员!"
         id = None
@@ -417,3 +405,21 @@ def submit_calculate(user, smile=None, draw_mol_data=None,
         info = "恭喜,计算任务已经提交!"
 
     return (status, info, id)
+
+
+@task
+def generate_calculate_task(models, smile, draw_mol_data, files_id_list,
+                            sid, local_search_id):
+    from chemistry.tasks import send_email_task
+    try:
+        for model in models:
+            handle_smile_task(smile, model, sid, local_search_id)
+            handle_moldraw_task(draw_mol_data, model, sid)
+            handle_files_task(files_id_list, model, sid)
+    except Exception:
+        chemistry_logger.exception('failed to generate suite_task:%s' % sid)
+        s = SuiteTask.objects.get(sid=sid)
+        s.end_time = datetime.datetime.now()
+        s.status_id = StatusCategory.objects.get(category=STATUS_FAILED)
+        s.save()
+        send_email_task.delay(s.email, s.sid)

@@ -8,7 +8,7 @@ from django.http import HttpResponseForbidden
 from utils import make_json_response, basic_auth_api
 from utils.file_operator import file_upload_save_process
 from chemistry.util import (singletask_details, suitetask_details,
-                            submit_calculate, search_cheminfo_local)
+                            submit_calculate_task, search_cheminfo_local)
 from chemistry.models import SuiteTask
 
 
@@ -65,24 +65,25 @@ def task_submit(request):
     if not basic_auth_api(request):
         return HttpResponseForbidden()
 
-    smile = request.POST.get('smile')
-    draw_mol_data = request.POST.get('draw_mol_data')
-    files_id_list = json.loads(request.POST.get('files_id_list', "[]"))
-    models = json.loads(request.POST.get('models', "[]"))
-    task_notes = request.POST.get('task_notes')
-    task_name = request.POST.get('task_name')
-    local_search_id = int(request.POST.get('local_search_id', 0))
+    post = request.POST
+    smile = post.get('smile')
+    draw_mol_data = post.get('draw_mol_data')
+    files_id_list = json.loads(post.get('files_id_list', "[]"))
+    models = json.loads(post.get('models', "[]"))
+    task_notes = post.get('task_notes')
+    task_name = post.get('task_name')
+    local_search_id = int(post.get('local_search_id', 0))
 
     try:
-        status, info, id = submit_calculate(
-                request.user,
-                smile=smile,
-                draw_mol_data=draw_mol_data,
-                files_id_list=files_id_list,
-                models=models,
-                task_notes=task_notes,
-                task_name=task_name,
-                local_search_id=local_search_id)
+        status, info, id = submit_calculate_task(
+            request.user,
+            smile=smile,
+            draw_mol_data=draw_mol_data,
+            files_id_list=files_id_list,
+            models=models,
+            task_notes=task_notes,
+            task_name=task_name,
+            local_search_id=local_search_id)
     except Exception as err:
         status, info, id = False, str(err), None
 
