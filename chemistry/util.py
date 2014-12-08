@@ -252,7 +252,7 @@ def save_record(f, model, sid, source_type, smile=None, local_search_id=None):
     task.status = StatusCategory.objects.get(category=STATUS_WORKING)
     task.save()
 
-    calculateTask.delay(task, model)
+    calculateTask.delay(task, sid, model)
 
 
 def handle_files_task(files_id_list, model, sid):
@@ -290,11 +290,10 @@ def handle_batch_file_task(f_record, sid, model):
                 chemistry_logger.error('failed to submit %s' % line)
             else:
                 cnt += 1
-        else:
-            s = SuiteTask.objects.get(sid=sid)
-            s.total_tasks = s.total_tasks + cnt - 1
-            s.save()
-            chemistry_logger.info('update tasks cnt %s', s.total_tasks)
+
+        s = SuiteTask.objects.get(sid=sid)
+        s.total_tasks = s.total_tasks + cnt - 1
+        s.save()
 
 
 def get_smile_by_cas(cas):
