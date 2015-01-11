@@ -38,14 +38,15 @@ class DragonModel():
             fname_mol = fname + ".mol"
             fname_drs = fname + ".drs"
             input_fpath = join(fpath, fname_mol)
+            drs_input_fpath = join(fpath, fname_drs + ".input")
             output_fpath = join(fpath, fname_drs)
-            yield raw_name, fname, input_fpath, output_fpath
+            yield raw_name, fname, input_fpath, drs_input_fpath, output_fpath
 
     def mol2drs(self):
-        for raw_name, fname, input_fpath, output_fpath in self.iter_files():
-            XMLWriter(input_fpath, output_fpath)
+        for raw_name, fname, input_fpath, drs_input_fpath, output_fpath in self.iter_files():
+            XMLWriter(input_fpath, drs_input_fpath, output_fpath)
             # dragon6shell -s *.drs to get the result
-            cmd = "%s '%s'" % (CALCULATE_CMD_TYPE.DRAGON, output_fpath)
+            cmd = "%s '%s'" % (CALCULATE_CMD_TYPE.DRAGON, drs_input_fpath)
             chemistry_logger.info('mol2drs cmd %s' % cmd)
             CalcoreCmd(cmd, output=output_fpath).run()
 
@@ -56,7 +57,7 @@ class DragonModel():
         # record para position in drs file
         temp_dic = {}
 
-        for raw_name, fname, input_fpath, output_fpath in self.iter_files():
+        for raw_name, fname, input_fpath, drs_input_fpath, output_fpath in self.iter_files():
             para_dic[raw_name] = {p: 0 for p in parameters}
             with open(output_fpath, 'r') as fp:
                 lines = fp.readlines()
