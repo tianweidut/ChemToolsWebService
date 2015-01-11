@@ -26,11 +26,12 @@ class CalcoreCmd(object):
 
 class XMLWriter():
 
-    def __init__(self, input_fpath, output_fpath):
+    def __init__(self, input_fpath, drs_input_fpath, output_fpath):
         self.doc = minidom.Document()
-        self.set_tag(input_fpath, output_fpath)
+        #TODO: add os path exists
+        self.set_tag(input_fpath, drs_input_fpath, output_fpath)
 
-    def set_tag(self, input_fpath, output_fpath):
+    def set_tag(self, input_fpath, drs_input_fpath, output_fpath):
         self.tagDragon = self.doc.createElement("DRAGON")
         self.doc.appendChild(self.tagDragon)
         self.tagDragon.setAttribute("generation_date", str(datetime.datetime.now()))
@@ -207,7 +208,7 @@ class XMLWriter():
         self.OUTPUT.appendChild(self.logFile)
         self.tagDragon.appendChild(self.OUTPUT)
 
-        with open(output_fpath, "w") as f:
+        with open(drs_input_fpath, "w") as f:
             self.doc.writexml(f, "\t", "\t", "\n", "utf-8")
 
     def display(self):
