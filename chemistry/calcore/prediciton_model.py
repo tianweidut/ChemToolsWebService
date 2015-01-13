@@ -74,7 +74,7 @@ class PredictionModel(object):
                          abstract_value[smilenum]['HATS5v'],
                          abstract_value[smilenum]['RDF035m'],
                          abstract_value[smilenum]['RCI'],
-                         abstract_value[smilenum]['nCOOR'],
+                         abstract_value[smilenum]['nRCOOR'],
                          abstract_value[smilenum]['Mor15u'],
                          abstract_value[smilenum]['RDF090m'],
                          1.0 / self.T,
@@ -108,8 +108,8 @@ class PredictionModel(object):
                     3.891 * 0.01 * ab[s]['H2s'] - \
                     1.961 * 0.1 * ab[s]['Mor07m'] + \
                     5.476 * 10 * ab[s]['R8v+']
-                
-                self.predict_result[s]['logRP']['value'] = self.round(value) 
+
+                self.predict_result[s]['logRP']['value'] = self.round(value)
                 x = matrix([[ab[s]['H2s'],
                              ab[s]['Mor07m'],
                              ab[s]['R8v+']]])
@@ -123,7 +123,7 @@ class PredictionModel(object):
                     2.723 * 0.1 * ab[s]['H7m'] + \
                     6.901 * 0.1 * ab[s]['RTs+']
 
-                self.predict_result[s]['logRP']['value'] = self.round(value) 
+                self.predict_result[s]['logRP']['value'] = self.round(value)
                 x = matrix([[ab[s]['nArOH'],
                              ab[s]['CIC3'],
                              ab[s]['Eig15_EA(dm)'],
@@ -331,7 +331,8 @@ class PredictionModel(object):
                     0.7091 * abstract_value[smilenum]['H-048'] - \
                     0.1553 * abstract_value[smilenum]['H-051'] + \
                     0.955 * abstract_value[smilenum]['O-059']
-                self.predict_result[smilenum]['logBDG']['value'] = self.round(1 / (1 + math.exp(-x)))
+                self.predict_result[smilenum]['logBDG']['value'] = x
+                #self.predict_result[smilenum]['logBDG']['value'] = self.round(1 / (1 + math.exp(-x)))
 
             x = matrix([[abstract_value[smilenum]['nN'],
                          abstract_value[smilenum]['nHM'],
@@ -356,7 +357,7 @@ class PredictionModel(object):
         #PL 模型，有温度参数
         #CAS-Number 1/T nHDon X1sol GATS1v μ nROH
         abstract_value = self.dragon_model.extractparameter([
-            "nHDon", "X1sol", "GATS1v", "μ ", "nROH"])
+            "nHDon", "X1sol", "GATS1v", "μ", "nROH"])
         for smilenum in abstract_value.keys():
             if smilenum not in self.predict_result:
                 self.predict_result[smilenum] = defaultdict(dict)
@@ -365,16 +366,16 @@ class PredictionModel(object):
                 0.5061 * abstract_value[smilenum]['nHDon'] - \
                 0.6896 * abstract_value[smilenum]['X1sol'] + \
                 0.8014 * abstract_value[smilenum]['GATS1v'] - \
-                0.1363 * abstract_value[smilenum]['μ '] - \
+                0.1363 * abstract_value[smilenum]['μ'] - \
                 0.6094 * abstract_value[smilenum]['nROH']
 
-            self.predict_result[smilenum]['logPL']['value'] = self.round(value) 
+            self.predict_result[smilenum]['logPL']['value'] = value
 
             x = matrix([[(1 / self.T),
                          abstract_value[smilenum]['nHDon'],
                          abstract_value[smilenum]['X1sol'],
                          abstract_value[smilenum]['GATS1v'],
-                         abstract_value[smilenum]['μ '],
+                         abstract_value[smilenum]['μ'],
                          abstract_value[smilenum]['nROH']]])
             williams = self.get_williams(plX, x)
             self.predict_result[smilenum]['logPL'].update(williams)
