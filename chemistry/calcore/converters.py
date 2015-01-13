@@ -78,7 +78,7 @@ class Converter():
             with open(mop_fpath, 'rb') as f:
                 lines = f.readlines()
                 if self.model_name in ('logKOA',):
-                    lines[0] = 'EF GNORM=0.0001 MMOK GEO-OK PM3\n'
+                    lines[0] = 'PM6 charge = 0 GNORM = 0.01 EF static\n'
                 elif self.model_name in ('logRP',):
                     lines[0] = 'eps=78.6 EF GNORM =0.0100 MMOK GEO-OK PM6 MULLIK GRAPH ESR HYPERFINE POLAR PRECISE BOND PI ENPART DEBUG\n'
                 elif self.model_name in ('logPL',):

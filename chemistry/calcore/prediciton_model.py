@@ -39,11 +39,11 @@ class PredictionModel(object):
         from .matrix.koa import koaX
 
         #KOA 有温度参数
-        #X1sol Mor13v H050 R5v TO..Cl HATS5v RDF035m RCl nCOOR Mor15u RDF90m 1/T
+        #X1sol Mor13v H050 R5v TO..Cl HATS5v RDF035m RCl nRCOOR Mor15u RDF90m 1/T
         abstract_value = self.dragon_model.extractparameter([
             "X1sol", "Mor13v", "H-050", "R5v",
             "T(O..Cl)", "HATS5v", "RDF035m",
-            "RCI", "nCOOR", "Mor15u",
+            "RCI", "nRCOOR", "Mor15u",
             "RDF090m"])
 
         for smilenum in abstract_value:
