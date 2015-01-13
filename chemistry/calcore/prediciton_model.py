@@ -331,7 +331,7 @@ class PredictionModel(object):
                     0.7091 * abstract_value[smilenum]['H-048'] - \
                     0.1553 * abstract_value[smilenum]['H-051'] + \
                     0.955 * abstract_value[smilenum]['O-059']
-                self.predict_result[smilenum]['logBDG']['value'] = x
+                self.predict_result[smilenum]['logBDG']['value'] = self.round(x)
                 #self.predict_result[smilenum]['logBDG']['value'] = self.round(1 / (1 + math.exp(-x)))
 
             x = matrix([[abstract_value[smilenum]['nN'],
@@ -369,7 +369,7 @@ class PredictionModel(object):
                 0.1363 * abstract_value[smilenum]['μ'] - \
                 0.6094 * abstract_value[smilenum]['nROH']
 
-            self.predict_result[smilenum]['logPL']['value'] = value
+            self.predict_result[smilenum]['logPL']['value'] = self.round(value)
 
             x = matrix([[(1 / self.T),
                          abstract_value[smilenum]['nHDon'],
