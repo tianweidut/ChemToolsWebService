@@ -4,15 +4,16 @@ import math
 from collections import defaultdict
 
 from .dragon import DragonModel
+from chemistry.calcore.utils import fetch_polarizability, convert_stand_t
 from utils import chemistry_logger
 
 
 class PredictionModel(object):
     def __init__(self, model_name=None,
                  smile=None, mol_fpath=None,
-                 T=None):
+                 T=25):
         self.predict_result = {}
-        self.T = T
+        self.T = convert_stand_t(T)
 
         if self.T == 0 and model_name in ('logKOA', 'logKOH_T'):
             raise Exception('The T of KOA or KOH_T can not be 0')
@@ -278,6 +279,8 @@ class PredictionModel(object):
         abstract_value = self.dragon_model.extractparameter([
             "nN", "ATSC8v", "SpMaxA_G/D", "Mor16u", "nROH",
             "O-058", "P-117", "MLOGP2", "α"])
+
+        abstract_value['smilenum']['α'] = fetch_polarizability(smilenum, 'logKOC')
 
         for smilenum in abstract_value:
             if smilenum not in self.predict_result:
