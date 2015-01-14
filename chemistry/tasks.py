@@ -104,7 +104,7 @@ def calculateTask(task, sid, model):
 
         # smile, mol_fpath 输入只选择一种方式(优先smile)
         mol_fpath = os.path.join(settings.SETTINGS_ROOT, task.file_obj.file_obj.path) if not smile else None
-        
+
         try:
             temperature = float(model.get('temperature'))
         except:
@@ -141,13 +141,11 @@ def calculateTask(task, sid, model):
         task.status = StatusCategory.objects.get(category=STATUS_SUCCESS)
         suite.status_id = StatusCategory.objects.get(category=STATUS_WORKING)
 
-    task.end_time = utils.get_real_now() 
+    task.end_time = utils.get_real_now()
     task.results = json.dumps(result)
 
     suite.save()
     task.save()
-
-    chemistry_logger.info('~~~~~~~~ t-e:%s' % task.end_time)
 
     add_counter(suite.sid)
 

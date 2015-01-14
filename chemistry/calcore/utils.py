@@ -1,10 +1,15 @@
 # coding: utf-8
 from __future__ import absolute_import
 import os
+import re
 import datetime
 from xml.dom import minidom
 from subprocess import check_call
 from utils import chemistry_logger
+from chemistry.calcore import config
+
+
+P_RE = re.compile(r'.*Isotropic polarizability.*')
 
 
 class CalcoreCmd(object):
@@ -216,3 +221,29 @@ class XMLWriter():
 
     def get_content(self):
         return self.doc.toprettyxml(indent="     ")
+
+
+def fetch_polarizability(name, model):
+    path = os.path.join(config.GAUSSIAN_PATH, model, name, '%.log' % name)
+
+    if not os.path.exists(path):
+        chemistry_logger.error('Cannot fetch Polarizability %s' % path)
+        return path
+
+    with open(path, 'r') as f:
+        for line in f.readlines():
+            if P_RE.search(line):
+                try:
+                    v = float(line.split()[-2])
+                except:
+                    chemistry_logger.error('Cannot get Polarizability value %s' % line)
+                    v = 0
+                else:
+                    break
+
+    return v
+
+
+def convert_stand_t(t):
+    # 摄氏度 -> 标准温度
+    return float(t) + 273.15
