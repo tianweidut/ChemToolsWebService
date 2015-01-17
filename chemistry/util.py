@@ -179,7 +179,7 @@ def singletask_details(pid):
 def suitetask_details(sid):
     from chemistry.tasks import has_temperature
     suitetask = get_object_or_404(SuiteTask, sid=sid)
-    single_lists = SingleTask.objects.filter(sid=sid)
+    single_lists = SingleTask.objects.filter(sid=sid, is_hide=False)
 
     for s in single_lists:
         if not has_temperature(s.model.desc):
