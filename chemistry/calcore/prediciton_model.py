@@ -68,17 +68,17 @@ class PredictionModel(object):
             self.predict_result[smilenum]['logKOA']['value'] = self.round(value)
             chemistry_logger.info('koa(%s) dragon: %s' % (smilenum, abstract_value[smilenum]))
 
-            x = matrix([[abstract_value[smilenum]['X1sol'],
-                         abstract_value[smilenum]['Mor13v'],
-                         abstract_value[smilenum]['H-050'],
-                         abstract_value[smilenum]['R5v'],
-                         abstract_value[smilenum]['T(O..Cl)'],
-                         abstract_value[smilenum]['HATS5v'],
-                         abstract_value[smilenum]['RDF035m'],
-                         abstract_value[smilenum]['RCI'],
-                         abstract_value[smilenum]['nRCOOR'],
-                         abstract_value[smilenum]['Mor15u'],
-                         abstract_value[smilenum]['RDF090m'],
+            x = matrix([[abstract_value[smilenum]['X1sol'] / self.T,
+                         abstract_value[smilenum]['Mor13v'] / self.T,
+                         abstract_value[smilenum]['H-050'] / self.T,
+                         abstract_value[smilenum]['R5v'] / self.T,
+                         abstract_value[smilenum]['T(O..Cl)'] / self.T,
+                         abstract_value[smilenum]['HATS5v'] / self.T,
+                         abstract_value[smilenum]['RDF035m'] / self.T,
+                         abstract_value[smilenum]['RCI'] / self.T,
+                         abstract_value[smilenum]['nRCOOR'] / self.T,
+                         abstract_value[smilenum]['Mor15u'] / self.T,
+                         abstract_value[smilenum]['RDF090m'] / self.T,
                          1.0 / self.T,
                          ]])
             williams = self.get_williams(koaX, x)
