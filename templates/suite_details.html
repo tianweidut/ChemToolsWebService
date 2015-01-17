@@ -106,3 +106,13 @@
   </tbody>
 </table><!--end table-->
 {% endblock %}
+
+{% block endjs %}
+  <script>
+    function refreshPage() {
+      window.location.reload();
+    }
+    
+    setTimeout('refreshPage()', 10 * 1000);
+  </script>
+{% endblock %}
