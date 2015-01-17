@@ -334,24 +334,24 @@ class PredictionModel(object):
                 self.predict_result[smilenum] = defaultdict(dict)
 
             x = 1.9025 + \
-                    1.0457 * abstract_value[smilenum]['nN'] + \
-                    0.6662 * abstract_value[smilenum]['nHM'] - \
-                    0.1078 * abstract_value[smilenum]['O%'] + \
-                    2.8362 * abstract_value[smilenum]['MATS1e'] - \
-                    2.0019 * abstract_value[smilenum]['GATS1p'] - \
-                    0.7015 * abstract_value[smilenum]['GATS7p'] + \
-                    0.1131 * abstract_value[smilenum]['GGI1'] + \
-                    0.7023 * abstract_value[smilenum]['GGI2'] + \
-                    2.7793 * abstract_value[smilenum]['nCq'] + \
-                    1.035 * abstract_value[smilenum]['nCrt'] - \
-                    0.777 * abstract_value[smilenum]['C-040'] - \
-                    0.7091 * abstract_value[smilenum]['H-048'] - \
-                    0.1553 * abstract_value[smilenum]['H-051'] + \
-                    0.955 * abstract_value[smilenum]['O-059']
-            
+                1.0457 * abstract_value[smilenum]['nN'] + \
+                0.6662 * abstract_value[smilenum]['nHM'] - \
+                0.1078 * abstract_value[smilenum]['O%'] + \
+                2.8362 * abstract_value[smilenum]['MATS1e'] - \
+                2.0019 * abstract_value[smilenum]['GATS1p'] - \
+                0.7015 * abstract_value[smilenum]['GATS7p'] + \
+                0.1131 * abstract_value[smilenum]['GGI1'] + \
+                0.7023 * abstract_value[smilenum]['GGI2'] + \
+                2.7793 * abstract_value[smilenum]['nCq'] + \
+                1.035 * abstract_value[smilenum]['nCrt'] - \
+                0.777 * abstract_value[smilenum]['C-040'] - \
+                0.7091 * abstract_value[smilenum]['H-048'] - \
+                0.1553 * abstract_value[smilenum]['H-051'] + \
+                0.955 * abstract_value[smilenum]['O-059']
+
             self.predict_result[smilenum]['logBDG']['value'] = self.round(x)
+            self.predict_result[smilenum]['logBDG']['degrade'] = self.round(1 / (1 + math.exp(-x)))
             chemistry_logger.info('bdg(%s) dragon: %s' % (smilenum, abstract_value[smilenum]))
-            #self.predict_result[smilenum]['logBDG']['value'] = self.round(1 / (1 + math.exp(-x)))
 
             x = matrix([[abstract_value[smilenum]['nN'],
                          abstract_value[smilenum]['nHM'],
