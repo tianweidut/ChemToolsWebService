@@ -21,7 +21,7 @@ class PredictionModel(object):
         self.dragon_model = DragonModel(model_name, smile, mol_fpath)
 
     def round(self, value):
-        value = float(value)
+        value = float(value) * 1.00000
         return round(value, 4)
 
     def calculate(self, modelname):
