@@ -80,7 +80,16 @@
       {%endif%} 
       
       <td>{{single.temperature}}</td>
-      <td>{{single.result_value}}</td>
+      <td>
+        {{single.result_value}}
+        {% if single.model.desc == 'BDG'%}
+            {% if single.raw_data.get('degrade', 0.0) > 0.5 %}
+                (难降解类)
+            {%else%}
+                (易降解类)
+            {% endif %}
+        {% endif %}
+      </td>
       <td>
       {% if single.hi == None and single.hx == None %}
         <p class="label label-default">未知</p>
@@ -96,4 +105,14 @@
     {%endfor%}
   </tbody>
 </table><!--end table-->
+{% endblock %}
+
+{% block endjs %}
+  <script>
+    function refreshPage() {
+      window.location.reload();
+    }
+    
+    setTimeout('refreshPage()', 10 * 1000);
+  </script>
 {% endblock %}

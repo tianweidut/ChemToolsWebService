@@ -3,12 +3,13 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponseRedirect
 
-from utils import is_client
+from utils import is_client, chemistry_logger
 from utils.file_operator import file_upload_response
 from chemistry.util import (singletask_details, suitetask_details,
                             get_models_selector)
-from chemistry.models import SuiteTask
+from chemistry.models import SuiteTask, SingleTask
 
 
 @csrf_exempt
@@ -23,6 +24,13 @@ def submit(request):
 def history(request):
     #TODO: Add pagination
     results = SuiteTask.objects.filter(user__user=request.user).order_by('-start_time')
+
+    show_all = request.META.get('show_all', '0') == '1'
+    if not show_all:
+        results = results.filter(is_hide=False)
+
+    results = SuiteTask.objects.filter(user__user=request.user,
+                                       is_hide=not show_all).order_by('-start_time')
 
     for r in results:
         r.models_str_list = get_models_selector(r.models_str)
@@ -44,3 +52,21 @@ def suitetask(request, sid=None):
 def singletask(request, pid=None):
     return render(request, 'task_details.html',
                   singletask_details(pid))
+
+
+@login_required
+def hide(request, category, id):
+    if category == 'suite':
+        rs = SuiteTask.objects.filter(sid=id)
+    elif category == 'task':
+        rs = SingleTask.objects.filter(pid=id)
+    else:
+        return HttpResponseRedirect('/history')
+
+    chemistry_logger.info('hide %s %s' % (category, id))
+
+    for r in rs:
+        r.is_hide = True
+        r.save()
+
+    return HttpResponseRedirect('/history')

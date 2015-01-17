@@ -113,6 +113,7 @@ class SuiteTask(models.Model):
     result_pdf = models.FileField(blank=True, null=True,
                                   upload_to=settings.PROCESS_FILE_PATH)
     email = models.EmailField(blank=True, null=True)
+    is_hide = models.BooleanField(initial=False)
 
     class Meta:
         verbose_name = "组计算任务"
@@ -141,6 +142,7 @@ class SingleTask(models.Model):
     file_obj = models.ForeignKey(ProcessedFile, blank=False)
     result_pdf = models.FileField(blank=True, null=True,
                                   upload_to=settings.PROCESS_FILE_PATH)
+    is_hide = models.BooleanField(initial=False)
 
     class Meta:
         verbose_name = "单个计算任务"
