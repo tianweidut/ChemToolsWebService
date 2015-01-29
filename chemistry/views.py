@@ -54,10 +54,11 @@ def singletask(request, pid=None):
 
 
 @login_required
-def hide(request, category, id):
+def hide(request, id):
+    category = request.GET.get('category')
     if category == 'suite':
         rs = SuiteTask.objects.filter(sid=id)
-    elif category == 'task':
+    elif category == 'single':
         rs = SingleTask.objects.filter(pid=id)
     else:
         return HttpResponseRedirect('/history')
