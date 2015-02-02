@@ -31,7 +31,7 @@ MODEL_CHOICES = (
     (MODEL_DFS, MODEL_DFS),
     (MODEL_BCF, "生物富集因子"),
     (MODEL_KOH, "气相羟基自由基反应速率常数"),
-    (MODEL_KOH_T, "气相羟基自由基反应速率常数（含温度参数）"),
+    (MODEL_KOH_T, "气相羟基自由基反应速率常数"),
     (MODEL_BDG, "生物降解性"),
 )
 
