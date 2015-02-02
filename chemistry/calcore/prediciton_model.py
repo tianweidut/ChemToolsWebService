@@ -22,7 +22,7 @@ class PredictionModel(object):
 
     def round(self, value):
         value = float(value) * 1.00000
-        return round(value, 4)
+        return round(value, 5)
 
     def calculate(self, modelname):
         {
