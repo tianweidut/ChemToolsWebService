@@ -34,6 +34,7 @@ class PredictionModel(object):
             "logKOH_T": self.logKOH_T,
             "logPL": self.logPL,
             "logBDG": self.logBDG,
+            "logO3": self.logO3,
         }[modelname]()
 
     def logKOA(self):
@@ -83,6 +84,52 @@ class PredictionModel(object):
                          ]])
             williams = self.get_williams(koaX, x)
             self.predict_result[smilenum]['logKOA'].update(williams)
+
+    def logO3(self):
+        from .matrix.o3 import o3X
+
+        #O3 有温度参数
+        #EHOMO, SaasC, SpPosA­_B(m), nR=Cs, B01[C-C],
+        #X2Av, nCconj, nDB, N-076
+        abstract_value = self.dragon_model.extractparameter([
+            "EHOMO", "SaasC", "SpPosA_B(m)", "nR=Cs",
+            "B01[C-C]", "X2Av", "nCconj", "nDB", "N-076"
+        ])
+
+        for smilenum in abstract_value:
+            if smilenum not in self.predict_result:
+                self.predict_result[smilenum] = defaultdict(dict)
+
+            abstract_value[smilenum]['EHOMO'] = fetch_ehomo(smilenum, 'logO3')
+
+            value = 2.549 + \
+                1.534 * abstract_value[smilenum]['EHOMO'] - \
+                1.284 * abstract_value[smilenum]['SaasC'] - \
+                2.092 * abstract_value[smilenum]['SpPosA_B(m)'] + \
+                0.3060 * abstract_value[smilenum]['nR=Cs'] + \
+                1.113 * abstract_value[smilenum]['B01[C-C]'] - \
+                2.289 * abstract_value[smilenum]['X2Av'] - \
+                0.3470 * abstract_value[smilenum]['nCconj'] + \
+                0.5960 * abstract_value[smilenum]['nDB'] - \
+                1.301 * abstract_value[smilenum]['N-076'] - \
+                878.7 / self.T
+
+            self.predict_result[smilenum]['logO3']['value'] = self.round(value)
+            chemistry_logger.info('O3(%s) dragon: %s' % (smilenum, abstract_value[smilenum]))
+
+            x = matrix([[1.0 / self.T,
+                         abstract_value[smilenum]['EHOMO'],
+                         abstract_value[smilenum]['nDB'],
+                         abstract_value[smilenum]['SaasC'],
+                         abstract_value[smilenum]['SpPosA_B(m)'],
+                         abstract_value[smilenum]['nCconj'],
+                         abstract_value[smilenum]['nR=Cs'],
+                         abstract_value[smilenum]['B01[C-C]'],
+                         abstract_value[smilenum]['X2Av'],
+                         abstract_value[smilenum]['N-076'],
+                         ]])
+            williams = self.get_williams(o3X, x)
+            self.predict_result[smilenum]['logO3'].update(williams)
 
     def logRP(self):
         #RP 无温度参数
@@ -195,7 +242,7 @@ class PredictionModel(object):
                 self.predict_result[smilenum] = defaultdict(dict)
 
             abstract_value[smilenum]['EHOMO'] = fetch_ehomo(smilenum, 'logKOH')
-            
+
             value = -6.511 + \
                 15.85 * abstract_value[smilenum]['EHOMO'] - \
                 0.03800 * abstract_value[smilenum]['AMW'] + \

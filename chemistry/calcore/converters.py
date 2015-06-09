@@ -83,6 +83,8 @@ class Converter():
                     lines[0] = 'eps=78.6 EF GNORM =0.0100 MMOK GEO-OK PM6 MULLIK GRAPH ESR HYPERFINE POLAR PRECISE BOND PI ENPART DEBUG\n'
                 elif self.model_name in ('logPL',):
                     lines[0] = 'EF GNORM=0.01 MMOK GEO-OK PM6 MULLIK POLAR\n'
+                elif self.model_name in ('logO3', ):
+                    lines[0] = 'EF GNORM=0.001 PM6 MULLIK GRAPH ESR HYPERFINE POLAR\n'
                 elif self.model_name in ('logBDG',):
                     lines[0] = 'EF GNORM=0.1 MMOK GEO-OK PM5\n'
                 else:

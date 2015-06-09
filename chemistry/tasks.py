@@ -38,6 +38,7 @@ def get_model_name(name):
         "koh_t": "logKOH_T",
         "pl": "logPL",
         "bdg": "logBDG",
+        "o3": "logO3",
     }
 
     model = model_map.get(name)
