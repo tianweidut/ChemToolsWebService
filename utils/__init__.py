@@ -61,7 +61,7 @@ def is_client(request):
 
 def get_real_now():
     #hack, only for mopac2012.exe expired
-    d = datetime.datetime.now() + datetime.timedelta(days=365)
+    d = datetime.datetime.now() + datetime.timedelta(days=730)
     s = time.mktime(d.timetuple())
     now = datetime.datetime.fromtimestamp(s)
     chemistry_logger.info('------nws get real now %s' % now)
