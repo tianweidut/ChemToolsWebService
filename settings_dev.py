@@ -9,8 +9,6 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'Chemistry',
-        #'USER': 'eye',
-        #'PASSWORD': 'sauron',
         'USER': 'root',
         'PASSWORD': 'root',
         'HOST': '127.0.0.1',
